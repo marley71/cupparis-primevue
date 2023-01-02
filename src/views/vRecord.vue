@@ -3,14 +3,19 @@
         <div v-if="loaded">
             <h5 class="text-center">{{title}}</h5>
             <form ref="form" enctype="multipart/form-data" @submit.prevent="handleSubmit(!v$.$invalid)" class="p-fluid" >
-                <div v-for="field in fields" class="field" :key="field">
-                    <div class="">
-                        <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
-<!--                        <InputText :id="field" v-model="v$.name.$model" :class="{'p-invalid':v$.name.$invalid && submitted}" />-->
-<!--                        <label :for="field" :class="{'p-error':v$.name.$invalid && submitted}">Name*</label>-->
+                <div class="grid">
+                    <div v-for="field in fields" class="field" :class="layout.colClass" :key="field">
+                        <div v-if="layout.labelPosition=='top'">{{ widgetsConfig[field].label}}</div>
+                        <div class="">
+                            <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                            <!--                        <InputText :id="field" v-model="v$.name.$model" :class="{'p-invalid':v$.name.$invalid && submitted}" />-->
+                            <!--                        <label :for="field" :class="{'p-error':v$.name.$invalid && submitted}">Name*</label>-->
+                        </div>
+                        <!--                    <small v-if="(v$.name.$invalid && submitted) || v$.name.$pending.$response" class="p-error">{{v$.name.required.$message.replace('Value', 'Name')}}</small>-->
+                        <div v-if="layout.labelPosition=='bottom'">{{ widgetsConfig[field].label}}</div>
                     </div>
-<!--                    <small v-if="(v$.name.$invalid && submitted) || v$.name.$pending.$response" class="p-error">{{v$.name.required.$message.replace('Value', 'Name')}}</small>-->
                 </div>
+
 <!--                <div class="field">-->
 <!--                    <div class="p-float-label p-input-icon-right">-->
 <!--                        <i class="pi pi-envelope" />-->
@@ -74,6 +79,7 @@ import vBase from './vBase';
 import cAction from "../actions/cAction";
 import actionConfs from "../confs/actions";
 import Server from "../lib/Server";
+import viewConfs from "../confs/views";
 
 export default {
     name: "vRecord",
@@ -84,7 +90,39 @@ export default {
         window.RECORD = this;
         this.load();
     },
+    data() {
+      let ly = this.conf.layout || {};
+      if (ly instanceof String) {
+          ly = viewConfs.recordLayouts[ly] || viewConfs.recordLayouts.default;
+      } else {
+          let tmp = Object.assign({},viewConfs.recordLayouts.default);
+          ly = Object.assign(tmp,ly);
+      }
+      ly.colClass = this.getColClass(ly.cols);
+      console.log('layout',ly);
+      return {
+          layout : ly
+      }
+    },
     methods: {
+        getColClass(col) {
+          switch (col) {
+              case 1:
+                  return 'col-12'
+              case 2:
+                  return 'col-6'
+              case 3:
+                  return 'col-4'
+              case 4:
+                  return 'col-3'
+              case 6:
+                  return 'col-2'
+              case 12:
+                  return 'col-1'
+              default:
+                  return 'col-12'
+          }
+        },
         setActions() {
             let that = this;
             // this.menuModel = [

@@ -1,4 +1,5 @@
 import CrudCore from "../lib/CrudCore";
+import viewConfs from "../confs/views";
 
 export default class WrapperConf {
     defaultConf =  {
@@ -20,6 +21,7 @@ export default class WrapperConf {
         metadata:{},
         pagination:{},
     }
+
     constructor(view) {
         this.view = view;
     }
@@ -52,12 +54,12 @@ export default class WrapperConf {
         }
         if (! ('actions' in conf) ){
             conf.actions = ['action-view','action-edit','action-delete','action-delete-selected','action-insert'];
-            conf.recordActionsConf = [];
-            conf.collectionActions = {};
         }
         if (! ('primaryKey' in conf) ){
             conf.primaryKey = 'id';
         }
+        conf.recordActionsConf = [];
+        conf.collectionActions = {};
         conf.widgetsConfig = [];
         conf.selectedRow = null;
         conf.menuModel = [];
@@ -78,9 +80,11 @@ export default class WrapperConf {
                 'action-save-row',
                 'action-view-mode'
             ];
-            conf.recordActionsConf = [];
-            conf.collectionActions = {};
         }
+        conf.widgetsConfig = [];
+        conf.widgetsEditConfig = [];
+        conf.recordActionsConf = [];
+        conf.collectionActions = {};
         conf = this.vList(conf);
         return conf;
 
@@ -124,6 +128,9 @@ export default class WrapperConf {
         }
         conf.widgetsConfig = {};
         conf.recordActionsConf = {};
+        if (!conf.layout) {
+            conf.layout = viewConfs.recordLayouts.default
+        }
         return conf;
     }
 

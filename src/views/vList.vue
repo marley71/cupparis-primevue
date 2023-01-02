@@ -151,6 +151,7 @@ export default {
                     let aConf = Object.assign({},rActions[aName]);
                     aConf.modelData = that.value[i];
                     aConf.view = that;
+                    aConf.index = i;
                     rowActions[ aName ] = aConf;
                 }
                 that.recordActionsConf.push({ actions:rowActions});

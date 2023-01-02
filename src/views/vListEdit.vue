@@ -77,6 +77,7 @@ export default {
       return {
           rows:5,
           menuCollection : [],
+          editMode : {},
       }
     },
     methods: {
@@ -94,35 +95,68 @@ export default {
         //     }, 10);
         // },
 
-        createWidgetsEdit: function () {
-            var that = this;
-            that.setKeys();
-            //console.log('Vlist-create widgets',that.data);
-            var widgetsEdit = [];
-            //var data = that.data;
-            //var keys = that.getKeys();
-            for (var i in that.value) {
-                widgetsEdit.push({});
-                for (var k in that.keys) {
-                    var key = that.keys[k];
-                    var dconf = that._defaultWidgetConfig(key, 'fieldsConfigEditMode');
-                    // se non c'e' la configurazione in modalità edit lo forzo ad essere un w-input
-                    if (!that.fieldsConfigEditMode || !that.fieldsConfigEditMode[key])
-                        dconf.type = 'w-input';
-                    dconf.cRef = that.getRefId(that.uid, 'redit', i, key);
-                    dconf.modelData = that.value[i];
-                    dconf.value = that.value[i][key];
-                    dconf.name = that.getFieldName(key);
-                    if (!('label' in dconf)) {
-                        dconf.label = key;
-                        dconf.label = that.translate(dconf.label + '.label', that.langContext);
-                    } else {
-                        dconf.label = that.translate(dconf.label);
-                    }
-                    widgetsEdit[i][key] = dconf;
+        setWidgetsEditConfig: function () {
+            let that = this;
+            let fConf = {};
+            let fieldsEditConfig = that.fieldsEditConfig || {};
+            for (let f in that.fields) {
+                let key = that.fields[f];
+                fConf[ key ] = {
+                    type : 'w-input',
+                    label : that.getFieldLabel(key)
+                }
+                if (fieldsEditConfig[key]) {
+                    fConf[key] = Object.assign(fConf[key],fieldsEditConfig[key]);
                 }
             }
-            that.widgetsEdit = widgetsEdit;
+
+            // configurazione finale dei widgets
+            let widgetsEditConfig = [];
+            for (let i in that.value) {
+                widgetsEditConfig.push({});
+                for (let f in that.fields) {
+                    let key = that.fields[f];
+                    let val = that.value[i][key];
+                    let md = Object.assign({},(that.metadata[key] || {}));
+                    //console.log('field',key,'value',val);
+                    widgetsEditConfig[i][key] = Object.assign(md,fConf[key]);
+                    widgetsEditConfig[i][key].value = val;
+                    widgetsEditConfig[i][key].name = that.getFieldName(key);
+                    widgetsEditConfig[i][key].modelData = that.value[i];
+                    //widgetsConfig[i][key].label = that.getFieldLabel(key);
+                }
+            }
+
+            that.widgetsEditConfig = widgetsEditConfig;
+
+
+            // that.setKeys();
+            // //console.log('Vlist-create widgets',that.data);
+            // var widgetsEdit = [];
+            // //var data = that.data;
+            // //var keys = that.getKeys();
+            // for (var i in that.value) {
+            //     widgetsEdit.push({});
+            //     for (var k in that.keys) {
+            //         var key = that.keys[k];
+            //         var dconf = that._defaultWidgetConfig(key, 'fieldsConfigEditMode');
+            //         // se non c'e' la configurazione in modalità edit lo forzo ad essere un w-input
+            //         if (!that.fieldsConfigEditMode || !that.fieldsConfigEditMode[key])
+            //             dconf.type = 'w-input';
+            //         dconf.cRef = that.getRefId(that.uid, 'redit', i, key);
+            //         dconf.modelData = that.value[i];
+            //         dconf.value = that.value[i][key];
+            //         dconf.name = that.getFieldName(key);
+            //         if (!('label' in dconf)) {
+            //             dconf.label = key;
+            //             dconf.label = that.translate(dconf.label + '.label', that.langContext);
+            //         } else {
+            //             dconf.label = that.translate(dconf.label);
+            //         }
+            //         widgetsEdit[i][key] = dconf;
+            //     }
+            // }
+            // that.widgetsEdit = widgetsEdit;
         },
         setEditMode: function (index) {
             var that = this;

@@ -9,8 +9,8 @@
         <i class="m-1" v-show="icon" :class="icon"></i>
         <span>{{ translate(text) }}</span>
     </a>
-    <div v-else>
-        <b>{{key}}</b>{{controlType}}
+    <div v-if="['button','link'].indexOf(controlType) < 0">
+        <b>controlType ({{controlType}}) non riconosciuto</b>
     </div>
 </template>
 
@@ -82,6 +82,9 @@ export default {
         },
         setEnabled(value) {
             this.enabled = value;
+        },
+        setVisible(value) {
+            this.visible = value;
         }
     }
 }
