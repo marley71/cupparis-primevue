@@ -172,6 +172,17 @@ const routeConfs = {
         url: prefix + '/foorm/{modelName}/import/{jobId}',
         resultType: 'record',
         protocol: 'record'
+    },
+    'csv-exporta' : {
+        url: prefix + '/foormaction/csv-export/{foorm}/{foormtype}', // {foormpk?}',
+        method: 'post',
+        resultType: 'record'
+    },
+
+    'pdf-exporta': {
+        url: prefix + '/foormaction/pdf-export/{foorm}/{foormtype}', // {foormpk?}',
+        method: 'post',
+        resultType: 'record'
     }
 }
 

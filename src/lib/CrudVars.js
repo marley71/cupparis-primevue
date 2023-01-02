@@ -1,4 +1,4 @@
-import lang from "./lang";
+import lang from "../confs/lang";
 
 const CrudVars = {
     modelConfs : {},

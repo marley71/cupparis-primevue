@@ -43,8 +43,10 @@
             <Column v-for="(col) in fields" :field="col" :header="col" :key="col" :sortable="isSortable(col)" :dir="sortDirection(col)">
                 <template #body="slotProps">
 <!--                    {{getWidgetConf(slotProps.index,col,slotProps.data[col])}}-->
-                    <c-widget v-if="!editMode[slotProps.index]" :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></c-widget>
-                    <c-widget v-if="editMode[slotProps.index]" :conf="getWidgetEditConf(slotProps.index,col,slotProps.data[col])"></c-widget>
+                    <c-widget v-if="!editMode[slotProps.index]" :ref="'w'+slotProps.index+'_'+col"
+                              :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></c-widget>
+                    <c-widget v-if="editMode[slotProps.index]" :ref="'we'+slotProps.index+'_'+col"
+                              :conf="getWidgetEditConf(slotProps.index,col,slotProps.data[col])"></c-widget>
                 </template>
             </Column>
             <template #footer>
@@ -228,15 +230,24 @@ export default {
             }
         },
         getRowEditData (index) {
-            var that = this;
-            var values = {};
-            for (var k in that.widgetsEdit[index]) {
-                //values[k] = that.getWidgetEdit(index,k);
-                //console.log('edit r',that.view.widgetsEdit[that.index][k])
-                var sref = that.widgetsEdit[index][k].cRef; //  're-' + that.index + '-' +  k;
-                if (that.store.cRefs[sref])
-                    values[k] = that.getWidgetEdit(index,k).getValue();
+            let that = this;
+            let values = {};
+            for (let i in that.fields) {
+                let field = that.fields[i];
+                console.log('prendo ' +index + ' ' + field,that.$refs['we'+index+'_'+field]);
+                let w = that.$refs['we'+index+'_'+field];
+                if (w) {
+                    values[field] = w.getValue()
+                }
             }
+
+            // for (var k in that.widgetsEditConfig[index]) {
+            //     //values[k] = that.getWidgetEdit(index,k);
+            //     //console.log('edit r',that.view.widgetsEdit[that.index][k])
+            //     var sref = that.widgetsEdit[index][k].cRef; //  're-' + that.index + '-' +  k;
+            //     if (that.store.cRefs[sref])
+            //         values[k] = that.getWidgetEdit(index,k).getValue();
+            // }
             console.log('rowEditData values',values);
             return values;
         },

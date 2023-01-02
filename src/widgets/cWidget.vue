@@ -1,6 +1,6 @@
 <template>
     <template v-if="type=='w-input'">
-        <InputText :ref="cRef" class="w-full" :name="name" type="text" v-model="value" v-bind="extraBind" @change="change"></InputText>
+        <InputText class="w-full" :name="name" type="text" v-model="value" v-bind="extraBind" @change="change"></InputText>
     </template>
     <template v-else-if="type=='w-select'">
         <input type="hidden" :name="name" :value="value">
@@ -31,7 +31,7 @@
         <span>{{value}}</span>
     </template>
     <template v-else-if="type=='w-hasmany'">
-        <w-hasmany :conf="conf" @change="change"></w-hasmany>
+        <w-hasmany ref="wRef" :conf="conf" @change="change"></w-hasmany>
     </template>
     <template v-else-if="type=='w-belongsto'">
         <span v-for="(field,index) in labelFields" :key="index">
@@ -70,7 +70,7 @@
         </MultiSelect>
     </template>
     <template v-else-if="type=='w-swap'">
-        <w-swap :conf="wConf"></w-swap>
+        <w-swap  ref="wRef" :conf="wConf"></w-swap>
     </template>
     <template v-else-if="type=='w-status'">
         <span v-if="statusType=='icon'">
@@ -240,6 +240,12 @@ export default {
             //console.log('options',options)
             return this.label;
         },
+        instance() {
+            if (this.$refs.wRef) {
+                return this.$refs.wRef;
+            }
+            return this;
+        }
         // uploadFile(event) {
         //     console.log('uploadevent22',event,this);
         // }

@@ -158,7 +158,7 @@ const actionConfs = {
                     that.setRouteValues(r);
                     Server.route(r,function (json) {
                         if (json.error) {
-                            that.errorDialog(json.msg).show();
+                            that.errorDialog(json.msg);
                             return ;
                         }
                         var msg = json.msg?json.msg:that.view.translate('app.cancellazione-successo');
@@ -193,11 +193,11 @@ const actionConfs = {
             r.setParams(values);
             Server.route(r, function (json) {
                 if (json.error) {
-                    that.view.errorDialog(json.msg).show();
+                    that.view.errorDialog(json.msg);
                     return;
                 }
                 var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
-                that.view.alertSuccess(msg,that.alertTime).show();
+                that.view.alertSuccess(msg,that.alertTime);
                 var values = json.result;
                 that.view.setRowData(that.index,values);
                 that.view.setViewMode(that.index);
@@ -283,7 +283,7 @@ const actionConfs = {
                     Server.route(r,function (json) {
                         that.waitEnd();
                         if (json.error) {
-                            that.errorDialog(json.msg).show();
+                            that.errorDialog(json.msg);
                             return ;
                         }
                         that.view.reload();
@@ -323,6 +323,41 @@ const actionConfs = {
             return false;
         }
 
+    },
+    'action-export-csv' : {
+        execute () {
+            var that = this
+            var r = that.view.createRoute(that.routeName)
+            r.setValues({
+                'foorm': that.view.modelName,
+                'foormtype': 'list'
+            })
+            //console.log('action-export-csv',that.view.modelName,that.view.cType)
+            // var p = {
+            //     'csvType': that.csvType
+            // }
+            // var viewP = that.view.route.getParams()
+            r.setParam('csvType', that.csvType)
+            that.view.waitStart(that.startMessage)
+            Server.route(r, function (json) {
+                that.view.waitEnd()
+                if (json.error) {
+                    that.view.errorDialog(json.msg)
+                    return
+                }
+                document.location.href = json.result.link
+                console.log(json)
+            })
+
+            console.log('r', r)
+        },
+        type: 'collection',
+        icon: 'fa fa-file-csv',
+        text: 'Esporta',
+        css: 'p-button-sm p-button-text p-button-secondary',
+        csvType: 'default',
+        routeName: 'csv-exporta',
+        startMessage: 'Generazione csv in corso...'
     }
 }
 export default actionConfs

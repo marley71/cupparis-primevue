@@ -21,20 +21,21 @@
                         {{title}}
                     </div>
                 </template>
+                <c-action v-else layout="menubar" :conf="collectionActions"></c-action>
 
-                <Menubar v-else :model="menuCollection" class="w-full">
-                    <template  v-if="title" #start>
-                        <span>{{title}}</span>
-                    </template>
-<!--                    <template #end>-->
-<!--                        <div v-if="!label" class="col-12">-->
-<!--                            <div class="p-inputgroup">-->
-<!--                                <InputText v-model="newTargetCase" placeholder="Enter target url or id to be added" style="width:300px"/>-->
-<!--                                <Button icon="pi pi-plus" class="p-button-secondary" @click="newTargetInput"/>-->
-<!--                            </div>-->
-<!--                        </div>-->
+<!--                <Menubar v-else model="menuCollection" class="w-full">-->
+<!--                    <template  v-if="title" #start>-->
+<!--                        <span>{{title}}</span>-->
 <!--                    </template>-->
-                </Menubar>
+<!--&lt;!&ndash;                    <template #end>&ndash;&gt;-->
+<!--&lt;!&ndash;                        <div v-if="!label" class="col-12">&ndash;&gt;-->
+<!--&lt;!&ndash;                            <div class="p-inputgroup">&ndash;&gt;-->
+<!--&lt;!&ndash;                                <InputText v-model="newTargetCase" placeholder="Enter target url or id to be added" style="width:300px"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                                <Button icon="pi pi-plus" class="p-button-secondary" @click="newTargetInput"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+<!--&lt;!&ndash;                    </template>&ndash;&gt;-->
+<!--                </Menubar>-->
             </template>
             <Column :selection-mode="selectionMode"></Column>
             <Column :exportable="false" header="Actions">
@@ -45,7 +46,7 @@
             <Column v-for="(col) in fields" :field="col" :header="col" :key="col" :sortable="isSortable(col)" :dir="sortDirection(col)">
                 <template #body="slotProps">
 <!--                    {{slotProps.data[col]}} {{ slotProps.index}}-->
-                    <c-widget :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></c-widget>
+                    <c-widget :ref="'w'+slotProps.index+'_'+col" :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></c-widget>
 <!--                    {{getW(slotProps.index,col,slotProps.data[col])}}-->
 <!--                    <c-widget :conf="widgetsConfig[parseInt(slotProps.index)][col]"></c-widget>-->
                 </template>
@@ -279,7 +280,7 @@ export default {
             let items = [];
             for (let name in that.collectionActions) {
                 items.push({
-                    label : name,
+                    label : that.collectionActions[name].text,
                     icon : that.collectionActions[name].icon,
                     command: () => that.collectionActions[name].execute(),
                     disabled : that.collectionActions[name].disabled,
