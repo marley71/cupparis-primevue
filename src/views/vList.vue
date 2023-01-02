@@ -175,8 +175,10 @@ export default {
             that.widgetsConfig[index][field].value = data;
             return that.widgetsConfig[index][field];
         },
-
         setWidgetsConfig() {
+            this._setWidgetsConfig();
+        },
+        _setWidgetsConfig() {
             let that = this;
             // configurazioni widgets
             if (!that.fields && that.value.length) {

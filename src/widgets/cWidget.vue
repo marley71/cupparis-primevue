@@ -1,6 +1,6 @@
 <template>
     <template v-if="type=='w-input'">
-        <InputText class="w-full" :name="name" type="text" v-model="value" v-bind="extraBind" @change="change"></InputText>
+        <InputText :ref="cRef" class="w-full" :name="name" type="text" v-model="value" v-bind="extraBind" @change="change"></InputText>
     </template>
     <template v-else-if="type=='w-select'">
         <input type="hidden" :name="name" :value="value">

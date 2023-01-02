@@ -1,5 +1,5 @@
 <template>
-    <div v-if="layout=='simple'" class="flex p-buttonset border border-1 border-round" :style="'width:'+(Object.keys(actions).length * 30)+ 'px'">
+    <div v-if="layout=='simple'" class="flex p-buttonset border border-round" :style="'width:'+(Object.keys(actions).length * 30)+ 'px'">
         <a-base v-for="(action,key) in actions" :key="key" :ref="key" :conf="action"></a-base>
     </div>
     <div v-else-if="layout=='buttons'">

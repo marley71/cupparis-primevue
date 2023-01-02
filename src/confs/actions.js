@@ -184,20 +184,20 @@ const actionConfs = {
             });
             return route;
         },
-        execute: function () {
+        execute() {
             var that = this;
             var values = that.view.getRowEditData(that.index);
             //var id = that.view.value[that.index][that.view.primaryKey];
-            var r = that.createRoute('update');
+            var r = that.view.createRoute('update');
             that.setRouteValues(r);
             r.setParams(values);
             Server.route(r, function (json) {
                 if (json.error) {
-                    that.errorDialog(json.msg).show();
+                    that.view.errorDialog(json.msg).show();
                     return;
                 }
                 var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
-                that.alertSuccess(msg,that.alertTime).show();
+                that.view.alertSuccess(msg,that.alertTime).show();
                 var values = json.result;
                 that.view.setRowData(that.index,values);
                 that.view.setViewMode(that.index);

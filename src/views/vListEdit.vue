@@ -43,7 +43,8 @@
             <Column v-for="(col) in fields" :field="col" :header="col" :key="col" :sortable="isSortable(col)" :dir="sortDirection(col)">
                 <template #body="slotProps">
 <!--                    {{getWidgetConf(slotProps.index,col,slotProps.data[col])}}-->
-                    <c-widget :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></c-widget>
+                    <c-widget v-if="!editMode[slotProps.index]" :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></c-widget>
+                    <c-widget v-if="editMode[slotProps.index]" :conf="getWidgetEditConf(slotProps.index,col,slotProps.data[col])"></c-widget>
                 </template>
             </Column>
             <template #footer>
@@ -94,8 +95,11 @@ export default {
         //         that.completed();
         //     }, 10);
         // },
-
-        setWidgetsEditConfig: function () {
+        setWidgetsConfig() {
+            this._setWidgetsConfig();
+            this._setWidgetsEditConfig();
+        },
+        _setWidgetsEditConfig: function () {
             let that = this;
             let fConf = {};
             let fieldsEditConfig = that.fieldsEditConfig || {};
@@ -157,6 +161,14 @@ export default {
             //     }
             // }
             // that.widgetsEdit = widgetsEdit;
+        },
+        getWidgetEditConf(index,field,data) {
+            let that = this;
+            if (!that.widgetsEditConfig || !that.widgetsEditConfig[index] || !that.widgetsEditConfig[index][field]) {
+                return {};
+            }
+            that.widgetsEditConfig[index][field].value = data;
+            return that.widgetsEditConfig[index][field];
         },
         setEditMode: function (index) {
             var that = this;
