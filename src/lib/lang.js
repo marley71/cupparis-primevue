@@ -15,5 +15,6 @@ const lang = {
     'app.seleziona' : 'Seleziona',
     'app.trova-indirizzo' : 'Trova indirizzo',
     'app.gestione' : 'Gestione',
+    'app.action-delete-selected' : 'Cancella Selezionati',
 }
 export default lang

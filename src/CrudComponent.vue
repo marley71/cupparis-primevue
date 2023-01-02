@@ -15,7 +15,8 @@ export default {
          * @param routeName : nome della configurazione della route
          */
         createRoute : function(routeName) {
-            let routeConf = Object.assign({},routeConfs[routeName]);
+
+            let routeConf =  JSON.parse(JSON.stringify(routeConfs[routeName]))  //Object.assign({},routeConfs[routeName]);
             console.log('routeName',routeName,routeConf);
             if (!routeConf)
                 throw "Impossibile trovare la route " + routeName;
@@ -166,6 +167,25 @@ export default {
             //d.use(VList);
             d.mount(div);
         },
+
+        // deepCopy(target, ...sources) {
+        //     sources.forEach((source) => {
+        //         const descriptors = Object.keys(source).reduce((descriptors, key) => {
+        //             descriptors[key] = Object.getOwnPropertyDescriptor(source, key);
+        //             return descriptors;
+        //         }, {});
+        //
+        //         // By default, Object.assign copies enumerable Symbols, too
+        //         Object.getOwnPropertySymbols(source).forEach((sym) => {
+        //             const descriptor = Object.getOwnPropertyDescriptor(source, sym);
+        //             if (descriptor.enumerable) {
+        //                 descriptors[sym] = descriptor;
+        //             }
+        //         });
+        //         Object.defineProperties(target, descriptors);
+        //     });
+        //     return target;
+        // },
         __dialog(type,msg,props,callbacks) {
             const div = document.createElement('div');
             document.body.appendChild(div);
