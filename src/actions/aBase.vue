@@ -1,5 +1,5 @@
 <template>
-    <button class="p-button p-button-icon p-1 p-button-text" v-if="controlType=='button' && _visible()" type="button"
+    <button class="p-button p-button-icon p-1 p-button-outlined" v-if="controlType=='button' && _visible()" type="button"
             :title="translate(title)" :class="css" v-on:click="_execute()" v-bind:disabled="_disabled()" >
         <i class="m-1" v-show="icon" :class="icon"></i>
         <span>{{ translate(text) }}</span>

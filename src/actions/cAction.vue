@@ -5,9 +5,7 @@
         </div>
     </template>
     <template v-else-if="layout=='buttons'">
-        <div>
-            <a-base v-for="(action,key) in actions" :key="key" :ref="key" :conf="action"></a-base>
-        </div>
+        <a-base v-for="(action,key) in actions" :key="key" :ref="key" :conf="action"></a-base>
     </template>
     <template v-else-if="layout=='menubar'">
         <Menubar :model="menubarActions" class="w-full">
@@ -61,7 +59,7 @@ export default {
             let items = [];
             for (let name in that.conf) {
                 items.push({
-                    label : that.conf[name].text,
+                    label : that.translate(that.conf[name].text),
                     icon : that.conf[name].icon,
                     command: () => that.conf[name].execute(),
                     disabled : that.conf[name].disabled,

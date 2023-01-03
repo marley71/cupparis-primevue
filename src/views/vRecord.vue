@@ -69,7 +69,10 @@
 <!--                </div>-->
 <!--                <Button type="submit" label="Submit" class="mt-2" />-->
             </form>
-            <c-action ref="actions" :conf="recordActionsConf" layout="buttons" ></c-action>
+            <div>
+                <c-action ref="actions" :conf="recordActionsConf" layout="buttons" ></c-action>
+            </div>
+
     </div>
 </template>
 
