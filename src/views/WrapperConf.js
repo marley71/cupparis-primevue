@@ -17,9 +17,11 @@ export default class WrapperConf {
         route : null,
         routeName : null,
         defaultWidgetType : 'w-text',
+        fieldsConfig:{},
         actionsConfig: {},
         metadata:{},
         pagination:{},
+        selectionMode: null,
     }
 
     constructor(view) {
@@ -40,7 +42,7 @@ export default class WrapperConf {
 
     vList(conf) {
         console.log('wList conf',conf);
-        conf.selectionMode = 'multiple';
+        //conf.selectionMode = 'multiple';
         conf.selected = null;
         if (!conf.type) {
             conf.type = 'v-list'

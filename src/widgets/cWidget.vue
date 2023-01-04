@@ -1,4 +1,7 @@
 <template>
+    <template v-if="type=='w-hidden'">
+        <input type="hidden" :name="name" v-model="value" v-bind="extraBind" @change="change"/>
+    </template>
     <template v-if="type=='w-input'">
         <InputText class="w-full" :name="name" type="text" v-model="value" v-bind="extraBind" @change="change"></InputText>
     </template>

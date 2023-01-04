@@ -142,7 +142,7 @@ export default {
                 },
                 reject: () => {
                     //callback to execute when user rejects the action
-                    let cCancel = callbacks && callbacks.ok?callbacks.cancel:function (){};
+                    let cCancel = callbacks && callbacks.cancel?callbacks.cancel:function (){};
                     cCancel();
                 }
             });
@@ -151,12 +151,13 @@ export default {
             this.__dialog('custom',msg,props,callbacks)
         },
 
-        componentDialog(compName,componentConf) {
+        componentDialog(compName,componentConf,title) {
             const div = document.createElement('div');
             document.body.appendChild(div);
             let  comp = defineAsyncComponent(() => import('./dialogs/dCustom.vue'))
             let d = createApp(comp,{
                 conf : {
+                    title : title,
                     componentName : compName,
                     componentConf : componentConf,
                     display : true,

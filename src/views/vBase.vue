@@ -48,8 +48,8 @@ export default {
         },
         load() {
             let that = this;
-            that.beforeLoadData();
             that.setRouteValues();
+            that.beforeLoadData();
             that.loadData(function (json) {
                 that.json = json;
                 that.fillData(json);

@@ -22,5 +22,5 @@ export default {
             routeConfs[k].url = prefix + routeConfs[k].url;
         }
     },
-    CrudComponent,cAction,CrudCore,routerConf,CrudVars
+    CrudComponent,cAction,CrudCore,routerConf,CrudVars,routeConfs,
 }

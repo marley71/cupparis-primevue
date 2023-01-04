@@ -1,62 +1,71 @@
 <template>
     <div v-if="loaded">
-        <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected" :rows="getPerPage()" :paginator="paginator"
-            :lazy="routeName==null?false:true" @page="onPage($event)" @sort="onSort($event)"
-                   :total-records="getTotal()"
-                   :first="getFirst()"
-                   :sortField="getSortField()"
-                   :sortOrder="getSortOrder()"
+        <slot name="header" :collectionActions="collectionActions">
+
+        </slot>
+        <slot name="content" :value="value" :widgetsConfig="widgetsConfig">
+            <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected" :rows="getPerPage()" :paginator="paginator"
+                       :lazy="routeName==null?false:true" @page="onPage($event)" @sort="onSort($event)"
+                       :total-records="getTotal()"
+                       :first="getFirst()"
+                       :sortField="getSortField()"
+                       :sortOrder="getSortOrder()"
 
 
 
-        >
-            <!--
-                  contextMenu v-model:contextMenuSelection="selectedRow" @rowContextmenu="onRowContextMenu"
-                  :scrollable="true" scrollHeight="100px"
-                  -->
+            >
+                <!--
+                      contextMenu v-model:contextMenuSelection="selectedRow" @rowContextmenu="onRowContextMenu"
+                      :scrollable="true" scrollHeight="100px"
+                      -->
 
-            <template #header>
-                <template v-if="Object.keys(collectionActions).length == 0">
-                    <div class="table-header">
-                        {{title}}
-                    </div>
+                <template #header>
+                    <template v-if="Object.keys(collectionActions).length == 0">
+                        <div class="table-header">
+                            {{title}}
+                        </div>
+                    </template>
+                    <c-action v-else layout="menubar" :conf="collectionActions"></c-action>
+
+                    <!--                <Menubar v-else model="menuCollection" class="w-full">-->
+                    <!--                    <template  v-if="title" #start>-->
+                    <!--                        <span>{{title}}</span>-->
+                    <!--                    </template>-->
+                    <!--&lt;!&ndash;                    <template #end>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                        <div v-if="!label" class="col-12">&ndash;&gt;-->
+                    <!--&lt;!&ndash;                            <div class="p-inputgroup">&ndash;&gt;-->
+                    <!--&lt;!&ndash;                                <InputText v-model="newTargetCase" placeholder="Enter target url or id to be added" style="width:300px"/>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                                <Button icon="pi pi-plus" class="p-button-secondary" @click="newTargetInput"/>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                            </div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                        </div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;                    </template>&ndash;&gt;-->
+                    <!--                </Menubar>-->
                 </template>
-                <c-action v-else layout="menubar" :conf="collectionActions"></c-action>
-
-<!--                <Menubar v-else model="menuCollection" class="w-full">-->
-<!--                    <template  v-if="title" #start>-->
-<!--                        <span>{{title}}</span>-->
-<!--                    </template>-->
-<!--&lt;!&ndash;                    <template #end>&ndash;&gt;-->
-<!--&lt;!&ndash;                        <div v-if="!label" class="col-12">&ndash;&gt;-->
-<!--&lt;!&ndash;                            <div class="p-inputgroup">&ndash;&gt;-->
-<!--&lt;!&ndash;                                <InputText v-model="newTargetCase" placeholder="Enter target url or id to be added" style="width:300px"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                                <Button icon="pi pi-plus" class="p-button-secondary" @click="newTargetInput"/>&ndash;&gt;-->
-<!--&lt;!&ndash;                            </div>&ndash;&gt;-->
-<!--&lt;!&ndash;                        </div>&ndash;&gt;-->
-<!--&lt;!&ndash;                    </template>&ndash;&gt;-->
-<!--                </Menubar>-->
-            </template>
-            <Column :selection-mode="selectionMode"></Column>
-            <Column :exportable="false" header="Actions">
-                <template #body="slotProps">
-                    <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index]" :layout="'simple'"></c-action>
+                <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>
+                <Column v-if="hasRecordActions()" :exportable="false" header="Actions">
+                    <template #body="slotProps">
+                        <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index]" :layout="'simple'"></c-action>
+                    </template>
+                </Column>
+                <Column v-for="(col) in getVisibleFields()" :field="col" :header="col" :key="col" :sortable="isSortable(col)" :dir="sortDirection(col)">
+                    <template #body="slotProps">
+                        <!--                    {{slotProps.data[col]}} {{ slotProps.index}}-->
+                        <c-widget :ref="'w'+slotProps.index+'_'+col" :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></c-widget>
+                        <!--                    {{getW(slotProps.index,col,slotProps.data[col])}}-->
+                        <!--                    <c-widget :conf="widgetsConfig[parseInt(slotProps.index)][col]"></c-widget>-->
+                    </template>
+                </Column>
+                <template #footer>
+                    In total there are {{value ? value.length : 0 }} rows.
                 </template>
-            </Column>
-            <Column v-for="(col) in fields" :field="col" :header="col" :key="col" :sortable="isSortable(col)" :dir="sortDirection(col)">
-                <template #body="slotProps">
-<!--                    {{slotProps.data[col]}} {{ slotProps.index}}-->
-                    <c-widget :ref="'w'+slotProps.index+'_'+col" :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></c-widget>
-<!--                    {{getW(slotProps.index,col,slotProps.data[col])}}-->
-<!--                    <c-widget :conf="widgetsConfig[parseInt(slotProps.index)][col]"></c-widget>-->
-                </template>
-            </Column>
-            <template #footer>
-                In total there are {{value ? value.length : 0 }} rows.
-            </template>
 
-        </DataTable>
-<!--        <ContextMenu :model="menuModel" ref="cm" />-->
+            </DataTable>
+
+        </slot>
+        <slot name="footer">
+
+        </slot>
+        <!--        <ContextMenu :model="menuModel" ref="cm" />-->
 <!--        <Dialog ></Dialog>-->
 <!--        <c-widget :conf="{}"></c-widget>-->
     </div>
@@ -211,6 +220,7 @@ export default {
                     widgetsConfig[i][key].value = val;
                     widgetsConfig[i][key].name = that.getFieldName(key);
                     widgetsConfig[i][key].modelData = that.value[i];
+                    widgetsConfig[i][key].view = that;
                     //widgetsConfig[i][key].label = that.getFieldLabel(key);
                 }
             }
@@ -274,6 +284,33 @@ export default {
                 ids.push(that.selected[i][that.primaryKey])
             }
             return ids;
+        },
+        getVisibleFields() {
+            var that = this;
+            var visible = [];
+            for (let i in that.fields) {
+                if (!that.isHiddenField(that.fields[i]))
+                    visible.push(that.fields[i]);
+            }
+            return visible;
+        },
+        isHiddenField: function (key) {
+            let type = this.defaultWidgetType;
+            if (this.fieldsConfig[key]) {
+                if (this.widgetsConfig.type == 'w-hidden') {
+                    return true;
+                }
+            }
+            return (type == 'w-hidden');
+        },
+        hasRecordActions() {
+          let that = this;
+          console.log('hasRecordActions',that.recordActionsConf);
+          //return true;
+
+          if (that.recordActionsConf && (Object.keys(that.recordActionsConf[0].actions).length > 0) )
+              return true;
+          return false;
         },
         _setMenuCollection() {
             let that = this;
