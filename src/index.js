@@ -8,7 +8,7 @@ import dialogs from './dialogs'
 import CrudCore from "./lib/CrudCore.js";
 import routerConf from "./confs/router";
 import CrudVars from "./lib/CrudVars";
-
+import routeConfs from "./confs/routes";
 export default {
     install(app) {
         app.component('crud-component', CrudComponent);
@@ -17,9 +17,10 @@ export default {
         views.install(app);
         apps.install(app);
         dialogs.install(app);
-        // app.component('a-order', aOrder)
-        // app.component('a-square', aSquare)
-        // app.component('a-grouped', aGrouped)
+        let prefix = CrudVars.useApi?'/api':'';
+        for (let k in routeConfs) {
+            routeConfs[k].url = prefix + routeConfs[k].url;
+        }
     },
     CrudComponent,cAction,CrudCore,routerConf,CrudVars
 }

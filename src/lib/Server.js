@@ -3,10 +3,10 @@
  */
 
 import jQuery from 'jquery';
-import CrudCore from "./CrudCore";
+import CrudVars from "./CrudVars";
 
 const Server = {
-    useApi : CrudCore.USE_API
+
 };
 
 
@@ -23,7 +23,7 @@ Server.getUrl = function (url) {
 
 Server.getHearders = function() {
     var headers = {};
-    if (Server.useApi) {
+    if (CrudVars.useApi) {
         let selector = document.querySelector('meta[name="bearer-token"]');
        headers = {
            'Authorization': 'Bearer ' +  (selector?selector.content:'') // jQuery('meta[name="bearer-token"]').attr('content')
