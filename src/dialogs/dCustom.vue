@@ -5,7 +5,8 @@
         </template>
         <template v-if="componentName">
 <!--            <component :is="componentName" :conf="componentConf"></component>-->
-            <v-list :conf="componentConf"></v-list>
+            <c-view :conf="componentConf"></c-view>
+<!--            <v-list :conf="componentConf"></v-list>-->
         </template>
         <div v-else ref="el">
             <template v-if="Array.isArray(message)">
@@ -25,12 +26,13 @@
 import dBase from './dBase.vue'
 import Button from 'primevue/button';
 import Dialog from "primevue/dialog";
-import VList from "../views/vList.vue";
+// import VList from "../views/vList.vue";
+import CView from "../views/cView.vue";
 
 export default {
   name: 'd-custom',
   extends: dBase,
-    components: {Button, Dialog,VList},
+    components: {CView, Button, Dialog},
     mounted () {
     if (!this.title) {
       this.title = 'app.nome-app'
