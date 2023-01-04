@@ -1,7 +1,7 @@
 
 import CrudComponent from "./CrudComponent.vue"
 import cAction from './actions/cAction.vue'
-import widgets from './widgets'
+//import widgets from './widgets'
 import views from './views'
 import apps from './app'
 import dialogs from './dialogs'
@@ -11,9 +11,9 @@ import CrudVars from "./lib/CrudVars";
 import routeConfs from "./confs/routes";
 export default {
     install(app) {
-        app.component('crud-component', CrudComponent);
+        //app.component('crud-component', CrudComponent);
         app.component('c-action',cAction);
-        widgets.install(app);
+        //widgets.install(app);
         views.install(app);
         apps.install(app);
         dialogs.install(app);

@@ -4,7 +4,8 @@
             <h3>{{ translate(title) }}</h3>
         </template>
         <template v-if="componentName">
-            <component :is="componentName" :conf="cConf"></component>
+<!--            <component :is="componentName" :conf="componentConf"></component>-->
+            <v-list :conf="componentConf"></v-list>
         </template>
         <div v-else ref="el">
             <template v-if="Array.isArray(message)">
@@ -24,20 +25,24 @@
 import dBase from './dBase.vue'
 import Button from 'primevue/button';
 import Dialog from "primevue/dialog";
+import VList from "../views/vList.vue";
 
 export default {
   name: 'd-custom',
   extends: dBase,
-    components: {Button, Dialog},
+    components: {Button, Dialog,VList},
     mounted () {
     if (!this.title) {
       this.title = 'app.nome-app'
     }
   },
     data() {
+      let componentName = this.conf.componentName?this.conf.componentName:null;
+      let componentConf = this.conf.componentConf?this.conf.componentConf:null;
+      console.log('custom',componentName,componentConf);
       return {
-          componentName : null,
-          cConf : null,
+          componentName : componentName,
+          componentConf : componentConf,
       }
     },
     methods: {

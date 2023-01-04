@@ -10,7 +10,6 @@ export default {
       let d = Object.assign({
           cBig : false,
           display : true,
-          confParent: 'c-component',
           content: null,
           visible: true,
           message: '',
@@ -18,7 +17,6 @@ export default {
           typeSize: 'w-1/2',
           callbacks: {},
           customClass:'',
-          component : null, // eventuale componente istanziato per le dialog con componente
       },this.conf);
       return d;
     },

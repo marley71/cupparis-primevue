@@ -158,34 +158,17 @@ export default {
             let d = createApp(comp,{
                 conf : {
                     componentName : compName,
-                    cConf : componentConf,
+                    componentConf : componentConf,
                     display : true,
                     callbacks : {},
                 },
             });
-            d.use(PrimeVue);
+            CrudCore.setupApp(d);
+            //d.use(PrimeVue);
             //d.use(VList);
             d.mount(div);
         },
 
-        // deepCopy(target, ...sources) {
-        //     sources.forEach((source) => {
-        //         const descriptors = Object.keys(source).reduce((descriptors, key) => {
-        //             descriptors[key] = Object.getOwnPropertyDescriptor(source, key);
-        //             return descriptors;
-        //         }, {});
-        //
-        //         // By default, Object.assign copies enumerable Symbols, too
-        //         Object.getOwnPropertySymbols(source).forEach((sym) => {
-        //             const descriptor = Object.getOwnPropertyDescriptor(source, sym);
-        //             if (descriptor.enumerable) {
-        //                 descriptors[sym] = descriptor;
-        //             }
-        //         });
-        //         Object.defineProperties(target, descriptors);
-        //     });
-        //     return target;
-        // },
         __dialog(type,msg,props,callbacks) {
             const div = document.createElement('div');
             document.body.appendChild(div);
