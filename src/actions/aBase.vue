@@ -4,7 +4,7 @@
         <i class="m-1" v-show="icon" :class="icon"></i>
         <span>{{ translate(text) }}</span>
     </button>
-    <a v-else-if="controlType=='link' && _visible()" class="p-button p-button-outlined" :target="target" :href="href"
+    <a v-else-if="controlType=='link' && _visible()" class="p-button p-button-outlined" :target="target" :href="_href()"
        :title="translate(title)" :class="css" :disabled="_disabled()">
         <i class="m-1" v-show="icon" :class="icon"></i>
         <span>{{ translate(text) }}</span>
@@ -60,6 +60,12 @@ export default {
         return dt;
     },
     methods: {
+        _href() {
+            if (this.href instanceof Function) {
+                return this.href.apply(this);
+            }
+            return this.href;
+        },
         _visible() {
             //console.log('_visible',this.visible);
             if (this.visible instanceof Function) {

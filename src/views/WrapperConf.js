@@ -22,6 +22,7 @@ export default class WrapperConf {
         metadata:{},
         pagination:{},
         selectionMode: null,
+        autoload : true,
     }
 
     constructor(view) {

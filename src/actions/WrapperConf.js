@@ -6,6 +6,8 @@ export default class WrapperConf {
         modelData:{},
         extraBind: {},
         controlType : 'button',
+        href : '',
+        target : null,
         _visible() {
             if (this.visible instanceof Function) {
                 return this.visible.apply(this);

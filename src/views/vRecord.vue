@@ -91,7 +91,8 @@ export default {
     components: {cWidget,cAction},
     mounted() {
         window.RECORD = this;
-        this.load();
+        if (this.autoload)
+            this.load();
     },
     data() {
         console.log('vRecord',this.conf);

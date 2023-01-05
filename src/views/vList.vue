@@ -1,8 +1,8 @@
 <template>
     <div v-if="loaded">
-        <slot name="header" :collectionActions="collectionActions">
+        <header name="header" :collectionActions="collectionActions">
 
-        </slot>
+        </header>
         <slot name="content" :value="value" :widgetsConfig="widgetsConfig">
             <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected" :rows="getPerPage()" :paginator="paginator"
                        :lazy="routeName==null?false:true" @page="onPage($event)" @sort="onSort($event)"
@@ -85,7 +85,8 @@ export default {
     components: {cWidget,cAction},
     mounted() {
         window.VLIST = this;
-        this.load();
+        if (this.autoload)
+            this.load();
     },
     data() {
       return {
