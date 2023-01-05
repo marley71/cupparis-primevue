@@ -226,7 +226,16 @@ export default {
         getAction(name) {
             //console.log('getAction',name,this.recordActionsConf);
             return this.$refs.actions.instance(name);
-        }
+        },
+        isHiddenField: function (key) {
+            let type = this.defaultWidgetType;
+            if (this.fieldsConfig[key]) {
+                if (this.widgetsConfig.type == 'w-hidden') {
+                    return true;
+                }
+            }
+            return (type == 'w-hidden');
+        },
     }
 }
 </script>

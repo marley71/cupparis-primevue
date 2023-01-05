@@ -40,7 +40,13 @@ export default {
     name: "c-action",
     components: {ABase},
     extends : CrudComponent,
-    props: ['conf','layout'],
+    props: {
+        'conf' : Object,
+        'layout' : {
+            type : String,
+            default : 'buttons'
+        }
+    },
     data() {
         let that = this;
         that.conf.title = '';
