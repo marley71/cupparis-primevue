@@ -94,6 +94,7 @@ export default {
         this.load();
     },
     data() {
+        console.log('vRecord',this.conf);
       let ly = this.conf.layout || {};
       if (ly instanceof String) {
           ly = viewConfs.recordLayouts[ly] || viewConfs.recordLayouts.default;
@@ -102,7 +103,7 @@ export default {
           ly = Object.assign(tmp,ly);
       }
       ly.colClass = this.getColClass(ly.cols);
-      console.log('layout',ly);
+      //console.log('layout',ly);
       return {
           layout : ly
       }

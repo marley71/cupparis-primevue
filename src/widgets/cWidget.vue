@@ -38,7 +38,7 @@
     </template>
     <template v-else-if="type=='w-belongsto'">
         <span v-for="(field,index) in labelFields" :key="index">
-            {{value[field]}}
+            <span v-if="(separator && (index !== 0))">{{separator}}</span>{{value[field]}}
         </span>
     </template>
     <template v-else-if="type=='w-custom'">

@@ -8,13 +8,21 @@
             {{sectionTitle}}
         </div>
         <div >
-            <div v-if="mode=='list'">
-                <c-view :conf="search" ref="vSearch" @search="searchList"></c-view>
+            <div v-show="mode=='list'">
+                <c-view v-if="!searchComponentName" :conf="search" ref="vSearch" @search="searchList"></c-view>
+                <component v-else :is="searchComponentName" :conf="search" ref="vSearch" @search="searchList"></component>
                 <hr>
-                <c-view :conf="list" ref="vList"></c-view>
+                <c-view v-if="!listComponentName"  :conf="list" ref="vList"></c-view>
+                <component v-else :is="listComponentName" :conf="list" ref="vList"></component>
             </div>
-            <c-view v-else-if="mode=='edit'" :conf="edit"></c-view>
-            <c-view v-else-if="mode=='insert'" :conf="insert"></c-view>
+            <template v-if="mode=='edit'">
+                <c-view v-if="!editComponentName"  :conf="edit"></c-view>
+                <component v-else :is="editComponentName" :conf="edit"></component>
+            </template>
+            <template v-else-if="mode=='insert'">
+                <c-view v-if="!insertComponentName"  :conf="insert"></c-view>
+                <component v-else :is="insertComponentName" :conf="insert"></component>
+            </template>
         </div>
         <Dialog class="p-dialog" v-model:visible="viewDisplay" :modal="true" :style="{width: '50vw'}">
             <template #header>
@@ -22,7 +30,7 @@
             </template>
             <c-view v-if="viewDisplay" :conf="view" ref="vView"></c-view>
             <div class="modal-footer">
-                <Button :label="translate('app.ok')" icon="pi pi-check" autofocus />
+                <Button :label="translate('app.ok')" icon="pi pi-check" autofocus @click="viewDisplay=false"/>
             </div>
         </Dialog>
     </div>
@@ -70,6 +78,11 @@ export default {
             that.conf.insert.type = 'v-insert';
             that.conf.insert.routeName = 'insert';
         }
+        that.conf.editComponentName = that.conf.editComponentName || null;
+        that.conf.listComponentName = that.conf.listComponentName || null;
+        that.conf.searchComponentName = that.conf.searchComponentName || null;
+        that.conf.insertComponentName = that.conf.insertComponentName || null;
+        that.conf.viewComponentName = that.conf.viewComponentName || null;
         //that.conf.search.targetRef = that.$refs.vList;
         //console.log('Manage',that.$refs,that.conf);
         //that.conf.ready = false;
@@ -82,6 +95,7 @@ export default {
         },
         setManageActions() {
             let that = this;
+            let manage = this;
             if (!that.conf.list.actionsConfig) {
                 that.conf.list.actionsConfig = {};
             }
@@ -101,7 +115,7 @@ export default {
                 if (!actionEdit.execute){
                     actionEdit.execute = function () {
                         let thatAction = this;
-                        that.edit.pk = thatAction.modelData[that.$refs.vList.instance().primaryKey];
+                        that.edit.pk = thatAction.modelData[manage.getViewList().primaryKey];
                         that.mode = 'edit';
                     }
                 }
@@ -127,6 +141,9 @@ export default {
                 }
                 that.conf.edit.actionsConfig['action-back'] = actionBack;
             }
+        },
+        getViewList() {
+            return this.$refs.vList.instance();
         }
     }
 }

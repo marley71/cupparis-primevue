@@ -130,6 +130,9 @@ export default {
         },
         getFieldLabel(field) {
             return field;
+        },
+        instance() {
+            return this;
         }
     }
 }
