@@ -65,6 +65,11 @@
         <slot name="footer">
 
         </slot>
+        <OverlayPanel ref="panel" :showCloseIcon="true" :dismissable="true">
+            <div :class="'' + panelConf.classWidth">
+                <component v-if="panelConf.componentName" :is="panelConf.componentName" :conf="panelConf.componentConf"></component>
+            </div>
+        </OverlayPanel>
         <!--        <ContextMenu :model="menuModel" ref="cm" />-->
 <!--        <Dialog ></Dialog>-->
 <!--        <c-widget :conf="{}"></c-widget>-->
@@ -75,14 +80,14 @@
 import cWidget from "../widgets/cWidget";
 import cAction from "../actions/cAction";
 import actionConfs from "../confs/actions";
-
+import OverlayPanel from 'primevue/overlaypanel';
 import vBase from './vBase';
 
 export default {
     name: "vList",
     extends: vBase,
     props : ['conf'],
-    components: {cWidget,cAction},
+    components: {cWidget,cAction,OverlayPanel},
     mounted() {
         window.VLIST = this;
         if (this.autoload)
@@ -92,6 +97,11 @@ export default {
       return {
           rows:5,
           menuCollection : [],
+          panelConf : {
+              componentName : null,
+              componentConf : {},
+              classWidth : 'w-9'
+          }
       }
     },
     methods: {
@@ -330,6 +340,17 @@ export default {
             //     label : 'Actions',
             //     items : items,
             // })
+        },
+        showPanel(event,conf) {
+            if (conf) {
+                this.panelConf = conf;
+            } else {
+                this.panelConf.componentName = null;
+            }
+            this.$refs.panel.show(event);
+        },
+        hidePanel() {
+            this.$refs.panel.hide();
         }
     }
 }

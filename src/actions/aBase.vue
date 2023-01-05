@@ -1,6 +1,6 @@
 <template>
     <button class="p-button p-button-icon p-1 p-button-outlined" v-if="controlType=='button' && _visible()" type="button"
-            :title="translate(title)" :class="css" v-on:click="_execute()" v-bind:disabled="_disabled()" >
+            :title="translate(title)" :class="css" v-on:click="_execute($event)" v-bind:disabled="_disabled()" >
         <i class="m-1" v-show="icon" :class="icon"></i>
         <span>{{ translate(text) }}</span>
     </button>
@@ -80,9 +80,9 @@ export default {
             }
             return !this.enabled;
         },
-        _execute() {
+        _execute(event) {
             if (this.execute) {
-                return this.execute();
+                return this.execute(event);
             }
             alert('execute non definita')
         },
