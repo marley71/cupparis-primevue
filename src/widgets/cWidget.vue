@@ -102,6 +102,9 @@
     <template v-else-if="type=='w-upload-ajax'">
         <FileUpload mode="basic" :name="getFieldName()" :auto="true" :customUpload="true" @uploader="uploadFile"  :multiple="false" />
     </template>
+    <template v-else-if="type=='w-chip'">
+        <Chips v-model="value" @add="add" @remove="remove"/>
+    </template>
     <template v-else>
         <div>Widget non riconosciuto {{type}}</div>
     </template>
@@ -182,6 +185,14 @@ export default {
             evt.widget = this;
             console.log('EVENTSSS',evt);
             this.$emit('change',evt);
+        },
+        add(event) {
+            console.log('add event',event)
+            this.change(event);
+        },
+        remove(event) {
+            console.log('remove',event);
+            this.change(event);
         },
         getParams(func) {
 

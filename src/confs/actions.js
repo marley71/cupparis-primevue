@@ -129,9 +129,14 @@ const actionConfs = {
         css: '',
         icon : 'fa fa-eye',
         text : '',
+        viewType : 'v-view',
         execute () {
-            let url = '#/view/' + CrudCore.pascalCase('model_'+this.view.modelName) + '/' + this.modelData[this.view.primaryKey]
-            document.location.href=url;
+            let ta = this;
+            console.log('ta',ta);
+            let defaultConf = ta.getDefaultViewConf(ta.view.modelName,ta.viewType);
+            defaultConf.pk = ta.modelData.id;
+
+            this.componentDialog(ta.viewType,defaultConf)
         }
     },
     'action-delete' : {
