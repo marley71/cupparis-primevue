@@ -58,7 +58,9 @@
                 <template #footer>
                     In total there are {{value ? value.length : 0 }} rows.
                 </template>
-
+                <template #empty>
+                    {{translate('app.no_records_found')}}
+                </template>
             </DataTable>
 
         </slot>
@@ -319,7 +321,7 @@ export default {
           console.log('hasRecordActions',that.recordActionsConf);
           //return true;
 
-          if (that.recordActionsConf && (Object.keys(that.recordActionsConf[0].actions).length > 0) )
+          if (that.recordActionsConf && that.recordActionsConf.length && (Object.keys(that.recordActionsConf[0].actions).length > 0) )
               return true;
           return false;
         },
