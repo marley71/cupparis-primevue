@@ -18,7 +18,7 @@
         <div class="w-full flex" :class="layout=='row'?'flex-row':'flex-column'">
             <div class="field-checkbox mr-2" v-for="(label,key) in domainValues" :key="key">
                 <Checkbox :name="name" v-model="value" :value="key" v-bind="extraBind" @change="change"/>
-                <label :for="key">{{label}}</label>
+                <label :for="key" v-html="label"></label>
             </div>
         </div>
     </template>
@@ -26,7 +26,7 @@
         <div class="w-full flex" :class="layout=='row'?'flex-row':'flex-column'">
             <div class="field-radiobutton mr-2" v-for="(label,key) in domainValues" :key="key">
                 <RadioButton :name="name" v-model="value" :value="key" v-bind="extraBind"  @change="change"/>
-                <label for="binary">{{label}}</label>
+                <label :for="key" v-html="label"></label>
             </div>
         </div>
     </template>
