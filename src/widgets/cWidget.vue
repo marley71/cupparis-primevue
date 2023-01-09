@@ -11,8 +11,10 @@
                   v-bind="extraBind" @change="change"/>
     </template>
     <template v-else-if="type=='w-autocomplete'">
-        <AutoComplete class="w-full" :name="name" v-model="value" :suggestions="suggestions" @complete="search" option-label="label" option-value="id"
-                      v-bind="extraBind" @change="change"/>
+        <input type="hidden" :name="name" v-model="value">
+        <AutoComplete class="w-full" :name="name" v-model="autocompleteValue" :suggestions="suggestions"
+                      @complete="search" option-label="label" option-value="id"
+                      v-bind="extraBind" @change="change" @item-select="itemSelect"/>
     </template>
     <template v-else-if="type=='w-checkbox'">
         <div class="w-full flex" :class="layout=='row'?'flex-row':'flex-column'">
@@ -134,7 +136,11 @@ export default {
               }
           },
           deep: true,
-      }
+      },
+        // autocompleValue() {
+        //   console.log('autocompleete value',this.autocompleValue)
+        //   this.value = this.autocompleValue;
+        // }
     },
     created() {
         let that = this;
@@ -184,6 +190,13 @@ export default {
             let evt = event || {};
             evt.widget = this;
             console.log('EVENTSSS',evt);
+            switch (this.type) {
+                case 'w-complete':
+                    this.value = event.id;
+                    break;
+                default:
+                    break;
+            }
             this.$emit('change',evt);
         },
         add(event) {
@@ -253,6 +266,9 @@ export default {
         getLabel() {
             //console.log('options',options)
             return this.label;
+        },
+        itemSelect() {
+            this.value = this.autocompleteValue.id;
         },
         instance() {
             if (this.$refs.wRef) {

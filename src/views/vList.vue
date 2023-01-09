@@ -1,77 +1,72 @@
 <template>
-    <div v-if="loaded">
-        <header name="header" :collectionActions="collectionActions">
+    <div >
+        <BlockUI :blocked="!loaded">
+            <header name="header" :collectionActions="collectionActions">
 
-        </header>
-        <slot name="content" :value="value" :widgetsConfig="widgetsConfig">
-            <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected" :rows="getPerPage()" :paginator="paginator"
-                       :lazy="routeName==null?false:true" @page="onPage($event)" @sort="onSort($event)"
-                       :total-records="getTotal()"
-                       :first="getFirst()"
-                       :sortField="getSortField()"
-                       :sortOrder="getSortOrder()"
+            </header>
+            <slot name="content" :value="value" :widgetsConfig="widgetsConfig">
+                <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected" :rows="getPerPage()" :paginator="paginator"
+                           :lazy="routeName==null?false:true" @page="onPage($event)" @sort="onSort($event)"
+                           :total-records="getTotal()"
+                           :first="getFirst()"
+                           :sortField="getSortField()"
+                           :sortOrder="getSortOrder()"
 
 
 
-            >
-                <!--
-                      contextMenu v-model:contextMenuSelection="selectedRow" @rowContextmenu="onRowContextMenu"
-                      :scrollable="true" scrollHeight="100px"
-                      -->
+                >
+                    <!--
+                          contextMenu v-model:contextMenuSelection="selectedRow" @rowContextmenu="onRowContextMenu"
+                          :scrollable="true" scrollHeight="100px"
+                          -->
 
-                <template #header>
-                    <template v-if="Object.keys(collectionActions).length == 0">
-                        <div class="table-header">
-                            {{title}}
-                        </div>
+                    <template #header>
+
+                        <template v-if="Object.keys(collectionActions).length == 0">
+                            <div class="table-header">
+                                {{title}}
+                            </div>
+                        </template>
+                        <template v-else>
+                            <div class="flex">
+                                <c-action layout="menubar" :conf="collectionActions"></c-action>
+                            </div>
+
+                        </template>
+
                     </template>
-                    <c-action v-else layout="menubar" :conf="collectionActions"></c-action>
-
-                    <!--                <Menubar v-else model="menuCollection" class="w-full">-->
-                    <!--                    <template  v-if="title" #start>-->
-                    <!--                        <span>{{title}}</span>-->
-                    <!--                    </template>-->
-                    <!--&lt;!&ndash;                    <template #end>&ndash;&gt;-->
-                    <!--&lt;!&ndash;                        <div v-if="!label" class="col-12">&ndash;&gt;-->
-                    <!--&lt;!&ndash;                            <div class="p-inputgroup">&ndash;&gt;-->
-                    <!--&lt;!&ndash;                                <InputText v-model="newTargetCase" placeholder="Enter target url or id to be added" style="width:300px"/>&ndash;&gt;-->
-                    <!--&lt;!&ndash;                                <Button icon="pi pi-plus" class="p-button-secondary" @click="newTargetInput"/>&ndash;&gt;-->
-                    <!--&lt;!&ndash;                            </div>&ndash;&gt;-->
-                    <!--&lt;!&ndash;                        </div>&ndash;&gt;-->
-                    <!--&lt;!&ndash;                    </template>&ndash;&gt;-->
-                    <!--                </Menubar>-->
-                </template>
-                <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>
-                <Column v-if="hasRecordActions()" :exportable="false" header="Actions">
-                    <template #body="slotProps">
-                        <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index]" :layout="'simple'"></c-action>
+                    <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>
+                    <Column v-if="hasRecordActions()" :exportable="false" header="Actions">
+                        <template #body="slotProps">
+                            <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index]" :layout="'simple'"></c-action>
+                        </template>
+                    </Column>
+                    <Column v-for="(col) in getVisibleFields()" :field="col" :header="col" :key="col" :sortable="isSortable(col)" :dir="sortDirection(col)">
+                        <template #body="slotProps">
+                            <!--                    {{slotProps.data[col]}} {{ slotProps.index}}-->
+                            <c-widget :ref="'w'+slotProps.index+'_'+col" :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></c-widget>
+                            <!--                    {{getW(slotProps.index,col,slotProps.data[col])}}-->
+                            <!--                    <c-widget :conf="widgetsConfig[parseInt(slotProps.index)][col]"></c-widget>-->
+                        </template>
+                    </Column>
+                    <template #footer>
+                        In total there are {{value ? value.length : 0 }} rows.
                     </template>
-                </Column>
-                <Column v-for="(col) in getVisibleFields()" :field="col" :header="col" :key="col" :sortable="isSortable(col)" :dir="sortDirection(col)">
-                    <template #body="slotProps">
-                        <!--                    {{slotProps.data[col]}} {{ slotProps.index}}-->
-                        <c-widget :ref="'w'+slotProps.index+'_'+col" :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></c-widget>
-                        <!--                    {{getW(slotProps.index,col,slotProps.data[col])}}-->
-                        <!--                    <c-widget :conf="widgetsConfig[parseInt(slotProps.index)][col]"></c-widget>-->
+                    <template #empty>
+                        {{translate('app.no_records_found')}}
                     </template>
-                </Column>
-                <template #footer>
-                    In total there are {{value ? value.length : 0 }} rows.
-                </template>
-                <template #empty>
-                    {{translate('app.no_records_found')}}
-                </template>
-            </DataTable>
+                </DataTable>
 
-        </slot>
-        <slot name="footer">
+            </slot>
+            <slot name="footer">
 
-        </slot>
-        <OverlayPanel ref="panel" :showCloseIcon="true" :dismissable="true">
-            <div :class="'' + panelConf.classWidth">
-                <component v-if="panelConf.componentName" :is="panelConf.componentName" :conf="panelConf.componentConf"></component>
-            </div>
-        </OverlayPanel>
+            </slot>
+            <OverlayPanel ref="panel" :showCloseIcon="true" :dismissable="true">
+                <div :class="'' + panelConf.classWidth">
+                    <component v-if="panelConf.componentName" :is="panelConf.componentName" :conf="panelConf.componentConf"></component>
+                </div>
+            </OverlayPanel>
+        </BlockUI>
         <!--        <ContextMenu :model="menuModel" ref="cm" />-->
 <!--        <Dialog ></Dialog>-->
 <!--        <c-widget :conf="{}"></c-widget>-->
@@ -83,13 +78,15 @@ import cWidget from "../widgets/cWidget";
 import cAction from "../actions/cAction";
 import actionConfs from "../confs/actions";
 import OverlayPanel from 'primevue/overlaypanel';
+import BlockUi from 'primevue/blockui';
+
 import vBase from './vBase';
 
 export default {
     name: "vList",
     extends: vBase,
     props : ['conf'],
-    components: {cWidget,cAction,OverlayPanel},
+    components: {cWidget,cAction,OverlayPanel,BlockUi},
     mounted() {
         window.VLIST = this;
         if (this.autoload)

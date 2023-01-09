@@ -137,6 +137,7 @@ export default {
                 if (!actionBack.execute){
                     actionBack.execute = function () {
                         that.mode = 'list';
+                        that.getViewList().reload();
                     }
                 }
                 that.conf.edit.actionsConfig['action-back'] = actionBack;

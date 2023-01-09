@@ -60,8 +60,10 @@ const actionConfs = {
         icon : 'fa fa-save',
         text : 'app.salva',
         json : null,
-        execute (callback) {
-            this._save(callback)
+        execute (event) {
+            this._save(function () {
+                console.log('save Event',event)
+            })
         },
 
         _save (callback) {

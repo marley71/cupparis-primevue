@@ -54,7 +54,23 @@ export default class WrapperConf {
     wAutocomplete(conf) {
         conf.route = null;
         conf.suggestions = [];
-
+        //console.log('referredData',conf.referredData);
+        let __initialValue = function () {
+            //console.log('extra bind ',conf.extraBind['option-label'],conf);
+            if (conf.extraBind['option-label']) {
+                if (conf.extraBind['option-label'] instanceof  Function) {
+                    return conf.extraBind['option-label'](conf.referredData);
+                }
+                return conf.referredData[conf.extraBind['option-label']];
+            }
+            return conf.referredData['label'];
+        }
+        if (conf.referredData) {
+            // let label = 'label'
+            // conf.autocompleteValue  = conf.referredData[label]; //conf.referredData;
+            conf.autocompleteValue = __initialValue();
+            conf.suggestions = [conf.referredData];
+        }
         conf.search = conf.search || function (event) {
             let that = this;
             if (!that.route) {

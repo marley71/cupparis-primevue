@@ -6,6 +6,7 @@ import vRecord from './views/vRecord.vue'
 import vSearch from './views/vSearch.vue'
 import vList from './views/vList.vue'
 import vListEdit from './views/vListEdit.vue'
+import cImport from './app/cImport.vue'
 import widgets from './widgets'
 import views from './views'
 import apps from './app'
@@ -31,5 +32,5 @@ export default {
     },
     CrudComponent,cAction,CrudCore,routerConf,CrudVars,routeConfs,
     cView,
-    vRecord,vSearch,cManage,vList,vListEdit
+    vRecord,vSearch,cManage,vList,vListEdit,cImport
 }
