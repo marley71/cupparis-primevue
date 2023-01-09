@@ -188,6 +188,7 @@ export default {
                 widgetsConfig[key].value = val;
                 widgetsConfig[key].name = that.getFieldName(key);
                 widgetsConfig[key].modelData = that.value;
+                widgetsConfig[key].view = that;
                 //widgetsConfig[key].label = that.getFieldLabel(key);
             }
             console.log('vRecord setWidgetsConfig',widgetsConfig)
