@@ -315,9 +315,7 @@ export default {
         },
         hasRecordActions() {
           let that = this;
-          console.log('hasRecordActions',that.recordActionsConf);
-          //return true;
-
+          //console.log('hasRecordActions',that.recordActionsConf);
           if (that.recordActionsConf && that.recordActionsConf.length && (Object.keys(that.recordActionsConf[0].actions).length > 0) )
               return true;
           return false;

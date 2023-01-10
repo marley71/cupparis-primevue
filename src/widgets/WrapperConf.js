@@ -15,7 +15,7 @@ export default class WrapperConf {
     loadConf(conf) {
         let that = this;
         //console.log('WIDGET CONF',conf);
-        let dC = Object.assign({},this.defaultConf);
+        let dC = CrudCore.clone(this.defaultConf); //Object.assign({},this.defaultConf);
         conf.type = conf.type || that.defaultConf.type;
         let wName = CrudCore.camelCase(conf.type);
         //console.log('wName',wName)

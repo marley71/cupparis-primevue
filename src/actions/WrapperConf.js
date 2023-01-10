@@ -1,5 +1,7 @@
 //import CrudCore from "@/cupparis/lib/CrudCore";
 
+import CrudCore from "../lib/CrudCore";
+
 export default class WrapperConf {
     defaultConf =  {
         name : '',
@@ -7,6 +9,7 @@ export default class WrapperConf {
         extraBind: {},
         controlType : 'button',
         href : '',
+        icon : null,
         target : null,
         _visible() {
             if (this.visible instanceof Function) {
@@ -32,7 +35,7 @@ export default class WrapperConf {
         let that = this;
         for (let key in conf.actions) {
             console.log('key',key,conf.actions[key]);
-            let na = Object.assign(that.defaultConf,conf.actions[key]);
+            let na = Object.assign(CrudCore.clone(that.defaultConf),CrudCore.clone(conf.actions[key]));
             console.log('key1',key,na);
         }
         //console.log('------ ')

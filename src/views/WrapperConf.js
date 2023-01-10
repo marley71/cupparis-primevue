@@ -25,6 +25,47 @@ export default class WrapperConf {
         autoload : true,
     }
 
+    listDefaultConf = {
+        name : '',
+        value: null,
+        fields: null,
+        type: 'v-base',
+        extraBind: {},
+        title:'',
+        headerHelp:'',
+        orderFields:{},
+        paginator:true,
+        rows : 20,
+        loaded : false,
+        route : null,
+        routeName : null,
+        defaultWidgetType : 'w-text',
+        fieldsConfig:{},
+        actionsConfig: {},
+        metadata:{},
+        pagination:{},
+        selectionMode: null,
+        autoload : true,
+    }
+
+    recordDefaultConf = {
+        name : '',
+        value: null,
+        fields: null,
+        type: 'v-base',
+        extraBind: {},
+        title:'',
+        headerHelp:'',
+        loaded : false,
+        route : null,
+        routeName : null,
+        defaultWidgetType : 'w-input',
+        fieldsConfig:{},
+        actionsConfig: {},
+        metadata:{},
+        autoload : true,
+    }
+
     constructor(view) {
         this.view = view;
     }
@@ -32,12 +73,20 @@ export default class WrapperConf {
     loadConf(conf) {
         let that = this;
         console.log('VIEW CONF',conf);
+        if (!conf.type)
+            throw "confurazione non trovata per la view definire il type della vista";
+        var defConf = null;
+        if (['v-edit','v-view','v-insert','v-record','v-search'].indexOf(conf.type) >= 0) {
+            defConf = CrudCore.clone(that.recordDefaultConf);
+        } else if (conf.type == 'v-list') {
+            defConf = CrudCore.clone(that.listDefaultConf);
+        }
         let wName = CrudCore.camelCase(conf.type || that.defaultConf.type);
 
         if (that[wName]) {
             conf = that[wName](conf);
         }
-        conf = Object.assign(that.defaultConf,conf);
+        conf = Object.assign(defConf,conf);
         return conf;
     }
 
@@ -156,7 +205,7 @@ export default class WrapperConf {
         }
         conf.defaultWidgetType = 'w-input';
         if (!('actions' in conf) ){
-            conf.actions = ['action-save'];
+            conf.actions = ['action-save','action-back'];
         }
         return conf;
     }
@@ -181,7 +230,7 @@ export default class WrapperConf {
         conf.defaultWidgetType = 'w-input';
         conf.targetRef = null;
         if (!('actions' in conf) ){
-            conf.actions = ['action-save'];
+            conf.actions = ['action-save','action-back'];
         }
         return conf;
     }
