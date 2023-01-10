@@ -146,4 +146,30 @@ CrudCore.setupApp = function (app) {
         app.component(k,CrudCore.componentItems[k])
     }
 }
+
+var _cloneObj = function (item) {
+    if (item instanceof Function) {
+        return item;
+    }
+    if (item instanceof Array) {
+        let res = [];
+        for (let i in item) {
+            res.push(_cloneObj(item[i]))
+        }
+        return res;
+    }
+    if (item instanceof Object) {
+        let res = {};
+        for (let k in item) {
+            res[k] = _cloneObj(item[k])
+        }
+        return res;
+    }
+    return item;
+}
+
+CrudCore.clone = function (obj) {
+    let cloned = _cloneObj(obj);
+    return cloned;
+}
 export default CrudCore;

@@ -74,16 +74,15 @@ export default {
 
 
         getDefaultViewConf(modelName,type) {
-            let that = this;
             let mn = 'Model' + CrudCore.upperCaseFirst(CrudCore.camelCase(modelName));
             let mc = CrudVars.modelConfs[mn] || {};
             console.log('ModelConfs key',mn,mc);
             if (mc[type]) {
-                return that.clone(mc[type]); // TODO mettere il clone
+                return CrudCore.clone(mc[type]); // TODO mettere il clone
             }
             let dt = CrudVars.viewTypeToViewConf[type];
             if (mc[dt]) {
-                return that.clone(mc[dt]);
+                return CrudCore.clone(mc[dt]);
             }
             return CrudVars.viewDefaultConfs[type] || {
                 modelName : modelName,
@@ -92,10 +91,7 @@ export default {
         },
 
 
-        clone(obj) {
-            console.log('clone',obj);
-          return Object.assign({},obj)  ;
-        },
+
         waitStart(msg) {
             console.log('waitStart',msg);
         },
@@ -186,8 +182,6 @@ export default {
                 },
             });
             CrudCore.setupApp(d);
-            //d.use(PrimeVue);
-            //d.use(VList);
             d.mount(div);
         },
 

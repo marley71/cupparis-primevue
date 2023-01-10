@@ -40,6 +40,7 @@
 import cView from "../views/cView.vue";
 import CrudComponent from "../CrudComponent.vue";
 import viewWrapperConf from '../views/WrapperConf'
+import CrudCore from "../lib/CrudCore";
 export default {
     name: "Manage",
     extends : CrudComponent,
@@ -74,7 +75,7 @@ export default {
         that.conf.mode = 'list';
         that.conf.viewDisplay = false;
         if (!('insert' in that.conf)) {
-            that.conf.insert = Object.assign({},that.conf.edit);
+            that.conf.insert = Object.assign({},CrudCore.clone(that.conf.edit));
             that.conf.insert.type = 'v-insert';
             that.conf.insert.routeName = 'insert';
         }
@@ -144,6 +145,7 @@ export default {
             }
         },
         getViewList() {
+            //console.log('Manage refs',this.$refs);
             return this.$refs.vList.instance();
         }
     }
