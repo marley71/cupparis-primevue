@@ -131,6 +131,9 @@ export default {
         getFieldLabel(field) {
             return field;
         },
+        getType() {
+            return this.type.replace('v-','');
+        },
         instance() {
             return this;
         }

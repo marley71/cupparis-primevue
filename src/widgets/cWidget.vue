@@ -3,12 +3,34 @@
         <input type="hidden" :name="name" v-model="value" v-bind="extraBind" @change="change"/>
     </template>
     <template v-if="type=='w-input'">
-        <InputText class="w-full" :name="name" type="text" v-model="value" v-bind="extraBind" @change="change"></InputText>
+        <InputText class="w-full" :name="name" type="text" v-model="value" v-bind="extraBind"
+                   @change="change"></InputText>
     </template>
     <template v-else-if="type=='w-select'">
         <input type="hidden" :name="name" :value="value">
-        <Dropdown class="w-full" :name="name" v-model="value" :options="options" option-label="label" option-value="id" :placeholder="placeholder"
-                  v-bind="extraBind" @change="change"/>
+        <Dropdown class="w-full" :name="name" v-model="value" :options="options"
+                  option-label="label" option-value="id" :placeholder="placeholder"
+                  v-bind="extraBind" @change="change">
+                <template #option="slotProps">
+                    <div
+                        :class="'select-button-option select-button-option-'+name+ ' select-button-option-'+name+'-'+slotProps.option.id"
+                        v-html="slotProps.option.label">
+                    </div>
+                </template>
+        </Dropdown>
+    </template>
+    <template v-else-if="type=='w-select-button'">
+        <input type="hidden" :name="name" v-model="value">
+        <SelectButton :name="name" v-model="value" :options="options"
+                      option-label="label" option-value="id"
+                      v-bind="extraBind" @change="change">
+            <template #option="slotProps">
+                <div
+                    :class="'select-button-option select-button-option-'+name+ ' select-button-option-'+name+'-'+slotProps.option.id"
+                    v-html="slotProps.option.label">
+                </div>
+            </template>
+        </SelectButton>
     </template>
     <template v-else-if="type=='w-autocomplete'">
         <input type="hidden" :name="name" v-model="value">
@@ -27,62 +49,63 @@
     <template v-else-if="type=='w-radio'">
         <div class="w-full flex" :class="layout=='row'?'flex-row':'flex-column'">
             <div class="field-radiobutton mr-2" v-for="(label,key) in domainValues" :key="key">
-                <RadioButton :name="name" v-model="value" :value="key" v-bind="extraBind"  @change="change"/>
+                <RadioButton :name="name" v-model="value" :value="key" v-bind="extraBind" @change="change"/>
                 <label :for="key" v-html="label"></label>
             </div>
         </div>
     </template>
     <template v-else-if="type=='w-text'">
-        <span>{{value}}</span>
+        <span>{{ value }}</span>
     </template>
     <template v-else-if="type=='w-hasmany'">
         <w-hasmany ref="wRef" :conf="conf" @change="change"></w-hasmany>
     </template>
     <template v-else-if="type=='w-belongsto'">
         <span v-for="(field,index) in labelFields" :key="index">
-            <span v-if="(separator && (index !== 0))">{{separator}}</span>{{value[field]}}
+            <span v-if="(separator && (index !== 0))">{{ separator }}</span>{{ value[field] }}
         </span>
     </template>
     <template v-else-if="type=='w-custom'">
         <div v-html="value"></div>
     </template>
     <template v-else-if="type=='w-color-picker'">
-        <ColorPicker v-model="value" @change="change"/>
+        <ColorPicker v-model="value" @change="change" v-bind="extraBind"/>
     </template>
     <template v-else-if="type=='w-date-picker'">
-        <Calendar v-model="value" @date-select="change" />
+        <input type="hidden" :name="name" v-model="value">
+        <Calendar v-model="dateValue" @date-select="change" inputDateFormat="yyyy-mm-dd" date-format="dd/mm/yy" />
     </template>
     <template v-else-if="type=='w-date-text'">
-        <span>{{getFormattedValue()}}</span>
+        <span>{{ getFormattedValue() }}</span>
     </template>
     <template v-else-if="type=='w-textarea'">
-        <Textarea v-model="value" @change="change"></Textarea>
+        <Textarea v-model="value" @change="change" class="w-full"></Textarea>
     </template>
     <template v-else-if="type=='w-multi-select'">
         <MultiSelect class="w-full" v-model="value" :options="options" optionLabel="name" optionValue="code"
-                     :placeholder="placeholder" :filter="filter" @change="change()" >
-<!--            <template #value="slotProps">-->
-<!--                <template v-if="!slotProps.value || slotProps.value.length === 0">-->
-<!--                    <div class="p-1">{{name}}</div>-->
-<!--                </template>-->
-<!--                <template v-else>-->
-<!--                    <div class="inline-flex align-items-center py-1 px-2 border-round mr-2" v-for="option of slotProps.value" :key="option">-->
-<!--                        <input type="hidden" :name="getFieldName()" :value="option">-->
-<!--                        <div>{{getLabel(option)}}kk {{slotProps}}</div>-->
-<!--                    </div>-->
-<!--                </template>-->
-<!--            </template>-->
+                     :placeholder="placeholder" :filter="filter" @change="change()">
+            <!--            <template #value="slotProps">-->
+            <!--                <template v-if="!slotProps.value || slotProps.value.length === 0">-->
+            <!--                    <div class="p-1">{{name}}</div>-->
+            <!--                </template>-->
+            <!--                <template v-else>-->
+            <!--                    <div class="inline-flex align-items-center py-1 px-2 border-round mr-2" v-for="option of slotProps.value" :key="option">-->
+            <!--                        <input type="hidden" :name="getFieldName()" :value="option">-->
+            <!--                        <div>{{getLabel(option)}}kk {{slotProps}}</div>-->
+            <!--                    </div>-->
+            <!--                </template>-->
+            <!--            </template>-->
         </MultiSelect>
     </template>
     <template v-else-if="type=='w-swap'">
-        <w-swap  ref="wRef" :conf="wConf"></w-swap>
+        <w-swap ref="wRef" :conf="wConf"></w-swap>
     </template>
     <template v-else-if="type=='w-status'">
         <span v-if="statusType=='icon'">
             <i :class="currentValue"></i>
         </span>
         <span v-else>
-            {{currentValue}}
+            {{ currentValue }}
         </span>
     </template>
     <template v-else-if="type=='w-texthtml'">
@@ -90,25 +113,27 @@
             <template v-if="toolbar" #toolbar>
                 <span class="ql-formats">
                     <button v-for="(cssClass,index) in toolbar" :key="index" :class="cssClass"></button>
-<!--                    <button class="ql-bold"></button>-->
-<!--                    <button class="ql-italic"></button>-->
-<!--                    <button class="ql-underline"></button>-->
+                    <!--                    <button class="ql-bold"></button>-->
+                    <!--                    <button class="ql-italic"></button>-->
+                    <!--                    <button class="ql-underline"></button>-->
                 </span>
             </template>
         </Editor>
     </template>
     <template v-else-if="type=='w-upload'">
-        <FileUpload mode="basic" :name="getFieldName()" :auto="true"  :customUpload="true" @uploader="uploadFile"  :multiple="false" />
+        <FileUpload mode="basic" :name="getFieldName()" :auto="true" :customUpload="true" @uploader="uploadFile"
+                    :multiple="false"/>
     </template>
 
     <template v-else-if="type=='w-upload-ajax'">
-        <FileUpload mode="basic" :name="getFieldName()" :auto="true" :customUpload="true" @uploader="uploadFile"  :multiple="false" />
+        <FileUpload mode="basic" :name="getFieldName()" :auto="true" :customUpload="true" @uploader="uploadFile"
+                    :multiple="false"/>
     </template>
     <template v-else-if="type=='w-chip'">
         <Chips v-model="value" @add="add" @remove="remove"/>
     </template>
     <template v-else>
-        <div>Widget non riconosciuto {{type}}</div>
+        <div>Widget non riconosciuto {{ type }}</div>
     </template>
 </template>
 
@@ -124,19 +149,19 @@ export default {
     name: "c-widget",
     components: {wSwap, wHasmany},
     extends: CrudComponent,
-    props : {
-        conf : Object,
+    props: {
+        conf: Object,
     },
-    watch : {
-      conf: {
-          handler() {
-              //console.log('watch', oldValue,newValue);
-              for (let k in this.conf) {
-                  this[k] = this.conf[k];
-              }
-          },
-          deep: true,
-      },
+    watch: {
+        conf: {
+            handler() {
+                //console.log('watch', oldValue,newValue);
+                for (let k in this.conf) {
+                    this[k] = this.conf[k];
+                }
+            },
+            deep: true,
+        },
         // autocompleValue() {
         //   console.log('autocompleete value',this.autocompleValue)
         //   this.value = this.autocompleValue;
@@ -171,7 +196,7 @@ export default {
         let ext = wc.loadConf(that.conf);
         let dt = {};
         for (let k in ext) {
-            if (!(ext[k] instanceof Function) ) {
+            if (!(ext[k] instanceof Function)) {
                 dt[k] = ext[k];
             }
         }
@@ -180,31 +205,35 @@ export default {
         return dt;
     },
     mounted() {
-      setTimeout(this.ready,10);
+        setTimeout(this.ready, 10);
     },
-    methods : {
+    methods: {
         ready() {
 
         },
         change(event) {
             let evt = event || {};
             evt.widget = this;
-            console.log('EVENTSSS',evt);
+            console.log('EVENTSSS', evt);
             switch (this.type) {
                 case 'w-complete':
                     this.value = event.id;
                     break;
+                case 'w-date-picker':
+                    var date = event ? moment(event).format(evt.widget.inputDateFormat) : null;
+                    this.value = date;
+                    break;
                 default:
                     break;
             }
-            this.$emit('change',evt);
+            this.$emit('change', evt);
         },
         add(event) {
-            console.log('add event',event)
+            console.log('add event', event)
             this.change(event);
         },
         remove(event) {
-            console.log('remove',event);
+            console.log('remove', event);
             this.change(event);
         },
         getParams(func) {
@@ -237,14 +266,14 @@ export default {
                 // Removing any default value
                 element = element.replace(/=[\s\S]*/g, '').trim();
 
-                if(element.length > 0)
+                if (element.length > 0)
                     params.push(element);
             });
 
             return params;
         },
         setValue(val) {
-          this.value = val;
+            this.value = val;
         },
         getValue() {
             return this.value;
@@ -252,11 +281,11 @@ export default {
         getFormattedValue() {
             let that = this;
             var md = moment(that.value);
-            console.log('displayFormat',that.displayFormat);
+            console.log('displayFormat', that.displayFormat);
             if (md.isValid()) {
                 return md.format(that.displayFormat)
             } else {
-                return that.translate(that.invalidDateString) ;
+                return that.translate(that.invalidDateString);
             }
         },
         getFieldName() {
