@@ -133,7 +133,7 @@ export default {
                 }
                 that.conf.list.actionsConfig['action-insert'] = actionInsert;
             }
-            if (that.conf.edit.actions.indexOf('action-back') >= 0) {
+            if (that.conf.edit && that.conf.edit.actions && that.conf.edit.actions.indexOf('action-back') >= 0) {
                 let actionBack = that.conf.edit.actionsConfig['action-back'] || {};
                 if (!actionBack.execute){
                     actionBack.execute = function () {
