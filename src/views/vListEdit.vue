@@ -61,11 +61,11 @@
 </template>
 
 <script>
-import cWidget from "../widgets/cWidget";
-import cAction from "../actions/cAction";
+import cWidget from "../widgets/cWidget.vue";
+import cAction from "../actions/cAction.vue";
 //import actionConfs from "../confs/actions";
 
-import vList from './vList';
+import vList from './vList.vue';
 
 export default {
     name: "vListEdit",

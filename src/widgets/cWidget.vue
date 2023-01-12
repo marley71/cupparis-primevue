@@ -115,9 +115,9 @@
 <script>
 import WrapperConf from "../widgets/WrapperConf";
 import Server from "../lib/Server";
-import CrudComponent from "../CrudComponent";
+import CrudComponent from "../CrudComponent.vue";
 import wHasmany from "../widgets/wHasmany.vue";
-import moment from "moment";
+//import moment from "moment";
 import wSwap from "../widgets/wSwap.vue";
 
 export default {
@@ -251,13 +251,14 @@ export default {
         },
         getFormattedValue() {
             let that = this;
-            var md = moment(that.value);
-            console.log('displayFormat',that.displayFormat);
-            if (md.isValid()) {
-                return md.format(that.displayFormat)
-            } else {
-                return that.translate(that.invalidDateString) ;
-            }
+            return that.translate(that.invalidDateString)
+            // var md = moment(that.value);
+            // console.log('displayFormat',that.displayFormat);
+            // if (md.isValid()) {
+            //     return md.format(that.displayFormat)
+            // } else {
+            //     return that.translate(that.invalidDateString) ;
+            // }
         },
         getFieldName() {
             return this.name;

@@ -1,5 +1,5 @@
 <script>
-import vRecord from './vRecord';
+import vRecord from './vRecord.vue';
 
 export default {
     name: "vSearch",

@@ -13,7 +13,8 @@
             <template #content>
                 <div class="flex flex-column">
                     <template v-for="(data,index) in value" :key="index">
-                        <c-view :conf="getHasmanyConf(index)"></c-view>
+                        <div>gg</div>
+<!--                        <v-record :conf="getHasmanyConf(index)"></v-record>-->
                     </template>
                     <div class="" v-for="(item,index) in confViews" v-show="showItem(item.cRef)" :key="index">
                         <div class="card m-2 border-round-lg border-1">
@@ -54,12 +55,11 @@
 
 <script>
 import CrudComponent from "../CrudComponent.vue";
-import cView from "../views/cView.vue";
 
 export default {
     name: "wHasmany",
     extends : CrudComponent,
-    components : {cView},
+    //components : {VRecord, cView},
     emits:['change'],
     //emits: ['update:modelValue'],
     props: {

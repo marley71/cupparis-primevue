@@ -30,12 +30,12 @@
 
 <script>
 //import Server from "@/cupparis/lib/Server";
-import CrudComponent from "../CrudComponent";
+import CrudComponent from "../CrudComponent.vue";
 //import WrapperConf from "@/cupparis/views/WrapperConf";
-import vBase from "./vBase";
-import vList from "./vList";
-import vListEdit from './vListEdit';
-import vRecord from "./vRecord";
+import vBase from "./vBase.vue";
+import vList from "./vList.vue";
+import vListEdit from './vListEdit.vue';
+import vRecord from "./vRecord.vue";
 import vSearch from "./vSearch.vue";
 
 export default {

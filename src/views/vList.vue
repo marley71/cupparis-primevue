@@ -74,13 +74,13 @@
 </template>
 
 <script>
-import cWidget from "../widgets/cWidget";
-import cAction from "../actions/cAction";
+import cWidget from "../widgets/cWidget.vue";
+import cAction from "../actions/cAction.vue";
 import actionConfs from "../confs/actions";
 import OverlayPanel from 'primevue/overlaypanel';
 import BlockUi from 'primevue/blockui';
 
-import vBase from './vBase';
+import vBase from './vBase.vue';
 
 export default {
     name: "vList",

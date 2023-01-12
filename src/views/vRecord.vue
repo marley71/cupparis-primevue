@@ -77,9 +77,9 @@
 </template>
 
 <script>
-import cWidget from "../widgets/cWidget";
-import vBase from './vBase';
-import cAction from "../actions/cAction";
+import cWidget from "../widgets/cWidget.vue";
+import vBase from './vBase.vue';
+import cAction from "../actions/cAction.vue";
 import actionConfs from "../confs/actions";
 import Server from "../lib/Server";
 import viewConfs from "../confs/views";
