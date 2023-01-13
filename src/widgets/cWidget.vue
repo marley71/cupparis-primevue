@@ -274,7 +274,16 @@ export default {
             return params;
         },
         setValue(val) {
-            this.value = val;
+            let that = this;
+            switch (that.conf.type) {
+                case 'w-hasmany':
+                    that.$refs.wRef.setValue(val);
+                    break;
+                default:
+                    that.value = val;
+                    break;
+            }
+
         },
         getValue() {
             return this.value;

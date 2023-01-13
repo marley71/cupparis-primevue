@@ -119,11 +119,18 @@ export default class WrapperConf {
         return conf;
     }
     wDateText(conf) {
-        conf.displayFormat = 'DD/MM/YYYY';
-        conf.dateFormat = 'yyyy-mm-dd';
-        conf.formattedValue = null;
-        conf.invalidDateString ='app.data-non-valida';
-        return conf;
+        // if (!conf.displayFormat)
+        //     conf.displayFormat = 'DD/MM/YYYY';
+        // conf.dateFormat = 'yyyy-mm-dd';
+        // conf.formattedValue = null;
+        // conf.invalidDateString ='app.data-non-valida';
+        return Object.assign({
+            displayFormat : 'DD/MM/YYYY',
+            dateFormat : 'yyyy-mm-dd',
+            formattedValue : null,
+            invalidDateString : 'app.data-non-valida'
+        },conf);
+        //return conf;
     }
     wMultiSelect(conf) {
         let value = conf.value || [];

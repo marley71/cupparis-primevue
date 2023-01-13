@@ -13,24 +13,12 @@
             <template #content>
                 <div class="flex flex-column">
                     <template v-for="(data,index) in value" :key="index">
-                        <div>gg</div>
-<!--                        <v-record :conf="getHasmanyConf(index)"></v-record>-->
-                    </template>
-                    <div class="" v-for="(item,index) in confViews" v-show="showItem(item.cRef)" :key="index">
-                        <div class="card m-2 border-round-lg border-1">
-                            <!--<div class="card-header" crud-hasmany_title>-->
-                            <!--{{cConf.metadata.modelName}}-->
-                            <!--</div>-->
-                            <div class="flex justify-content-end">
-                                <button v-on:click="deleteItem(item.cRef)" class="p-button p-button-sm p-button-outlined p-button-danger p-2"
-                                        type="button" title="Cancella elemento"><i class="fa fa-trash"></i>
-                                </button>
-                            </div>
-                            <div class="card-body p-1 ">
-                                <v-hasmany :c-model="name" :c-conf="item"></v-hasmany>
-                            </div>
+                        <hr>
+                        <div class="flex align-self-end">
+                            <Button icon="fa fa-times" @click="removeItem(index)" :label="index"></Button>
                         </div>
-                    </div>
+                        <v-record :conf="getHasmanyConf(index)"></v-record>
+                    </template>
                 </div>
             </template>
             <template #footer>
@@ -44,22 +32,18 @@
                 </button>
             </template>
         </Card>
-
-
-
-
-
-
     </template>
 </template>
 
 <script>
 import CrudComponent from "../CrudComponent.vue";
+import CrudCore from "../lib/CrudCore";
+//import cView from '../views/cView.vue'
 
 export default {
     name: "wHasmany",
     extends : CrudComponent,
-    //components : {VRecord, cView},
+    //components : {cView},
     emits:['change'],
     //emits: ['update:modelValue'],
     props: {
@@ -72,14 +56,29 @@ export default {
         setTimeout(this.ready,10);
     },
     data () {
+        if (!this.conf.hasmanyConf.getFieldName) {
+            this.conf.hasmanyConf.getFieldName = (name) => {
+                return name + '[]';
+            }
+        }
         return this.conf;
     },
     methods: {
         ready() {
 
         },
+        setValue(val) {
+            let that = this;
+            that.value = [];
+            setTimeout(function () {
+                that.value = val;
+            },1)
+
+        },
         outOfLimit() {
-            return false;
+            if (!this.limit)
+                return false;
+            return (this.value.length >= this.limit);
         },
         addItem() {
             let that = this;
@@ -93,13 +92,19 @@ export default {
         },
         getHasmanyConf(i) {
             let that = this;
-            let hs = that.hasmanyConf;
+            let hs = CrudCore.clone(that.hasmanyConf);
             hs.routeName = null;
             hs.actions = [];
             hs.value = that.value[i];
             hs.type = 'v-edit';
             console.log('HS',hs);
             return hs;
+        },
+        removeItem(index) {
+            console.log('remove index',index);
+            if (index < this.value.length) {
+                this.value.splice(parseInt(index),1);
+            }
         }
     }
 }

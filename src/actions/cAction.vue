@@ -58,7 +58,7 @@ export default {
     methods: {
         instance(key) {
             console.log('actions ref',key,this.$refs,this.$refs[key])
-            return this.$refs[key];
+            return this.$refs[key][0];
         },
         getMenubarActions() {
             let that = this;

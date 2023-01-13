@@ -277,7 +277,7 @@ export default {
             //return this.getTotal();
         },
         getRecordAction(index,name) {
-            console.log('getRecordAction',index,name);
+            console.log('getRecordAction',index,name,);
             return this.$refs['r'+index].instance(name);
         },
         selectedRows() {
