@@ -3,7 +3,6 @@
  *
  */
 
-import jQuery from "jquery"
 import CrudCore from "./CrudCore";
 
 var defaultConf =  {

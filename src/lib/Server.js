@@ -2,7 +2,7 @@
  * Created by pier on 20/12/17.
  */
 
-import jQuery from 'jquery';
+//import jQuery from 'jquery';
 import CrudVars from "./CrudVars";
 
 const Server = {
@@ -23,6 +23,12 @@ Server.getUrl = function (url) {
 
 Server.getHearders = function() {
     var headers = {};
+    if (import.meta.env.VITE_TOKEN) {
+        headers = {
+            'Authorization': 'Bearer ' +  import.meta.env.VITE_TOKEN
+        }
+        return headers;
+    }
     if (CrudVars.useApi) {
         let selector = document.querySelector('meta[name="bearer-token"]');
        headers = {
@@ -47,7 +53,7 @@ Server.post = function (url, params, callback) {
         processData = false;
     }
     console.log('serverPost',(params instanceof FormData),contentType,processData);
-    jQuery.ajax({
+    window.jQuery.ajax({
         url: realUrl,
         headers: Server.getHearders(),
         type: 'POST',
@@ -102,7 +108,7 @@ Server.get = function (url, params, callback) {
     }
     console.log('Server.get _data',_data,contentType,processData);
     //console.log('serverGet',(params instanceof FormData),contentType,processData,params);
-    jQuery.ajax({
+    window.jQuery.ajax({
         url: realUrl,
         headers: Server.getHearders(),
         type: 'GET',

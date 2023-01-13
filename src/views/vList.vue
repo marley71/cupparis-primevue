@@ -1,9 +1,9 @@
 <template>
     <div >
         <BlockUI :blocked="!loaded">
-            <header name="header" :collectionActions="collectionActions">
+            <slot name="header" :collectionActions="collectionActions">
 
-            </header>
+            </slot>
             <slot name="content" :value="value" :widgetsConfig="widgetsConfig">
                 <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected" :rows="getPerPage()" :paginator="paginator"
                            :lazy="routeName==null?false:true" @page="onPage($event)" @sort="onSort($event)"
@@ -61,15 +61,13 @@
             <slot name="footer">
 
             </slot>
-            <OverlayPanel ref="panel" :showCloseIcon="true" :dismissable="true">
-                <div :class="'' + panelConf.classWidth">
-                    <component v-if="panelConf.componentName" :is="panelConf.componentName" :conf="panelConf.componentConf"></component>
-                </div>
-            </OverlayPanel>
         </BlockUI>
-        <!--        <ContextMenu :model="menuModel" ref="cm" />-->
-<!--        <Dialog ></Dialog>-->
-<!--        <c-widget :conf="{}"></c-widget>-->
+        <OverlayPanel ref="panel" :showCloseIcon="true" :dismissable="true">
+            <div>ciao</div>
+            <div :class="'' + panelConf.classWidth">
+                <component v-if="panelConf.componentName" :is="panelConf.componentName" :conf="panelConf.componentConf"></component>
+            </div>
+        </OverlayPanel>
     </div>
 </template>
 
@@ -77,18 +75,14 @@
 import cWidget from "../widgets/cWidget.vue";
 import cAction from "../actions/cAction.vue";
 import actionConfs from "../confs/actions";
-import OverlayPanel from 'primevue/overlaypanel';
-import BlockUi from 'primevue/blockui';
-
 import vBase from './vBase.vue';
 
 export default {
     name: "vList",
     extends: vBase,
     props : ['conf'],
-    components: {cWidget,cAction,OverlayPanel,BlockUi},
+    components: {cWidget,cAction},
     mounted() {
-        window.VLIST = this;
         if (this.autoload)
             this.load();
     },
@@ -315,9 +309,7 @@ export default {
         },
         hasRecordActions() {
           let that = this;
-          console.log('hasRecordActions',that.recordActionsConf);
-          //return true;
-
+          //console.log('hasRecordActions',that.recordActionsConf);
           if (that.recordActionsConf && that.recordActionsConf.length && (Object.keys(that.recordActionsConf[0].actions).length > 0) )
               return true;
           return false;

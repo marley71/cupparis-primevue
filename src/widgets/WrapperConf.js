@@ -1,5 +1,6 @@
 import CrudCore from "../lib/CrudCore";
 import Server from "../lib/Server";
+// import moment from "moment"
 
 export default class WrapperConf {
     defaultConf =  {
@@ -14,7 +15,7 @@ export default class WrapperConf {
     loadConf(conf) {
         let that = this;
         //console.log('WIDGET CONF',conf);
-        let dC = Object.assign({},this.defaultConf);
+        let dC = CrudCore.clone(this.defaultConf); //Object.assign({},this.defaultConf);
         conf.type = conf.type || that.defaultConf.type;
         let wName = CrudCore.camelCase(conf.type);
         //console.log('wName',wName)
@@ -26,28 +27,36 @@ export default class WrapperConf {
         return conf;
     }
 
-    wSelect(conf) {
-        //console.log('conf',conf);
+    mapOptions(domainValues,domainValuesOrder) {
         let options = [];
-        if (conf.domainValuesOrder) {
-            for (let i in conf.domainValuesOrder) {
+        if (domainValuesOrder) {
+            for (let i in domainValuesOrder) {
                 let opt = {
-                    id : conf.domainValuesOrder[i],
-                    label : conf.domainValues[conf.domainValuesOrder[i]],
+                    id : domainValuesOrder[i],
+                    label : domainValues[domainValuesOrder[i]],
                 }
                 options.push(opt);
             }
         } else {
-            for (let k in conf.domainValues) {
+            for (let k in domainValues) {
                 let opt = {
                     id : k,
-                    label : conf.domainValues[k],
+                    label : domainValues[k],
                 }
                 options.push(opt);
             }
         }
         //console.log('options',options);
-        conf.options = options;
+        return options;
+    }
+
+    wSelect(conf) {
+        conf.options = this.mapOptions(conf.domainValues,conf.domainValuesOrder);
+        return conf;
+    }
+
+    wSelectButton(conf) {
+        conf.options = this.mapOptions(conf.domainValues,conf.domainValuesOrder);
         return conf;
     }
 
@@ -99,6 +108,14 @@ export default class WrapperConf {
 
     wRadio(conf) {
         conf.layout = 'row';
+        return conf;
+    }
+    wDatePicker(conf) {
+        console.log("DATEEEE",conf.value);
+        if (conf.value) {
+            conf.dateValue = new Date(conf.value);
+            console.log("DATEEEE",conf.dateValue);
+        }
         return conf;
     }
     wDateText(conf) {

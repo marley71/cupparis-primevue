@@ -40,10 +40,12 @@
 import cView from "../views/cView.vue";
 import CrudComponent from "../CrudComponent.vue";
 import viewWrapperConf from '../views/WrapperConf'
+import CrudCore from "../lib/CrudCore";
+import Dialog from "primevue/dialog";
 export default {
     name: "Manage",
     extends : CrudComponent,
-    components: {cView},
+    components: {cView,Dialog},
     props : ['conf'],
     mounted() {
         window.MM = this;
@@ -74,7 +76,7 @@ export default {
         that.conf.mode = 'list';
         that.conf.viewDisplay = false;
         if (!('insert' in that.conf)) {
-            that.conf.insert = Object.assign({},that.conf.edit);
+            that.conf.insert = Object.assign({},CrudCore.clone(that.conf.edit));
             that.conf.insert.type = 'v-insert';
             that.conf.insert.routeName = 'insert';
         }
@@ -132,7 +134,7 @@ export default {
                 }
                 that.conf.list.actionsConfig['action-insert'] = actionInsert;
             }
-            if (that.conf.edit.actions.indexOf('action-back') >= 0) {
+            if (that.conf.edit && that.conf.edit.actions && that.conf.edit.actions.indexOf('action-back') >= 0) {
                 let actionBack = that.conf.edit.actionsConfig['action-back'] || {};
                 if (!actionBack.execute){
                     actionBack.execute = function () {
@@ -144,6 +146,7 @@ export default {
             }
         },
         getViewList() {
+            //console.log('Manage refs',this.$refs);
             return this.$refs.vList.instance();
         }
     }
