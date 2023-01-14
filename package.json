@@ -36,7 +36,7 @@
         "moment-with-locales-es6": "^1.0.1"
     },
     "devDependencies": {
-        "eslint": "^6.7.2",
+        "eslint": "^7.5.0",
         "eslint-plugin-vue": "^7.0.0",
         "moment": "^2.29.4",
         "moment-with-locales-es6": "^1.0.1"
