@@ -63,7 +63,6 @@
             </slot>
         </BlockUI>
         <OverlayPanel ref="panel" :showCloseIcon="true" :dismissable="true">
-            <div>ciao</div>
             <div :class="'' + panelConf.classWidth">
                 <component v-if="panelConf.componentName" :is="panelConf.componentName" :conf="panelConf.componentConf"></component>
             </div>
@@ -78,7 +77,7 @@ import actionConfs from "../confs/actions";
 import vBase from './vBase.vue';
 
 export default {
-    name: "vList",
+    name: "v-list",
     extends: vBase,
     props : ['conf'],
     components: {cWidget,cAction},
@@ -253,9 +252,12 @@ export default {
         },
         getFirst() {
             let first = 0;
-            if (this.routeName)
-                first = (this.pagination.current_page-1) * this.pagination.per_page;
-            console.log('first',first);
+            if (this.routeName) {
+                if (this.pagination && this.pagination.current_page) {
+                    first = (this.pagination.current_page-1) * this.pagination.per_page;
+                }
+            }
+            console.log('first',first,this.pagination);
             return first;
         },
         getTotal() {

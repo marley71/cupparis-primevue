@@ -29,9 +29,7 @@
 </template>
 
 <script>
-//import Server from "@/cupparis/lib/Server";
 import CrudComponent from "../CrudComponent.vue";
-//import WrapperConf from "@/cupparis/views/WrapperConf";
 import vBase from "./vBase.vue";
 import vList from "./vList.vue";
 import vListEdit from './vListEdit.vue';
