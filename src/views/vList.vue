@@ -2,7 +2,7 @@
     <div >
         <BlockUI :blocked="!loaded">
             <slot name="header" :collectionActions="collectionActions">
-
+     
             </slot>
             <slot name="content" :value="value" :widgetsConfig="widgetsConfig">
                 <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected" :rows="getPerPage()" :paginator="paginator"
