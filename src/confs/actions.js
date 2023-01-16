@@ -153,7 +153,8 @@ const actionConfs = {
                 modelName: that.view.modelName
             });
             route.setParams({
-                id : that.modelData[that.view.primaryKey]
+                id : that.modelData[that.view.primaryKey],
+                _method:'DELETE',
             });
             return route;
         },
@@ -169,7 +170,7 @@ const actionConfs = {
                             return ;
                         }
                         var msg = json.msg?json.msg:that.view.translate('app.cancellazione-successo');
-                        that.view.alertSuccess(msg);
+                        that.view.alertSuccess(msg,3000);
                         that.view.reload();
                     });
                 }
@@ -204,7 +205,7 @@ const actionConfs = {
                     return;
                 }
                 var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
-                that.view.alertSuccess(msg,that.alertTime);
+                that.view.alertSuccess(msg,that.alertTime,3000);
                 var values = json.result;
                 that.view.setRowData(that.index,values);
                 that.view.setViewMode(that.index);

@@ -4,6 +4,7 @@ import vRecord from "../views/vRecord.vue";
 import cManage from "../app/cManage.vue";
 import cImport from "../app/cImport.vue";
 import CrudVars from "../lib/CrudVars";
+import CrudCore from "../lib/CrudCore";
 
 const routerConf =  [
     // {
@@ -52,7 +53,7 @@ const routerConf =  [
         path: '/manage/:cConf',
         name: 'c-manage',
         component: cManage,
-        props: route => ({ conf: CrudVars.modelConfs[route.params.cConf] })
+        props: route => ({ conf: CrudCore.clone(CrudVars.modelConfs[route.params.cConf]) })
     },
     {
         path: '/import/:cConf',
