@@ -41,11 +41,11 @@ import cView from "../views/cView.vue";
 import CrudComponent from "../CrudComponent.vue";
 import viewWrapperConf from '../views/WrapperConf'
 import CrudCore from "../lib/CrudCore";
-import Dialog from "primevue/dialog";
+//import Dialog from "primevue/dialog";
 export default {
     name: "Manage",
     extends : CrudComponent,
-    components: {cView,Dialog},
+    components: {cView},
     props : ['conf'],
     mounted() {
         window.MM = this;
