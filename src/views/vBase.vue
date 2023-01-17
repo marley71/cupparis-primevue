@@ -147,6 +147,10 @@ export default {
             //console.log('VISIBLE FIELDS',visible);
             return visible;
         },
+        getWidgetLayout(field) {
+            var that = this;
+            return that.widgetsConfig[field].layout || that.layout;
+        },
         isHiddenField: function (key) {
             //console.log('idHiddenField key',key);
             let type = this.defaultWidgetType;

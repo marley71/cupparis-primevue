@@ -118,9 +118,9 @@ export default {
               case 1:
                   return 'col-12'
               case 2:
-                  return 'col-6'
+                  return 'col-12 md:col-6'
               case 3:
-                  return 'col-4'
+                  return 'col-12 md:col-4'
               case 4:
                   return 'col-3'
               case 6:

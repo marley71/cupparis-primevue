@@ -214,6 +214,9 @@ export default class WrapperConf {
     }
 
     vSearch(conf) {
+        if (!conf.layout) {
+            conf.layout = viewConfs.recordLayouts.search
+        }
         conf = this.vRecord(conf);
         if (! ('routeName' in conf) ){
             conf.routeName = 'search';
