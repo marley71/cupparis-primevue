@@ -3,8 +3,11 @@
         <div v-if="loaded">
             <h5 class="text-center">{{title}}</h5>
             <form ref="form" enctype="multipart/form-data" @submit.prevent="handleSubmit(!v$.$invalid)" class="p-fluid" >
+                <template v-for="field in getHiddenFields()">
+                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                </template>
                 <div class="grid">
-                    <div v-for="field in fields" class="field" :class="layout.colClass" :key="field">
+                    <div v-for="field in getVisibleFields()" class="field" :class="layout.colClass" :key="field">
                         <div v-if="layout.labelPosition=='top'">{{ widgetsConfig[field].label}}</div>
                         <div class="">
                             <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
@@ -229,15 +232,15 @@ export default {
             //console.log('getAction',name,this.recordActionsConf);
             return this.$refs.actions.instance(name);
         },
-        isHiddenField: function (key) {
-            let type = this.defaultWidgetType;
-            if (this.fieldsConfig[key]) {
-                if (this.widgetsConfig.type == 'w-hidden') {
-                    return true;
-                }
-            }
-            return (type == 'w-hidden');
-        },
+        // isHiddenField: function (key) {
+        //     let type = this.defaultWidgetType;
+        //     if (this.fieldsConfig[key]) {
+        //         if (this.widgetsConfig.type == 'w-hidden') {
+        //             return true;
+        //         }
+        //     }
+        //     return (type == 'w-hidden');
+        // },
     }
 }
 </script>

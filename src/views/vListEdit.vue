@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import cWidget from "../widgets/cWidget.vue";
+//import cWidget from "../widgets/cWidget.vue";
 import cAction from "../actions/cAction.vue";
 //import actionConfs from "../confs/actions";
 
@@ -71,7 +71,7 @@ export default {
     name: "vListEdit",
     extends: vList,
     props : ['conf'],
-    components: {cWidget,cAction},
+    components: {cAction},
     mounted() {
         window.VLISTEDIT = this;
         this.load();

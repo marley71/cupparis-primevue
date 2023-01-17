@@ -2,7 +2,7 @@
     <div >
         <BlockUI :blocked="!loaded">
             <slot name="header" :collectionActions="collectionActions">
-     
+
             </slot>
             <slot name="content" :value="value" :widgetsConfig="widgetsConfig">
                 <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected" :rows="getPerPage()" :paginator="paginator"
@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import cWidget from "../widgets/cWidget.vue";
+//import cWidget from "../widgets/cWidget.vue";
 import cAction from "../actions/cAction.vue";
 import actionConfs from "../confs/actions";
 import vBase from './vBase.vue';
@@ -80,7 +80,7 @@ export default {
     name: "v-list",
     extends: vBase,
     props : ['conf'],
-    components: {cWidget,cAction},
+    components: {cAction},
     mounted() {
         if (this.autoload)
             this.load();
@@ -290,24 +290,6 @@ export default {
                 ids.push(that.selected[i][that.primaryKey])
             }
             return ids;
-        },
-        getVisibleFields() {
-            var that = this;
-            var visible = [];
-            for (let i in that.fields) {
-                if (!that.isHiddenField(that.fields[i]))
-                    visible.push(that.fields[i]);
-            }
-            return visible;
-        },
-        isHiddenField: function (key) {
-            let type = this.defaultWidgetType;
-            if (this.fieldsConfig[key]) {
-                if (this.widgetsConfig.type == 'w-hidden') {
-                    return true;
-                }
-            }
-            return (type == 'w-hidden');
         },
         hasRecordActions() {
           let that = this;

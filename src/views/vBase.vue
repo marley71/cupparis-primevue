@@ -136,6 +136,38 @@ export default {
         },
         instance() {
             return this;
+        },
+        getVisibleFields() {
+            var that = this;
+            var visible = [];
+            for (let i in that.fields) {
+                if (!that.isHiddenField(that.fields[i]))
+                    visible.push(that.fields[i]);
+            }
+            //console.log('VISIBLE FIELDS',visible);
+            return visible;
+        },
+        isHiddenField: function (key) {
+            //console.log('idHiddenField key',key);
+            let type = this.defaultWidgetType;
+            if (this.fieldsConfig[key] && this.fieldsConfig[key].type) {
+                type = this.fieldsConfig[key].type
+            }
+            //console.log('idHiddenField',type);
+            if (type == 'w-hidden') {
+                return true;
+            }
+            return false;
+        },
+        getHiddenFields() {
+            var that = this;
+            var hidden = [];
+            for (let i in that.fields) {
+                if (that.isHiddenField(that.fields[i]))
+                    hidden.push(that.fields[i]);
+            }
+            //console.log('HIDDEN FIELDS',hidden);
+            return hidden;
         }
     }
 }
