@@ -280,7 +280,6 @@ export default class WrapperConf {
                 processData: false,
                 contentType: false                    // Using FormData, no need to process data.
             }).done(function (data) {
-                that.error = data.error;
                 that.json = data;
                 console.log("Success: Files sent!", data);
                 if (data.error) {
@@ -294,6 +293,7 @@ export default class WrapperConf {
                     } catch (e) {
                         msg = data.msg;
                     }
+                    that.error = true;
                     that.errorMessage = msg;
                     //self._showError(dialog,msg);
                     window.jQuery(that.$el).find('[crud-button="ok"]').addClass("disabled");
