@@ -147,9 +147,23 @@ export default {
             //console.log('VISIBLE FIELDS',visible);
             return visible;
         },
-        getWidgetLayout(field) {
+        getWidgetLayout(field,prop) {
             var that = this;
-            return that.widgetsConfig[field].layout || that.layout;
+            var layout = that.widgetsConfig[field].layout;
+            if (!layout) {
+                layout = that.layout;
+            } else {
+                for (var p in that.layout) {
+                    if (!layout[p]) {
+                        layout[p] = that.layout[p];
+                    }
+                }
+            }
+            console.log("PROPLAYOUT",layout,prop);
+            if (!prop) {
+                return layout;
+            }
+            return layout[prop];
         },
         isHiddenField: function (key) {
             //console.log('idHiddenField key',key);
