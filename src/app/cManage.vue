@@ -1,9 +1,15 @@
 <template>
-    <div>
-        <div>
-            <h5 v-if="title">{{title}}</h5>
-            <h5 v-else>{{translate('app.gestione')}} {{ translate(modelName + '.label', null,1) }}</h5>
-        </div>
+    <Panel class="managePanel">
+        <template #header>
+            <h5 class="p-panel-title">
+                <span v-if="title" >
+                    {{title}}
+                </span>
+                <span v-else>
+                    {{translate('app.gestione')}} {{ translate(modelName + '.label', null,1) }}
+                </span>
+            </h5>
+        </template>
         <div v-if="sectionTitle" class="p-card-subtitle" >
             {{sectionTitle}}
         </div>
@@ -33,7 +39,7 @@
                 <Button :label="translate('app.ok')" icon="pi pi-check" autofocus @click="viewDisplay=false"/>
             </div>
         </Dialog>
-    </div>
+    </Panel>
 </template>
 
 <script>
@@ -42,6 +48,7 @@ import CrudComponent from "../CrudComponent.vue";
 import viewWrapperConf from '../views/WrapperConf'
 import CrudCore from "../lib/CrudCore";
 //import Dialog from "primevue/dialog";
+
 export default {
     name: "Manage",
     extends : CrudComponent,
@@ -58,7 +65,6 @@ export default {
     },
     data() {
         let that = this;
-        console.log('cManage',that.conf);
         if (!('title' in that.conf)) {
             that.conf.title = null;
         }
@@ -151,8 +157,28 @@ export default {
         }
     }
 }
+
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.managePanel {
+    :deep(.p-panel-header) {
 
+        background-color: var(--primary-color);
+
+
+        .p-panel-title {
+            color: var(--primary-color-text);
+        }
+
+        h5.p-panel-title {
+            margin-bottom: .5rem;
+        }
+    }
+
+    :deep(.p-panel-content) {
+        border-color: var(--primary-color);
+    }
+
+}
 </style>
