@@ -25,6 +25,7 @@
 <script>
 import dBase from './dBase.vue'
 import Button from 'primevue/button';
+import Dialog from 'primevue/dialog';
 
 // import VList from "../views/vList.vue";
 import CView from "../views/cView.vue";
@@ -32,7 +33,7 @@ import CView from "../views/cView.vue";
 export default {
   name: 'd-custom',
   extends: dBase,
-    components: {CView, Button},
+    components: {CView, Button,Dialog},
     mounted () {
     if (!this.title) {
       this.title = 'app.nome-app'

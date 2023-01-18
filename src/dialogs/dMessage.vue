@@ -22,11 +22,11 @@
 <script>
 import dBase from './dBase.vue'
 import Button from 'primevue/button';
-// import Dialog from "primevue/dialog";
+import Dialog from "primevue/dialog";
 
 export default {
     name: 'd-message',
-    components: {Button},
+    components: {Button,Dialog},
     extends: dBase,
     mounted() {
         if (!this.title) {

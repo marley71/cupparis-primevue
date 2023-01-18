@@ -1,6 +1,6 @@
 <template>
-    <div >
-        <BlockUI :blocked="!loaded">
+    <BlockUI :blocked="!loaded">
+        <div v-if="loaded">
             <slot name="header" :collectionActions="collectionActions">
 
             </slot>
@@ -50,7 +50,8 @@
                         </template>
                     </Column>
                     <template #footer>
-                        In total there are {{value ? value.length : 0 }} rows.
+                        {{translate('app.numero-records-lista',null,0,[(value ? value.length : 0),getFirst()+1,getFirst() + (value ? value.length : 0),getTotal()])}}
+<!--                        Ci sono {{value ? value.length : 0 }} record, da {{getFirst()+1}} a {{getFirst() + (value ? value.length : 0) }} su {{getTotal()}}-->
                     </template>
                     <template #empty>
                         {{translate('app.no_records_found')}}
@@ -61,13 +62,14 @@
             <slot name="footer">
 
             </slot>
-        </BlockUI>
-        <OverlayPanel ref="panel" :showCloseIcon="true" :dismissable="true">
-            <div :class="'' + panelConf.classWidth">
-                <component v-if="panelConf.componentName" :is="panelConf.componentName" :conf="panelConf.componentConf"></component>
-            </div>
-        </OverlayPanel>
-    </div>
+        </div>
+
+    </BlockUI>
+    <OverlayPanel ref="panel" :showCloseIcon="true" :dismissable="true">
+        <div :class="'' + panelConf.classWidth">
+            <component v-if="panelConf.componentName" :is="panelConf.componentName" :conf="panelConf.componentConf"></component>
+        </div>
+    </OverlayPanel>
 </template>
 
 <script>

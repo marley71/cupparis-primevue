@@ -281,7 +281,6 @@ export default class WrapperConf {
                 contentType: false                    // Using FormData, no need to process data.
             }).done(function (data) {
                 that.error = data.error;
-                that.lastUpload = null;
                 that.json = data;
                 console.log("Success: Files sent!", data);
                 if (data.error) {
@@ -299,6 +298,7 @@ export default class WrapperConf {
                     //self._showError(dialog,msg);
                     window.jQuery(that.$el).find('[crud-button="ok"]').addClass("disabled");
                     that.value =  JSON.stringify({});
+                    that.fileInfo = null;
                     return;
                 }
                 that.$emit('success', that);
@@ -306,20 +306,25 @@ export default class WrapperConf {
 
                 console.log('done, data.result', data.result);
 
-                that.lastUpload = Object.assign({},data.result);
+                //that.lastUpload = Object.assign({},data.result);
+                that.fileInfo = Object.assign({},data.result);
                 // TODO sfruttare meglio l'oggetto upload primeface
                 that.value = JSON.stringify(data.result); //.replace(/\\"/g, '"');
                 //that.$refs.preview.setValue(data.result);
                 that.onSuccess();
             }).fail(function (data, error, msg) {
                 console.log("An error occurred, the files couldn't be sent!");
-                that.lastUpload = false;
+                that.fileInfo = null;
                 that.error = true;
                 that.errorMessage = "Upload error " + data + " " + error + " " + msg;
                 that.value = JSON.stringify({});
                 that.onError();
             });
         };
+        if (conf.value && (conf.value instanceof Object)) {
+            conf.fileInfo = conf.value;
+            conf.value = JSON.stringify(conf.value);
+        }
         return conf;
     }
 }

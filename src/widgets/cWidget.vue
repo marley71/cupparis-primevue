@@ -126,8 +126,17 @@
     </template>
 
     <template v-else-if="type=='w-upload-ajax'">
-        <FileUpload mode="basic" :name="getFieldName()" :auto="true" :customUpload="true" @uploader="uploadFile"
-                    :multiple="false"/>
+        <input type="hidden" v-model="value" :name="getFieldName()">
+        <div class="flex">
+            <FileUpload mode="basic" :auto="true" :customUpload="true" @uploader="uploadFile"
+                        :multiple="false"/>
+            <div>
+                <div v-if="fileInfo">
+
+                </div>
+            </div>
+        </div>
+
     </template>
     <template v-else-if="type=='w-chip'">
         <Chips v-model="value" @add="add" @remove="remove"/>
