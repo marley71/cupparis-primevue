@@ -9,7 +9,7 @@
     <template v-else-if="type=='w-select'">
         <input type="hidden" :name="name" :value="value">
         <Dropdown class="w-full" :name="name" v-model="value" :options="options"
-                  option-label="label" option-value="id" :placeholder="placeholder"
+                  option-label="label" option-value="id" :placeholder="placeholder || translate('app.seleziona')"
                   v-bind="extraBind" @change="change">
                 <template #option="slotProps">
                     <div
@@ -34,9 +34,13 @@
     </template>
     <template v-else-if="type=='w-autocomplete'">
         <input type="hidden" :name="name" v-model="value">
+        <div class="p-inputgroup">
+
+            <Button icon="fa fa-times" @click="change($event,'clear')"/>
         <AutoComplete class="w-full" :name="name" v-model="autocompleteValue" :suggestions="suggestions"
                       @complete="search" option-label="label" option-value="id"
                       v-bind="extraBind" @change="change" @item-select="itemSelect"/>
+        </div>
     </template>
     <template v-else-if="type=='w-checkbox'">
         <div class="w-full flex" :class="layout=='row'?'flex-row':'flex-column'">
@@ -47,7 +51,7 @@
         </div>
     </template>
     <template v-else-if="type=='w-radio'">
-        <div class="w-full flex" :class="layout=='row'?'flex-row':'flex-column'">
+        <div class="w-full flex border-1 border-round-sm surface-border p-2" :class="layout=='row'?'flex-row':'flex-column'">
             <div class="field-radiobutton mr-2" v-for="(label,key) in domainValues" :key="key">
                 <RadioButton :name="name" v-model="value" :value="key" v-bind="extraBind" @change="change"/>
                 <label :for="key" v-html="label"></label>
@@ -73,7 +77,11 @@
     </template>
     <template v-else-if="type=='w-date-picker'">
         <input type="hidden" :name="name" v-model="value">
-        <Calendar v-model="dateValue" @date-select="change" inputDateFormat="yyyy-mm-dd" date-format="dd/mm/yy" />
+        <div class="p-inputgroup">
+            <Button icon="fa fa-times" @click="change($event,'clear')"/>
+            <Calendar class="w-full" showButtonBar="true" v-model="dateValue" @date-select="change" inputDateFormat="yyyy-mm-dd" date-format="dd/mm/yy" />
+        </div>
+
     </template>
     <template v-else-if="type=='w-date-text'">
         <span>{{ getFormattedValue() }}</span>
@@ -229,18 +237,28 @@ export default {
         ready() {
 
         },
-        change(event) {
+        change(event,type) {
             let evt = event || {};
             evt.widget = this;
             console.log('EVENTSSS', evt);
             switch (this.type) {
-                case 'w-complete':
-                    this.value = event.id;
+                case 'w-autocomplete':
+                    if (type == 'clear') {
+                        this.value = null;
+                        this.autocompleteValue = null;
+                    } else {
+                        this.value = event.id;
+                    }
                     break;
                 case 'w-date-picker':
-                    var date = event ? moment(event).format(evt.widget.inputDateFormat) : null;
-                    //var date = new Date();
-                    this.value = date;
+                    if (type == 'clear') {
+                        this.value = null;
+                        this.dateValue = null;
+                    } else {
+                        var date = event ? moment(event).format(evt.widget.inputDateFormat) : null;
+                        //var date = new Date();
+                        this.value = date;
+                    }
                     break;
                 default:
                     break;
@@ -343,4 +361,8 @@ export default {
 
 <style scoped>
 
+label {
+    font-size:12px;
+
+}
 </style>

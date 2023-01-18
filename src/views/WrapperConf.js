@@ -174,15 +174,15 @@ export default class WrapperConf {
     }
 
     vRecord(conf) {
+        if (!conf.layout) {
+            conf.layout = viewConfs.recordLayouts.record
+        }
         if (!conf.fields && conf.value) {
             console.log('keys',Object.keys(conf.value))
             conf.fields = Object.keys(conf.value);
         }
         conf.widgetsConfig = {};
         conf.recordActionsConf = {};
-        if (!conf.layout) {
-            conf.layout = viewConfs.recordLayouts.default
-        }
         return conf;
     }
 

@@ -1,22 +1,51 @@
 <template>
 
         <div v-if="loaded">
-            <h5 class="text-center">{{title}}</h5>
+            <div>
+                <Divider align="center" class="actionsDivider">
+                                <span class="p-tag text-white">
+                                    {{ title }}
+                                </span>
+
+                </Divider>
+            </div>
             <form ref="form" enctype="multipart/form-data" @submit.prevent="handleSubmit(!v$.$invalid)" class="p-fluid" >
                 <template v-for="field in getHiddenFields()">
                     <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
                 </template>
                 <div class="grid">
-                    <div v-for="field in getVisibleFields()" class="field" :class="layout.colClass" :key="field">
-                        <div v-if="layout.labelPosition=='top'">{{ widgetsConfig[field].label}}</div>
-                        <div class="">
-                            <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
-                            <!--                        <InputText :id="field" v-model="v$.name.$model" :class="{'p-invalid':v$.name.$invalid && submitted}" />-->
-                            <!--                        <label :for="field" :class="{'p-error':v$.name.$invalid && submitted}">Name*</label>-->
+                    <template v-for="field in getVisibleFields()" :key="field">
+                        <div class="py-3" :class="getWidgetLayout(field,'colClass')">
+                            <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
+                                <span class="p-float-label">
+                                <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                <label :for="field">{{ widgetsConfig[field].label }}</label>
+                                </span>
+                            </template>
+                            <template v-else>
+
+                                <div v-if="getWidgetLayout(field,'labelPosition')=='top'">
+                                    {{ widgetsConfig[field].label }}
+                                </div>
+                                <div class="">
+                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                </div>
+                                <div v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
+                                    {{ widgetsConfig[field].label }}
+                                </div>
+                            </template>
                         </div>
-                        <!--                    <small v-if="(v$.name.$invalid && submitted) || v$.name.$pending.$response" class="p-error">{{v$.name.required.$message.replace('Value', 'Name')}}</small>-->
-                        <div v-if="layout.labelPosition=='bottom'">{{ widgetsConfig[field].label}}</div>
-                    </div>
+
+                        <template v-if="getWidgetLayout(field,'hasDivider')">
+                            <Divider align="center" class="col-10 col-offset-1">
+                                <span v-if="getWidgetLayout(field,'dividerLabel')"
+                                      class="p-tag text-white">{{ getWidgetLayout(field, 'dividerLabel') }}</span>
+                            </Divider>
+
+                        </template>
+                        <div v-else-if="getWidgetLayout(field,'lastInRow')" :class="getWidgetLayout(field,'lastInRow')">
+                        </div>
+                    </template>
                 </div>
 
 <!--                <div class="field">-->
@@ -122,7 +151,7 @@ export default {
               case 3:
                   return 'col-12 md:col-4'
               case 4:
-                  return 'col-3'
+                  return 'col-3 md:col-3'
               case 6:
                   return 'col-2'
               case 12:
