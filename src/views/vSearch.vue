@@ -3,7 +3,7 @@
     <div v-if="loaded">
         <div>
             <Divider align="center" class="actionsDivider">
-                                <span class="p-tag text-white">
+                                <span class="p-tag">
                                     Filtra elementi
                                 </span>
 
@@ -40,7 +40,7 @@
                     <template v-if="getWidgetLayout(field,'hasDivider')">
                         <Divider align="center" class="col-10 col-offset-1">
                                 <span v-if="getWidgetLayout(field,'dividerLabel')"
-                                      class="p-tag text-white">{{ getWidgetLayout(field, 'dividerLabel') }}</span>
+                                      class="p-tag">{{ getWidgetLayout(field, 'dividerLabel') }}</span>
                         </Divider>
 
                     </template>
@@ -52,7 +52,7 @@
         <Divider align="center" class="actionsDivider">
 
         </Divider>
-        <div class="text-center">
+        <div class="text-center actionsButtons">
             <c-action ref="actions" :conf="recordActionsConf" layout="buttons"></c-action>
         </div>
 
@@ -82,6 +82,19 @@ export default {
 
 <style lang="scss" scoped>
 .actionsDivider.p-divider-horizontal:before {
-    border-color: var(--primary-color);
+    border-color: var(--primary-100);
+}
+.actionsDivider {
+    :deep(.p-tag) {
+        background-color: var(--primary-50);
+        color: var(--primary-color)
+    }
+}
+
+.actionsButtons {
+    :deep(.p-button-outlined) {
+        border-color: var(--primary-400);
+        color: var(--primary-400)
+    }
 }
 </style>

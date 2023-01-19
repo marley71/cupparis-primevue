@@ -17,7 +17,13 @@
             <div v-show="mode=='list'">
                 <c-view v-if="!searchComponentName" :conf="search" ref="vSearch" @search="searchList"></c-view>
                 <component v-else :is="searchComponentName" :conf="search" ref="vSearch" @search="searchList"></component>
-                <hr>
+
+                <Divider align="center" class="listDivider mt-5">
+                    <span class="p-tag bg-primary-700 text-white">
+                                    Elenco elementi
+                    </span>
+                </Divider>
+
                 <c-view v-if="!listComponentName"  :conf="list" ref="vList"></c-view>
                 <component v-else :is="listComponentName" :conf="list" ref="vList"></component>
             </div>
@@ -180,5 +186,12 @@ export default {
         border-color: var(--primary-color);
     }
 
+    :deep(.p-panel-header) {
+        border-color: var(--primary-color);
+    }
+}
+
+.listDivider.p-divider-horizontal:before {
+    border-color: var(--primary-700);
 }
 </style>

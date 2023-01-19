@@ -4,14 +4,14 @@
             <slot name="header" :collectionActions="collectionActions">
 
             </slot>
-            <slot name="content" :value="value" :metadata="metadata"  :widgetsConfig="widgetsConfig">
-                <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected" :rows="getPerPage()" :paginator="paginator"
+            <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig">
+                <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected" :rows="getPerPage()"
+                           :paginator="paginator"
                            :lazy="routeName==null?false:true" @page="onPage($event)" @sort="onSort($event)"
                            :total-records="getTotal()"
                            :first="getFirst()"
                            :sortField="getSortField()"
                            :sortOrder="getSortOrder()"
-
 
 
                 >
@@ -24,7 +24,7 @@
 
                         <template v-if="Object.keys(collectionActions).length == 0">
                             <div class="table-header">
-                                {{title}}
+                                {{ title }}
                             </div>
                         </template>
                         <template v-else>
@@ -38,23 +38,28 @@
                     <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>
                     <Column v-if="hasRecordActions()" :exportable="false" header="Actions">
                         <template #body="slotProps">
-                            <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index]" :layout="'simple'"></c-action>
+                            <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index]"
+                                      :layout="'simple'"></c-action>
                         </template>
                     </Column>
-                    <Column v-for="(col) in getVisibleFields()" :field="col" :header="col" :key="col" :sortable="isSortable(col)" :dir="sortDirection(col)">
+                    <Column v-for="(col) in getVisibleFields()" :field="col" :header="col" :key="col"
+                            :sortable="isSortable(col)" :dir="sortDirection(col)">
                         <template #body="slotProps">
                             <!--                    {{slotProps.data[col]}} {{ slotProps.index}}-->
-                            <c-widget :ref="'w'+slotProps.index+'_'+col" :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></c-widget>
+                            <c-widget :ref="'w'+slotProps.index+'_'+col"
+                                      :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></c-widget>
                             <!--                    {{getW(slotProps.index,col,slotProps.data[col])}}-->
                             <!--                    <c-widget :conf="widgetsConfig[parseInt(slotProps.index)][col]"></c-widget>-->
                         </template>
                     </Column>
                     <template #footer>
-                        {{translate('app.numero-records-lista',null,0,[(value ? value.length : 0),getFirst()+1,getFirst() + (value ? value.length : 0),getTotal()])}}
-<!--                        Ci sono {{value ? value.length : 0 }} record, da {{getFirst()+1}} a {{getFirst() + (value ? value.length : 0) }} su {{getTotal()}}-->
+                        {{
+                            translate('app.numero-records-lista', null, 0, [(value ? value.length : 0), getFirst() + 1, getFirst() + (value ? value.length : 0), getTotal()])
+                        }}
+                        <!--                        Ci sono {{value ? value.length : 0 }} record, da {{getFirst()+1}} a {{getFirst() + (value ? value.length : 0) }} su {{getTotal()}}-->
                     </template>
                     <template #empty>
-                        {{translate('app.no_records_found')}}
+                        {{ translate('app.no_records_found') }}
                     </template>
                 </DataTable>
 
@@ -67,7 +72,8 @@
     </BlockUI>
     <OverlayPanel ref="panel" :showCloseIcon="true" :dismissable="true">
         <div :class="'' + panelConf.classWidth">
-            <component v-if="panelConf.componentName" :is="panelConf.componentName" :conf="panelConf.componentConf"></component>
+            <component v-if="panelConf.componentName" :is="panelConf.componentName"
+                       :conf="panelConf.componentConf"></component>
         </div>
     </OverlayPanel>
 </template>
@@ -81,57 +87,58 @@ import vBase from './vBase.vue';
 export default {
     name: "v-list",
     extends: vBase,
-    props : ['conf'],
+    props: ['conf'],
     components: {cAction},
     mounted() {
         if (this.autoload)
             this.load();
     },
     data() {
-      return {
-          rows:5,
-          menuCollection : [],
-          panelConf : {
-              componentName : null,
-              componentConf : {},
-              classWidth : 'w-9'
-          }
-      }
+        return {
+            rows: 5,
+            menuCollection: [],
+            panelConf: {
+                componentName: null,
+                componentConf: {},
+                classWidth: 'w-9'
+            }
+        }
     },
     methods: {
         draw() {
             this.setActions();
             this.loaded = true;
+
         },
 
         onRowContextMenu(event) {
             this.$refs.cm.show(event.originalEvent);
         },
         onPage(event) {
-            console.log('page event',event)
+            console.log('page event', event)
             if (this.routeName) {
                 //let page = Math.floor(event.first / event.rows) +1;
                 let page = event.page + 1;
-                this.route.setParam('page',page);
+                this.route.setParam('page', page);
                 this.reload();
             }
 
         },
         onSort(event) {
             let that = this;
-            console.log('sort event',event)
+            console.log('sort event', event)
             if (that.routeName) {
-                that.route.setParam('order_field',event.sortField);
-                that.route.setParam('order_direction',event.sortOrder>0?'ASC':'DESC');
+                that.route.setParam('order_field', event.sortField);
+                that.route.setParam('order_direction', event.sortOrder > 0 ? 'ASC' : 'DESC');
                 that.reload();
             }
 
         },
         viewRow() {
-            console.log('viewRow',this.selectedRow)
+            console.log('viewRow', this.selectedRow)
         },
         deleteRow() {
-            console.log('deleteRow',this.selectedRow)
+            console.log('deleteRow', this.selectedRow)
         },
 
         setActions() {
@@ -145,9 +152,9 @@ export default {
             let gActions = {};
             for (let i in that.actions) {
                 let aName = that.actions[i];
-                let aConf = Object.assign({},actionConfs['default']);
-                aConf = Object.assign(aConf,actionConfs[aName]);
-                aConf = Object.assign(aConf,(that.actionsConfig[aName] || {}));
+                let aConf = Object.assign({}, actionConfs['default']);
+                aConf = Object.assign(aConf, actionConfs[aName]);
+                aConf = Object.assign(aConf, (that.actionsConfig[aName] || {}));
                 if (aConf.type == 'record') {
                     rActions[aName] = aConf;
                 } else {
@@ -163,26 +170,26 @@ export default {
                 let rowActions = {};
                 for (let aName in rActions) {
                     //let aName = rActions[k];
-                    let aConf = Object.assign({},rActions[aName]);
+                    let aConf = Object.assign({}, rActions[aName]);
                     aConf.modelData = that.value[i];
                     aConf.view = that;
                     aConf.index = i;
-                    rowActions[ aName ] = aConf;
+                    rowActions[aName] = aConf;
                 }
-                that.recordActionsConf.push({ actions:rowActions});
+                that.recordActionsConf.push({actions: rowActions});
             }
             for (let aName in gActions) {
-                let aConf = Object.assign({},gActions[aName]);
+                let aConf = Object.assign({}, gActions[aName]);
                 aConf.modelData = that.value;
                 aConf.view = that;
-                that.collectionActions[ aName ] = aConf;
+                that.collectionActions[aName] = aConf;
             }
-            console.log('RECORDACTIONS',that.recordActionsConf)
-            console.log('GLOBAL ACTIONS',that.collectionActions);
+            console.log('RECORDACTIONS', that.recordActionsConf)
+            console.log('GLOBAL ACTIONS', that.collectionActions);
             this._setMenuCollection();
         },
 
-        getWidgetConf(index,field,data) {
+        getWidgetConf(index, field, data) {
             let that = this;
             if (!that.widgetsConfig || !that.widgetsConfig[index] || !that.widgetsConfig[index][field]) {
                 return {};
@@ -204,12 +211,12 @@ export default {
             // configurazione base mergiata con la configurazione passata
             for (let f in that.fields) {
                 let key = that.fields[f];
-                fConf[ key ] = {
-                    type : 'w-text',
-                    label : that.getFieldLabel(key)
+                fConf[key] = {
+                    type: 'w-text',
+                    label: that.getFieldLabel(key)
                 }
                 if (fieldsConfig[key]) {
-                    fConf[key] = Object.assign(fConf[key],fieldsConfig[key]);
+                    fConf[key] = Object.assign(fConf[key], fieldsConfig[key]);
                 }
             }
             // configurazione finale dei widgets
@@ -219,9 +226,9 @@ export default {
                 for (let f in that.fields) {
                     let key = that.fields[f];
                     let val = that.value[i][key];
-                    let md = Object.assign({},(that.metadata[key] || {}));
+                    let md = Object.assign({}, (that.metadata[key] || {}));
                     //console.log('field',key,'value',val);
-                    widgetsConfig[i][key] = Object.assign(md,fConf[key]);
+                    widgetsConfig[i][key] = Object.assign(md, fConf[key]);
                     widgetsConfig[i][key].value = val;
                     widgetsConfig[i][key].name = that.getFieldName(key);
                     widgetsConfig[i][key].modelData = that.value[i];
@@ -243,7 +250,7 @@ export default {
             //return (Object.key(this.orderFields).indexOf(field) >= 0);
         },
         sortDirection(field) {
-            let that =this;
+            let that = this;
             var order = that.metadata.order || {};
             if (order.field == field) {
                 if (order.direction.toLowerCase() == 'asc')
@@ -256,60 +263,60 @@ export default {
             let first = 0;
             if (this.routeName) {
                 if (this.pagination && this.pagination.current_page) {
-                    first = (this.pagination.current_page-1) * this.pagination.per_page;
+                    first = (this.pagination.current_page - 1) * this.pagination.per_page;
                 }
             }
-            console.log('first',first,this.pagination);
+            console.log('first', first, this.pagination);
             return first;
         },
         getTotal() {
             if (this.routeName)
                 return this.pagination.total;
-            return this.value?this.value.length:0;
+            return this.value ? this.value.length : 0;
         },
         getSortField() {
             return (this.metadata.order && this.metadata.order.field) || null;
         },
         getSortOrder() {
-            return (this.metadata.order && this.metadata.order.direction)?(this.metadata.order.direction.toLowerCase()=='asc'?1:-1):null;
+            return (this.metadata.order && this.metadata.order.direction) ? (this.metadata.order.direction.toLowerCase() == 'asc' ? 1 : -1) : null;
         },
         getPerPage() {
             if (this.routeName)
                 return this.pagination.per_page;
             let pagination = this.pagination || {};
-            return (pagination.per_page?pagination.per_page:this.getTotal());
+            return (pagination.per_page ? pagination.per_page : this.getTotal());
             //return this.getTotal();
         },
-        getRecordAction(index,name) {
-            console.log('getRecordAction',index,name,);
-            return this.$refs['r'+index].instance(name);
+        getRecordAction(index, name) {
+            console.log('getRecordAction', index, name,);
+            return this.$refs['r' + index].instance(name);
         },
         selectedRows() {
             let that = this;
             let ids = [];
             for (let i in that.selected) {
-                console.log('selected',that.selected[i],that.selected[i][that.primaryKey])
+                console.log('selected', that.selected[i], that.selected[i][that.primaryKey])
                 ids.push(that.selected[i][that.primaryKey])
             }
             return ids;
         },
         hasRecordActions() {
-          let that = this;
-          //console.log('hasRecordActions',that.recordActionsConf);
-          if (that.recordActionsConf && that.recordActionsConf.length && (Object.keys(that.recordActionsConf[0].actions).length > 0) )
-              return true;
-          return false;
+            let that = this;
+            //console.log('hasRecordActions',that.recordActionsConf);
+            if (that.recordActionsConf && that.recordActionsConf.length && (Object.keys(that.recordActionsConf[0].actions).length > 0))
+                return true;
+            return false;
         },
         _setMenuCollection() {
             let that = this;
             let items = [];
             for (let name in that.collectionActions) {
                 items.push({
-                    label : that.collectionActions[name].text,
-                    icon : that.collectionActions[name].icon,
+                    label: that.collectionActions[name].text,
+                    icon: that.collectionActions[name].icon,
                     command: () => that.collectionActions[name].execute(),
-                    disabled : that.collectionActions[name].disabled,
-                    action : name,
+                    disabled: that.collectionActions[name].disabled,
+                    action: name,
                 })
             }
             that.menuCollection = items;
@@ -318,7 +325,7 @@ export default {
             //     items : items,
             // })
         },
-        showPanel(event,conf) {
+        showPanel(event, conf) {
             if (conf) {
                 this.panelConf = conf;
             } else {
@@ -333,6 +340,6 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 </style>
