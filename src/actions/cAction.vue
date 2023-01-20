@@ -6,7 +6,7 @@
         </div>
     </template>
     <template v-else-if="layout=='buttons'">
-        <template v-for="(action,key) in actions" :key="key">
+        <template v-for="(action,key) in getActions()" :key="key">
             <a-base  :ref="key" :conf="action" v-if="inWhitelist(key)"></a-base>
         </template>
     </template>
@@ -60,12 +60,24 @@ export default {
         return that.conf;
     },
     methods: {
+        getActions() {
+            var that = this;
+            console.log("GETA",that,that.actions);
+            if (that.actions) {
+                return that.actions;
+            }
+            return that;
+        },
+
         getWhitelist() {
             var that = this;
             if (!that.whitelist) {
-                return that.conf.actions ? Object.keys(that.conf.actions)
+                var whitelist = that.conf.actions ? Object.keys(that.conf.actions)
                     : Object.keys(that.conf);
+                console.log("WHITELIST:::",whitelist);
+                return whitelist;
             }
+            console.log("WHITELIST:::",that.whitelist);
             return that.whitelist;
         },
         inWhitelist(key) {

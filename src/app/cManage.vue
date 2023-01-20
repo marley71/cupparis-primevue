@@ -18,11 +18,11 @@
                 <c-view v-if="!searchComponentName" :conf="search" ref="vSearch" @search="searchList"></c-view>
                 <component v-else :is="searchComponentName" :conf="search" ref="vSearch" @search="searchList"></component>
 
-                <Divider align="center" class="listDivider mt-5">
-                    <span class="p-tag bg-primary-700 text-white">
-                                    Elenco elementi
-                    </span>
-                </Divider>
+<!--                <Divider align="center" class="listDivider mt-5">-->
+<!--                    <span class="p-tag bg-primary-700 text-white">-->
+<!--                                    Elenco elementi-->
+<!--                    </span>-->
+<!--                </Divider>-->
 
                 <c-view v-if="!listComponentName"  :conf="list" ref="vList"></c-view>
                 <component v-else :is="listComponentName" :conf="list" ref="vList"></component>

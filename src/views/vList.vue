@@ -1,12 +1,17 @@
 <template>
+
+
     <BlockUI :blocked="!loaded">
         <div v-if="loaded">
             <slot name="header" :collectionActions="collectionActions">
 
+
+
+
             </slot>
             <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig">
                 <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected" :rows="getPerPage()"
-                           :paginator="paginator"
+                           :paginator="paginator" paginatorPosition="both"
                            :lazy="routeName==null?false:true" @page="onPage($event)" @sort="onSort($event)"
                            :total-records="getTotal()"
                            :first="getFirst()"
@@ -22,17 +27,28 @@
 
                     <template #header>
 
-                        <template v-if="Object.keys(collectionActions).length == 0">
-                            <div class="table-header">
-                                {{ title }}
-                            </div>
-                        </template>
-                        <template v-else>
-                            <div class="flex">
-                                <c-action layout="menubar" :conf="collectionActions"></c-action>
-                            </div>
+                        <div class="surface-section px-4 py-5 md:px-6 lg:px-8">
+                            <div class="flex align-items-start flex-column lg:justify-content-between lg:flex-row">
+                                <div>
+                                    <div class="font-medium text-3xl text-900">{{ translate(modelName + '.label', null,1) }}</div>
+                                    <div class="flex align-items-center text-700 flex-wrap">
+                                        <div class="mr-5 flex align-items-center mt-3">
+                                            <!--                                    <i class="pi pi-users mr-2"></i>-->
+                                            <span>{{
+                                                    translate('app.numero-records-lista', null, 0, [(value ? value.length : 0), getFirst() + 1, getFirst() + (value ? value.length : 0), getTotal()])
+                                                }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <template v-if="Object.keys(collectionActions).length > 0">
+                                    <div class="mt-3 lg:mt-0">
+                                        <c-action layout="buttons" :conf="collectionActions"></c-action>
+                                    </div>
 
-                        </template>
+                                </template>
+                            </div>
+                        </div>
+
 
                     </template>
                     <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>
@@ -52,12 +68,12 @@
                             <!--                    <c-widget :conf="widgetsConfig[parseInt(slotProps.index)][col]"></c-widget>-->
                         </template>
                     </Column>
-                    <template #footer>
-                        {{
-                            translate('app.numero-records-lista', null, 0, [(value ? value.length : 0), getFirst() + 1, getFirst() + (value ? value.length : 0), getTotal()])
-                        }}
-                        <!--                        Ci sono {{value ? value.length : 0 }} record, da {{getFirst()+1}} a {{getFirst() + (value ? value.length : 0) }} su {{getTotal()}}-->
-                    </template>
+<!--                    <template #footer>-->
+<!--&lt;!&ndash;                        {{&ndash;&gt;-->
+<!--&lt;!&ndash;                            translate('app.numero-records-lista', null, 0, [(value ? value.length : 0), getFirst() + 1, getFirst() + (value ? value.length : 0), getTotal()])&ndash;&gt;-->
+<!--&lt;!&ndash;                        }}&ndash;&gt;-->
+<!--                        &lt;!&ndash;                        Ci sono {{value ? value.length : 0 }} record, da {{getFirst()+1}} a {{getFirst() + (value ? value.length : 0) }} su {{getTotal()}}&ndash;&gt;-->
+<!--                    </template>-->
                     <template #empty>
                         {{ translate('app.no_records_found') }}
                     </template>
@@ -178,11 +194,12 @@ export default {
                 }
                 that.recordActionsConf.push({actions: rowActions});
             }
+            that.collectionActions.actions = {};
             for (let aName in gActions) {
                 let aConf = Object.assign({}, gActions[aName]);
                 aConf.modelData = that.value;
                 aConf.view = that;
-                that.collectionActions[aName] = aConf;
+                that.collectionActions.actions[aName] = aConf;
             }
             console.log('RECORDACTIONS', that.recordActionsConf)
             console.log('GLOBAL ACTIONS', that.collectionActions);
@@ -341,5 +358,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.p-datatable {
+    :deep(.p-datatable-header) {
+        background-color: transparent;
+        padding: 1.25rem 0;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        border-top: 2px solid var(--primary-color);
+    }
+
+    :deep(.p-datatable-header .surface-section) {
+        padding-left: 0.75rem !important;
+        padding-right: 0.75rem !important;
+    }
+
+    :deep(.p-datatable-wrapper) {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+    }
+
+}
+
 
 </style>
