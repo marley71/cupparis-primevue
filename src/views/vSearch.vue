@@ -25,15 +25,15 @@
                         </template>
                         <template v-else>
 
-                            <div v-if="getWidgetLayout(field,'labelPosition')=='top'">
-                                {{ widgetsConfig[field].label }}
-                            </div>
+                                <label class="labelTop" :for="field" v-if="getWidgetLayout(field,'labelPosition')=='top'">
+                                    {{ translateUc(widgetsConfig[field].label) }}
+                                </label>
                             <div class="">
                                 <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
                             </div>
-                            <div v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
-                                {{ widgetsConfig[field].label }}
-                            </div>
+                                <label class="labelBottom" :for="field" v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
+                                    {{ translateUc(widgetsConfig[field].label) }}
+                                </label>
                         </template>
                     </div>
 
@@ -44,8 +44,9 @@
                         </Divider>
 
                     </template>
-                    <div v-else-if="getWidgetLayout(field,'lastInRow')" :class="getWidgetLayout(field,'lastInRow')">
-                    </div>
+                    <template v-else-if="getWidgetLayout(field,'lastInRow')">
+                        <div class="col-12 max-h-0 p-0">&nbsp;</div>
+                    </template>
                 </template>
             </div>
         </form>
@@ -84,6 +85,7 @@ export default {
 .actionsDivider.p-divider-horizontal:before {
     border-color: var(--primary-100);
 }
+
 .actionsDivider {
     :deep(.p-tag) {
         background-color: var(--primary-50);
@@ -96,5 +98,13 @@ export default {
         border-color: var(--primary-400);
         color: var(--primary-400)
     }
+}
+
+label.labelTop {
+    font-size: 12px;
+    color: var(--surface-text);
+    position: relative;
+    top: -0.25rem;
+    left: 0.25rem;
 }
 </style>

@@ -5,7 +5,8 @@
 <!--        <span>{{ translate(text) }}</span>-->
 <!--    </button>-->
     <template v-if="controlType=='button' && _visible()">
-        <Button :title="translate(title)" :label="translate(text)" class="p-button p-button-sm p-button-outlined p-button-primary"
+        <Button :title="translate(title)" :label="translate(text)"
+                :class=getActionClass()
                 :icon="icon"
                 v-on:click="_execute($event)" v-bind:disabled="_disabled()"
         />
@@ -71,6 +72,34 @@ export default {
         return dt;
     },
     methods: {
+        getButtonSize() {
+            var that = this;
+            var buttonSize = that.conf.buttonSize ? that.conf.buttonSize : 'small';
+
+            switch (buttonSize) {
+                case 'small':
+                    return 'p-button p-button-sm';
+                case 'normal':
+                    return 'p-button';
+                case 'large':
+                    return 'p-button-lg';
+            }
+
+        },
+        getButtonClass() {
+            var that = this;
+            return that.conf.buttonClass ? that.conf.buttonClass
+                : 'p-button-outlined';
+        },
+        getActionClass() {
+            var that = this;
+            if (that.conf.actionClass) {
+                return that.conf.actionClass;
+            }
+            return that.getButtonSize() + ' '
+                + that.getButtonClass() + ' '
+                + that.conf.spacing;
+        },
         _href() {
             if (this.href instanceof Function) {
                 return this.href.apply(this);

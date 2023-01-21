@@ -2,12 +2,12 @@
     <template v-if="layout=='simple'">
         <div class="flex p-buttonset border border-round">
             <!-- :style="'width:'+(Object.keys(actions).length * 30)+ 'px'" -->
-            <a-base v-for="(action,key) in actions" :key="key" :ref="key" :conf="action"></a-base>
+            <a-base v-for="(action,key) in actions" :key="key" :ref="key" :conf="getConf(action,key)"></a-base>
         </div>
     </template>
     <template v-else-if="layout=='buttons'">
         <template v-for="(action,key) in getActions()" :key="key">
-            <a-base  :ref="key" :conf="action" v-if="inWhitelist(key)"></a-base>
+            <a-base  :ref="key" :conf="getConf(action,key)" v-if="inWhitelist(key)"></a-base>
         </template>
     </template>
     <template v-else-if="layout=='menubar'">
@@ -60,6 +60,29 @@ export default {
         return that.conf;
     },
     methods: {
+
+        getConf(actionConf,actionKey) {
+            var that = this;
+            actionConf.spacing = that.getSpacing(actionConf,actionKey);
+
+            console.log("ALAYOUT",that.layout,actionConf);
+            return actionConf;
+        },
+        getSpacing(actionConf,actionKey) {
+            var that = this;
+            if (actionConf.spacing) {
+                return actionConf.spacing;
+            }
+            switch (that.layout) {
+                case 'simple':
+                    return '';
+                case 'buttons':
+                    return (actionKey === that.getLastAction())
+                            ? '' : 'mr-2';
+                default:
+                    return '';
+            }
+        },
         getActions() {
             var that = this;
             console.log("GETA",that,that.actions);
@@ -85,6 +108,16 @@ export default {
             var whitelist = that.getWhitelist();
             console.log("WHITELISTTTT",whitelist,key,whitelist.includes(key))
             return whitelist.includes(key);
+        },
+        getLastAction() {
+            var that = this;
+            var whitelist = that.getWhitelist();
+            return (whitelist.length === 0) ? '' : whitelist[whitelist.length - 1];
+        },
+        getFirstAction() {
+            var that = this;
+            var whitelist = that.getWhitelist();
+            return (whitelist.length === 0) ? '' : whitelist[0];
         },
         instance(key) {
             console.log('actions ref', key, this.$refs, this.$refs[key])

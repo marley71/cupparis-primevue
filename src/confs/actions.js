@@ -56,7 +56,7 @@ const actionConfs = {
     'action-save' : {
         type : 'collection',
         title : 'app.salva',
-        css: 'p-button-success rounded',
+        buttonClass: 'p-button-outlined p-button-success',
         icon : 'fa fa-save',
         text : 'app.salva',
         json : null,
@@ -86,7 +86,7 @@ const actionConfs = {
     'action-save-back' : {
         type : 'collection',
         title : 'app.salva.torna-indietro',
-        css: 'bg-green-500 text-white rounded',
+        buttonClass: 'p-button-outlined p-button-success',
         icon : 'fa fa-save',
         text : 'app.salva',
         json : null,
@@ -145,6 +145,7 @@ const actionConfs = {
         type : 'record',
         title : 'app.cancella',
         css: 'text-red-500',
+        buttonClass: 'p-button-outlined p-button-danger',
         icon : 'fa fa-times',
         text : '',
         setRouteValues : function(route) {
@@ -242,7 +243,7 @@ const actionConfs = {
         visible : true,
         enabled : true,
         title : 'app.nuovo',
-        css: 'bg-green-100 rounded ',
+        buttonClass: 'p-button-outlined p-button-success ',
         icon : 'fa fa-plus',
         text : 'app.nuovo',
         execute() {
@@ -254,7 +255,7 @@ const actionConfs = {
     'action-back' : {
         type : 'collection',
         title : 'app.indietro',
-        css: 'rounded',
+        buttonClass: 'p-button-outlined p-button-warning',
         icon : 'fa fa-backward',
         text : 'app.indietro',
         execute : function () {
@@ -264,7 +265,7 @@ const actionConfs = {
     'action-delete-selected' : {
         type : 'collection',
         title : 'app.cancella-selezionati',
-        css: 'p-button-danger rounded',
+        buttonClass: 'p-button-outlined p-button-danger',
         icon : 'fa fa-trash',
         text : '',
         needSelection : true,

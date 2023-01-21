@@ -55,6 +55,14 @@ export default {
             //return translations_interface._translate.apply(this,[key,plural,params]);
         },
 
+        translateUc : function (key,context,plural,params) {
+            var langKey = context ? context + '.' + key : key
+            return CrudCore.upperCaseFirst(this._translate(langKey, plural, params))
+
+            //return this._translate(key,plural,params);
+            //return translations_interface._translate.apply(this,[key,plural,params]);
+        },
+
         _translate : function (key,plural,params) {
             let lang = CrudVars.lang;
             //console.log('_translate store',key,lang[key]);
