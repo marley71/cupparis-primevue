@@ -59,7 +59,13 @@
         </div>
     </template>
     <template v-else-if="type=='w-text'">
-        <span>{{ value }}</span>
+        <span :class="textClass">{{ value }}</span>
+    </template>
+    <template v-else-if="type=='w-textdiv'">
+        <div :class="textClass">{{ value }}</div>
+    </template>
+    <template v-else-if="type=='w-textp'">
+        <p :class="textClass">{{ value }}</p>
     </template>
     <template v-else-if="type=='w-hasmany'">
         <w-hasmany ref="wRef" :conf="conf" @change="change"></w-hasmany>
@@ -177,6 +183,14 @@ export default {
     extends: CrudComponent,
     props: {
         conf: Object,
+    },
+    filters: {
+        decodeEntities: function (value) {
+            if (!value) return '';
+            value = value.toString();
+            const parsed = new DOMParser().parseFromString(value, "text/html");
+            return parsed.documentElement.textContent;
+        }
     },
     watch: {
         conf: {
