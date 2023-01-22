@@ -34,6 +34,10 @@ export default {
                 dt.__methods[k] = ext[k];
             }
         }
+        if (!dt.langContext && dt.langContext !== null) {
+            dt.langContext = dt.modelName ? dt.modelName : ''
+            dt.langContext += '.fields';
+        }
         console.log('view Props',dt);
         return dt;
     },
@@ -128,8 +132,19 @@ export default {
         getFieldName(field) {
             return field;
         },
-        getFieldLabel(field) {
-            return field;
+
+        setFieldLabel(key,conf) {
+            let that = this;
+            if (!('label' in conf)) {
+                conf.label = key;
+                // se c'e' un langContext, applico la regola
+                if (that.langContext) {
+                    conf.label = that.translate(key + '.label', that.langContext);
+                }
+            } else {
+                conf.label = that.translate(conf.label);
+            }
+            return conf;
         },
         getType() {
             return this.type.replace('v-','');

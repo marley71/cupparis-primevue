@@ -230,11 +230,11 @@ export default {
                 let key = that.fields[f];
                 fConf[key] = {
                     type: 'w-text',
-                    label: that.getFieldLabel(key)
                 }
                 if (fieldsConfig[key]) {
                     fConf[key] = Object.assign(fConf[key], fieldsConfig[key]);
                 }
+                that.setFieldLabel(key,fConf[key]);
             }
             // configurazione finale dei widgets
             let widgetsConfig = [];

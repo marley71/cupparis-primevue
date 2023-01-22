@@ -204,13 +204,12 @@ export default {
                 let key = that.fields[f];
                 fConf[ key ] = {
                     type : that.defaultWidgetType,
-                    label : that.getFieldLabel(key)
                 };
 
                 if (fieldsConfig[key]) {
                     fConf[key] = Object.assign(fConf[key],fieldsConfig[key]);
                 }
-
+                that.setFieldLabel(key,fConf[key]);
             }
             let widgetsConfig = {};
             for (let f in that.fields) {
