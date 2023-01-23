@@ -56,9 +56,10 @@ export default {
         setTimeout(this.ready,10);
     },
     data () {
+        var that = this;
         if (!this.conf.hasmanyConf.getFieldName) {
             this.conf.hasmanyConf.getFieldName = (name) => {
-                return name + '[]';
+                return that.conf.modelName + '-' + name + '[]';
             }
         }
         return this.conf;
@@ -96,7 +97,7 @@ export default {
             hs.routeName = null;
             hs.actions = [];
             hs.value = that.value[i];
-            hs.type = 'v-edit';
+            hs.type = 'v-view';
             console.log('HS',hs);
             return hs;
         },

@@ -9,11 +9,26 @@
 
             </Divider>
         </div>
+        
         <form ref="form" enctype="multipart/form-data" @submit.prevent="handleSubmit(!v$.$invalid)"
               class="p-fluid mt-5">
             <template v-for="field in getHiddenFields()">
                 <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
             </template>
+
+            <div class="grid">
+
+                <div class="col-12 md:col-3" v-if="true">
+                    <Input name="s_cupparis_query" class="p-inputtext p-component w-full"></Input>
+                    
+                </div>
+                <div class="col-12 md:col-9">
+                    
+                
+
+            <Accordion>
+                
+                <AccordionTab header="Ricerca avanzata">
             <div class="grid">
                 <template v-for="field in getVisibleFields()" :key="field">
                     <div class="py-3" :class="getWidgetLayout(field,'colClass')">
@@ -49,13 +64,19 @@
                     </template>
                 </template>
             </div>
-        </form>
-        <Divider align="center" class="actionsDivider">
+            <Divider align="center" class="actionsDivider">
 
-        </Divider>
-        <div class="text-center actionsButtons">
-            <c-action ref="actions" :conf="recordActionsConf" layout="buttons"></c-action>
-        </div>
+</Divider>
+<div class="text-center actionsButtons">
+    <c-action ref="actions" :conf="recordActionsConf" layout="buttons"></c-action>
+</div>
+            </AccordionTab>
+        </Accordion>
+    </div>
+    </div>
+
+        </form>
+        
 
     </div>
 </template>
