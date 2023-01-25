@@ -50,6 +50,7 @@ export default {
             default: 'buttons'
         },
         'whitelist': Array,
+        'blacklist': Array,
     },
     data() {
         let that = this;
@@ -95,10 +96,22 @@ export default {
         getWhitelist() {
             var that = this;
             if (!that.whitelist) {
-                var whitelist = that.conf.actions ? Object.keys(that.conf.actions)
+
+                var whitelist = that.conf.actions
+                    ? Object.keys(that.conf.actions)
                     : Object.keys(that.conf);
+
+                if (that.blacklist) {
+                    for (var b in that.blacklist) {
+                        var index = whitelist.indexOf(that.blacklist[b]);
+                        if (index !== -1) {
+                            whitelist.splice(index, 1);
+                        }
+                    }
+                }
                 console.log("WHITELIST:::",whitelist);
                 return whitelist;
+
             }
             console.log("WHITELIST:::",that.whitelist);
             return that.whitelist;

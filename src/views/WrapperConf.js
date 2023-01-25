@@ -217,13 +217,16 @@ export default class WrapperConf {
         if (!conf.layout) {
             conf.layout = viewConfs.recordLayouts.search
         }
+        if (!conf.searchType) {
+            conf.searchType = conf.searchType = 'both';
+        }
         conf = this.vRecord(conf);
         if (! ('routeName' in conf) ){
             conf.routeName = 'search';
         }
         conf.defaultWidgetType = 'w-input';
         if (!('actions' in conf) ){
-            conf.actions = ['action-search'];
+            conf.actions = ['action-search','action-search-basic'];
         }
         return conf;
     }

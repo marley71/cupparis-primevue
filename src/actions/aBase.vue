@@ -1,28 +1,29 @@
 <template>
-<!--    <button class="p-button p-1 p-button-outlined" v-if="controlType=='button' && _visible()" type="button"-->
-<!--            :title="translate(title)" :class="css + icon?'p-button-icon':''" v-on:click="_execute($event)" v-bind:disabled="_disabled()" >-->
-<!--        <i class="m-1" v-show="icon" :class="icon"></i>-->
-<!--        <span>{{ translate(text) }}</span>-->
-<!--    </button>-->
+    <!--    <button class="p-button p-1 p-button-outlined" v-if="controlType=='button' && _visible()" type="button"-->
+    <!--            :title="translate(title)" :class="css + icon?'p-button-icon':''" v-on:click="_execute($event)" v-bind:disabled="_disabled()" >-->
+    <!--        <i class="m-1" v-show="icon" :class="icon"></i>-->
+    <!--        <span>{{ translate(text) }}</span>-->
+    <!--    </button>-->
     <template v-if="controlType=='button' && _visible()">
-        <Button :title="translate(title)" :label="translate(text)"
-                :class=getActionClass()
-                :icon="icon"
-                v-on:click="_execute($event)" v-bind:disabled="_disabled()"
-        />
+
+            <Button :title="translate(title)" :label="translate(text)"
+                    :class=getActionClass()
+                    :icon="icon"
+                    v-on:click="_execute($event)" v-bind:disabled="_disabled()"
+            />
     </template>
-<!--    <button class="p-button p-1 p-button-outlined"  type="button"-->
-<!--            :title="translate(title)" :class="css + icon?'p-button-icon':''" >-->
-<!--        <i class="m-1" v-show="icon" :class="icon"></i>-->
-<!--        <span>{{ translate(text) }}</span>-->
-<!--    </button>-->
+    <!--    <button class="p-button p-1 p-button-outlined"  type="button"-->
+    <!--            :title="translate(title)" :class="css + icon?'p-button-icon':''" >-->
+    <!--        <i class="m-1" v-show="icon" :class="icon"></i>-->
+    <!--        <span>{{ translate(text) }}</span>-->
+    <!--    </button>-->
     <a v-else-if="controlType=='link' && _visible()" class="p-button p-button-outlined" :target="target" :href="_href()"
        :title="translate(title)" :class="css + icon?'p-button-icon':''" :disabled="_disabled()">
         <i class="m-1" v-show="icon" :class="icon"></i>
         <span>{{ translate(text) }}</span>
     </a>
     <div v-if="['button','link'].indexOf(controlType) < 0">
-        <b>controlType ({{controlType}}) non riconosciuto</b>
+        <b>controlType ({{ controlType }}) non riconosciuto</b>
     </div>
 </template>
 
@@ -33,7 +34,7 @@ import WrapperConf from "./WrapperConf";
 
 export default {
     name: "aBase",
-    extends : CrudComponent,
+    extends: CrudComponent,
     props: ['conf'],
     created() {
         let that = this;
@@ -63,7 +64,7 @@ export default {
         let ext = wc.loadConf(that.conf);
         let dt = {};
         for (let k in ext) {
-            if (!(ext[k] instanceof Function) ) {
+            if (!(ext[k] instanceof Function)) {
                 dt[k] = ext[k];
             }
         }
@@ -89,7 +90,7 @@ export default {
         getButtonClass() {
             var that = this;
             return that.conf.buttonClass ? that.conf.buttonClass
-                : 'p-button-outlined';
+                : 'p-button-outlined w-auto';
         },
         getActionClass() {
             var that = this;

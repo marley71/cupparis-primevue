@@ -35,9 +35,30 @@ const actionConfs = {
     'action-search' : {
         type : 'collection',
         title : 'app.cerca',
-        css: 'bg-blue-300 rounded',
+        buttonClass: '',
         icon : 'fa fa-search',
         text : 'app.cerca',
+        execute () {
+            console.log('action-search',this,'view',this.view);
+            if (this.view) {
+                //console.log('target ref',this.view.targetRef);
+
+                //var targetView =  this.getComponent(this.view.targetRef);
+                var formData = this.view.getViewData();
+                this.view.$emit('search',formData)
+                //targetView.route.setParams(formData);
+                //targetView.route.setParam('page',1);
+                //targetView.reload();
+                return ;
+            }
+        }
+    },
+    'action-search-basic' : {
+        type : 'collection',
+        title : 'app.cerca',
+        buttonClass: 'p-button',
+        icon : 'fa fa-search',
+//        text : 'app.cerca',
         execute () {
             console.log('action-search',this,'view',this.view);
             if (this.view) {
