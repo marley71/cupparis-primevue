@@ -60,12 +60,12 @@ const actionConfs = {
         icon : 'fa fa-search',
 //        text : 'app.cerca',
         execute () {
-            console.log('action-search',this,'view',this.view);
+            console.log('action-search-basic',this,'view',this.view);
             if (this.view) {
                 //console.log('target ref',this.view.targetRef);
 
                 //var targetView =  this.getComponent(this.view.targetRef);
-                var formData = this.view.getViewData();
+                var formData = this.view.getViewData('formBasic');
                 this.view.$emit('search',formData)
                 //targetView.route.setParams(formData);
                 //targetView.route.setParam('page',1);

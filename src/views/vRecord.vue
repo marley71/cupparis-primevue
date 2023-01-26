@@ -244,9 +244,10 @@ export default {
                 callback(json);
             })
         },
-        getViewData() {
+        getViewData(ref) {
             let that = this;
-            const formData = new FormData(that.$refs.form);
+            let form = ref || 'form';
+            const formData = new FormData(that.$refs[form]);
             console.log('formData',formData);
             return formData;
         },

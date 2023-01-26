@@ -363,7 +363,7 @@ export default {
     :deep(.p-datatable-header) {
         background-color: transparent;
         padding: 1.25rem 0;
-        margin-top: 2rem;
+        margin-top: 0;
         margin-bottom: 1rem;
         border-top: 2px solid var(--primary-color);
     }

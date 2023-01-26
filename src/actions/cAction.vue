@@ -66,7 +66,7 @@ export default {
             var that = this;
             actionConf.spacing = that.getSpacing(actionConf,actionKey);
 
-            console.log("ALAYOUT",that.layout,actionConf);
+            //console.log("ALAYOUT",that.layout,actionConf);
             return actionConf;
         },
         getSpacing(actionConf,actionKey) {

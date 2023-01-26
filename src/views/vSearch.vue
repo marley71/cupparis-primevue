@@ -1,21 +1,27 @@
 <template>
 
     <div v-if="loaded">
-        <div>
-            <Divider align="center" class="actionsDivider">
+        <div class="preSearch">
                                 <span class="p-tag">
                                     Filtra elementi
                                 </span>
-
-            </Divider>
         </div>
+        <!--        <div>-->
+        <!--            <Divider align="center" class="actionsDivider">-->
+        <!--                                <span class="p-tag">-->
+        <!--                                    Filtra elementi-->
+        <!--                                </span>-->
+
+        <!--            </Divider>-->
+        <!--        </div>-->
 
 
-        <div class="grid">
+        <div class="panel-search-content grid">
 
             <div :class="basicSearchClass()" v-if="hasBasicSearch()">
-                <form ref="form" enctype="multipart/form-data"
+                <form ref="formBasic" enctype="multipart/form-data"
                       @submit.prevent="handleSubmit(!v$.$invalid)"
+                      @keyup.enter="search('basic')"
                       class="p-fluid mt-1">
                     <template v-for="field in getHiddenFields()">
                         <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
@@ -26,7 +32,7 @@
                         <c-action ref="actions" :conf="recordActionsConf" :whitelist="['action-search-basic']"
                                   layout="buttons"></c-action>
 
-                        <Input name="s_cupparis_query" class="p-inputtext p-component w-full"></Input>
+                        <Input name="s_basic_query" class="p-inputtext p-component w-full"></Input>
                     </div>
 
                 </form>
@@ -88,9 +94,9 @@
                             <div class="flex flex-row justify-content-center">
 
 
-                                    <c-action ref="actions" :conf="recordActionsConf"
-                                              :blacklist="['action-search-basic']"
-                                              layout="buttons"></c-action>
+                                <c-action ref="actions" :conf="recordActionsConf"
+                                          :blacklist="['action-search-basic']"
+                                          layout="buttons"></c-action>
                             </div>
                         </form>
                     </AccordionTab>
@@ -111,13 +117,25 @@ export default {
     extends: vRecord,
     emits: ['search'],
     methods: {
-        search() {
+        search(type) {
             let that = this;
-            var formData = that.view.getViewData();
+            type = type || that.defaultSearch();
+            let form = type === 'basic' ? 'formBasic' : 'form';
+            // console.log("FOOORMMMM",form,that);
+            var formData = that.getViewData(form);
             this.$emit('search', formData)
         },
         getFieldName(field) {
             return 's_' + field;
+        },
+        defaultSearch() {
+            if (this.conf.defaultSearchType) {
+                this.conf.defaultSearchType;
+            }
+            if (this.hasBasicSearch()) {
+                return 'basic';
+            }
+            return 'advanced';
         },
         hasBasicSearch() {
             console.log("BSSS:::", this.conf);
@@ -157,6 +175,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.panel-search-content {
+    background-color: var(--primary-50);
+}
+
 .actionsDivider.p-divider-horizontal:before {
     border-color: var(--primary-100);
 }
@@ -165,6 +188,18 @@ export default {
     :deep(.p-tag) {
         background-color: var(--primary-50);
         color: var(--primary-color)
+    }
+}
+
+.preSearch {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 2rem;
+
+    :deep(.p-tag) {
+        background-color: transparent;
+        color: var(--primary-color);
+        font-size: 0.95rem;
     }
 }
 
@@ -182,4 +217,44 @@ label.labelTop {
     top: -0.25rem;
     left: 0.25rem;
 }
+
+
+.panel-search-content {
+
+    :deep(.p-accordion-header-text) {
+        color: var(--primary-color);
+    }
+
+    :deep(.p-accordion-toggle-icon) {
+        color: var(--primary-color);
+    }
+
+    :deep(.p-accordion-tab a) {
+        background-color: white;
+    }
+
+    :deep(.p-accordion-header:hover) {
+
+        //background-color: var(--primary-color);
+
+        .p-panel-title {
+            color: var(--primary-color);
+        }
+
+        .p-accordion-toggle-icon {
+            color: var(--primary-color);
+        }
+    }
+
+
+    //
+    //.p-accordion-content {
+    //    border-color: var(--primary-color);
+    //}
+
+    //.p-accordion-header {
+    //    border-color: var(--primary-color);
+    //}
+}
+
 </style>
