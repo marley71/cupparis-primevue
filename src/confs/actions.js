@@ -98,7 +98,7 @@ const actionConfs = {
                 }
                 that.json = json;
                 var msg = json.msg?json.msg:that.view.translate('app.salvataggio-ok');
-                that.view.alertSuccess(msg,that.alertTime);
+                that.view.alertSuccess(msg,3000);
                 callback();
             })
         }
@@ -126,7 +126,7 @@ const actionConfs = {
                     }
                     that.json = json;
                     var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
-                    that.view.alertSuccess(msg,that.view.alertTime);
+                    that.view.alertSuccess(msg,3000);
                     callback();
                 })
             }
@@ -227,7 +227,7 @@ const actionConfs = {
                     return;
                 }
                 var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
-                that.view.alertSuccess(msg,that.alertTime,3000);
+                that.view.alertSuccess(msg,3000);
                 var values = json.result;
                 that.view.setRowData(that.index,values);
                 that.view.setViewMode(that.index);
