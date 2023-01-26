@@ -231,6 +231,7 @@ label.labelTop {
 
     :deep(.p-accordion-tab a) {
         background-color: white;
+        padding:1rem;
     }
 
     :deep(.p-accordion-header:hover) {
