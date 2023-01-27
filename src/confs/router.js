@@ -30,6 +30,19 @@ function _getModelConfInsert(obj,key) {
     }
     return CrudCore.clone(conf);
 }
+
+function _getManageConf(key,route) {
+    if (!CrudVars.modelConfs[key]) {
+        console.log(key,'route ',route,CrudVars.modelConfs);
+        //document.location.href = '/#404'
+        throw 'Not found'
+        //return ;
+        //document.location.href='/#' + btoa('notfound') // per sollevvare l'eccezione di pagina non trovata
+        //throw 'Not found'
+    }
+    return  CrudCore.clone(CrudVars.modelConfs[key]);
+}
+
 const routerConf =  [
     // {
     //     path: '/',
@@ -77,7 +90,14 @@ const routerConf =  [
         path: '/manage/:cConf',
         name: 'c-manage',
         component: cManage,
-        props: route => ({ conf: CrudCore.clone(CrudVars.modelConfs[route.params.cConf]) })
+        // redirect: to => {
+        //     console.log('to',to,CrudVars.modelConfs);
+        //     return {
+        //         path: '/manage/:cConf',
+        //         conf : _getManageConf(to.params.cConf,to)
+        //     }
+        // },
+        props: route => ({ conf: _getManageConf(route.params.cConf,route) })
     },
     {
         path: '/import/:cConf',
