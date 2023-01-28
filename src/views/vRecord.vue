@@ -1,5 +1,31 @@
 <template>
 
+    <template v-if="inlist && loaded">
+        <tr role="row" v-if="isInlist">
+            <td class="" role="columnheader">
+<!--                <Button icon="fa fa-trash" class="p-button-outlined p-button-danger"-->
+<!--                    @click="inlistAction(indexInlist,'delete')">-->
+<!--                </Button>-->
+                <Button icon="fa fa-trash" class="p-button-outlined p-button-danger"
+                        @click="removeFromList()">
+                </Button>
+                <template v-for="field in getHiddenFields()">
+                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                </template>
+            </td>
+
+
+            <td v-for="(field,indexV) in getVisibleFields()" :key="field" class="" role="cell">
+
+                <div class="">
+                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                </div>
+
+            </td>
+        </tr>
+    </template>
+    <template v-if="loaded && !inlist">
+
         <div v-if="loaded">
             <div>
                 <Divider align="center" class="actionsDivider">
@@ -12,50 +38,53 @@
 
             <template v-if="type==='v-view'">
 
-                    <template v-for="field in getHiddenFields()">
-                        <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
-                    </template>
-                    <div class="grid">
-                        <template v-for="field in getVisibleFields()" :key="field">
-                            <div class="py-3" :class="getWidgetLayout(field,'colClass')">
-                                <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
+                <template v-for="field in getHiddenFields()">
+                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                </template>
+                <div class="grid">
+                    <template v-for="field in getVisibleFields()" :key="field">
+                        <div class="py-3" :class="getWidgetLayout(field,'colClass')">
+                            <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
                                     <span class="p-float-label">
                                     <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
                                     <label :for="field">{{ widgetsConfig[field].label }}</label>
                                     </span>
-                                </template>
-                                <template v-else>
+                            </template>
+                            <template v-else>
 
-                                    <label class="labelTop" :for="field" v-if="getWidgetLayout(field,'labelPosition')=='top'">
-                                        {{ translateUc(widgetsConfig[field].label) }}
-                                    </label>
-                                    <div class="">
-                                        <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
-                                    </div>
-                                    <label class="labelBottom" :for="field" v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
-                                        {{ translateUc(widgetsConfig[field].label) }}
-                                    </label>
-                                </template>
-                            </div>
+                                <label class="labelTop" :for="field"
+                                       v-if="getWidgetLayout(field,'labelPosition')=='top'">
+                                    {{ translateUc(widgetsConfig[field].label) }}
+                                </label>
+                                <div class="">
+                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                </div>
+                                <label class="labelBottom" :for="field"
+                                       v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
+                                    {{ translateUc(widgetsConfig[field].label) }}
+                                </label>
+                            </template>
+                        </div>
 
-                            <template v-if="getWidgetLayout(field,'hasDivider')">
-                                <Divider align="center" class="col-10 col-offset-1">
+                        <template v-if="getWidgetLayout(field,'hasDivider')">
+                            <Divider align="center" class="col-10 col-offset-1">
                                     <span v-if="getWidgetLayout(field,'dividerLabel')"
-                                        class="p-tag text-white">{{ getWidgetLayout(field, 'dividerLabel') }}</span>
-                                </Divider>
+                                          class="p-tag text-white">{{ getWidgetLayout(field, 'dividerLabel') }}</span>
+                            </Divider>
 
-                            </template>
-                            <template v-else-if="getWidgetLayout(field,'lastInRow')">
-                                <div class="col-12 max-h-0 p-0">&nbsp;</div>
-                            </template>
                         </template>
-                    </div>
+                        <template v-else-if="getWidgetLayout(field,'lastInRow')">
+                            <div class="col-12 max-h-0 p-0">&nbsp;</div>
+                        </template>
+                    </template>
+                </div>
                 <div>
-                    <c-action ref="actions" :conf="recordActionsConf" layout="buttons" ></c-action>
+                    <c-action ref="actions" :conf="recordActionsConf" layout="buttons"></c-action>
                 </div>
             </template>
             <template v-else>
-                <form ref="form" enctype="multipart/form-data" @submit.prevent="handleSubmit(!v$.$invalid)" class="p-fluid" >
+                <form ref="form" enctype="multipart/form-data" @submit.prevent="handleSubmit(!v$.$invalid)"
+                      class="p-fluid">
                     <template v-for="field in getHiddenFields()">
                         <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
                     </template>
@@ -70,13 +99,15 @@
                                 </template>
                                 <template v-else>
 
-                                    <label class="labelTop" :for="field" v-if="getWidgetLayout(field,'labelPosition')=='top'">
+                                    <label class="labelTop" :for="field"
+                                           v-if="getWidgetLayout(field,'labelPosition')=='top'">
                                         {{ translateUc(widgetsConfig[field].label) }}
                                     </label>
                                     <div class="">
                                         <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
                                     </div>
-                                    <label class="labelBottom" :for="field" v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
+                                    <label class="labelBottom" :for="field"
+                                           v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
                                         {{ translateUc(widgetsConfig[field].label) }}
                                     </label>
                                 </template>
@@ -85,7 +116,7 @@
                             <template v-if="getWidgetLayout(field,'hasDivider')">
                                 <Divider align="center" class="col-10 col-offset-1">
                                     <span v-if="getWidgetLayout(field,'dividerLabel')"
-                                        class="p-tag text-white">{{ getWidgetLayout(field, 'dividerLabel') }}</span>
+                                          class="p-tag text-white">{{ getWidgetLayout(field, 'dividerLabel') }}</span>
                                 </Divider>
 
                             </template>
@@ -97,11 +128,12 @@
 
                 </form>
                 <div>
-                    <c-action ref="actions" :conf="recordActionsConf" layout="buttons" ></c-action>
+                    <c-action ref="actions" :conf="recordActionsConf" layout="buttons"></c-action>
                 </div>
             </template>
 
-    </div>
+        </div>
+    </template>
 </template>
 
 <script>
@@ -116,46 +148,55 @@ import viewConfs from "../confs/views";
 export default {
     name: "vRecord",
     extends: vBase,
-    props : ['conf'],
-    components: {cWidget,cAction},
+    props: ['conf', 'inlist', 'indexInlist'],
+    emits: ['deleteInlist'],
+    components: {cWidget, cAction},
     mounted() {
         window.RECORD = this;
         if (this.autoload)
             this.load();
     },
     data() {
-        console.log('vRecord',this.conf);
-      let ly = this.conf.layout || {};
-      if (ly instanceof String) {
-          ly = viewConfs.recordLayouts[ly] || viewConfs.recordLayouts.default;
-      } else {
-          let tmp = Object.assign({},viewConfs.recordLayouts.default);
-          ly = Object.assign(tmp,ly);
-      }
-      ly.colClass = this.getColClass(ly.cols);
-      //console.log('layout',ly);
-      return {
-          layout : ly
-      }
+        console.log('vRecord', this.conf);
+        let ly = this.conf.layout || {};
+        if (ly instanceof String) {
+            ly = viewConfs.recordLayouts[ly] || viewConfs.recordLayouts.default;
+        } else {
+            let tmp = Object.assign({}, viewConfs.recordLayouts.default);
+            ly = Object.assign(tmp, ly);
+        }
+        ly.colClass = this.getColClass(ly.cols);
+        //console.log('layout',ly);
+        return {
+            layout: ly,
+            isInlist: true,
+        }
     },
     methods: {
+        removeFromList() {
+          this.isInlist = false;
+        },
+        inlistAction(index, action) {
+            console.log('EMIT---ACTIONINLIST::: ',index,action);
+            this.$emit('actionInlist',index,action);
+        },
         getColClass(col) {
-          switch (col) {
-              case 1:
-                  return 'col-12'
-              case 2:
-                  return 'col-12 md:col-6'
-              case 3:
-                  return 'col-12 md:col-4'
-              case 4:
-                  return 'col-3 md:col-3'
-              case 6:
-                  return 'col-2'
-              case 12:
-                  return 'col-1'
-              default:
-                  return 'col-12'
-          }
+            switch (col) {
+                case 1:
+                    return 'col-12'
+                case 2:
+                    return 'col-12 md:col-6'
+                case 3:
+                    return 'col-12 md:col-4'
+                case 4:
+                    return 'col-3 md:col-3'
+                case 6:
+                    return 'col-2'
+                case 12:
+                    return 'col-1'
+                default:
+                    return 'col-12'
+            }
         },
         setActions() {
             let that = this;
@@ -164,28 +205,28 @@ export default {
             //     {label: 'Delete', icon: 'pi pi-fw pi-times', command: () => this.deleteRow()}
             // ]
             that.recordActionsConf = {
-                actions :{}
+                actions: {}
             };
             let rActions = that.actions;
-            console.log('actionsConfig',that.actionsConfig)
+            console.log('actionsConfig', that.actionsConfig)
             for (let k in rActions) {
                 let aName = rActions[k];
-                let aConf = Object.assign({},actionConfs['default']);
-                aConf = Object.assign(aConf,(actionConfs[aName] || {}));
+                let aConf = Object.assign({}, actionConfs['default']);
+                aConf = Object.assign(aConf, (actionConfs[aName] || {}));
                 if (that.actionsConfig[aName]) {
-                    aConf = Object.assign(aConf,that.actionsConfig[aName]);
+                    aConf = Object.assign(aConf, that.actionsConfig[aName]);
                 }
                 //aConf = Object.assign(actionConfs[aName],vConf);
                 aConf.modelData = that.value;
                 aConf.view = that;
-                that.recordActionsConf.actions[ aName ] = aConf;
+                that.recordActionsConf.actions[aName] = aConf;
             }
-            console.log('recordActionsConf',that.recordActionsConf)
+            console.log('recordActionsConf', that.recordActionsConf)
         },
-        getWidgegConf(index,field,data) {
+        getWidgegConf(index, field, data) {
             let that = this;
             that.widgetsConfig[index][field].value = data;
-            return Object.assign({},that.widgetsConfig[index][field]);
+            return Object.assign({}, that.widgetsConfig[index][field]);
         },
         setWidgetsConfig() {
             let that = this;
@@ -198,28 +239,28 @@ export default {
             let fieldsConfig = that.fieldsConfig || {};
             for (let f in that.fields) {
                 let key = that.fields[f];
-                fConf[ key ] = {
-                    type : that.defaultWidgetType,
+                fConf[key] = {
+                    type: that.defaultWidgetType,
                 };
 
                 if (fieldsConfig[key]) {
-                    fConf[key] = Object.assign(fConf[key],fieldsConfig[key]);
+                    fConf[key] = Object.assign(fConf[key], fieldsConfig[key]);
                 }
-                that.setFieldLabel(key,fConf[key]);
+                that.setFieldLabel(key, fConf[key]);
             }
             let widgetsConfig = {};
             for (let f in that.fields) {
                 let key = that.fields[f];
                 let val = that.value[key];
                 let md = that.metadata[key] || {};
-                widgetsConfig[key] = Object.assign(md,fConf[key]);
+                widgetsConfig[key] = Object.assign(md, fConf[key]);
                 widgetsConfig[key].value = val;
                 widgetsConfig[key].name = that.getFieldName(key);
                 widgetsConfig[key].modelData = that.value;
                 widgetsConfig[key].view = that;
                 //widgetsConfig[key].label = that.getFieldLabel(key);
             }
-            console.log('vRecord setWidgetsConfig',widgetsConfig)
+            console.log('vRecord setWidgetsConfig', widgetsConfig)
             that.widgetsConfig = widgetsConfig;
 
         },
@@ -231,7 +272,7 @@ export default {
                 var pk = that.cPk || that.pk || 0;
                 route.setValues({
                     modelName: that.modelName,
-                    pk : pk
+                    pk: pk
                 });
             } else {
                 route = that.createRoute('create');
@@ -248,7 +289,7 @@ export default {
             let that = this;
             let form = ref || 'form';
             const formData = new FormData(that.$refs[form]);
-            console.log('formData',formData);
+            console.log('formData', formData);
             return formData;
         },
         getWidget(field) {
@@ -274,8 +315,8 @@ export default {
 <style lang="scss" scoped>
 
 label.labelTop {
-    font-size:12px;
-    color : var(--surface-text);
+    font-size: 12px;
+    color: var(--surface-text);
     position: relative;
     top: -0.25rem;
     left: 0.25rem;

@@ -1,6 +1,48 @@
 <template>
     <template v-if="layout=='list'">
 
+        <div class="p-datatable p-component p-datatable-responsive-scroll min-w-full mt-4">
+            <div class="p-datatable-header">
+                {{ translate(modelName) }}
+            </div>
+            <div class="p-datatable-wrapper">
+                <table role="table" class="p-datatable-table">
+                    <thead class="p-datatable-thead" role="rowgroup">
+                    <tr role="row">
+
+                        <th class="" role="columnheader">
+
+                        </th>
+                        <th v-for="label in getHasmanyLabels()" class="" role="columnheader">
+                            {{ label }}
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody class="p-datatable-tbody" role="rowgroup">
+
+                    <v-record v-for="(data,index) in value" :key="index"
+                              :conf="getHasmanyConf(index)" :inlist="true" :indexInlist="index"
+                              @actionInlist="executeActionInlist">
+                    </v-record>
+                    </tbody>
+                    <tfoot class="mt-3">
+                    <div class="p-4">
+                        <span class="d-block text-danger text-truncate font-weight-medium" v-if="outOfLimit()">
+                        <!-- Limite massimo raggiunto -->
+                        {{ translate('app.limite-raggiunto') }}
+                        </span>
+                        <button v-else @click="addItem" type="button"
+                                class="p-button p-button-sm p-component p-button-outlined">
+                            <span>{{ translate('app.aggiungi') }}</span>&nbsp;
+                        </button>
+                    </div>
+
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+
     </template>
     <template v-else>
         <Card ref="el">
@@ -42,20 +84,20 @@ import CrudCore from "../lib/CrudCore";
 
 export default {
     name: "wHasmany",
-    extends : CrudComponent,
+    extends: CrudComponent,
     //components : {cView},
-    emits:['change'],
+    emits: ['change'],
     //emits: ['update:modelValue'],
     props: {
         //modelValue: String,
-        conf : Object,
+        conf: Object,
     },
     mounted() {
         // evento da emettere durante le modifiche
         //this.$emit('update:modelValue', this.selectedCategory.id);
-        setTimeout(this.ready,10);
+        setTimeout(this.ready, 10);
     },
-    data () {
+    data() {
         var that = this;
         if (!this.conf.hasmanyConf.getFieldName) {
             this.conf.hasmanyConf.getFieldName = (name) => {
@@ -68,12 +110,28 @@ export default {
         ready() {
 
         },
+        executeActionInlist(index, action) {
+            console.log('ACTIONINLIST::: ', index, action);
+            switch (action) {
+                case 'delete':
+                    this.removeItem(index);
+                    return;
+                default:
+                    return;
+            }
+        },
+        getValue() {
+            if (!this.value) {
+                return [];
+            }
+            return this.value;
+        },
         setValue(val) {
             let that = this;
             that.value = [];
             setTimeout(function () {
                 that.value = val;
-            },1)
+            }, 1)
 
         },
         outOfLimit() {
@@ -86,7 +144,10 @@ export default {
             let fields = that.hasmanyConf.fields;
             let v = {};
             for (let f in fields) {
-                v[fields[f]] = '';
+                let field = fields[f];
+                let fieldConfig = that.hasmanyConf.fieldsConfig[field];
+                let defVal = (fieldConfig && fieldConfig.default) ? fieldConfig.default : '';
+                v[fields[f]] = defVal;
             }
             v.status = 'created';
             this.value.push(v);
@@ -98,19 +159,53 @@ export default {
             hs.actions = [];
             hs.value = that.value[i];
             hs.type = 'v-view';
-            console.log('HS',hs);
+            console.log('HS', hs);
             return hs;
         },
-        removeItem(index) {
-            console.log('remove index',index);
-            if (index < this.value.length) {
-                this.value.splice(parseInt(index),1);
+        getHasmanyLabels() {
+
+            let that = this;
+            let hs = that.hasmanyConf;
+            let labels = [];
+            for (let i in hs.fields) {
+                let field = hs.fields[i];
+                let fieldConfig = hs.fieldsConfig[field];
+                if (fieldConfig && fieldConfig.type === 'w-hidden') {
+                    continue;
+                }
+                let label = hs.fields[i];
+                if (fieldConfig && fieldConfig.label) {
+                    label = fieldConfig.label;
+                }
+
+                labels.push(label);
             }
+            return labels;
+
+        },
+        removeItem(index) {
+            console.log('remove index', index, this.value);
+            if (index < this.value.length) {
+                this.value.splice(parseInt(index), 1);
+            }
+            console.log('removed index', index, this.value);
         }
     }
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.p-datatable-thead > tr > th {
+    font-weight: bold;
+    text-align: center;
+    background-color: white;
+    border-top: 1px solid var(--primary-400)
+}
 
+.p-datatable-header {
+    border-top: 1px solid var(--primary-400);
+    text-align: center;
+    background-color: white;
+
+}
 </style>
