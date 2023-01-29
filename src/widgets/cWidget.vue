@@ -85,7 +85,7 @@
         <input type="hidden" :name="name" v-model="value">
         <div class="p-inputgroup">
             <Button icon="fa fa-times" @click="change($event,'clear')"/>
-            <Calendar class="w-full" showButtonBar="true" v-model="dateValue" @date-select="change" inputDateFormat="yyyy-mm-dd" date-format="dd/mm/yy" />
+            <Calendar class="w-full" showButtonBar="true" v-model="dateValue" @date-select="change" inputDateFormat="YYYY-MM-DD" date-format="dd/mm/yy" />
         </div>
 
     </template>
@@ -269,7 +269,9 @@ export default {
                         this.value = null;
                         this.dateValue = null;
                     } else {
-                        var date = event ? moment(event).format(evt.widget.inputDateFormat) : null;
+                        let inputDateFormat = evt.widget.inputDateFormat || 'YYYY-MM-DD';
+                        var date = event ? moment(event).format(inputDateFormat) : null;
+                        console.log("DATE",date, inputDateFormat)
                         //var date = new Date();
                         this.value = date;
                     }
