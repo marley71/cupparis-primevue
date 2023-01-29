@@ -1,5 +1,6 @@
 import Server from "../lib/Server";
 import CrudCore from "../lib/CrudCore";
+import CrudVars from "../lib/CrudVars";
 
 const actionConfs = {
     'default': {
@@ -375,7 +376,8 @@ const actionConfs = {
                     that.view.errorDialog(json.msg)
                     return
                 }
-                document.location.href = json.result.link
+                let prefix = CrudVars.useApi?'/api':'';
+                document.location.href = prefix + json.result.link
                 console.log(json)
             })
 
@@ -388,6 +390,44 @@ const actionConfs = {
         csvType: 'default',
         routeName: 'csv-exporta',
         startMessage: 'Generazione csv in corso...'
+    },
+    'action-export-pdf' : {
+        execute () {
+            var that = this
+            var r = that.view.createRoute(that.routeName)
+            let foormPk = that.modelData[that.view.primaryKey];
+            r.setValues({
+                'foorm': that.view.modelName,
+                'foormtype': 'list',
+                'foormpk' : foormPk
+            })
+            //console.log('action-export-csv',that.view.modelName,that.view.cType)
+            // var p = {
+            //     'csvType': that.csvType
+            // }
+            // var viewP = that.view.route.getParams()
+            r.setParam('pdfType', that.pdfType)
+            that.view.waitStart(that.startMessage)
+            Server.route(r, function (json) {
+                that.view.waitEnd()
+                if (json.error) {
+                    that.view.errorDialog(json.msg)
+                    return
+                }
+                let prefix = CrudVars.useApi?'/api':'';
+                document.location.href = prefix + json.result.link
+                console.log(json)
+            })
+
+            console.log('r', r)
+        },
+        type: 'record',
+        icon: 'fa fa-file-pdf',
+        text: 'Pdf',
+        css: 'p-button-sm p-button-text p-button-secondary',
+        pdfType: 'record',
+        routeName: 'pdf-exporta',
+        startMessage: 'Generazione pdf in corso...'
     }
 }
 export default actionConfs
