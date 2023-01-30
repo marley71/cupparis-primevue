@@ -44,6 +44,79 @@
 
 
     </template>
+<!--    <template v-else-if="layout=='orderlist'">-->
+
+<!--        <OrderList v-model="value" listStyle="height:auto" dataKey="id">-->
+<!--            <template #header>-->
+<!--                {{ translate(modelName) }}-->
+
+<!--&lt;!&ndash;                    <th v-for="label in getHasmanyLabels()" class="" role="columnheader">&ndash;&gt;-->
+<!--&lt;!&ndash;                        {{ label }}&ndash;&gt;-->
+<!--&lt;!&ndash;                    </th>&ndash;&gt;-->
+
+<!--                        <span class="d-block text-danger text-truncate font-weight-medium" v-if="outOfLimit()">-->
+<!--                        &lt;!&ndash; Limite massimo raggiunto &ndash;&gt;-->
+<!--                        {{ translate('app.limite-raggiunto') }}-->
+<!--                        </span>-->
+<!--                            <button v-else @click="addItem" type="button"-->
+<!--                                    class="p-button p-button-sm p-component p-button-outlined">-->
+<!--                                <span>{{ translate('app.aggiungi') }}</span>&nbsp;-->
+<!--                            </button>-->
+<!--            </template>-->
+<!--            <template #item="slotProps">-->
+<!--                <div class="p-datatable-wrapper">-->
+
+<!--                        <v-record :key="slotProps.index"-->
+<!--                                  :conf="getHasmanyConf(slotProps.index)" :inlist="true" :indexInlist="slotProps.index"-->
+<!--                                  @actionInlist="executeActionInlist">-->
+<!--                        </v-record>-->
+<!--                </div>-->
+<!--            </template>-->
+<!--        </OrderList>-->
+
+<!--        <div class="p-datatable p-component p-datatable-responsive-scroll min-w-full mt-4">-->
+<!--            <div class="p-datatable-header">-->
+<!--                {{ translate(modelName) }}-->
+<!--            </div>-->
+<!--            <div class="p-datatable-wrapper">-->
+<!--                <table role="table" class="p-datatable-table">-->
+<!--                    <thead class="p-datatable-thead" role="rowgroup">-->
+<!--                    <tr role="row">-->
+
+<!--                        <th class="" role="columnheader">-->
+
+<!--                        </th>-->
+<!--                        <th v-for="label in getHasmanyLabels()" class="" role="columnheader">-->
+<!--                            {{ label }}-->
+<!--                        </th>-->
+<!--                    </tr>-->
+<!--                    </thead>-->
+<!--                    <tbody class="p-datatable-tbody" role="rowgroup">-->
+
+<!--                    <v-record v-for="(data,index) in value" :key="index"-->
+<!--                              :conf="getHasmanyConf(index)" :inlist="true" :indexInlist="index"-->
+<!--                              @actionInlist="executeActionInlist">-->
+<!--                    </v-record>-->
+<!--                    </tbody>-->
+<!--                    <tfoot class="mt-3">-->
+<!--                    <div class="p-4">-->
+<!--                        <span class="d-block text-danger text-truncate font-weight-medium" v-if="outOfLimit()">-->
+<!--                        &lt;!&ndash; Limite massimo raggiunto &ndash;&gt;-->
+<!--                        {{ translate('app.limite-raggiunto') }}-->
+<!--                        </span>-->
+<!--                        <button v-else @click="addItem" type="button"-->
+<!--                                class="p-button p-button-sm p-component p-button-outlined">-->
+<!--                            <span>{{ translate('app.aggiungi') }}</span>&nbsp;-->
+<!--                        </button>-->
+<!--                    </div>-->
+
+<!--                    </tfoot>-->
+<!--                </table>-->
+<!--            </div>-->
+<!--        </div>-->
+
+
+<!--    </template>-->
     <template v-else>
         <Card ref="el">
             <template #header>

@@ -58,7 +58,7 @@
                                       :layout="'simple'"></c-action>
                         </template>
                     </Column>
-                    <Column v-for="(col) in getVisibleFields()" :field="col" :header="col" :key="col"
+                    <Column v-for="(col) in getVisibleFields()" :field="col" :header="columnLabel(col)" :key="col"
                             :sortable="isSortable(col)" :dir="sortDirection(col)">
                         <template #body="slotProps">
                             <!--                    {{slotProps.data[col]}} {{ slotProps.index}}-->
@@ -117,7 +117,8 @@ export default {
                 componentName: null,
                 componentConf: {},
                 classWidth: 'w-9'
-            }
+            },
+            labelCols : {}
         }
     },
     methods: {
@@ -235,6 +236,7 @@ export default {
                     fConf[key] = Object.assign(fConf[key], fieldsConfig[key]);
                 }
                 that.setFieldLabel(key,fConf[key]);
+                that.labelCols[key] = fConf[key].label;
             }
             // configurazione finale dei widgets
             let widgetsConfig = [];
@@ -257,6 +259,9 @@ export default {
             //console.log('vList value',that.value)
             //console.log('vList setWidgetsConfig',widgetsConfig)
             that.widgetsConfig = widgetsConfig;
+        },
+        columnLabel(col) {
+          return this.labelCols[col];
         },
         isSortable(field) {
             var that = this;
