@@ -17,6 +17,7 @@ import CrudVars from "./lib/CrudVars";
 import routeConfs from "./confs/routes";
 import cManage from './app/cManage.vue';
 import aBase from './actions/aBase.vue';
+import Server from './lib/Server.js';
 
 export default {
     install(app) {
@@ -34,6 +35,7 @@ export default {
     CrudComponent,cAction,CrudCore,routerConf,CrudVars,routeConfs,
     cView,
     vRecord,vSearch,cManage,vList,vListEdit,cImport,
-    aBase
+    aBase,
+    Server
 
 }

@@ -15,9 +15,11 @@
         </div>
         <div >
             <div v-show="mode=='list'">
-                <c-view v-if="!searchComponentName" :conf="search" ref="vSearch" @search="searchList"></c-view>
-                <component v-else :is="searchComponentName" :conf="search" ref="vSearch" @search="searchList"></component>
-
+                <template v-if="!hideSearch">
+                    <c-view v-if="!searchComponentName" :conf="search" ref="vSearch" @search="searchList"></c-view>
+                    <component v-else :is="searchComponentName" :conf="search" ref="vSearch" @search="searchList"></component>
+                </template>
+                
 <!--                <Divider align="center" class="listDivider mt-5">-->
 <!--                    <span class="p-tag bg-primary-700 text-white">-->
 <!--                                    Elenco elementi-->
@@ -76,6 +78,9 @@ export default {
         }
         if (!('sectionTitle' in that.conf)) {
             that.conf.sectionTitle = null;
+        }
+        if (!('hideSearch' in that.conf)) {
+            that.hideSearch = false;
         }
         let wc = new viewWrapperConf();
         console.log('wc',wc);
