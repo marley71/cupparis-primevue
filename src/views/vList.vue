@@ -3,6 +3,11 @@
 
     <BlockUI :blocked="!loaded">
         <div v-if="loaded">
+            <template v-for="(v,row) in value">
+                <template v-for="(col) in getHiddenFields()" :key="col">
+                    <c-widget :ref="'w'+row+'_'+col" :conf="getWidgetConf(row,col,v[col])"></c-widget>
+                </template>
+            </template>
             <slot name="header" :collectionActions="collectionActions">
 
 
@@ -230,7 +235,7 @@ export default {
             for (let f in that.fields) {
                 let key = that.fields[f];
                 fConf[key] = {
-                    type: 'w-text',
+                    type: that.defaultWidgetType,
                 }
                 if (fieldsConfig[key]) {
                     fConf[key] = Object.assign(fConf[key], fieldsConfig[key]);
@@ -357,6 +362,33 @@ export default {
         },
         hidePanel() {
             this.$refs.panel.hide();
+        },
+
+        getValue() {
+            let that = this;
+            let vs = [];
+            for (let i in that.value) {
+                let r = that.getRowData(i);
+                vs.push(r);
+            }
+            return vs;
+        },
+
+        getRowData (index) {
+            var that = this;
+            var values = {};
+            for (var k in that.fields) {
+                let field = that.fields[k];
+                console.log('w ref','w'+index+'_'+field)
+                let w = that.$refs['w'+index+'_'+field];
+                if (w) {
+                    WW = w;
+                    console.log('w',w);
+                    values[field] = w[0].instance().getValue()
+                }
+            }
+            console.log('rowData values',values);
+            return values;
         }
     }
 }

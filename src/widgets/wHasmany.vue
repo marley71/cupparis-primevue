@@ -1,7 +1,7 @@
 <template>
     <template v-if="layout=='list'">
-
-        <div class="p-datatable p-component p-datatable-responsive-scroll min-w-full mt-4">
+        <v-list-hasmany ref="listView" :conf="getHasmanyList()"></v-list-hasmany>
+        <!-- <div class="p-datatable p-component p-datatable-responsive-scroll min-w-full mt-4">
             <div class="p-datatable-header">
                 {{ translate(modelName) }}
             </div>
@@ -20,7 +20,7 @@
                     </thead>
                     <tbody class="p-datatable-tbody" role="rowgroup">
 
-                    <v-record v-for="(data,index) in value" :key="index"
+                    <v-record v-for="(data,index) in hasmanyValue" :key="index"
                               :conf="getHasmanyConf(index)" :inlist="true" :indexInlist="index"
                               @actionInlist="executeActionInlist">
                     </v-record>
@@ -28,7 +28,6 @@
                     <tfoot class="mt-3">
                     <div class="p-4">
                         <span class="d-block text-danger text-truncate font-weight-medium" v-if="outOfLimit()">
-                        <!-- Limite massimo raggiunto -->
                         {{ translate('app.limite-raggiunto') }}
                         </span>
                         <button v-else @click="addItem" type="button"
@@ -40,7 +39,7 @@
                     </tfoot>
                 </table>
             </div>
-        </div>
+        </div> -->
 
 
     </template>
@@ -127,7 +126,7 @@
             </template>
             <template #content>
                 <div class="flex flex-column">
-                    <template v-for="(data,index) in value" :key="index">
+                    <template v-for="(data,index) in hasmanyValue" :key="index">
                         <hr>
                         <div class="flex align-self-end">
                             <Button icon="fa fa-times" @click="removeItem(index)" :label="index"></Button>
@@ -143,7 +142,7 @@
                 </span>
                 <button v-else @click="addItem" type="button"
                         class="p-button p-button-sm p-component p-button-outlined">
-                    <span>{{ translate('app.aggiungi') }}</span>&nbsp;
+                    <span>{{ translate('app.aggiungi') }} lllllll</span>&nbsp;
                 </button>
             </template>
         </Card>
@@ -171,12 +170,16 @@ export default {
         setTimeout(this.ready, 10);
     },
     data() {
+        window.HS = this;
         var that = this;
+        let baseName = that.conf.hasmanyConf.modelName?that.conf.hasmanyConf.modelName:that.conf.name;
+        console.log('BASENAME',baseName);
         if (!this.conf.hasmanyConf.getFieldName) {
             this.conf.hasmanyConf.getFieldName = (name) => {
-                return that.conf.modelName + '-' + name + '[]';
+                return baseName + '-' + name + '[]';
             }
         }
+        this.conf.hasmanyValue = that.trasformValue(that.conf.value);
         return this.conf;
     },
     methods: {
@@ -223,16 +226,50 @@ export default {
                 v[fields[f]] = defVal;
             }
             v.status = 'created';
-            this.value.push(v);
+
+            if (this.layout=='list') {
+                this.value.push(v);
+                this.$refs.listView.reload();
+            } else {
+                this.value.push(v);
+                this.hasmanyValue[window.performance.now()] = v;
+            }
+            
+           
+            
         },
         getHasmanyConf(i) {
             let that = this;
             let hs = CrudCore.clone(that.hasmanyConf);
             hs.routeName = null;
             hs.actions = [];
-            hs.value = that.value[i];
+            hs.value = that.hasmanyValue[i];
             hs.type = 'v-view';
-            console.log('HS', hs);
+            //console.log('HS', hs);
+            return hs;
+        },
+        getHasmanyList() {
+            let that = this;
+            let hs = CrudCore.clone(that.hasmanyConf);
+            hs.type = 'v-list-hasmany'
+            hs.routeName = null;
+            hs.actions = ['action-delete','action-insert'];
+            hs.actionsConfig = {
+                'action-delete':{
+                    execute() {
+                        that.removeItem(this.index);
+                        //that.value.splice(this.index,1);
+                    }
+                },
+                'action-insert':{
+                    
+                    execute() {
+                        that.addItem();
+                    }
+                },
+            }
+            hs.value = that.value;
+            //console.log('HS', hs);
             return hs;
         },
         getHasmanyLabels() {
@@ -257,11 +294,33 @@ export default {
 
         },
         removeItem(index) {
-            console.log('remove index', index, this.value);
-            if (index < this.value.length) {
-                this.value.splice(parseInt(index), 1);
+            let that = this;
+            if (this.layout == 'list') {
+                let v = this.$refs.listView.getValue();
+                //console.log('LIST VALUES',v);
+                v.splice(index,1);
+                that.value = v;
+                this.$refs.listView.value = that.value;
+                this.$refs.listView.reload();
+            } else {
+                let rIndex = Object.keys(this.hasmanyValue).indexOf(index);
+                //console.log('remove index', index, this.value);
+                if (rIndex < this.value.length) {
+                    this.value.splice(parseInt(rIndex), 1);
+                }
+                //console.log('removed index', rIndex, this.value);
+                delete this.hasmanyValue[index];
+                //this.hasmanyValue = this.trasformValue(this.value);
             }
-            console.log('removed index', index, this.value);
+            
+        },
+        trasformValue(value) {
+            let hasmanyValue = {};
+            let items = value || [];
+            for(let i in items) {
+                hasmanyValue[ window.performance.now() ] = items[i];
+            }
+            return hasmanyValue;
         }
     }
 }

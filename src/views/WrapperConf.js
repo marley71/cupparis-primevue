@@ -72,17 +72,17 @@ export default class WrapperConf {
 
     loadConf(conf) {
         let that = this;
-        console.log('VIEW CONF',conf);
+        //console.log('VIEW CONF',conf);
         if (!conf.type)
             throw "confurazione non trovata per la view definire il type della vista";
         var defConf = null;
         if (['v-edit','v-view','v-insert','v-record','v-search'].indexOf(conf.type) >= 0) {
             defConf = CrudCore.clone(that.recordDefaultConf);
-        } else if (['v-list','v-list-edit'].indexOf(conf.type) >= 0) {
+        } else if (['v-list','v-list-edit','v-list-hasmany'].indexOf(conf.type) >= 0) {
             defConf = CrudCore.clone(that.listDefaultConf);
         }
         let wName = CrudCore.camelCase(conf.type || that.defaultConf.type);
-
+        //console.log('wname',that[wName])
         if (that[wName]) {
             conf = that[wName](conf);
         }
@@ -172,7 +172,11 @@ export default class WrapperConf {
          *             ]
          */
     }
-
+    
+    vListHasmany(conf) {
+        conf.type = 'v-list-hasmany';
+        return conf;
+    }
     vRecord(conf) {
         if (!conf.layout) {
             conf.layout = viewConfs.recordLayouts.record

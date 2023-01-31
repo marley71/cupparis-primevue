@@ -89,6 +89,7 @@ export default {
                 return CrudCore.clone(mc[type]); // TODO mettere il clone
             }
             let dt = CrudVars.viewTypeToViewConf[type];
+            console.log('ModelConfs.'+modelName+'.'+dt,mc[dt])
             if (mc[dt]) {
                 return CrudCore.clone(mc[dt]);
             }

@@ -5,6 +5,9 @@
     <template v-else-if="conf.type==='v-list'">
         <v-list :conf="conf" ref="vRef"></v-list>
     </template>
+    <template v-else-if="conf.type==='v-list-hasmany'">
+        <v-list-hasmany :conf="conf" ref="vRef"></v-list-hasmany>
+    </template>
     <template v-else-if="conf.type==='v-list-edit'">
         <v-list-edit :conf="conf" ref="vRef"></v-list-edit>
     </template>
@@ -33,12 +36,13 @@ import CrudComponent from "../CrudComponent.vue";
 import vBase from "./vBase.vue";
 import vList from "./vList.vue";
 import vListEdit from './vListEdit.vue';
+import vListHasmany from "./vListHasmany.vue";
 import vRecord from "./vRecord.vue";
 import vSearch from "./vSearch.vue";
 
 export default {
     name : "cView",
-    components: {vBase,vList,vListEdit,vRecord,vSearch},
+    components: {vBase,vList,vListEdit,vRecord,vSearch,vListHasmany},
     extends: CrudComponent,
     props : ['conf'],
     methods: {

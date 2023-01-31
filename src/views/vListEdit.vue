@@ -251,19 +251,7 @@ export default {
             console.log('rowEditData values',values);
             return values;
         },
-        getRowData (index) {
-            var that = this;
-            var values = {};
-            for (var k in that.widgets[index]) {
-                //values[k] = that.getWidget(index,k);
-                //console.log('edit r',that.view.widgetsEdit[that.index][k])
-                var sref = that.widgets[index][k].cRef; //  're-' + that.index + '-' +  k;
-                if (that.store.cRefs[sref])
-                    values[k] = that.getWidget(index,k).getValue();
-            }
-            console.log('rowData values',values);
-            return values;
-        }
+        
     }
 }
 </script>
