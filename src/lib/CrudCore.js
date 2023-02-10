@@ -1,7 +1,7 @@
 import ProtocolList from "./ProtocolList.js";
 import ProtocolRecord from "./ProtocolRecord.js";
 import cuppariSakai from "../index";
-// import cWidget from "../widgets/cWidget.vue";
+//import cWidget from "../widgets/cWidget.vue";
 // import wHasmany from "../widgets/wHasmany.vue";
 // import wSwap from "../widgets/wSwap.vue";
 // import CrudComponent from "../CrudComponent.vue";
@@ -17,7 +17,7 @@ CrudCore.useItems={};
 CrudCore.directiveItems={};
 CrudCore.componentItems={
     // 'crud-component': CrudComponent,
-    // 'c-widget' : cWidget,
+    //'c-widget' : cWidget,
     // 'w-hasmany' :  wHasmany,
     // 'w-swap' :  wSwap,
 };

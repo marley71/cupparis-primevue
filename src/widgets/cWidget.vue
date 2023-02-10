@@ -165,6 +165,7 @@
         <Chips v-model="value" @add="add" @remove="remove"/>
     </template>
     <template v-else>
+        <component :is="type" :conf="wConf"></component>
         <div>Widget non riconosciuto {{ type }}</div>
     </template>
 </template>

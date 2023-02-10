@@ -55,6 +55,19 @@ export default class WrapperConf {
         return conf;
     }
 
+    wHasmany(conf) {
+        if (!conf.hasmanyType) {
+            conf.hasmanyType = 'record';
+        }
+        if (!conf.hasmanyConf) {
+            conf.hasmanyConf = {};
+        }
+        if (!conf.hasmanyConf.fieldsConfig) {
+            conf.hasmanyConf.fieldsConfig = {};
+        }
+        conf.hasmanyConf.defaultWidgetType = 'w-input'
+        return conf;
+    }
     wSelectButton(conf) {
         conf.options = this.mapOptions(conf.domainValues,conf.domainValuesOrder);
         return conf;

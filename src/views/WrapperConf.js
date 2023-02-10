@@ -44,7 +44,7 @@ export default class WrapperConf {
         actionsConfig: {},
         metadata:{},
         pagination:{},
-        selectionMode: null,
+        selectionMode: 'multiple',
         autoload : true,
     }
 

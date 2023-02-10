@@ -58,6 +58,12 @@ export default {
         }
         this.Server = Server;
     },
+    mounted() {
+        let that = this;
+        if(that.controlType == 'link') {
+            that.execute();
+        }   
+    },
     data() {
         let that = this;
         let wc = new WrapperConf();
@@ -68,6 +74,7 @@ export default {
                 dt[k] = ext[k];
             }
         }
+        
         dt.wConf = ext;
         //console.log('widget finalData',dt);
         return dt;
