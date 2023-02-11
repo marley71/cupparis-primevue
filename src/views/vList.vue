@@ -207,8 +207,8 @@ export default {
                 aConf.view = that;
                 that.collectionActions.actions[aName] = aConf;
             }
-            console.log('RECORDACTIONS', that.recordActionsConf)
-            console.log('GLOBAL ACTIONS', that.collectionActions);
+            // console.log('RECORDACTIONS', that.recordActionsConf)
+            // console.log('GLOBAL ACTIONS', that.collectionActions);
             this._setMenuCollection();
         },
 
@@ -337,20 +337,17 @@ export default {
         _setMenuCollection() {
             let that = this;
             let items = [];
-            for (let name in that.collectionActions) {
+            for (let name in that.collectionActions.actions) {
                 items.push({
-                    label: that.collectionActions[name].text,
-                    icon: that.collectionActions[name].icon,
-                    command: () => that.collectionActions[name].execute(),
-                    disabled: that.collectionActions[name].disabled,
+                    label: that.collectionActions.actions[name].text,
+                    icon: that.collectionActions.actions[name].icon,
+                    command: () => that.collectionActions.actions[name].execute(),
+                    disabled: that.collectionActions.actions[name].disabled,
                     action: name,
                 })
             }
             that.menuCollection = items;
-            // that.menuCollection.push({
-            //     label : 'Actions',
-            //     items : items,
-            // })
+            console.log('menuCollection',that.menuCollection,that.collectionActions)
         },
         showPanel(event, conf) {
             if (conf) {

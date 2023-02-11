@@ -28,7 +28,12 @@
 
                     <template #header>
 
-                        <div class="surface-section px-4 py-5 md:px-6 lg:px-8">
+                        <Menubar :model="menuCollection" class="w-full">
+                            <template  v-if="title" #start>
+                                <span>{{title}}</span>
+                            </template>
+                        </Menubar>
+                        <!-- <div class="surface-section px-4 py-5 md:px-6 lg:px-8">
                             <div class="flex align-items-start flex-column lg:justify-content-start lg:align-items-center lg:flex-row">
 
                                 <template v-if="Object.keys(collectionActions).length > 0">
@@ -38,7 +43,7 @@
 
                                 </template>
                             </div>
-                        </div>
+                        </div> -->
 
 
                     </template>
@@ -96,13 +101,11 @@ export default {
     extends: vList,
     props: ['conf'],
     components: {cAction},
-    mounted() {
-        
+    mounted() {   
         if (this.autoload)
             this.load();
     },
     data() {
-        console.log('aaaaaaa');
         return {
             rows: 5,
             menuCollection: [],

@@ -37,8 +37,8 @@
         <div class="p-inputgroup">
 
             <Button icon="fa fa-times" @click="change($event,'clear')"/>
-        <AutoComplete class="w-full" :name="name" v-model="autocompleteValue" :suggestions="suggestions"
-                      @complete="search" option-label="label" option-value="id"
+            <AutoComplete class="w-full" :name="name" v-model="autocompleteValue" :suggestions="suggestions"
+                      @complete="search" :option-label="getAutocompleteLabel" option-value="id"
                       v-bind="extraBind" @change="change" @item-select="itemSelect"/>
         </div>
     </template>
