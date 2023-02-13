@@ -1,27 +1,18 @@
 <template>
-    <!--    <button class="p-button p-1 p-button-outlined" v-if="controlType=='button' && _visible()" type="button"-->
-    <!--            :title="translate(title)" :class="css + icon?'p-button-icon':''" v-on:click="_execute($event)" v-bind:disabled="_disabled()" >-->
-    <!--        <i class="m-1" v-show="icon" :class="icon"></i>-->
-    <!--        <span>{{ translate(text) }}</span>-->
-    <!--    </button>-->
     <template v-if="controlType=='button' && _visible()">
-
-            <Button :title="translate(title)" :label="translate(text)"
-                    :class=getActionClass()
-                    :icon="icon"
-                    v-on:click="_execute($event)" v-bind:disabled="_disabled()"
-            />
+        <Button :title="translate(title)" :label="translate(text)"
+                :class=getActionClass()
+                :icon="icon"
+                v-on:click="_execute($event)" v-bind:disabled="_disabled()"
+        />
     </template>
-    <!--    <button class="p-button p-1 p-button-outlined"  type="button"-->
-    <!--            :title="translate(title)" :class="css + icon?'p-button-icon':''" >-->
-    <!--        <i class="m-1" v-show="icon" :class="icon"></i>-->
-    <!--        <span>{{ translate(text) }}</span>-->
-    <!--    </button>-->
-    <a v-else-if="controlType=='link' && _visible()" class="p-button p-button-outlined" :target="target" :href="_href()"
-       :title="translate(title)" :class="css + icon?'p-button-icon':''" :disabled="_disabled()">
-        <i class="m-1" v-show="icon" :class="icon"></i>
-        <span>{{ translate(text) }}</span>
-    </a>
+    <template v-else-if="controlType=='link' && _visible()">
+        <a class="p-button p-button-outlined" :target="target" :href="_href()"
+            :title="translate(title)" :class="css + icon?'p-button-icon':''" :disabled="_disabled()">
+            <i class="m-1" v-show="icon" :class="icon"></i>
+            <span>{{ translate(text) }}</span>
+        </a>
+    </template>
     <div v-if="['button','link'].indexOf(controlType) < 0">
         <b>controlType ({{ controlType }}) non riconosciuto</b>
     </div>
@@ -58,12 +49,12 @@ export default {
         }
         this.Server = Server;
     },
-    mounted() {
-        let that = this;
-        if(that.controlType == 'link') {
-            that.execute();
-        }   
-    },
+    // mounted() {
+    //     let that = this;
+    //     if(that.controlType == 'link') {
+    //         that.execute();
+    //     }   
+    // },
     data() {
         let that = this;
         let wc = new WrapperConf();

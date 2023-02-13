@@ -100,7 +100,7 @@
 </template>
 
 <script>
-//import cWidget from "../widgets/cWidget.vue";
+import cWidget from "../widgets/cWidget.vue";
 import cAction from "../actions/cAction.vue";
 import actionConfs from "../confs/actions";
 import vBase from './vBase.vue';
@@ -109,7 +109,7 @@ export default {
     name: "v-list",
     extends: vBase,
     props: ['conf'],
-    components: {cAction},
+    components: {cAction,cWidget},
     mounted() {
         if (this.autoload)
             this.load();
@@ -129,6 +129,9 @@ export default {
     methods: {
         draw() {
             this.setActions();
+            if (this.getPerPage() >= this.getTotal()) {
+                this.paginator = false;
+            }
             this.loaded = true;
 
         },

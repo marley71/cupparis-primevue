@@ -177,21 +177,26 @@ export default {
             this.__dialog('custom',msg,props,callbacks)
         },
 
-        componentDialog(compName,componentConf,title) {
+        componentDialog(compName,componentConf,title,dialogConf) {
             const div = document.createElement('div');
             document.body.appendChild(div);
             let  comp = defineAsyncComponent(() => import('./dialogs/dCustom.vue'))
+            dialogConf = dialogConf || {
+                title : title,
+                display : true,
+                callbacks : {},
+            };
+            let cc = {
+                componentName : compName,
+                componentConf : componentConf,
+            };
             let d = createApp(comp,{
-                conf : {
-                    title : title,
-                    componentName : compName,
-                    componentConf : componentConf,
-                    display : true,
-                    callbacks : {},
-                },
+                confComponent : cc,
+                conf : dialogConf
             });
             CrudCore.setupApp(d);
             d.mount(div);
+            return d;
         },
 
         __dialog(type,msg,props,callbacks) {

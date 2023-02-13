@@ -45,7 +45,7 @@
     <template v-else-if="type=='w-checkbox'">
         <div class="w-full flex" :class="layout=='row'?'flex-row':'flex-column'">
             <div class="field-checkbox mr-2" v-for="(label,key) in domainValues" :key="key">
-                <Checkbox :name="name" v-model="value" :value="key" v-bind="extraBind" @change="change"/>
+                <Checkbox :name="getFieldName()" v-model="value" :value="key" v-bind="extraBind" @change="change"/>
                 <label :for="key" v-html="label"></label>
             </div>
         </div>
@@ -98,17 +98,17 @@
     <template v-else-if="type=='w-multi-select'">
         <MultiSelect class="w-full" v-model="value" :options="options" optionLabel="name" optionValue="code"
                      :placeholder="placeholder" :filter="filter" @change="change()">
-            <!--            <template #value="slotProps">-->
-            <!--                <template v-if="!slotProps.value || slotProps.value.length === 0">-->
-            <!--                    <div class="p-1">{{name}}</div>-->
-            <!--                </template>-->
-            <!--                <template v-else>-->
-            <!--                    <div class="inline-flex align-items-center py-1 px-2 border-round mr-2" v-for="option of slotProps.value" :key="option">-->
-            <!--                        <input type="hidden" :name="getFieldName()" :value="option">-->
-            <!--                        <div>{{getLabel(option)}}kk {{slotProps}}</div>-->
-            <!--                    </div>-->
-            <!--                </template>-->
-            <!--            </template>-->
+            <template #value="slotProps">
+                <template v-if="!slotProps.value || slotProps.value.length === 0">
+                    <div class="p-1">{{name}}</div>
+                </template>
+                <template v-else>
+                    <div class="inline-flex align-items-center py-1 px-2 border-round mr-2" v-for="option of slotProps.value" :key="option">
+                        <input type="hidden" :name="getFieldName()" :value="option">
+                        <div>{{getMultiSelectLabel(option)}}</div>
+                    </div>
+                </template>
+            </template>
         </MultiSelect>
     </template>
     <template v-else-if="type=='w-swap'">
@@ -353,12 +353,19 @@ export default {
             }
         },
         getFieldName() {
+            if (this.type == 'w-checkbox') {
+                return this.name + '[]';
+            }
             return this.name;
         },
 
         getLabel() {
             //console.log('options',options)
             return this.label;
+        },
+        getMultiSelectLabel(option) {
+            console.log('option',option,this.options,this.domainValues);
+            return this.domainValues[option];
         },
         itemSelect() {
             this.value = this.autocompleteValue.id;

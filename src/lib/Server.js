@@ -23,7 +23,7 @@ Server.getUrl = function (url) {
 
 Server.getHearders = function() {
     var headers = {};
-    if (import.meta.env.VITE_TOKEN) {
+    if (import.meta.env.VITE_TOKEN && !import.meta.env.PROD) {
         headers = {
             'Authorization': 'Bearer ' +  import.meta.env.VITE_TOKEN
         }
@@ -40,7 +40,7 @@ Server.getHearders = function() {
             'X-CSRF-TOKEN': (selector?selector.content:'') //jQuery('meta[name="csrf-token"]').attr('content')
         }
     }
-    console.log('HEADERS',headers);
+    //console.log('HEADERS',headers);
     return headers;
 }
 

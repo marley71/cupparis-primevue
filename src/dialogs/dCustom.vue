@@ -1,5 +1,5 @@
 <template>
-    <Dialog class="p-dialog" v-model:visible="display" :modal="true" :style="{width: '50vw'}">
+    <Dialog class="p-dialog" v-model:visible="display" :modal="true" :style="{width: width}">
         <template #header>
             <h3>{{ translate(title) }}</h3>
         </template>
@@ -34,14 +34,15 @@ export default {
   name: 'd-custom',
   extends: dBase,
     components: {CView, Button,Dialog},
+    props : ['confComponent'],
     mounted () {
-    if (!this.title) {
-      this.title = 'app.nome-app'
-    }
-  },
+      if (!this.title) {
+        this.title = 'app.nome-app'
+      }
+    },
     data() {
-      let componentName = this.conf.componentName?this.conf.componentName:null;
-      let componentConf = this.conf.componentConf?this.conf.componentConf:null;
+      let componentName = this.confComponent.componentName?this.confComponent.componentName:null;
+      let componentConf = this.confComponent.componentConf?this.confComponent.componentConf:null;
       console.log('custom',componentName,componentConf);
       return {
           componentName : componentName,
