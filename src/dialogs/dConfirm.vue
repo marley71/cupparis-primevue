@@ -1,5 +1,5 @@
 <template >
-    <Dialog class="p-dialog" v-model:visible="display" :modal="true" :style="{width: '50vw'}" :class="customClass ? customClass : ''" >
+    <Dialog class="p-dialog" v-model:visible="display" :modal="true" :style="{width: width}" :class="customClass ? customClass : ''" >
         <template #header>
             <h3>{{ translate(title) }}</h3>
         </template>

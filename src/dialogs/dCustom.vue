@@ -41,8 +41,9 @@ export default {
       }
     },
     data() {
-      let componentName = this.confComponent.componentName?this.confComponent.componentName:null;
-      let componentConf = this.confComponent.componentConf?this.confComponent.componentConf:null;
+      let cc = this.confComponent || {};
+      let componentName = cc.componentName?cc.componentName:null;
+      let componentConf = cc.componentConf?cc.componentConf:null;
       console.log('custom',componentName,componentConf);
       return {
           componentName : componentName,

@@ -14,7 +14,7 @@ export default {
           visible: true,
           message: '',
           title: '',
-          width: 'w-1/2',
+          width: '50vw',
           callbacks: {},
           customClass:'',
       },this.conf);
