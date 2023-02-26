@@ -174,7 +174,7 @@ export default {
                     }
                 }
             }
-            console.log(field,"PROPLAYOUT",layout,prop);
+            //console.log(field,"PROPLAYOUT",layout,prop);
             if (!prop) {
                 return layout;
             }

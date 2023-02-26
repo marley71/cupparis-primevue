@@ -15,7 +15,7 @@
                     <template v-for="(data,index) in hasmanyValue" :key="index">
                         <hr>
                         <div class="flex align-self-end">
-                            <Button icon="fa fa-times" @click="removeItem(index)" :label="index"></Button>
+                            <Button class="p-button-text p-button-danger" icon="fa fa-times" @click="removeItem(index)"></Button>
                         </div>
                         <v-record :conf="getHasmanyConf(index)"></v-record>
                     </template>
@@ -28,7 +28,7 @@
                 </span>
                 <button v-else @click="addItem" type="button"
                         class="p-button p-button-sm p-component p-button-outlined">
-                    <span>{{ translate('app.aggiungi') }} lllllll</span>&nbsp;
+                    <span>{{ translate('app.aggiungi') }}</span>&nbsp;
                 </button>
             </template>
         </Card>
@@ -94,8 +94,14 @@ export default {
         setValue(val) {
             let that = this;
             that.value = [];
+            that.value = val;
             setTimeout(function () {
-                that.value = val;
+                if (that.hasmanyType == 'list') {
+                    that.$refs.listView.reload();
+                } else {
+                    that.hasmanyValue = that.trasformValue(that.value);
+                }
+                
             }, 1)
 
         },
@@ -151,7 +157,12 @@ export default {
                     }
                 },
                 'action-insert':{
-                    
+                    disabled() {
+                        if (that.limit) {
+                            return that.value.length >= that.limit
+                        }
+                        return false;
+                    },
                     execute() {
                         that.addItem();
                     }
@@ -184,7 +195,7 @@ export default {
         },
         removeItem(index) {
             let that = this;
-            if (this.layout == 'list') {
+            if (this.hasmanyType == 'list') {
                 let v = this.$refs.listView.getValue();
                 //console.log('LIST VALUES',v);
                 v.splice(index,1);
