@@ -1,6 +1,8 @@
 <template>
-    <input :name="getFieldName()" type="hidden" :value="toggleValue?1:0">
-    <InputSwitch v-model="toggleValue" @change="swap()" :disabled="extraBind.disabled?true:false"/>
+    <div>
+        <input :name="getFieldName()" type="hidden" :value="toggleValue?1:0">
+        <InputSwitch v-model="toggleValue" @change="swap()" :disabled="extraBind.disabled?true:false"/>
+    </div>
 </template>
 
 <script>
@@ -88,9 +90,6 @@ export default {
         getValue() {
             return this.value;
         },
-        change() {
-
-        }
     }
 }
 </script>

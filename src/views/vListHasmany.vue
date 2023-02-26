@@ -108,6 +108,7 @@ export default {
     data() {
         return {
             rows: 5,
+            selected : null,
             menuCollection: [],
             panelConf: {
                 componentName: null,

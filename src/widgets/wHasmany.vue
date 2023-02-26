@@ -1,6 +1,8 @@
 <template>
     <template v-if="hasmanyType=='list'">
-        <v-list-hasmany ref="listView" :conf="getHasmanyList()"></v-list-hasmany>
+        <div>
+            <v-list-hasmany ref="listView" :conf="getHasmanyList()"></v-list-hasmany>
+        </div>
     </template>
     <template v-else-if="hasmanyType=='record'">
         <Card ref="el">
@@ -97,6 +99,7 @@ export default {
             that.value = val;
             setTimeout(function () {
                 if (that.hasmanyType == 'list') {
+                    that.$refs.listView.value = that.value;
                     that.$refs.listView.reload();
                 } else {
                     that.hasmanyValue = that.trasformValue(that.value);

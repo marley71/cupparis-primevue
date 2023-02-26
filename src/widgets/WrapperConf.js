@@ -73,6 +73,17 @@ export default class WrapperConf {
         return conf;
     }
 
+    wText(conf) {
+        conf.textClass = conf.textClass || '';
+        return conf;
+    }
+
+    wBelongsto(conf) {
+        conf.labelFields = conf.labelFields || ['label'];
+        conf.separator =  conf.separator || ' ';
+        return conf;
+    }
+
     wAutocomplete(conf) {
         conf.route = null;
         conf.suggestions = [];
@@ -210,6 +221,7 @@ export default class WrapperConf {
             json : null, // ultimo json caricato dalla chiamata ajax,
             currentIndex : 0,  // indice corrente delle chiavi di domainValues
         },conf);
+        conf.change = conf.change || function() {};
         //console.log('SWAP',conf);
         return conf;
     }
@@ -254,6 +266,7 @@ export default class WrapperConf {
     wUploadAjax(conf) {
         conf = this.wUpload(conf);
         conf.routeName = 'uploadfile';
+        conf.error = false;
         if (!conf.setRouteValues) {
             conf.setRouteValues =  function (route) {
                 route.setValues({

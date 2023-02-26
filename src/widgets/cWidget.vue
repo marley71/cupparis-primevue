@@ -7,17 +7,20 @@
                    @change="change"></InputText>
     </template>
     <template v-else-if="type=='w-select'">
-        <input type="hidden" :name="name" :value="value">
-        <Dropdown class="w-full" :name="name" v-model="value" :options="options"
-                  option-label="label" option-value="id" :placeholder="placeholder || translate('app.seleziona')"
-                  v-bind="extraBind" @change="change">
-                <template #option="slotProps">
-                    <div
-                        :class="'select-button-option select-button-option-'+name+ ' select-button-option-'+name+'-'+slotProps.option.id"
-                        v-html="slotProps.option.label">
-                    </div>
-                </template>
-        </Dropdown>
+        <div>
+            <input type="hidden" :name="name" :value="value">
+            <Dropdown class="w-full" :name="name" v-model="value" :options="options"
+                    option-label="label" option-value="id" :placeholder="placeholder || translate('app.seleziona')"
+                    v-bind="extraBind" @change="change">
+                    <template #option="slotProps">
+                        <div
+                            :class="'select-button-option select-button-option-'+name+ ' select-button-option-'+name+'-'+slotProps.option.id"
+                            v-html="slotProps.option.label">
+                        </div>
+                    </template>
+            </Dropdown>
+        </div>
+        
     </template>
     <template v-else-if="type=='w-select-button'">
         <input type="hidden" :name="name" v-model="value">
@@ -33,13 +36,15 @@
         </SelectButton>
     </template>
     <template v-else-if="type=='w-autocomplete'">
-        <input type="hidden" :name="name" v-model="value">
-        <div class="p-inputgroup">
+        <div>
+            <input type="hidden" :name="name" v-model="value">
+            <div class="p-inputgroup">
 
-            <Button icon="fa fa-times" @click="change($event,'clear')"/>
-            <AutoComplete class="w-full" :name="name" v-model="autocompleteValue" :suggestions="suggestions"
-                      @complete="search" :option-label="getAutocompleteLabel" option-value="id"
-                      v-bind="extraBind" @change="change" @item-select="itemSelect"/>
+                <Button icon="fa fa-times" @click="change($event,'clear')"/>
+                <AutoComplete class="w-full" :name="name" v-model="autocompleteValue" :suggestions="suggestions"
+                        @complete="search" :option-label="getAutocompleteLabel" option-value="id"
+                        v-bind="extraBind" @change="change" @item-select="itemSelect"/>
+            </div>
         </div>
     </template>
     <template v-else-if="type=='w-checkbox'">
@@ -71,9 +76,11 @@
         <w-hasmany ref="wRef" :conf="conf" @change="change"></w-hasmany>
     </template>
     <template v-else-if="type=='w-belongsto'">
-        <span v-for="(field,index) in labelFields" :key="index">
-            <span v-if="(separator && (index !== 0))">{{ separator }}</span>{{ value[field] }}
-        </span>
+        <div>
+            <span v-for="(field,index) in labelFields" :key="index">
+                <span v-if="(separator && (index !== 0))">{{ separator }}</span>{{ value[field] }}
+            </span>
+        </div>
     </template>
     <template v-else-if="type=='w-custom'">
         <div v-html="value"></div>
@@ -82,12 +89,13 @@
         <ColorPicker v-model="value" @change="change" v-bind="extraBind"/>
     </template>
     <template v-else-if="type=='w-date-picker'">
-        <input type="hidden" :name="name" v-model="value">
-        <div class="p-inputgroup">
-            <Button icon="fa fa-times" @click="change($event,'clear')"/>
-            <Calendar class="w-full" showButtonBar="true" v-model="dateValue" @date-select="change" inputDateFormat="YYYY-MM-DD" date-format="dd/mm/yy" />
+        <div>
+            <input type="hidden" :name="name" v-model="value">
+            <div class="p-inputgroup">
+                <Button icon="fa fa-times" @click="change($event,'clear')"/>
+                <Calendar class="w-full" :showButtonBar="true" v-model="dateValue" @date-select="change" inputDateFormat="YYYY-MM-DD" date-format="dd/mm/yy" />
+            </div>
         </div>
-
     </template>
     <template v-else-if="type=='w-date-text'">
         <span>{{ getFormattedValue() }}</span>
@@ -115,12 +123,14 @@
         <w-swap ref="wRef" :conf="wConf"></w-swap>
     </template>
     <template v-else-if="type=='w-status'">
-        <span v-if="statusType=='icon'">
-            <i :class="currentValue"></i>
-        </span>
-        <span v-else>
-            {{ currentValue }}
-        </span>
+        <div>
+            <span v-if="statusType=='icon'">
+                <i :class="currentValue"></i>
+            </span>
+            <span v-else>
+                {{ currentValue }}
+            </span>
+        </div>
     </template>
     <template v-else-if="type=='w-texthtml'">
         <Editor v-model="value" editorStyle="height: 320px" @text-change="change">
@@ -140,26 +150,27 @@
     </template>
 
     <template v-else-if="type=='w-upload-ajax'">
-        <input type="hidden" v-model="value" :name="getFieldName()">
-        <Message v-if="error" severity="error" :closable="false">{{errorMessage}}</Message>
-        <div class="flex">
-            <FileUpload mode="basic" :auto="true" :customUpload="true" @uploader="uploadFile"
-                        :multiple="false"/>
-            <div class="ml-5">
-                <div class="mt-3" v-if="fileInfo">
-                    <template v-if="['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'].indexOf(fileInfo.mimetype) >= 0">
-                        <i class="fa fa-file-excel fa-2xl"></i>
-                    </template>
-                    <template v-else-if="['application/pdf'].indexOf(fileInfo.mimetype) >= 0">
-                        <i class="fa fa-file-pdf fa-2xl"></i>
-                    </template>
-                    <template v-else>
-                        <i class="fa fa-file fa-2xl"></i>
-                    </template>
+        <div>
+            <input type="hidden" v-model="value" :name="getFieldName()">
+            <Message v-if="error" severity="error" :closable="false">{{errorMessage}}</Message>
+            <div class="flex">
+                <FileUpload mode="basic" :auto="true" :customUpload="true" @uploader="uploadFile"
+                            :multiple="false"/>
+                <div class="ml-5">
+                    <div class="mt-3" v-if="fileInfo">
+                        <template v-if="['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'].indexOf(fileInfo.mimetype) >= 0">
+                            <i class="fa fa-file-excel fa-2xl"></i>
+                        </template>
+                        <template v-else-if="['application/pdf'].indexOf(fileInfo.mimetype) >= 0">
+                            <i class="fa fa-file-pdf fa-2xl"></i>
+                        </template>
+                        <template v-else>
+                            <i class="fa fa-file fa-2xl"></i>
+                        </template>
+                    </div>
                 </div>
             </div>
         </div>
-
     </template>
     <template v-else-if="type=='w-chip'">
         <Chips v-model="value" @add="add" @remove="remove"/>
