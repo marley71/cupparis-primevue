@@ -25,14 +25,23 @@ Server.getHearders = function() {
     var headers = {};
     if (import.meta.env.VITE_TOKEN && !import.meta.env.PROD) {
         headers = {
-            'Authorization': 'Bearer ' +  import.meta.env.VITE_TOKEN
+            'Authorization': 'Bearer ' +  import.meta.env.VITE_TOKEN,
+            'Accept': 'application/json'
+        }
+        return headers;
+    }
+    if (!import.meta.env.VITE_TOKEN && !import.meta.env.PROD) {
+        headers = {
+            'Authorization': 'Bearer ' +  window.localStorage.getItem('token'),
+            'Accept': 'application/json'
         }
         return headers;
     }
     if (CrudVars.useApi) {
         let selector = document.querySelector('meta[name="bearer-token"]');
        headers = {
-           'Authorization': 'Bearer ' +  (selector?selector.content:'') // jQuery('meta[name="bearer-token"]').attr('content')
+           'Authorization': 'Bearer ' +  (selector?selector.content:''), // jQuery('meta[name="bearer-token"]').attr('content')
+           'Accept': 'application/json'
        }
     } else {
         let selector = document.querySelector('meta[name="csrf-token"]');

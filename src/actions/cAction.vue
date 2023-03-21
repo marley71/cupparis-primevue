@@ -86,7 +86,7 @@ export default {
         },
         getActions() {
             var that = this;
-            console.log("GETA",that,that.actions);
+            //console.log("GETA",that,that.actions);
             if (that.actions) {
                 return that.actions;
             }
@@ -109,7 +109,7 @@ export default {
                         }
                     }
                 }
-                console.log("WHITELIST:::",whitelist);
+                //console.log("WHITELIST:::",whitelist);
                 return whitelist;
 
             }
@@ -119,7 +119,7 @@ export default {
         inWhitelist(key) {
             var that = this;
             var whitelist = that.getWhitelist();
-            console.log("WHITELISTTTT",whitelist,key,whitelist.includes(key))
+            //console.log("WHITELISTTTT",whitelist,key,whitelist.includes(key))
             return whitelist.includes(key);
         },
         getLastAction() {
@@ -133,7 +133,7 @@ export default {
             return (whitelist.length === 0) ? '' : whitelist[0];
         },
         instance(key) {
-            console.log('actions ref', key, this.$refs, this.$refs[key])
+            //console.log('actions ref', key, this.$refs, this.$refs[key])
             return this.$refs[key][0];
         },
         getMenubarActions() {
@@ -148,7 +148,7 @@ export default {
                     action: name,
                 })
             }
-            console.log('menubar', items, that.conf);
+            //console.log('menubar', items, that.conf);
             return items;
         }
     }

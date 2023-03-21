@@ -1,8 +1,8 @@
 {
-    "name": "cupparis-sakai",
+    "name": "cupparis-primevue",
     "version": "1.0.0",
     "private": true,
-    "description": "crud cupparis basato su sakai",
+    "description": "crud cupparis basato su primevue",
     "main": "src/index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
@@ -35,7 +35,8 @@
         "jquery": "^3.5.1",
         "npm": "^8.19.3",
         "vue": "3.2.9",
-        "vue-axios": "^3.4.1"
+        "vue-axios": "^3.4.1",
+        "primevue": "^3.18.1"
     },
     "devDependencies": {
         "eslint": "^7.5.0",
