@@ -1,90 +1,46 @@
 <template>
 
     <template v-if="inlist && loaded">
-        <tr role="row" v-if="isInlist">
-            <td class="" role="columnheader">
-<!--                <Button icon="fa fa-trash" class="p-button-outlined p-button-danger"-->
-<!--                    @click="inlistAction(indexInlist,'delete')">-->
-<!--                </Button>-->
-                <Button icon="fa fa-trash" class="p-button-outlined p-button-danger"
-                        @click="removeFromList()">
-                </Button>
-                <template v-for="field in getHiddenFields()">
-                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
-                </template>
-            </td>
+        <slot name="content">
+            <tr role="row" v-if="isInlist">
+                <td class="" role="columnheader">
+    <!--                <Button icon="fa fa-trash" class="p-button-outlined p-button-danger"-->
+    <!--                    @click="inlistAction(indexInlist,'delete')">-->
+    <!--                </Button>-->
+                    <Button icon="fa fa-trash" class="p-button-outlined p-button-danger"
+                            @click="removeFromList()">
+                    </Button>
+                    <template v-for="field in getHiddenFields()">
+                        <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                    </template>
+                </td>
 
 
-            <td v-for="(field,indexV) in getVisibleFields()" :key="field" class="" role="cell">
+                <td v-for="(field,indexV) in getVisibleFields()" :key="field" class="" role="cell">
 
-                <div class="">
-                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
-                </div>
+                    <div class="">
+                        <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                    </div>
 
-            </td>
-        </tr>
+                </td>
+            </tr>
+        </slot>
     </template>
     <template v-if="loaded && !inlist">
 
         <div v-if="loaded">
-            <div>
-                <Divider align="center" class="actionsDivider">
-                                <span class="p-tag text-white">
-                                    {{ title }}
-                                </span>
-
-                </Divider>
-            </div>
-
-            <template v-if="type==='v-view'">
-
-                <template v-for="field in getHiddenFields()">
-                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
-                </template>
-                <div class="grid">
-                    <template v-for="field in getVisibleFields()" :key="field">
-                        <div class="py-3" :class="getWidgetLayout(field,'colClass')">
-                            <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
-                                    <span class="p-float-label">
-                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
-                                    <label :for="field">{{ widgetsConfig[field].label }}</label>
-                                    </span>
-                            </template>
-                            <template v-else>
-
-                                <label class="labelTop" :for="field"
-                                       v-if="getWidgetLayout(field,'labelPosition')=='top'">
-                                    {{ translateUc(widgetsConfig[field].label) }}
-                                </label>
-                                <div class="">
-                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
-                                </div>
-                                <label class="labelBottom" :for="field"
-                                       v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
-                                    {{ translateUc(widgetsConfig[field].label) }}
-                                </label>
-                            </template>
-                        </div>
-
-                        <template v-if="getWidgetLayout(field,'hasDivider')">
-                            <Divider align="center" class="col-10 col-offset-1">
-                                    <span v-if="getWidgetLayout(field,'dividerLabel')"
-                                          class="p-tag text-white">{{ getWidgetLayout(field, 'dividerLabel') }}</span>
-                            </Divider>
-
-                        </template>
-                        <template v-else-if="getWidgetLayout(field,'lastInRow')">
-                            <div class="col-12 max-h-0 p-0">&nbsp;</div>
-                        </template>
-                    </template>
-                </div>
+            <slot name="content">
                 <div>
-                    <c-action ref="actions" :conf="recordActionsConf" layout="buttons"></c-action>
+                    <Divider align="center" class="actionsDivider">
+                                    <span class="p-tag text-white">
+                                        {{ title }}
+                                    </span>
+
+                    </Divider>
                 </div>
-            </template>
-            <template v-else>
-                <form ref="form" enctype="multipart/form-data" @submit.prevent="handleSubmit(!v$.$invalid)"
-                      class="p-fluid">
+
+                <template v-if="type==='v-view'">
+
                     <template v-for="field in getHiddenFields()">
                         <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
                     </template>
@@ -92,22 +48,22 @@
                         <template v-for="field in getVisibleFields()" :key="field">
                             <div class="py-3" :class="getWidgetLayout(field,'colClass')">
                                 <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
-                                    <span class="p-float-label">
-                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
-                                    <label :for="field">{{ widgetsConfig[field].label }}</label>
-                                    </span>
+                                        <span class="p-float-label">
+                                        <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                        <label :for="field">{{ widgetsConfig[field].label }}</label>
+                                        </span>
                                 </template>
                                 <template v-else>
 
                                     <label class="labelTop" :for="field"
-                                           v-if="getWidgetLayout(field,'labelPosition')=='top'">
+                                        v-if="getWidgetLayout(field,'labelPosition')=='top'">
                                         {{ translateUc(widgetsConfig[field].label) }}
                                     </label>
                                     <div class="">
                                         <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
                                     </div>
                                     <label class="labelBottom" :for="field"
-                                           v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
+                                        v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
                                         {{ translateUc(widgetsConfig[field].label) }}
                                     </label>
                                 </template>
@@ -115,8 +71,8 @@
 
                             <template v-if="getWidgetLayout(field,'hasDivider')">
                                 <Divider align="center" class="col-10 col-offset-1">
-                                    <span v-if="getWidgetLayout(field,'dividerLabel')"
-                                          class="p-tag text-white">{{ getWidgetLayout(field, 'dividerLabel') }}</span>
+                                        <span v-if="getWidgetLayout(field,'dividerLabel')"
+                                            class="p-tag text-white">{{ getWidgetLayout(field, 'dividerLabel') }}</span>
                                 </Divider>
 
                             </template>
@@ -125,13 +81,60 @@
                             </template>
                         </template>
                     </div>
+                    <div>
+                        <c-action ref="actions" :conf="recordActionsConf" layout="buttons"></c-action>
+                    </div>
+                </template>
+                <template v-else>
+                    <form ref="form" enctype="multipart/form-data" @submit.prevent="handleSubmit(!v$.$invalid)"
+                        class="p-fluid">
+                        <template v-for="field in getHiddenFields()">
+                            <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                        </template>
+                        <div class="grid">
+                            <template v-for="field in getVisibleFields()" :key="field">
+                                <div class="py-3" :class="getWidgetLayout(field,'colClass')">
+                                    <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
+                                        <span class="p-float-label">
+                                        <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                        <label :for="field">{{ widgetsConfig[field].label }}</label>
+                                        </span>
+                                    </template>
+                                    <template v-else>
 
-                </form>
-                <div>
-                    <c-action ref="actions" :conf="recordActionsConf" layout="buttons"></c-action>
-                </div>
-            </template>
+                                        <label class="labelTop" :for="field"
+                                            v-if="getWidgetLayout(field,'labelPosition')=='top'">
+                                            {{ translateUc(widgetsConfig[field].label) }}
+                                        </label>
+                                        <div class="">
+                                            <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                        </div>
+                                        <label class="labelBottom" :for="field"
+                                            v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
+                                            {{ translateUc(widgetsConfig[field].label) }}
+                                        </label>
+                                    </template>
+                                </div>
 
+                                <template v-if="getWidgetLayout(field,'hasDivider')">
+                                    <Divider align="center" class="col-10 col-offset-1">
+                                        <span v-if="getWidgetLayout(field,'dividerLabel')"
+                                            class="p-tag text-white">{{ getWidgetLayout(field, 'dividerLabel') }}</span>
+                                    </Divider>
+
+                                </template>
+                                <template v-else-if="getWidgetLayout(field,'lastInRow')">
+                                    <div class="col-12 max-h-0 p-0">&nbsp;</div>
+                                </template>
+                            </template>
+                        </div>
+
+                    </form>
+                    <div>
+                        <c-action ref="actions" :conf="recordActionsConf" layout="buttons"></c-action>
+                    </div>
+                </template>
+            </slot>
         </div>
     </template>
 </template>
