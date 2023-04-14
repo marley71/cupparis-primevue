@@ -356,7 +356,7 @@ export default {
             let that = this;
             //return that.translate(that.invalidDateString)
             var md = moment(that.value);
-            console.log('displayFormat',that.displayFormat);
+            //console.log('displayFormat',that.displayFormat);
             if (md.isValid()) {
                 return md.format(that.displayFormat)
             } else {

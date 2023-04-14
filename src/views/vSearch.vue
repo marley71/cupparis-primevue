@@ -32,7 +32,7 @@
                         <c-action ref="actions" :conf="recordActionsConf" :whitelist="['action-search-basic']"
                                   layout="buttons"></c-action>
 
-                        <Input name="s_basic_query" class="p-inputtext p-component w-full"></Input>
+                        <InputText name="s_basic_query" class="p-inputtext p-component w-full"></InputText>
                     </div>
 
                 </form>

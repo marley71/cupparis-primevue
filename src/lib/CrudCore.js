@@ -178,7 +178,7 @@ CrudCore.clone = function (obj) {
 
 CrudCore.translate = function (key,plural,params) {
     let lang = cuppariSakai.CrudVars.lang;
-    console.log('_translate store',key,lang[key]);
+    //console.log('_translate store',key,lang[key]);
     var testi = lang[key];
     if (!testi)
         return key;
@@ -201,16 +201,16 @@ function __dialog(type,msg,props,callbacks) {
     let comp = null;
     switch (type) {
         case 'message':
-            comp = defineAsyncComponent(() => import('@/dialogs/dMessage.vue'))
+            comp = defineAsyncComponent(() => import('../dialogs/dMessage.vue'))
             break;
         case 'error':
-            comp = defineAsyncComponent(() => import('@/dialogs/dError.vue'))
+            comp = defineAsyncComponent(() => import('../dialogs/dError.vue'))
             break;
         case 'warning':
-            comp = defineAsyncComponent(() => import('@/dialogs/dWarning.vue'))
+            comp = defineAsyncComponent(() => import('../dialogs/dWarning.vue'))
             break;
         case 'custom':
-            comp = defineAsyncComponent(() => import('@/dialogs/dCustom.vue'))
+            comp = defineAsyncComponent(() => import('../dialogs/dCustom.vue'))
             break;
     }
     //let comp = defineAsyncComponent(() => import(componentPath))
@@ -305,7 +305,7 @@ CrudCore.customDialog = function(msg,props,callbacks) {
 CrudCore.componentDialog = function(compName,componentConf,title,dialogConf) {
     const div = document.createElement('div');
     document.body.appendChild(div);
-    let  comp = defineAsyncComponent(() => import('@/dialogs/dCustom.vue'))
+    let  comp = defineAsyncComponent(() => import('../dialogs/dCustom.vue'))
     dialogConf = dialogConf || {
         title : title,
         display : true,

@@ -54,11 +54,15 @@ export default {
     },
     data() {
         let that = this;
-        that.conf.title = '';
-        if (that.layout == 'menubar') {
-            that.conf.menubarActions = that.getMenubarActions();
+        if (!that.conf) {
+            console.warn('cAction conf null',that.conf);
         }
-        return that.conf;
+        let cf = that.conf || {};
+        cf.title = '';
+        if (that.layout == 'menubar') {
+            cf.menubarActions = that.getMenubarActions();
+        }
+        return cf;
     },
     methods: {
 

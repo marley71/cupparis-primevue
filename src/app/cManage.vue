@@ -97,6 +97,13 @@ export default {
             that.conf.insert.type = 'v-insert';
             that.conf.insert.routeName = 'insert';
         }
+        if (!('view' in that.conf)) {
+            that.conf.view = Object.assign({},CrudCore.clone(that.conf.view));
+            that.conf.view.type = 'v-view';
+            that.conf.view.routeName = 'view';
+            that.conf.view.modelName = that.conf.modelName;
+            console.log('modelName',that.conf.modelName);
+        }
         that.conf.editComponentName = that.conf.editComponentName || null;
         that.conf.listComponentName = that.conf.listComponentName || null;
         that.conf.searchComponentName = that.conf.searchComponentName || null;
