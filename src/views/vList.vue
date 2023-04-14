@@ -15,9 +15,11 @@
 
             </slot>
             <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig">
-                <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected" :rows="getPerPage()"
+                <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected" 
+                            :rows="getPerPage()"
                            :paginator="paginator" paginatorPosition="both"
-                           :lazy="routeName==null?false:true" @page="onPage($event)" @sort="onSort($event)"
+                           :lazy="routeName==null?false:true" 
+                           @page="onPage($event)" @sort="onSort($event)"
                            :total-records="getTotal()"
                            :first="getFirst()"
                            :sortField="getSortField()"
@@ -59,7 +61,7 @@
                     <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>
                     <Column v-if="hasRecordActions()" :exportable="false" header="Actions">
                         <template #body="slotProps">
-                            <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index]"
+                            <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
                                       :layout="'simple'"></c-action>
                         </template>
                     </Column>
@@ -217,7 +219,10 @@ export default {
 
         getWidgetConf(index, field, data) {
             let that = this;
+            index = index % that.getPerPage();
+            //console.log('GETWIDGETCONF',index,field,data);
             if (!that.widgetsConfig || !that.widgetsConfig[index] || !that.widgetsConfig[index][field]) {
+                console.log('conf non trovata',field,index);
                 return {};
             }
             that.widgetsConfig[index][field].value = data;
@@ -234,6 +239,7 @@ export default {
             }
             let fConf = {};
             let fieldsConfig = that.fieldsConfig || {};
+            //console.log('FIEDLS CONFIG',fieldsConfig,that.defaultWidgetType);
             // configurazione base mergiata con la configurazione passata
             for (let f in that.fields) {
                 let key = that.fields[f];
@@ -265,7 +271,7 @@ export default {
             }
             //that.fields = Object.assign([],that.fields);
             //console.log('vList value',that.value)
-            //console.log('vList setWidgetsConfig',widgetsConfig)
+            //console.log('vList _setWidgetsConfig',widgetsConfig,fieldsConfig)
             that.widgetsConfig = widgetsConfig;
         },
         columnLabel(col) {
@@ -296,7 +302,7 @@ export default {
                     first = (this.pagination.current_page - 1) * this.pagination.per_page;
                 }
             }
-            console.log('first', first, this.pagination);
+            //console.log('first', first, this.pagination);
             return first;
         },
         getTotal() {

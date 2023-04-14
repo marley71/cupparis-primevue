@@ -11,6 +11,7 @@ export default class WrapperConf {
         href : '',
         icon : null,
         target : null,
+        text : '',
         _visible() {
             if (this.visible instanceof Function) {
                 return this.visible.apply(this);

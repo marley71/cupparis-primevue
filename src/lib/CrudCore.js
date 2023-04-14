@@ -178,7 +178,7 @@ CrudCore.clone = function (obj) {
 
 CrudCore.translate = function (key,plural,params) {
     let lang = cuppariSakai.CrudVars.lang;
-    console.log('_translate store',key,lang[key]);
+    //console.log('_translate store',key,lang[key]);
     var testi = lang[key];
     if (!testi)
         return key;
