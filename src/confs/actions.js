@@ -376,8 +376,12 @@ const actionConfs = {
                     that.view.errorDialog(json.msg)
                     return
                 }
-                let prefix = CrudVars.useApi?'/api':'';
-                document.location.href = prefix + json.result.link
+                //let prefix = CrudVars.useApi?'/api':'';
+                //document.location.href = prefix + json.result.link
+                var anchor = document.createElement('a');
+                anchor.href = json.result.link;
+                anchor.target="_blank";
+                anchor.click();
                 console.log(json)
             })
 
