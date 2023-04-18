@@ -42,7 +42,11 @@
             <template #header>
                 <h3>{{ translate(viewTitle) }}</h3>
             </template>
-            <c-view v-if="viewDisplay" :conf="view" ref="vView"></c-view>
+            
+            <template v-if="viewDisplay">
+                <c-view v-if="!viewComponentName" :conf="view" ref="vView"></c-view>
+                <component v-else :is="viewComponentName" :conf="view"></component>
+            </template>
             <div class="modal-footer">
                 <Button :label="translate('app.ok')" icon="pi pi-check" autofocus @click="viewDisplay=false"/>
             </div>
