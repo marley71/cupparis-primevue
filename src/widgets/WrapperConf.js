@@ -65,7 +65,7 @@ export default class WrapperConf {
         if (!conf.hasmanyConf.fieldsConfig) {
             conf.hasmanyConf.fieldsConfig = {};
         }
-        conf.hasmanyConf.defaultWidgetType = 'w-input'
+        conf.hasmanyConf.defaultWidgetType = 'w-input';
         return conf;
     }
     wSelectButton(conf) {

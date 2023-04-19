@@ -64,13 +64,17 @@ export default {
         window.HS = this;
         var that = this;
         let baseName = that.conf.hasmanyConf.modelName?that.conf.hasmanyConf.modelName:that.conf.name;
-        console.log('BASENAME',baseName);
+        console.log('BASENAME',baseName,this.conf);
         if (!this.conf.hasmanyConf.getFieldName) {
             this.conf.hasmanyConf.getFieldName = (name) => {
                 return baseName + '-' + name + '[]';
             }
         }
         this.conf.hasmanyValue = that.trasformValue(that.conf.value);
+        if (!this.conf.limit) {
+            this.conf.limit = null;
+        }
+        this.conf.hasmanyConf.metadata = this.conf.relationConf || {};
         return this.conf;
     },
     methods: {
