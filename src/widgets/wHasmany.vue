@@ -113,7 +113,7 @@ export default {
                 } else {
                     that.hasmanyValue = that.trasformValue(that.value);
                 }
-                
+
             }, 1)
 
         },
@@ -141,9 +141,9 @@ export default {
                 this.value.push(v);
                 this.hasmanyValue[window.performance.now()] = v;
             }
-            
-           
-            
+
+
+
         },
         getHasmanyConf(i) {
             let that = this;
@@ -175,6 +175,13 @@ export default {
                         }
                         return false;
                     },
+                    // visible() {
+                    //     alert('pippo');
+                    //     if (that.limit) {
+                    //         return that.value.length < that.limit
+                    //     }
+                    //     return true;
+                    // },
                     execute() {
                         that.addItem();
                     }
@@ -224,7 +231,7 @@ export default {
                 delete this.hasmanyValue[index];
                 //this.hasmanyValue = this.trasformValue(this.value);
             }
-            
+
         },
         trasformValue(value) {
             let hasmanyValue = {};
