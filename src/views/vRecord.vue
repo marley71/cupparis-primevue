@@ -297,7 +297,7 @@ export default {
             return formData;
         },
         getWidget(field) {
-            return this.$refs[field];
+            return Array.isArray(this.$refs[field])?this.$refs[field][0]:this.$refs[field];
         },
         getAction(name) {
             //console.log('getAction',name,this.recordActionsConf);

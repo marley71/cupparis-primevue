@@ -140,6 +140,24 @@ Server.route = function(route,callback) {
     })
 };
 
+Server.postJson = function (url, params, callback) {
+    var realUrl = Server.getUrl(url);
+    var contentType = 'application/json; charset=UTF-8';
+    console.log('serverPost',(params instanceof FormData),contentType);
+    window.jQuery.ajax({
+        url: realUrl,
+        headers: Server.getHearders(),
+        type: 'POST',
+        data: JSON.stringify(params),
+        contentType: contentType,
+        processData:  false,
+    }).done(function(json) {
+        callback(json);
+    }).fail(function (data, error, msg) {
+        callback({error:1,msg:msg});
+    });
+};
+
 Server.subdomain = null;
 
 export default Server

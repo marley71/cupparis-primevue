@@ -93,7 +93,8 @@
             <input type="hidden" :name="name" v-model="value">
             <div class="p-inputgroup">
                 <Button icon="fa fa-times" @click="change($event,'clear')"/>
-                <Calendar class="w-full" :showButtonBar="true" v-model="dateValue" @date-select="change" inputDateFormat="YYYY-MM-DD" date-format="dd/mm/yy" />
+                <Calendar class="w-full" :showButtonBar="true" v-model="dateValue" @date-select="change" 
+                inputDateFormat="YYYY-MM-DD" date-format="dd/mm/yy" @clear-click="change($event,'clear')"/>
             </div>
         </div>
     </template>
@@ -350,7 +351,14 @@ export default {
 
         },
         getValue() {
-            return this.value;
+            let that = this;
+            switch (that.conf.type) {
+                case 'w-hasmany':
+                    return that.$refs.wRef.getValue();
+                default:
+                    return that.value;
+            }
+            
         },
         getFormattedValue() {
             let that = this;

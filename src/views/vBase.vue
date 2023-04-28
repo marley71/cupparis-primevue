@@ -42,6 +42,7 @@ export default {
         return dt;
     },
     methods : {
+
         draw() {
             this.setActions();
             this.loaded = true;

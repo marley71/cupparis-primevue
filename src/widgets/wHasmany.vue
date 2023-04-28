@@ -92,10 +92,15 @@ export default {
             }
         },
         getValue() {
-            if (!this.value) {
-                return [];
+            window.WH = this;
+            if (this.hasmanyType == 'list') {
+                return this.$refs.listView.getValue();
             }
-            return this.value;
+            return null;
+            // if (!this.value) {
+            //     return [];
+            // }
+            // return this.value;
         },
         setValue(val) {
             let that = this;

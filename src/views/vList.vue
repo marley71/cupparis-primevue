@@ -59,7 +59,7 @@
 
                     </template>
                     <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>
-                    <Column v-if="hasRecordActions()" :exportable="false" header="Actions">
+                    <Column v-if="hasRecordActions()" :exportable="false" :header="translate('app.actions')">
                         <template #body="slotProps">
                             <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
                                       :layout="'simple'"></c-action>
@@ -106,6 +106,7 @@ import cWidget from "../widgets/cWidget.vue";
 import cAction from "../actions/cAction.vue";
 import actionConfs from "../confs/actions";
 import vBase from './vBase.vue';
+import CrudCore from "../lib/CrudCore";
 
 export default {
     name: "v-list",
@@ -348,7 +349,7 @@ export default {
             let items = [];
             for (let name in that.collectionActions.actions) {
                 items.push({
-                    label: that.collectionActions.actions[name].text,
+                    label: CrudCore.translate(that.collectionActions.actions[name].text),
                     icon: that.collectionActions.actions[name].icon,
                     command: () => that.collectionActions.actions[name].execute(),
                     disabled: that.collectionActions.actions[name].disabled,
@@ -385,15 +386,15 @@ export default {
             var values = {};
             for (var k in that.fields) {
                 let field = that.fields[k];
-                console.log('w ref','w'+index+'_'+field)
+                //console.log('w ref','w'+index+'_'+field)
                 let w = that.$refs['w'+index+'_'+field];
                 if (w) {
-                    WW = w;
-                    console.log('w',w);
+                    //WW = w;
+                    //console.log('w',w);
                     values[field] = w[0].instance().getValue()
                 }
             }
-            console.log('rowData values',values);
+            //console.log('rowData values',values);
             return values;
         }
     }
