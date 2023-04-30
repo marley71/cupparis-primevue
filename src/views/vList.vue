@@ -15,10 +15,10 @@
 
             </slot>
             <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig">
-                <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected" 
+                <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected"
                             :rows="getPerPage()"
                            :paginator="paginator" paginatorPosition="both"
-                           :lazy="routeName==null?false:true" 
+                           :lazy="routeName==null?false:true"
                            @page="onPage($event)" @sort="onSort($event)"
                            :total-records="getTotal()"
                            :first="getFirst()"
@@ -336,6 +336,13 @@ export default {
                 ids.push(that.selected[i][that.primaryKey])
             }
             return ids;
+        },
+        hasCollectionActions() {
+            let that = this;
+            //console.log('hasRecordActions',that.recordActionsConf);
+            if (that.collectionActions && that.collectionActions.length && (Object.keys(that.collectionActions[0].actions).length > 0))
+                return true;
+            return false;
         },
         hasRecordActions() {
             let that = this;

@@ -64,6 +64,7 @@ export default class WrapperConf {
         actionsConfig: {},
         metadata:{},
         autoload : true,
+        actionDivider: false,
     }
 
     constructor(view) {
@@ -172,7 +173,7 @@ export default class WrapperConf {
          *             ]
          */
     }
-    
+
     vListHasmany(conf) {
         conf.type = 'v-list-hasmany';
         return conf;

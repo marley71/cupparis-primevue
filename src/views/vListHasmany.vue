@@ -26,9 +26,9 @@
                           :scrollable="true" scrollHeight="100px"
                           -->
 
-                    <template #header>
+                    <template #header v-if="menuCollection.length > 0">
 
-                        <Menubar :model="menuCollection" class="w-full">
+                        <Menubar  :model="menuCollection" class="w-full">
                             <template  v-if="title" #start>
                                 <span>{{title}}</span>
                             </template>
@@ -101,7 +101,7 @@ export default {
     extends: vList,
     props: ['conf'],
     components: {cAction},
-    mounted() {   
+    mounted() {
         if (this.autoload)
             this.load();
     },

@@ -30,7 +30,7 @@
 
         <div v-if="loaded">
             <slot name="content">
-                <div>
+                <div v-if="hasActionsDivider()">
                     <Divider align="center" class="actionsDivider">
                                     <span class="p-tag text-white">
                                         {{ title }}
@@ -182,6 +182,9 @@ export default {
         inlistAction(index, action) {
             console.log('EMIT---ACTIONINLIST::: ',index,action);
             this.$emit('actionInlist',index,action);
+        },
+        hasActionsDivider() {
+            return this.actionDivider;
         },
         getColClass(col) {
             switch (col) {

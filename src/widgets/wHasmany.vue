@@ -5,29 +5,31 @@
         </div>
     </template>
     <template v-else-if="hasmanyType=='record'">
-        <Card ref="el">
+        <Card ref="el" class="mb-3">
             <template #header>
 
             </template>
-            <template #title>
+            <template #title v-if="hasDisplayTitle()">
                 {{ translate(label) }}
             </template>
             <template #content>
                 <div class="flex flex-column">
                     <template v-for="(data,index) in hasmanyValue" :key="index">
-                        <hr>
                         <div class="flex align-self-end">
-                            <Button class="p-button-text p-button-danger" icon="fa fa-times" @click="removeItem(index)"></Button>
+                            <Button class="p-button-outlined p-button-danger" icon="fa fa-times" @click="removeItem(index)"></Button>
                         </div>
                         <v-record :conf="getHasmanyConf(index)"></v-record>
                     </template>
                 </div>
             </template>
             <template #footer>
-            <span class="d-block text-danger text-truncate font-weight-medium" v-if="outOfLimit()">
-                    <!-- Limite massimo raggiunto -->
-                    {{ translate('app.limite-raggiunto') }}
-                </span>
+                <template v-if="outOfLimit()">
+
+                <span class="d-block text-danger text-truncate font-weight-medium" v-if="outOfLimitMessage()">
+                        <!-- Limite massimo raggiunto -->
+                        {{ outOfLimitMessage() }}
+                    </span>
+                </template>
                 <button v-else @click="addItem" type="button"
                         class="p-button p-button-sm p-component p-button-outlined">
                     <span>{{ translate('app.aggiungi') }}</span>&nbsp;
@@ -122,6 +124,9 @@ export default {
                 return false;
             return (this.value.length >= this.limit);
         },
+        outOfLimitMessage() {
+            return this.limitMessage || this.translate('app.limite-raggiunto');
+        },
         addItem() {
             let that = this;
             let fields = that.hasmanyConf.fields;
@@ -160,7 +165,7 @@ export default {
             let hs = CrudCore.clone(that.hasmanyConf);
             hs.type = 'v-list-hasmany'
             hs.routeName = null;
-            hs.actions = ['action-delete','action-insert'];
+            hs.actions = hs.actions || ['action-delete','action-insert'];
             hs.actionsConfig = {
                 'action-delete':{
                     execute() {
@@ -240,6 +245,9 @@ export default {
                 hasmanyValue[ window.performance.now() ] = items[i];
             }
             return hasmanyValue;
+        },
+        hasDisplayTitle() {
+            return this.displayTitle !== false;
         }
     }
 }
