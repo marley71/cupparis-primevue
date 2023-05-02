@@ -18,7 +18,7 @@
                         <div class="flex align-self-end">
                             <Button class="p-button-outlined p-button-danger" icon="fa fa-times" @click="removeItem(index)"></Button>
                         </div>
-                        <v-record :conf="getHasmanyConf(index)"></v-record>
+                        <v-record ref="recordView" :conf="getHasmanyConf(index)"></v-record>
                     </template>
                 </div>
             </template>
@@ -98,7 +98,11 @@ export default {
             if (this.hasmanyType == 'list') {
                 return this.$refs.listView.getValue();
             }
-            return null;
+            let val = [];
+            for (let i=0;i<this.$refs.recordView.length;i++) {
+                val.push(this.$refs.recordView[i].getValue());
+            }
+            return val;
             // if (!this.value) {
             //     return [];
             // }

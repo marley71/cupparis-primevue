@@ -315,6 +315,23 @@ export default {
         //     }
         //     return (type == 'w-hidden');
         // },
+
+        getValue() {
+            var that = this;
+            var values = {};
+            for (var k in that.fields) {
+                let field = that.fields[k];
+                //console.log('w ref','w'+index+'_'+field)
+                let w = that.$refs[field];
+                if (w) {
+                    //WW = w;
+                    //console.log('w',w);
+                    values[field] = w[0].instance().getValue()
+                }
+            }
+            //console.log('rowData values',values);
+            return values;
+        }
     }
 }
 </script>
