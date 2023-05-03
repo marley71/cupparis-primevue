@@ -1,9 +1,10 @@
 <template>
 
     <div v-if="loaded">
-        <div class="preSearch">
+
+        <div class="preSearch" v-if="hasSearchLabel()">
                                 <span class="p-tag">
-                                    Filtra elementi
+                                    {{searchLabel()}}
                                 </span>
         </div>
         <!--        <div>-->
@@ -41,7 +42,7 @@
             <div :class="advancedSearchClass()" v-if="hasAdvancedSearch()">
 
 
-                <Accordion>
+                <Accordion :activeIndex="isAdvancedSearchOpen()">
 
                     <AccordionTab :header="advancedSearchHeader()">
                         <form ref="form" enctype="multipart/form-data"
@@ -168,7 +169,20 @@ export default {
                 return "col-12 md:col-8 lg:col-9";
             }
             return "col-12";
+        },
+        hasSearchLabel() {
+            if (this.conf.searchLabel === false) {
+                return false;
+            }
+            return true;
+        },
+        searchLabel() {
+            return this.translate("app.search_label");
+        },
+        isAdvancedSearchOpen() {
+            return this.conf.advancedSearchOpen ? 0 : null;
         }
+
 
     }
 }

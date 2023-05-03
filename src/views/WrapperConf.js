@@ -65,6 +65,7 @@ export default class WrapperConf {
         metadata:{},
         autoload : true,
         actionDivider: false,
+        advancedSearchOpen: false,
     }
 
     constructor(view) {
