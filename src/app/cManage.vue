@@ -66,8 +66,27 @@ export default {
     extends : CrudComponent,
     components: {cView},
     props : ['conf'],
+    watch : {
+        '$route' (to, from) {
+            console.log('TOOOOO',to,from);
+        },
+        '$route.params.context': {
+            handler: function(context) {
+                console.log('context watch');
+                if (this.getViewList()) {
+                    this.showContext();
+                }
+                
+            },
+            deep: true,
+            //immediate: true
+        }
+    },
     mounted() {
         window.MM = this;
+        console.log('context mounted');
+        //console.debug('manage',this.$route.params)
+        this.showContext();
         // let that = this;
         // setTimeout(function () {
         //     that.$refs.vSearch.targetRef = that.$refs.vList;
@@ -113,14 +132,20 @@ export default {
         that.conf.searchComponentName = that.conf.searchComponentName || null;
         that.conf.insertComponentName = that.conf.insertComponentName || null;
         that.conf.viewComponentName = that.conf.viewComponentName || null;
-        //that.conf.search.targetRef = that.$refs.vList;
-        //console.log('Manage',that.$refs,that.conf);
-        //that.conf.ready = false;
         return that.conf;
     },
     methods : {
         searchList(event) {
             console.log('searchList',event);
+            let confName = this.$route.params.cConf;
+            let context = [];
+            if (event && event instanceof FormData) {
+                for (var key of event.keys()) {
+                    var values = event.getAll(key);
+                    context.push(key+':'+values.join('&'));
+                }
+                window.history.pushState({},'','/#/manage/'+ confName +'/list/' + context.join('/'));
+            }
             this.$refs.vList.instance().setParams(event);
         },
         setManageActions() {
@@ -147,6 +172,8 @@ export default {
                         let thatAction = this;
                         that.edit.pk = thatAction.modelData[manage.getViewList().primaryKey];
                         that.mode = 'edit';
+                        let confName = this.$route.params.cConf;
+                        window.history.pushState({},'','/#/manage/'+ confName +'/edit/' + that.edit.pk);
                     }
                 }
                 that.conf.list.actionsConfig['action-edit'] = actionEdit;
@@ -155,9 +182,9 @@ export default {
                 let actionInsert = that.conf.list.actionsConfig['action-insert'] || {};
                 if (!actionInsert.execute){
                     actionInsert.execute = function () {
-                        //let thatAction = this;
-                        //that.edit.pk = thatAction.modelData[that.$refs.vList.instance().primaryKey];
                         that.mode = 'insert';
+                        let confName = this.$route.params.cConf;
+                        window.history.pushState({},'','/#/manage/'+ confName +'/insert');
                     }
                 }
                 that.conf.list.actionsConfig['action-insert'] = actionInsert;
@@ -167,6 +194,7 @@ export default {
                 if (!actionBack.execute){
                     actionBack.execute = function () {
                         that.mode = 'list';
+                        window.history.back();
                         that.getViewList().reload();
                     }
                 }
@@ -175,7 +203,19 @@ export default {
         },
         getViewList() {
             //console.log('Manage refs',this.$refs);
-            return this.$refs.vList.instance();
+            return this.$refs.vList?this.$refs.vList.instance():null;
+        },
+        /**
+         * gestione del back mostra la vista giusta in baso allo stato della cmanage
+         */
+        showContext() {
+            let that = this;
+            console.log('showContext',that.$route.params.context)
+            let context = that.$route.params.context;
+            if (!context || context.length == 0) {
+                that.mode = 'list';
+                that.searchList();
+            }
         }
     }
 }
