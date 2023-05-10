@@ -46,6 +46,7 @@ export default class WrapperConf {
         pagination:{},
         selectionMode: 'multiple',
         autoload : true,
+        recordActionsPosition: 'end',
     }
 
     recordDefaultConf = {

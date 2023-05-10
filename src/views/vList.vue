@@ -59,7 +59,7 @@
 
                     </template>
                     <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>
-                    <Column v-if="hasRecordActions()" :exportable="false" :header="translate('app.actions')">
+                    <Column v-if="getRecordActionsPosition() == 'start' && hasRecordActions()" :exportable="false" :header="translate('app.actions')">
                         <template #body="slotProps">
                             <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
                                       :layout="'simple'"></c-action>
@@ -81,6 +81,13 @@
 <!--&lt;!&ndash;                        }}&ndash;&gt;-->
 <!--                        &lt;!&ndash;                        Ci sono {{value ? value.length : 0 }} record, da {{getFirst()+1}} a {{getFirst() + (value ? value.length : 0) }} su {{getTotal()}}&ndash;&gt;-->
 <!--                    </template>-->
+                    <Column v-if="getRecordActionsPosition() == 'end' && hasRecordActions()" :exportable="false" :header="translate('app.actions')">
+                        <template #body="slotProps">
+                            <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
+                                      :layout="'simple'"></c-action>
+                        </template>
+                    </Column>
+
                     <template #empty>
                         {{ translate('app.no_records_found') }}
                     </template>
@@ -350,6 +357,16 @@ export default {
             if (that.recordActionsConf && that.recordActionsConf.length && (Object.keys(that.recordActionsConf[0].actions).length > 0))
                 return true;
             return false;
+        },
+        getRecordActionsPosition() {
+            let that = this;
+            //console.log('hasRecordActions',that.recordActionsConf);
+            switch (that.recordActionsPosition) {
+                case 'end':
+                    return 'end';
+                default:
+                    return 'start';
+            }
         },
         _setMenuCollection() {
             let that = this;
