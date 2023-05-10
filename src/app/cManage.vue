@@ -67,9 +67,9 @@ export default {
     components: {cView},
     props : ['conf'],
     watch : {
-        '$route' (to, from) {
-            console.log('TOOOOO',to,from);
-        },
+        // '$route' (to, from) {
+        //     console.log('TOOOOO',to,from);
+        // },
         '$route.params.context': {
             handler: function(context) {
                 console.log('context watch');
@@ -132,6 +132,7 @@ export default {
         that.conf.searchComponentName = that.conf.searchComponentName || null;
         that.conf.insertComponentName = that.conf.insertComponentName || null;
         that.conf.viewComponentName = that.conf.viewComponentName || null;
+
         return that.conf;
     },
     methods : {
@@ -213,8 +214,21 @@ export default {
             console.log('showContext',that.$route.params.context)
             let context = that.$route.params.context;
             if (!context || context.length == 0) {
-                that.mode = 'list';
-                that.searchList();
+                if (that.getViewList()) {
+                    that.mode = 'list';
+                    that.searchList();
+                }
+                
+                return ;
+            }
+            let mode = context[0];
+            that.mode = mode;
+            switch(mode) {
+                case 'edit':
+                    that.edit.pk = context[1];
+                    break;
+                case 'insert':
+                    break;
             }
         }
     }
