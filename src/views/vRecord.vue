@@ -1,6 +1,6 @@
 <template>
-
-    <template v-if="inlist && loaded">
+    <div>
+        <template v-if="inlist && loaded">
         <slot name="content">
             <tr role="row" v-if="isInlist">
                 <td class="" role="columnheader">
@@ -25,69 +25,22 @@
                 </td>
             </tr>
         </slot>
-    </template>
-    <template v-if="loaded && !inlist">
+        </template>
+        <template v-if="loaded && !inlist">
 
-        <div v-if="loaded">
-            <slot name="content">
-                <div v-if="hasActionsDivider()">
-                    <Divider align="center" class="actionsDivider">
-                                    <span class="p-tag text-white">
-                                        {{ title }}
-                                    </span>
-
-                    </Divider>
-                </div>
-
-                <template v-if="type==='v-view'">
-
-                    <template v-for="field in getHiddenFields()">
-                        <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
-                    </template>
-                    <div class="grid">
-                        <template v-for="field in getVisibleFields()" :key="field">
-                            <div class="py-3" :class="getWidgetLayout(field,'colClass')">
-                                <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
-                                        <span class="p-float-label">
-                                        <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
-                                        <label :for="field">{{ widgetsConfig[field].label }}</label>
+            <div v-if="loaded">
+                <slot name="content">
+                    <div v-if="hasActionsDivider()">
+                        <Divider align="center" class="actionsDivider">
+                                        <span class="p-tag text-white">
+                                            {{ title }}
                                         </span>
-                                </template>
-                                <template v-else>
 
-                                    <label class="labelTop" :for="field"
-                                        v-if="getWidgetLayout(field,'labelPosition')=='top'">
-                                        {{ translateUc(widgetsConfig[field].label) }}
-                                    </label>
-                                    <div class="">
-                                        <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
-                                    </div>
-                                    <label class="labelBottom" :for="field"
-                                        v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
-                                        {{ translateUc(widgetsConfig[field].label) }}
-                                    </label>
-                                </template>
-                            </div>
-
-                            <template v-if="getWidgetLayout(field,'hasDivider')">
-                                <Divider align="center" class="col-10 col-offset-1">
-                                        <span v-if="getWidgetLayout(field,'dividerLabel')"
-                                            class="p-tag text-white">{{ getWidgetLayout(field, 'dividerLabel') }}</span>
-                                </Divider>
-
-                            </template>
-                            <template v-else-if="getWidgetLayout(field,'lastInRow')">
-                                <div class="col-12 max-h-0 p-0">&nbsp;</div>
-                            </template>
-                        </template>
+                        </Divider>
                     </div>
-                    <div>
-                        <c-action ref="actions" :conf="recordActionsConf" layout="buttons"></c-action>
-                    </div>
-                </template>
-                <template v-else>
-                    <form ref="form" enctype="multipart/form-data" @submit.prevent="handleSubmit(!v$.$invalid)"
-                        class="p-fluid">
+
+                    <template v-if="type==='v-view'">
+
                         <template v-for="field in getHiddenFields()">
                             <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
                         </template>
@@ -95,10 +48,10 @@
                             <template v-for="field in getVisibleFields()" :key="field">
                                 <div class="py-3" :class="getWidgetLayout(field,'colClass')">
                                     <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
-                                        <span class="p-float-label">
-                                        <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
-                                        <label :for="field">{{ widgetsConfig[field].label }}</label>
-                                        </span>
+                                            <span class="p-float-label">
+                                            <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                            <label :for="field">{{ widgetsConfig[field].label }}</label>
+                                            </span>
                                     </template>
                                     <template v-else>
 
@@ -118,8 +71,8 @@
 
                                 <template v-if="getWidgetLayout(field,'hasDivider')">
                                     <Divider align="center" class="col-10 col-offset-1">
-                                        <span v-if="getWidgetLayout(field,'dividerLabel')"
-                                            class="p-tag text-white">{{ getWidgetLayout(field, 'dividerLabel') }}</span>
+                                            <span v-if="getWidgetLayout(field,'dividerLabel')"
+                                                class="p-tag text-white">{{ getWidgetLayout(field, 'dividerLabel') }}</span>
                                     </Divider>
 
                                 </template>
@@ -128,15 +81,62 @@
                                 </template>
                             </template>
                         </div>
+                        <div>
+                            <c-action ref="actions" :conf="recordActionsConf" layout="buttons"></c-action>
+                        </div>
+                    </template>
+                    <template v-else>
+                        
+                    <form ref="form" enctype="multipart/form-data" @submit="handleSubmit" class="p-fluid">
+                            <template v-for="field in getHiddenFields()">
+                                <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                            </template>
+                            <div class="grid">
+                                <template v-for="field in getVisibleFields()" :key="field">
+                                    <div class="py-3" :class="getWidgetLayout(field,'colClass')">
+                                        <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
+                                            <span class="p-float-label">
+                                            <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                            <label :for="field">{{ widgetsConfig[field].label }}</label>
+                                            </span>
+                                        </template>
+                                        <template v-else>
 
-                    </form>
-                    <div>
-                        <c-action ref="actions" :conf="recordActionsConf" layout="buttons"></c-action>
-                    </div>
-                </template>
-            </slot>
-        </div>
-    </template>
+                                            <label class="labelTop" :for="field"
+                                                v-if="getWidgetLayout(field,'labelPosition')=='top'">
+                                                {{ translateUc(widgetsConfig[field].label) }}
+                                            </label>
+                                            <div class="">
+                                                <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                            </div>
+                                            <label class="labelBottom" :for="field"
+                                                v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
+                                                {{ translateUc(widgetsConfig[field].label) }}
+                                            </label>
+                                        </template>
+                                    </div>
+
+                                    <template v-if="getWidgetLayout(field,'hasDivider')">
+                                        <Divider align="center" class="col-10 col-offset-1">
+                                            <span v-if="getWidgetLayout(field,'dividerLabel')"
+                                                class="p-tag text-white">{{ getWidgetLayout(field, 'dividerLabel') }}</span>
+                                        </Divider>
+
+                                    </template>
+                                    <template v-else-if="getWidgetLayout(field,'lastInRow')">
+                                        <div class="col-12 max-h-0 p-0">&nbsp;</div>
+                                    </template>
+                                </template>
+                            </div>
+                        </form>
+                        <div>
+                            <c-action ref="actions" :conf="recordActionsConf" layout="buttons"></c-action>
+                        </div>
+                    </template>
+                </slot>
+            </div>
+        </template>
+    </div>
 </template>
 
 <script>
@@ -146,7 +146,20 @@ import cAction from "../actions/cAction.vue";
 import actionConfs from "../confs/actions";
 import Server from "../lib/Server";
 import viewConfs from "../confs/views";
+import { defineRule,validate } from 'vee-validate';
+//import { localize,setLocale } from '@vee-validate/i18n';
 
+import AllRules from '@vee-validate/rules';
+
+// configure({
+//   // Generates an English message locale generator
+//   generateMessage: localize('en', {
+//     messages: {
+//       required: 'This {field} is required aaaaaa',
+//     },
+//   }),
+// });
+// setLocale('en');
 
 export default {
     name: "vRecord",
@@ -170,12 +183,28 @@ export default {
         }
         ly.colClass = this.getColClass(ly.cols);
         //console.log('layout',ly);
+        // const { handleSubmit, resetForm } = useForm();
+        // const { value, errorMessage } = useField('value', this.validateField);
         return {
             layout: ly,
             isInlist: true,
         }
     },
     methods: {
+        // validateField(value) {
+        //     if (!value) {
+        //         return 'Password is required.';
+        //     }
+        //     return true;
+        // },
+        // handleSubmit(values) {
+        //     console.log('values',values);
+        //     // if (values.value && values.value.length > 0) {
+        //     //     //toast.add({ severity: 'info', summary: 'Form Submitted', detail: values.value, life: 3000 });
+        //     //     //resetForm();
+        //     // }
+        //     return false;
+        // },
         removeFromList() {
           this.isInlist = false;
         },
@@ -264,8 +293,7 @@ export default {
                 widgetsConfig[key].name = that.getFieldName(key);
                 widgetsConfig[key].modelData = that.value;
                 widgetsConfig[key].view = that;
-                //widgetsConfig[key].metadata = this.metadata;
-                //widgetsConfig[key].label = that.getFieldLabel(key);
+                widgetsConfig[key].rules = fConf[key].rules || '';
             }
             console.log('vRecord setWidgetsConfig', widgetsConfig)
             that.widgetsConfig = widgetsConfig;
@@ -274,23 +302,30 @@ export default {
         save(callback) {
             var that = this;
             let route = null;
-            if (that.type == 'v-edit') {
-                route = that.createRoute('update');
-                var pk = that.cPk || that.pk || 0;
-                route.setValues({
-                    modelName: that.modelName,
-                    pk: pk
-                });
-            } else {
-                route = that.createRoute('create');
-                route.setValues({
-                    modelName: that.modelName,
-                });
-            }
-            route.setParams(that.getViewData());
-            Server.route(route, function (json) {
-                callback(json);
+            that.validate().then((res) => {
+                if (!res) {
+                    return ;
+                }
+                if (that.type == 'v-edit') {
+                    route = that.createRoute('update');
+                    var pk = that.cPk || that.pk || 0;
+                    route.setValues({
+                        modelName: that.modelName,
+                        pk: pk
+                    });
+                } else {
+                    route = that.createRoute('create');
+                    route.setValues({
+                        modelName: that.modelName,
+                    });
+                }
+                route.setParams(that.getViewData());
+                Server.route(route, function (json) {
+                    callback(json);
+                })
             })
+            
+            
         },
         getViewData(ref) {
             let that = this;
@@ -306,16 +341,6 @@ export default {
             //console.log('getAction',name,this.recordActionsConf);
             return this.$refs.actions.instance(name);
         },
-        // isHiddenField: function (key) {
-        //     let type = this.defaultWidgetType;
-        //     if (this.fieldsConfig[key]) {
-        //         if (this.widgetsConfig.type == 'w-hidden') {
-        //             return true;
-        //         }
-        //     }
-        //     return (type == 'w-hidden');
-        // },
-
         getValue() {
             var that = this;
             var values = {};
@@ -331,6 +356,84 @@ export default {
             }
             //console.log('rowData values',values);
             return values;
+        },
+        async validate() {
+            console.log(AllRules)
+            let that = this;
+            console.log('widgetsConfig',that.widgetsConfig);
+            
+            that.defineRules();
+            let isValid = true;
+            for (let name in that.widgetsConfig) {
+                console.log('name',name,that.widgetsConfig[name]);
+                if (that.widgetsConfig[name].rules) {
+                    let widget = that.getWidget(name);
+                    let res = await validate(widget.getValue(),
+                                            that.widgetsConfig[name].rules,{
+                                                name : name,
+                                                label : widget.label,
+                                                bails : false,
+                                                values : {
+                                                    'required' : '{field} Richiesto'
+                                                },
+                                                customMessages : {
+                                                    'required' : '{field} Richiesto'
+                                                }
+                                            });
+                    console.log(name,'res',res);                      
+                    isValid = isValid && res.valid;
+                    console.log('ISVALID',isValid);
+                    that.getWidget(name).setErrors(res.errors);                          
+
+                    // validate(that.getWidget(name).getValue(),that.widgetsConfig[name].rules,{
+                    //     name : name,
+                    // }).then((res) => {
+                    //     console.log('res',res);
+                    //     isValid = isValid && res.valid;
+                    //     console.log('ISVALID',isValid);
+                    //     that.getWidget(name).setErrors(res.errors);
+                        
+                    // }).catch((error) => {
+                    //     console.log('cath',error);
+                    // })
+                }
+
+
+
+
+                // let rules = that.widgetsConfig[name].rules.split('|');
+                // if (rules.length == 0) {
+                //     continue;
+                // }
+                // for (let i in rules) {
+                //     let ruleName = rules[i].split(':')[0];
+                //     if (ruleName) {
+                //         console.log('ruleName',ruleName);
+                //         let f = defineRule(ruleName,AllRules[ruleName]);
+                //         console.log('f',f);
+                //         validate(that.getWidget(name).getValue(),ruleName).then((res) => {
+                //             console.log('res',res);
+                //         }).catch((error) => {
+                //             console.log('cath',error);
+                //         })
+                //     }
+                    
+
+                // }
+            }
+            console.log('isValid',isValid)
+            return isValid;
+        },
+        defineRules() {
+            let that = this;
+            let rules = Object.values(that.widgetsConfig).map(a => a.rules).join('|');
+            let rulesArray = rules.split('|');
+            for (let i in rulesArray) {
+                let ruleName = rulesArray[i].split(':')[0];
+                if (ruleName) {
+                    defineRule(ruleName,AllRules[ruleName]);
+                }
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ export default class WrapperConf {
         extraBind: {},
         type : 'w-input',
         label : '',
+        rules:'',
     }
 
     loadConf(conf) {
@@ -23,7 +24,7 @@ export default class WrapperConf {
              conf = that[functionName](conf);
         }
         conf = Object.assign(dC,conf);
-        //console.log('WIDGET',conf);
+        console.log('WIDGET',conf);
         return conf;
     }
 
@@ -48,6 +49,12 @@ export default class WrapperConf {
         }
         //console.log('options',options);
         return options;
+    }
+    wInput(conf) {
+        if ( !('inputType' in conf) ) {
+            conf.inputType = 'text';
+        }
+        return conf;
     }
 
     wSelect(conf) {

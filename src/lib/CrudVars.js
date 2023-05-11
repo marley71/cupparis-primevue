@@ -16,5 +16,10 @@ const CrudVars = {
     lang : lang,
     env : {},
     useApi : 0,
+    validationMessages : {
+      messages: {
+        required: '{field} is required',
+      },
+    }
 }
 export default CrudVars;

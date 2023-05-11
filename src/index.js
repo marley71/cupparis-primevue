@@ -19,6 +19,8 @@ import routeConfs from "./confs/routes";
 import cManage from './app/cManage.vue';
 import aBase from './actions/aBase.vue';
 import Server from './lib/Server.js';
+import { configure } from 'vee-validate';
+import { localize,setLocale } from '@vee-validate/i18n';
 
 export default {
     install(app) {
@@ -32,6 +34,11 @@ export default {
         for (let k in routeConfs) {
             routeConfs[k].url = prefix + routeConfs[k].url;
         }
+        configure({
+            // Generates an English message locale generator
+            generateMessage: localize('appLang', CrudVars.validationMessages),
+        });
+        setLocale('appLang');
     },
     CrudComponent,cAction,CrudCore,routerConf,CrudVars,routeConfs,
     cView,
