@@ -7,6 +7,7 @@ export default {
     name: "vBase",
     extends: CrudComponent,
     props: ['conf'],
+    emits : ['loaded'],
     created() {
         let that = this;
         var __call = function (lk) {
@@ -40,6 +41,14 @@ export default {
         }
         console.log('view Props',dt);
         return dt;
+    },
+    watch : {
+        loaded() {
+            if (this.loaded) {
+                console.log('LOADEDDDDDD')
+                this.$emit('loaded',this.loaded);
+            }
+        }
     },
     methods : {
 

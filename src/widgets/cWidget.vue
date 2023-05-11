@@ -5,9 +5,10 @@
     <template v-else-if="type=='w-input'">
         <Password v-if="inputType == 'password'" :name="name" v-model="value" toggleMask v-bind="extraBind" @change="change"
         :promptLabel="translate('app.scegli-password')" :weakLabel="translate('app.password-semplice')" 
-        :mediumLabel="translate('app.password-media')" :strongLabel="translate('app.password-complessa')" /> 
+        :mediumLabel="translate('app.password-media')" :strongLabel="translate('app.password-complessa')" />
         <InputText v-else class="w-full" :name="name" :type="inputType" v-model="value" v-bind="extraBind"
-                   @change="change"></InputText>
+                @change="change" :class="errors.length?'p-invalid':''"></InputText>
+        <div class="overflow-hidden"><span class="text-red-400" v-for="error in errors">- {{ error }}</span></div>
     </template>
     <template v-else-if="type=='w-select'">
         <div>
@@ -193,6 +194,7 @@ import wHasmany from "../widgets/wHasmany.vue";
 import moment from "moment";
 import wSwap from "../widgets/wSwap.vue";
 
+
 export default {
     name: "c-widget",
     components: {wSwap, wHasmany},
@@ -257,7 +259,7 @@ export default {
             }
         }
         dt.wConf = ext;
-        //console.log('widget finalData',dt);
+        dt.errors = [];
         return dt;
     },
     mounted() {
@@ -362,6 +364,9 @@ export default {
                     return that.value;
             }
             
+        },
+        setErrors(errors) {
+            this.errors = errors;
         },
         getFormattedValue() {
             let that = this;
