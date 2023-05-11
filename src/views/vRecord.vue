@@ -346,16 +346,29 @@ export default {
             var values = {};
             for (var k in that.fields) {
                 let field = that.fields[k];
-                //console.log('w ref','w'+index+'_'+field)
-                let w = that.$refs[field];
-                if (w) {
-                    //WW = w;
-                    //console.log('w',w);
-                    values[field] = w[0].instance().getValue()
+                let w = that.getWidget(field);
+                if (!w) {
+                    console.warn('vRecord.getValue widget not found',field);
+                } else {
+                    values[field] = w.getValue();
                 }
             }
-            //console.log('rowData values',values);
+            console.log('rowData ',that.value);
             return values;
+        },
+        setValue(values) {
+            let that = this;
+            for (let key in values) {
+                if (that.fields.indexOf(key) >= 0) {
+                    let w = that.getWidget(key);
+                    console.log('set Value w',w,key);
+                    if (w ) {
+                        //WW = w;
+                        
+                        w.setValue(values[key]);
+                    }
+                }
+            }
         },
         async validate() {
             console.log(AllRules)

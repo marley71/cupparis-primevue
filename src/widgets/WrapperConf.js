@@ -24,7 +24,7 @@ export default class WrapperConf {
              conf = that[functionName](conf);
         }
         conf = Object.assign(dC,conf);
-        console.log('WIDGET',conf);
+        //console.log('WIDGET',conf);
         return conf;
     }
 

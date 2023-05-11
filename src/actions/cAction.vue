@@ -117,7 +117,7 @@ export default {
                 return whitelist;
 
             }
-            console.log("WHITELIST:::",that.whitelist);
+            //console.log("WHITELIST:::",that.whitelist);
             return that.whitelist;
         },
         inWhitelist(key) {
