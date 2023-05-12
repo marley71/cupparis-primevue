@@ -137,6 +137,8 @@ export default {
             this.$confirm.require({
                 message: msg,
                 icon: 'pi pi-exclamation-triangle',
+                acceptLabel : this.translate('app.yes'),
+                rejectLabel : this.translate('app.no'),
                 accept: () => {
                     //callback to execute when user confirms the action
                     let cOk = callbacks && callbacks.ok?callbacks.ok:function (){};

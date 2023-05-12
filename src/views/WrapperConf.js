@@ -47,6 +47,7 @@ export default class WrapperConf {
         selectionMode: 'multiple',
         autoload : true,
         recordActionsPosition: 'end',
+        actionsLayout : 'simple',
     }
 
     recordDefaultConf = {

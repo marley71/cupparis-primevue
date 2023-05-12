@@ -8,7 +8,6 @@
         :mediumLabel="translate('app.password-media')" :strongLabel="translate('app.password-complessa')" />
         <InputText v-else class="w-full" :name="name" :type="inputType" v-model="value" v-bind="extraBind"
                 @change="change" :class="errors.length?'p-invalid':''"></InputText>
-        <div class="overflow-hidden"><span class="text-red-400" v-for="error in errors">- {{ error }}</span></div>
     </template>
     <template v-else-if="type=='w-select'">
         <div>
@@ -184,6 +183,9 @@
         <component :is="type" :conf="wConf"></component>
         <div>Widget non riconosciuto {{ type }}</div>
     </template>
+    <div class="overflow-hidden">
+        <span class="text-red-400" v-for="(error,index) in errors">{{ error }}<span v-if="parseInt(index) < (Object.keys(errors).length-1)">,&nbsp;</span></span>
+    </div>
 </template>
 
 <script>

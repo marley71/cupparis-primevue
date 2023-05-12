@@ -97,21 +97,21 @@
                                         <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
                                             <span class="p-float-label">
                                             <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
-                                            <label :for="field">{{ widgetsConfig[field].label }}</label>
+                                            <label :for="field">{{ widgetsConfig[field].label }}{{ isRequired(field) }}</label>
                                             </span>
                                         </template>
                                         <template v-else>
 
                                             <label class="labelTop" :for="field"
                                                 v-if="getWidgetLayout(field,'labelPosition')=='top'">
-                                                {{ translateUc(widgetsConfig[field].label) }}
+                                                {{ translateUc(widgetsConfig[field].label) }}{{ isRequired(field) }}
                                             </label>
                                             <div class="">
                                                 <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
                                             </div>
                                             <label class="labelBottom" :for="field"
                                                 v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
-                                                {{ translateUc(widgetsConfig[field].label) }}
+                                                {{ translateUc(widgetsConfig[field].label) }}{{ isRequired(field) }}
                                             </label>
                                         </template>
                                     </div>
@@ -378,61 +378,20 @@ export default {
             that.defineRules();
             let isValid = true;
             for (let name in that.widgetsConfig) {
-                console.log('name',name,that.widgetsConfig[name]);
                 if (that.widgetsConfig[name].rules) {
                     let widget = that.getWidget(name);
+                    console.log('name',name,widget.getValue());
                     let res = await validate(widget.getValue(),
-                                            that.widgetsConfig[name].rules,{
-                                                name : name,
-                                                label : widget.label,
-                                                bails : false,
-                                                values : {
-                                                    'required' : '{field} Richiesto'
-                                                },
-                                                customMessages : {
-                                                    'required' : '{field} Richiesto'
-                                                }
-                                            });
+                    that.widgetsConfig[name].rules,{
+                        name : name,
+                        label : widget.label,
+                        bails : false,
+                    });
                     console.log(name,'res',res);                      
                     isValid = isValid && res.valid;
                     console.log('ISVALID',isValid);
                     that.getWidget(name).setErrors(res.errors);                          
-
-                    // validate(that.getWidget(name).getValue(),that.widgetsConfig[name].rules,{
-                    //     name : name,
-                    // }).then((res) => {
-                    //     console.log('res',res);
-                    //     isValid = isValid && res.valid;
-                    //     console.log('ISVALID',isValid);
-                    //     that.getWidget(name).setErrors(res.errors);
-                        
-                    // }).catch((error) => {
-                    //     console.log('cath',error);
-                    // })
                 }
-
-
-
-
-                // let rules = that.widgetsConfig[name].rules.split('|');
-                // if (rules.length == 0) {
-                //     continue;
-                // }
-                // for (let i in rules) {
-                //     let ruleName = rules[i].split(':')[0];
-                //     if (ruleName) {
-                //         console.log('ruleName',ruleName);
-                //         let f = defineRule(ruleName,AllRules[ruleName]);
-                //         console.log('f',f);
-                //         validate(that.getWidget(name).getValue(),ruleName).then((res) => {
-                //             console.log('res',res);
-                //         }).catch((error) => {
-                //             console.log('cath',error);
-                //         })
-                //     }
-                    
-
-                // }
             }
             console.log('isValid',isValid)
             return isValid;
@@ -447,6 +406,12 @@ export default {
                     defineRule(ruleName,AllRules[ruleName]);
                 }
             }
+        },
+        isRequired(field) {
+            if (this.widgetsConfig[field].rules.indexOf('required') >= 0) {
+                return ' *';
+            }
+            return ''
         }
     }
 }
