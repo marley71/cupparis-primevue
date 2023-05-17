@@ -35,6 +35,7 @@ export default class WrapperConf {
         headerHelp:'',
         orderFields:{},
         paginator:true,
+        paginatorPosition:'both',
         rows : 20,
         loaded : false,
         route : null,
@@ -48,6 +49,7 @@ export default class WrapperConf {
         autoload : true,
         recordActionsPosition: 'end',
         actionsLayout : 'simple',
+        actionsLayoutTitle :  '',
     }
 
     recordDefaultConf = {

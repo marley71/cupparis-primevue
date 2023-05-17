@@ -136,7 +136,7 @@ export default {
         getMenubarActions() {
             let that = this;
             let items = [];
-            console.log('actions',that.conf);
+            //console.log('actions',that.conf);
             let actions = that.conf.actions;
             for (let name in actions) {
                 
