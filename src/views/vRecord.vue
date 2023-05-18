@@ -408,6 +408,7 @@ export default {
             }
         },
         isRequired(field) {
+            console.log('widgetsConfig',field,this.widgetsConfig[field].rules)
             if (this.widgetsConfig[field].rules.indexOf('required') >= 0) {
                 return ' *';
             }

@@ -352,6 +352,12 @@ export default {
             return (pagination.per_page ? pagination.per_page : this.getTotal());
             //return this.getTotal();
         },
+        getPage() {
+            console.log('pagination',this.pagination);
+            if (this.routeName)
+                return this.pagination.current_page;
+            return parseInt(Math.floor(this.getTotal()/this.getPerPage()));
+        },
         getRecordAction(index, name) {
             console.log('getRecordAction', index, name,);
             return this.$refs['r' + index].instance(name);
