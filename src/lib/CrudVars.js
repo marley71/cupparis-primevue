@@ -1,5 +1,5 @@
 import lang from "../confs/lang";
-
+import ActionConfs from "../confs/actions";
 const CrudVars = {
     modelConfs : {},
     viewDefaultConfs : {
@@ -20,6 +20,7 @@ const CrudVars = {
       messages: {
         required: '{field} is required',
       },
-    }
+    },
+    actionConfs: ActionConfs,
 }
 export default CrudVars;

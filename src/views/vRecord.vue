@@ -129,7 +129,7 @@
                                 </template>
                             </div>
                         </form>
-                        <div>
+                        <div class="w-full">
                             <c-action ref="actions" :conf="recordActionsConf" layout="buttons"></c-action>
                         </div>
                     </template>
