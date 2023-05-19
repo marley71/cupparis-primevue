@@ -67,8 +67,11 @@ export default {
         }
         
         dt.wConf = ext;
+        // bug da capire perche'
         if (!dt.text)
             dt.text = '';
+        if (!dt.title)
+            dt.title = '';
         //console.log('widget finalData',dt);
         return dt;
     },
