@@ -136,6 +136,7 @@
                 </slot>
             </div>
         </template>
+        <BlockUI :blocked="blocked" fullScreen />
     </div>
 </template>
 
@@ -188,6 +189,7 @@ export default {
         return {
             layout: ly,
             isInlist: true,
+            blocked : false,
         }
     },
     methods: {
@@ -320,7 +322,10 @@ export default {
                     });
                 }
                 route.setParams(that.getViewData());
+                that.block();
+               
                 Server.route(route, function (json) {
+                    that.unblock();
                     callback(json);
                 })
             })
@@ -402,6 +407,7 @@ export default {
             let rulesArray = rules.split('|');
             for (let i in rulesArray) {
                 let ruleName = rulesArray[i].split(':')[0];
+                //console.debug('rulename',ruleName);
                 if (ruleName) {
                     defineRule(ruleName,AllRules[ruleName]);
                 }

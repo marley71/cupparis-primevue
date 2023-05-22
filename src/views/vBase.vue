@@ -211,6 +211,15 @@ export default {
             }
             //console.log('HIDDEN FIELDS',hidden);
             return hidden;
+        },
+        block() {
+            this.blocked = true;
+        },
+        unblock() {
+            this.blocked = false;
+        },
+        isBlocked() {
+            return this.blocked;
         }
     }
 }

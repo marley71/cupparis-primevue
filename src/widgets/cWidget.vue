@@ -151,7 +151,7 @@
     </template>
     <template v-else-if="type=='w-upload'">
         <FileUpload mode="basic" :name="getFieldName()" :auto="true" :customUpload="true" @uploader="uploadFile"
-                    :multiple="false"/>
+                    :multiple="false"  v-bind="extraBind"/>
     </template>
 
     <template v-else-if="type=='w-upload-ajax'">
@@ -160,7 +160,7 @@
             <Message v-if="error" severity="error" :closable="false">{{errorMessage}}</Message>
             <div class="flex">
                 <FileUpload mode="basic" :auto="true" :customUpload="true" @uploader="uploadFile"
-                            :multiple="false"/>
+                            :multiple="false" v-bind="extraBind"/>
                 <div class="ml-5">
                     <div class="mt-3" v-if="fileInfo">
                         <template v-if="['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'].indexOf(fileInfo.mimetype) >= 0">
