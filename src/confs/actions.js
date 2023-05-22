@@ -58,7 +58,7 @@ const actionConfs = {
     'action-search-basic' : {
         type : 'collection',
         title : 'app.cerca',
-        buttonClass: 'p-button',
+        buttonClass: 'p-button p-button-primary',
         icon : 'fa fa-search',
 //        text : 'app.cerca',
         execute () {

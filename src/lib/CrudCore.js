@@ -1,7 +1,7 @@
 import ProtocolList from "./ProtocolList.js";
 import ProtocolRecord from "./ProtocolRecord.js";
 import cuppariSakai from "../index";
-import {getCurrentInstance} from 'vue';
+
 
 //import cWidget from "../widgets/cWidget.vue";
 // import wHasmany from "../widgets/wHasmany.vue";
