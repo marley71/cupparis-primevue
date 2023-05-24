@@ -181,6 +181,11 @@ export default {
         },
         isAdvancedSearchOpen() {
             return this.conf.advancedSearchOpen ? 0 : null;
+        },
+        getBasicSearchPlaceholder() {
+            return this.conf.basicSearchPlaceholder ?
+                this.conf.basicSearchPlaceholder :
+                this.translate('app.search_placeholder');
         }
 
 

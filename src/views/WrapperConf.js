@@ -68,8 +68,7 @@ export default class WrapperConf {
         actionsConfig: {},
         metadata:{},
         autoload : true,
-        actionDivider: false,
-        advancedSearchOpen: false,
+        actionDivider: false
     }
 
     constructor(view) {
@@ -238,6 +237,9 @@ export default class WrapperConf {
         if (!('actions' in conf) ){
             conf.actions = ['action-search','action-search-basic'];
         }
+        conf.advancedSearchOpen = false;
+        conf.basicSearchPlaceholder = null;
+
         return conf;
     }
 
