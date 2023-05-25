@@ -83,16 +83,7 @@ export default {
         }
     },
     mounted() {
-        window.MM = this;
-        console.log('context mounted');
-        //console.debug('manage',this.$route.params)
         this.showContext();
-        // let that = this;
-        // setTimeout(function () {
-        //     that.$refs.vSearch.targetRef = that.$refs.vList;
-        //     console.log('manage2',that.$refs.vSearch);
-        // },200)
-
     },
     data() {
         let that = this;
@@ -203,8 +194,10 @@ export default {
             }
         },
         getViewList() {
-            //console.log('Manage refs',this.$refs);
             return this.$refs.vList?this.$refs.vList.instance():null;
+        },
+        getViewSearch() {
+            return this.$refs.vSearch?this.$refs.vSearch.instance():null;
         },
         /**
          * gestione del back mostra la vista giusta in baso allo stato della cmanage
@@ -229,6 +222,69 @@ export default {
                     break;
                 case 'insert':
                     break;
+                case 'list':
+                    let vList = that.getViewList();
+                    if (vList) {
+                        let listParams = context.filter( a => a.indexOf('s_') == 0);
+                        //console.log('LISTPARAMS',listParams,JSON.stringify(vList.value));
+                        if (listParams.length > 0) {
+                            vList.autoload = false;
+                            that.waitViewLoaded('list',function() {
+                                for (let i in listParams) {
+                                    let tmp = listParams[i].split(':');
+                                    if (tmp.length != 2) {
+                                        console.warn('non riesco a definire il valore da filtrare per il parmetro',listParams[i],tmp);
+                                        continue;
+                                    }
+                                    vList.route.setParam(tmp[0],tmp[1]);
+                                }
+                                vList.load();
+                            })
+                            that.waitViewLoaded('search',function() {
+                                let vSearch = that.getViewSearch();
+                                window.VSS = vSearch;
+                                for (let i in listParams) {
+                                    let tmp = listParams[i].split(':');
+                                    if (tmp.length != 2) {
+                                        continue;
+                                    }
+                                    let fieldName = tmp[0].substring(2);
+                                    if (!vSearch.getWidget(fieldName)) {
+                                        console.warn('getWidget ha ritornato null per ', fieldName);
+                                        continue;
+                                    }
+                                    vSearch.getWidget(fieldName).setValue(tmp[1]);
+                                }
+                                
+                            })
+                        }
+                        
+                    }
+                    break;
+            }
+        },
+        waitViewLoaded(type,callback) {
+            let that = this;
+            if (type ==  'list') {
+                let vList = this.getViewList();
+                if (!vList || !vList.loaded) {
+                    setTimeout(function() {
+                        that.waitViewLoaded(type,callback);
+                    },20)
+                } else {
+                    return callback();
+                }
+            } else if (type == 'search') {
+                let vSearch = this.getViewSearch();
+                if (!vSearch || !vSearch.loaded) {
+                    setTimeout(function() {
+                        that.waitViewLoaded(type,callback);
+                    },20)
+                } else {
+                    return callback();
+                }
+            } else {
+                console.warn('wait ' + type + ' non gestito');
             }
         }
     }

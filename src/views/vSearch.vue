@@ -21,7 +21,6 @@
 
             <div :class="basicSearchClass()" v-if="hasBasicSearch()">
                 <form ref="formBasic" enctype="multipart/form-data"
-                      @submit.prevent="handleSubmit(!v$.$invalid)"
                       @keyup.enter="search('basic')"
                       class="p-fluid mt-1">
                     <template v-for="field in getHiddenFields()">
@@ -46,7 +45,7 @@
 
                     <AccordionTab :header="advancedSearchHeader()">
                         <form ref="form" enctype="multipart/form-data"
-                              @submit.prevent="handleSubmit(!v$.$invalid)"
+                            
                               class="p-fluid mt-5">
 
                             <template v-for="field in getHiddenFields()">
