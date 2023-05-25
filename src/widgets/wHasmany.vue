@@ -99,8 +99,10 @@ export default {
                 return this.$refs.listView.getValue();
             }
             let val = [];
-            for (let i=0;i<this.$refs.recordView.length;i++) {
-                val.push(this.$refs.recordView[i].getValue());
+            if (this.$refs.recordView) {
+                for (let i=0;i<this.$refs.recordView.length;i++) {
+                    val.push(this.$refs.recordView[i].getValue());
+                }
             }
             return val;
             // if (!this.value) {

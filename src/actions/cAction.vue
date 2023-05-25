@@ -15,14 +15,6 @@
             <template v-if="title" #start>
                 <span>{{ title }}</span>
             </template>
-            <!--                    <template #end>-->
-            <!--                        <div v-if="!label" class="col-12">-->
-            <!--                            <div class="p-inputgroup">-->
-            <!--                                <InputText v-model="newTargetCase" placeholder="Enter target url or id to be added" style="width:300px"/>-->
-            <!--                                <Button icon="pi pi-plus" class="p-button-secondary" @click="newTargetInput"/>-->
-            <!--                            </div>-->
-            <!--                        </div>-->
-            <!--                    </template>-->
         </Menubar>
     </template>
     <template v-else>
@@ -51,6 +43,7 @@ export default {
         },
         'whitelist': Array,
         'blacklist': Array,
+        'menubarTitle' : String,
     },
     data() {
         let that = this;
@@ -117,7 +110,7 @@ export default {
                 return whitelist;
 
             }
-            console.log("WHITELIST:::",that.whitelist);
+            //console.log("WHITELIST:::",that.whitelist);
             return that.whitelist;
         },
         inWhitelist(key) {
@@ -143,17 +136,26 @@ export default {
         getMenubarActions() {
             let that = this;
             let items = [];
-            for (let name in that.conf) {
+            //console.log('actions',that.conf);
+            let actions = that.conf.actions;
+            for (let name in actions) {
+                
                 items.push({
-                    label: that.translate(that.conf[name].text),
-                    icon: that.conf[name].icon,
-                    command: () => that.conf[name].execute(),
-                    disabled: that.conf[name].disabled,
+                    label: that.translate(actions[name].text),
+                    icon: actions[name].icon,
+                    command: () => {
+                        console.log('name',name, actions[name]);
+                        actions[name].execute()
+                    },
+                    disabled: actions[name].disabled,
                     action: name,
                 })
             }
             //console.log('menubar', items, that.conf);
-            return items;
+            return  [{
+                label : this.menubarTitle?this.menubarTitle:this.translate('app.actions'),
+                items : items
+            }]
         }
     }
 }

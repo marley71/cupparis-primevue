@@ -3,7 +3,7 @@
         <Button :title="translate(title)" :label="translate(text)"
                 :class=getActionClass()
                 :icon="icon"
-                v-on:click="_execute($event)" v-bind:disabled="_disabled()"
+                @click="_execute($event)" v-bind:disabled="_disabled()"
         />
     </template>
     <template v-else-if="controlType=='link' && _visible()">
@@ -67,6 +67,11 @@ export default {
         }
         
         dt.wConf = ext;
+        // bug da capire perche'
+        if (!dt.text)
+            dt.text = '';
+        if (!dt.title)
+            dt.title = '';
         //console.log('widget finalData',dt);
         return dt;
     },
@@ -119,12 +124,60 @@ export default {
             }
             return !this.enabled;
         },
+        _beforeExecute() {
+            return new Promise((resolve,reject) => {
+                if (!this.beforeExecute) {
+                    resolve();
+                } else {
+                    let result = this.beforeExecute();
+                    console.log('result',result);
+                    if (result && result instanceof Promise) {
+                        result.then(() => {
+                            console.debug('1then')
+                            resolve()
+                        }).catch(() => {
+                            console.debug('2rejedct')
+                            reject();
+                        })
+                        return ;
+                    }
+                    if (result) {
+                        resolve(true);
+                    } else {
+                        reject(false);
+                    }  
+                }
+                
+            })
+        },
         _execute(event) {
             if (this.execute) {
-                return this.execute(event);
+                this._beforeExecute().then(() => {
+                    let result =  this.execute(event);
+                    if (result && result instanceof Promise) {
+                        result.then(() => {
+                            console.debug('1then')
+                            this._afterExecute(result);
+                        }).catch(() => {
+                            console.debug('execute fallita')
+                        })
+                        return ;
+                    }
+                    this._afterExecute(result);
+                }).catch((error) => {
+                    console.debug('beforeExecute failed');
+                })
+            } else {
+                alert('execute non definita')
             }
-            alert('execute non definita')
         },
+
+        _afterExecute(params) {
+            if (this.afterExecute) {
+                this.afterExecute(params);
+            }
+        },
+
         setEnabled(value) {
             this.enabled = value;
         },

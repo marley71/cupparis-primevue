@@ -35,6 +35,7 @@ export default class WrapperConf {
         headerHelp:'',
         orderFields:{},
         paginator:true,
+        paginatorPosition:'both',
         rows : 20,
         loaded : false,
         route : null,
@@ -46,6 +47,9 @@ export default class WrapperConf {
         pagination:{},
         selectionMode: 'multiple',
         autoload : true,
+        recordActionsPosition: 'end',
+        actionsLayout : 'simple',
+        actionsLayoutTitle :  '',
     }
 
     recordDefaultConf = {
@@ -64,8 +68,7 @@ export default class WrapperConf {
         actionsConfig: {},
         metadata:{},
         autoload : true,
-        actionDivider: false,
-        advancedSearchOpen: false,
+        actionDivider: false
     }
 
     constructor(view) {
@@ -234,6 +237,9 @@ export default class WrapperConf {
         if (!('actions' in conf) ){
             conf.actions = ['action-search','action-search-basic'];
         }
+        conf.advancedSearchOpen = false;
+        conf.basicSearchPlaceholder = null;
+
         return conf;
     }
 

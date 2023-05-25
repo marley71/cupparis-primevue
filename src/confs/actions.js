@@ -1,6 +1,7 @@
 import Server from "../lib/Server";
 import CrudCore from "../lib/CrudCore";
 import CrudVars from "../lib/CrudVars";
+import { reject } from "lodash";
 
 const actionConfs = {
     'default': {
@@ -57,7 +58,7 @@ const actionConfs = {
     'action-search-basic' : {
         type : 'collection',
         title : 'app.cerca',
-        buttonClass: 'p-button',
+        buttonClass: 'p-button p-button-primary',
         icon : 'fa fa-search',
 //        text : 'app.cerca',
         execute () {
@@ -83,9 +84,18 @@ const actionConfs = {
         text : 'app.salva',
         json : null,
         execute (event) {
-            this._save(function () {
-                console.log('save Event',event)
+            return new Promise((resolve,reject) => {
+                this._save(function (esito) {
+                    console.log('save Event',event)
+                    if (esito) {
+                        resolve();
+                    } else {
+                        reject()
+                    }
+                    
+                })
             })
+            
         },
 
         _save (callback) {
@@ -95,12 +105,13 @@ const actionConfs = {
                 //that.waitEnd();
                 if (json.error) {
                     that.view.errorDialog(json.msg)
+                    callback(false);
                     return ;
                 }
                 that.json = json;
                 var msg = json.msg?json.msg:that.view.translate('app.salvataggio-ok');
                 that.view.alertSuccess(msg,3000);
-                callback();
+                callback(true);
             })
         }
 

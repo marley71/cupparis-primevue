@@ -54,6 +54,7 @@
             </template>
 
         </DataTable>
+        <BlockUI :blocked="blocked" fullScreen />
 <!--        <ContextMenu :model="menuModel" ref="cm" />-->
 <!--        <Dialog ></Dialog>-->
 <!--        <Widget :conf="{}"></Widget>-->

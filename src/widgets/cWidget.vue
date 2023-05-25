@@ -3,8 +3,12 @@
         <input type="hidden" :name="name" v-model="value" v-bind="extraBind" @change="change"/>
     </template>
     <template v-else-if="type=='w-input'">
-        <InputText class="w-full" :name="name" type="text" v-model="value" v-bind="extraBind"
-                   @change="change"></InputText>
+        <Password v-if="inputType == 'password'" :inputProps="{'name':name}" :name="name" v-model="value" toggleMask v-bind="extraBind" 
+        @change="change" :class="errors.length?'p-invalid':''"
+        :promptLabel="translate('app.scegli-password')" :weakLabel="translate('app.password-semplice')" 
+        :mediumLabel="translate('app.password-media')" :strongLabel="translate('app.password-complessa')" />
+        <InputText v-else class="w-full" :name="name" :type="inputType" v-model="value" v-bind="extraBind"
+                @change="change" :class="errors.length?'p-invalid':''"></InputText>
     </template>
     <template v-else-if="type=='w-select'">
         <div>
@@ -147,7 +151,7 @@
     </template>
     <template v-else-if="type=='w-upload'">
         <FileUpload mode="basic" :name="getFieldName()" :auto="true" :customUpload="true" @uploader="uploadFile"
-                    :multiple="false"/>
+                    :multiple="false"  v-bind="extraBind"/>
     </template>
 
     <template v-else-if="type=='w-upload-ajax'">
@@ -156,7 +160,7 @@
             <Message v-if="error" severity="error" :closable="false">{{errorMessage}}</Message>
             <div class="flex">
                 <FileUpload mode="basic" :auto="true" :customUpload="true" @uploader="uploadFile"
-                            :multiple="false"/>
+                            :multiple="false" v-bind="extraBind"/>
                 <div class="ml-5">
                     <div class="mt-3" v-if="fileInfo">
                         <template v-if="['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'].indexOf(fileInfo.mimetype) >= 0">
@@ -180,6 +184,9 @@
         <component :is="type" :conf="wConf"></component>
         <div>Widget non riconosciuto {{ type }}</div>
     </template>
+    <div class="overflow-hidden">
+        <span class="text-red-400" v-for="(error,index) in errors">{{ error }}<span v-if="parseInt(index) < (Object.keys(errors).length-1)">,&nbsp;</span></span>
+    </div>
 </template>
 
 <script>
@@ -189,6 +196,7 @@ import CrudComponent from "../CrudComponent.vue";
 import wHasmany from "../widgets/wHasmany.vue";
 import moment from "moment";
 import wSwap from "../widgets/wSwap.vue";
+
 
 export default {
     name: "c-widget",
@@ -254,7 +262,7 @@ export default {
             }
         }
         dt.wConf = ext;
-        //console.log('widget finalData',dt);
+        dt.errors = [];
         return dt;
     },
     mounted() {
@@ -359,6 +367,9 @@ export default {
                     return that.value;
             }
             
+        },
+        setErrors(errors) {
+            this.errors = errors;
         },
         getFormattedValue() {
             let that = this;

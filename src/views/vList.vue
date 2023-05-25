@@ -9,15 +9,37 @@
                 </template>
             </template>
             <slot name="header" :collectionActions="collectionActions">
+                <div class="v-list-header">
+                    <div class="surface-section px-4 py-5 md:px-6 lg:px-8">
+                        <div class="flex align-items-start flex-column lg:justify-content-start lg:align-items-center lg:flex-row">
+                            <div class="mr-5 pr-3 border-right-none lg:border-right-1">
+                                <div class="font-medium text-3xl text-900">{{ translateUc(modelName + '.label', null,1) }}</div>
+                                <div class="flex align-items-center text-700 flex-wrap">
+                                    <div class="mr-5 flex align-items-center mt-3">
+                                        <!--                                    <i class="pi pi-users mr-2"></i>-->
+                                        <span>{{
+                                                translate('app.numero-records-lista', null, 0, [(value ? value.length : 0), getFirst() + 1, getFirst() + (value ? value.length : 0), getTotal()])
+                                            }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <template v-if="Object.keys(collectionActions).length > 0">
+                                <div class="mt-5 lg:mt-0">
+                                    <c-action layout="buttons" :conf="collectionActions"></c-action>
+                                </div>
 
+                            </template>
+                        </div>
+                    </div>
+                </div>
 
-
+                
 
             </slot>
             <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig">
                 <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected"
                             :rows="getPerPage()"
-                           :paginator="paginator" paginatorPosition="both"
+                           :paginator="paginator" :paginatorPosition="paginatorPosition"
                            :lazy="routeName==null?false:true"
                            @page="onPage($event)" @sort="onSort($event)"
                            :total-records="getTotal()"
@@ -27,42 +49,11 @@
 
 
                 >
-                    <!--
-                          contextMenu v-model:contextMenuSelection="selectedRow" @rowContextmenu="onRowContextMenu"
-                          :scrollable="true" scrollHeight="100px"
-                          -->
-
-                    <template #header>
-
-                        <div class="surface-section px-4 py-5 md:px-6 lg:px-8">
-                            <div class="flex align-items-start flex-column lg:justify-content-start lg:align-items-center lg:flex-row">
-                                <div class="mr-5 pr-3 border-right-none lg:border-right-1">
-                                    <div class="font-medium text-3xl text-900">{{ translateUc(modelName + '.label', null,1) }}</div>
-                                    <div class="flex align-items-center text-700 flex-wrap">
-                                        <div class="mr-5 flex align-items-center mt-3">
-                                            <!--                                    <i class="pi pi-users mr-2"></i>-->
-                                            <span>{{
-                                                    translate('app.numero-records-lista', null, 0, [(value ? value.length : 0), getFirst() + 1, getFirst() + (value ? value.length : 0), getTotal()])
-                                                }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <template v-if="Object.keys(collectionActions).length > 0">
-                                    <div class="mt-5 lg:mt-0">
-                                        <c-action layout="buttons" :conf="collectionActions"></c-action>
-                                    </div>
-
-                                </template>
-                            </div>
-                        </div>
-
-
-                    </template>
                     <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>
-                    <Column v-if="hasRecordActions()" :exportable="false" :header="translate('app.actions')">
+                    <Column v-if="getRecordActionsPosition() == 'start' && hasRecordActions()" :exportable="false" :header="translate('app.actions')">
                         <template #body="slotProps">
                             <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
-                                      :layout="'simple'"></c-action>
+                                      :layout="actionsLayout" :menubar-title="actionsLayoutTitle"></c-action>
                         </template>
                     </Column>
                     <Column v-for="(col) in getVisibleFields()" :field="col" :header="columnLabel(col)" :key="col"
@@ -81,6 +72,13 @@
 <!--&lt;!&ndash;                        }}&ndash;&gt;-->
 <!--                        &lt;!&ndash;                        Ci sono {{value ? value.length : 0 }} record, da {{getFirst()+1}} a {{getFirst() + (value ? value.length : 0) }} su {{getTotal()}}&ndash;&gt;-->
 <!--                    </template>-->
+                    <Column v-if="getRecordActionsPosition() == 'end' && hasRecordActions()" :exportable="false" :header="translate('app.actions')">
+                        <template #body="slotProps">
+                            <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
+                                      :layout="actionsLayout" :menubar-title="actionsLayoutTitle"></c-action>
+                        </template>
+                    </Column>
+
                     <template #empty>
                         {{ translate('app.no_records_found') }}
                     </template>
@@ -99,6 +97,7 @@
                        :conf="panelConf.componentConf"></component>
         </div>
     </OverlayPanel>
+    <BlockUI :blocked="blocked" fullScreen />
 </template>
 
 <script>
@@ -324,6 +323,12 @@ export default {
             return (pagination.per_page ? pagination.per_page : this.getTotal());
             //return this.getTotal();
         },
+        getPage() {
+            console.log('pagination',this.pagination);
+            if (this.routeName)
+                return this.pagination.current_page;
+            return parseInt(Math.floor(this.getTotal()/this.getPerPage()));
+        },
         getRecordAction(index, name) {
             console.log('getRecordAction', index, name,);
             return this.$refs['r' + index].instance(name);
@@ -350,6 +355,16 @@ export default {
             if (that.recordActionsConf && that.recordActionsConf.length && (Object.keys(that.recordActionsConf[0].actions).length > 0))
                 return true;
             return false;
+        },
+        getRecordActionsPosition() {
+            let that = this;
+            //console.log('hasRecordActions',that.recordActionsConf);
+            switch (that.recordActionsPosition) {
+                case 'end':
+                    return 'end';
+                default:
+                    return 'start';
+            }
         },
         _setMenuCollection() {
             let that = this;
@@ -409,6 +424,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+.v-list-header {
+    border-bottom: 2px solid var(--primary-color);
+}
 
 .p-datatable {
     :deep(.p-datatable-header) {
