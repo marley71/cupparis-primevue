@@ -352,6 +352,14 @@ export default {
                 case 'w-hasmany':
                     that.$refs.wRef.setValue(val);
                     break;
+                case 'w-select':
+                    // siccome i valori possono essere diversi prima del check li trasformo in stringa
+                    let stringValues = that.options.map(a => a.id+"");
+                    let index = stringValues.indexOf(val+"");
+                    if (index >= 0) {
+                        that.value = that.options[index].id
+                    }
+                    break;
                 default:
                     that.value = val;
                     break;

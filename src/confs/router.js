@@ -87,7 +87,7 @@ const routerConf =  [
     //     props: true
     // },
     {
-        path: '/manage/:cConf',
+        path: '/manage/:cConf/:context*',
         name: 'c-manage',
         component: cManage,
         // redirect: to => {

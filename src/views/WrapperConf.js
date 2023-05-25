@@ -23,6 +23,7 @@ export default class WrapperConf {
         pagination:{},
         selectionMode: null,
         autoload : true,
+        blocked : false,
     }
 
     listDefaultConf = {
@@ -50,6 +51,7 @@ export default class WrapperConf {
         recordActionsPosition: 'end',
         actionsLayout : 'simple',
         actionsLayoutTitle :  '',
+        blocked : false,
     }
 
     recordDefaultConf = {
@@ -68,7 +70,8 @@ export default class WrapperConf {
         actionsConfig: {},
         metadata:{},
         autoload : true,
-        actionDivider: false
+        actionDivider: false,
+        blocked : false,
     }
 
     constructor(view) {
