@@ -118,6 +118,9 @@ export default {
             that.conf.view.modelName = that.conf.modelName;
             console.log('modelName',that.conf.modelName);
         }
+        if (!that.conf.baseRouteName) {  // indica il nome del path per la manage, di default e' manage ma in caso di oggetti estesi potrebbe essere diverso
+            that.conf.baseRouteName = 'manage';
+        }
         that.conf.editComponentName = that.conf.editComponentName || null;
         that.conf.listComponentName = that.conf.listComponentName || null;
         that.conf.searchComponentName = that.conf.searchComponentName || null;
@@ -129,6 +132,7 @@ export default {
     methods : {
         searchList(event) {
             console.log('searchList',event);
+            let that = this;
             let confName = this.$route.params.cConf;
             let context = [];
             if (event && event instanceof FormData) {
@@ -136,7 +140,7 @@ export default {
                     var values = event.getAll(key);
                     context.push(key+':'+values.join('&'));
                 }
-                window.history.pushState({},'','/#/manage/'+ confName +'/list/' + context.join('/'));
+                window.history.pushState({},'','/#/' + that.baseRouteName + '/'+ confName +'/list/' + context.join('/'));
             }
             this.$refs.vList.instance().setParams(event);
         },
@@ -165,7 +169,8 @@ export default {
                         that.edit.pk = thatAction.modelData[manage.getViewList().primaryKey];
                         that.mode = 'edit';
                         let confName = this.$route.params.cConf;
-                        window.history.pushState({},'','/#/manage/'+ confName +'/edit/' + that.edit.pk);
+
+                        window.history.pushState({},'','/#/' + manage.baseRouteName + '/'+ confName +'/edit/' + that.edit.pk);
                     }
                 }
                 that.conf.list.actionsConfig['action-edit'] = actionEdit;
@@ -176,7 +181,7 @@ export default {
                     actionInsert.execute = function () {
                         that.mode = 'insert';
                         let confName = this.$route.params.cConf;
-                        window.history.pushState({},'','/#/manage/'+ confName +'/insert');
+                        window.history.pushState({},'','/#/' + manage.baseRouteName + '/'+ confName +'/insert');
                     }
                 }
                 that.conf.list.actionsConfig['action-insert'] = actionInsert;
