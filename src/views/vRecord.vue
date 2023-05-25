@@ -193,20 +193,6 @@ export default {
         }
     },
     methods: {
-        // validateField(value) {
-        //     if (!value) {
-        //         return 'Password is required.';
-        //     }
-        //     return true;
-        // },
-        // handleSubmit(values) {
-        //     console.log('values',values);
-        //     // if (values.value && values.value.length > 0) {
-        //     //     //toast.add({ severity: 'info', summary: 'Form Submitted', detail: values.value, life: 3000 });
-        //     //     //resetForm();
-        //     // }
-        //     return false;
-        // },
         removeFromList() {
           this.isInlist = false;
         },
@@ -304,6 +290,7 @@ export default {
         save(callback) {
             var that = this;
             let route = null;
+            that.resetWidgetsErrors();
             that.validate().then((res) => {
                 if (!res) {
                     return ;
@@ -368,57 +355,80 @@ export default {
                     let w = that.getWidget(key);
                     console.log('set Value w',w,key);
                     if (w ) {
-                        //WW = w;
-                        
                         w.setValue(values[key]);
                     }
                 }
             }
         },
+        /**
+         * esegue la validazione della form prima di inviarla al server in base
+         * alle rules definite in configurazione su ogni campo.
+         */
         async validate() {
-            console.log(AllRules)
+            //console.log(AllRules)
             let that = this;
-            console.log('widgetsConfig',that.widgetsConfig);
+            //console.log('widgetsConfig',that.widgetsConfig);
             
             that.defineRules();
             let isValid = true;
-            for (let name in that.widgetsConfig) {
-                if (that.widgetsConfig[name].rules) {
-                    let widget = that.getWidget(name);
-                    console.log('name',name,widget.getValue());
+            for (let i in that.fields) {
+                let name = that.fields[i];
+                let widget = this.getWidget(name);
+                if (widget.rules) {
+                    //console.log('name',name,widget.getValue());
                     let res = await validate(widget.getValue(),
-                    that.widgetsConfig[name].rules,{
-                        name : name,
-                        label : widget.label,
-                        bails : false,
-                    });
-                    console.log(name,'res',res);                      
+                                        widget.rules,
+                                        {
+                                            name : name,
+                                            label : widget.label,
+                                            bails : false,
+                                        });
+                    //console.log(name,'res',res);                      
                     isValid = isValid && res.valid;
-                    console.log('ISVALID',isValid);
+                    //console.log('ISVALID',isValid);
                     that.getWidget(name).setErrors(res.errors);                          
                 }
             }
-            console.log('isValid',isValid)
+            //console.log('isValid',isValid)
             return isValid;
         },
+        /**
+         * definisce tutte le rules definite nel campo rules per poterle richiamare in fase di validate form
+         */
         defineRules() {
             let that = this;
-            let rules = Object.values(that.widgetsConfig).map(a => a.rules).join('|');
-            let rulesArray = rules.split('|');
+            let rulesArray = [];
+            for (let i in that.fields) {
+                let name = that.fields[i];
+                let widget = this.getWidget(name);
+                rulesArray = rulesArray.concat(widget.rules.split('|'));
+            }
             for (let i in rulesArray) {
                 let ruleName = rulesArray[i].split(':')[0];
-                //console.debug('rulename',ruleName);
                 if (ruleName) {
                     defineRule(ruleName,AllRules[ruleName]);
                 }
             }
         },
+        /**
+         * se esiste un regola required aggiunge l'asterisco alla label del campo
+         * @param {} field 
+         */
         isRequired(field) {
-            console.log('widgetsConfig',field,this.widgetsConfig[field].rules)
             if (this.widgetsConfig[field].rules.indexOf('required') >= 0) {
                 return ' *';
             }
             return ''
+        },
+        /**
+         * resetta gli errori segnalati in un eventuale validate
+         */
+        resetWidgetsErrors() {
+            let that = this;
+            for (let i in that.fields) {
+                let name = that.fields[i];
+                this.getWidget(name).setErrors([]);
+            }
         }
     }
 }
