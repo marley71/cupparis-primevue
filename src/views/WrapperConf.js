@@ -81,6 +81,7 @@ export default class WrapperConf {
     loadConf(conf) {
         let that = this;
         //console.log('VIEW CONF',conf);
+        console.log('View.WrapperConf type',conf.type);
         if (!conf.type)
             throw "confurazione non trovata per la view definire il type della vista";
         var defConf = null;

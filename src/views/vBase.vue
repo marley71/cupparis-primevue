@@ -45,7 +45,7 @@ export default {
     watch : {
         loaded() {
             if (this.loaded) {
-                console.log('LOADEDDDDDD')
+                console.log('LOADEDDDDDD',this.type)
                 this.$emit('loaded',this.loaded);
             }
         }
@@ -139,6 +139,10 @@ export default {
             this.route.setParams(params);
             this.reload();
         },
+        getParams() {
+            return this.route.getParams();
+        },
+
         getFieldName(field) {
             return field;
         },

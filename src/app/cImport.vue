@@ -490,6 +490,9 @@ export default {
         _listConf() {
             var that = this;
             var userConf = that.viewList; //that.merge({},that.viewList);
+            if (!userConf.type) {
+                userConf.type = 'v-list';
+            }
             userConf.modelName = that.providerName;
             userConf.actions = [];
             return userConf;
@@ -497,6 +500,9 @@ export default {
         _saveConf() {
             var that = this;
             var userConf = that.viewSave; //that.merge({},that.viewSave);
+            if (!userConf.type) {
+                userConf.type = 'v-insert';
+            }
             userConf.modelName = that.providerName;
             userConf.actionsConfig = that.viewSave.actionsConfig || {};
             userConf.fieldsConfig = that.viewSave.fieldsConfig || {};
@@ -527,7 +533,7 @@ export default {
                 })
             }
             userConf.actionsConfig['action-save'] = aS;
-
+            console.debug('saveConf',userConf);
             return  userConf;
         },
     }
