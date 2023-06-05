@@ -493,8 +493,10 @@ export default {
             if (!userConf.type) {
                 userConf.type = 'v-list';
             }
+            userConf.jobId = that.jobId;
             userConf.modelName = that.providerName;
             userConf.actions = [];
+            console.debug('import list conf',userConf);
             return userConf;
         },
         _saveConf() {
