@@ -274,6 +274,7 @@ export default class WrapperConf {
         conf = this.wUpload(conf);
         conf.routeName = 'uploadfile';
         conf.error = false;
+        conf.fileInfo = null;
         if (!conf.setRouteValues) {
             conf.setRouteValues =  function (route) {
                 route.setValues({
