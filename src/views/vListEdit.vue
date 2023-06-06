@@ -64,7 +64,7 @@
 <script>
 //import cWidget from "../widgets/cWidget.vue";
 import cAction from "../actions/cAction.vue";
-//import actionConfs from "../confs/actions";
+import Server from "../lib/Server";
 
 import vList from './vList.vue';
 
@@ -110,11 +110,12 @@ export default {
                 let key = that.fields[f];
                 fConf[ key ] = {
                     type : 'w-input',
-                    label : that.getFieldLabel(key)
                 }
                 if (fieldsEditConfig[key]) {
                     fConf[key] = Object.assign(fConf[key],fieldsEditConfig[key]);
                 }
+                that.setFieldLabel(key,fConf[key]);
+                that.labelCols[key] = fConf[key].label;
             }
 
             // configurazione finale dei widgets
@@ -237,22 +238,46 @@ export default {
                 let field = that.fields[i];
                 console.log('prendo ' +index + ' ' + field,that.$refs['we'+index+'_'+field]);
                 let w = that.$refs['we'+index+'_'+field];
+                if (Array.isArray(w)) {
+                    w = w[0];
+                }
                 if (w) {
                     values[field] = w.getValue()
                 }
             }
-
-            // for (var k in that.widgetsEditConfig[index]) {
-            //     //values[k] = that.getWidgetEdit(index,k);
-            //     //console.log('edit r',that.view.widgetsEdit[that.index][k])
-            //     var sref = that.widgetsEdit[index][k].cRef; //  're-' + that.index + '-' +  k;
-            //     if (that.store.cRefs[sref])
-            //         values[k] = that.getWidgetEdit(index,k).getValue();
-            // }
             console.log('rowEditData values',values);
             return values;
         },
-        
+        /**
+         * salva una riga
+         * @param {indice della row da salvare} index 
+         */
+        save(index) {
+            let that = this;
+            var values = that.getRowEditData(index);
+            //var id = that.view.value[that.index][that.view.primaryKey];
+            var r = that.createRoute('update');
+            r.setValues({
+                modelName: that.modelName,
+                pk : that.value[index][that.primaryKey]
+            });
+
+            //that.setRouteValues(r);
+            r.setParams(values);
+            Server.route(r, function (json) {
+                if (json.error) {
+                    that.errorDialog(json.msg);
+                    return;
+                }
+                var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
+                that.alertSuccess(msg,3000);
+                var values = json.result;
+                that.setRowData(that.index,values);
+                that.setViewMode(that.index);
+                //that.view.reload();
+            })
+            console.log('values', values);
+        }
     }
 }
 </script>

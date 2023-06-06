@@ -125,16 +125,20 @@ export default {
             return !this.enabled;
         },
         _beforeExecute() {
+            let that = this;
             return new Promise((resolve,reject) => {
-                if (!this.beforeExecute) {
-                    resolve();
+                console.debug('_beforeExecute',that.beforeExecute);
+                if (!that.beforeExecute) {
+                    console.debug('_beforeExecute2');
+                    resolve(true);
                 } else {
-                    let result = this.beforeExecute();
+                    console.debug('_beforeExecute1');
+                    let result = that.beforeExecute();
                     console.log('result',result);
                     if (result && result instanceof Promise) {
                         result.then(() => {
                             console.debug('1then')
-                            resolve()
+                            resolve(true)
                         }).catch(() => {
                             console.debug('2rejedct')
                             reject();
@@ -153,19 +157,27 @@ export default {
         _execute(event) {
             if (this.execute) {
                 this._beforeExecute().then(() => {
-                    let result =  this.execute(event);
-                    if (result && result instanceof Promise) {
-                        result.then(() => {
-                            console.debug('1then')
+                    console.debug('execute prima');
+                    try {
+                        let result =  this.execute(event);
+                        if (result && result instanceof Promise) {
+                            result.then(() => {
+                                console.debug('1then')
+                                this._afterExecute(result);
+                            }).catch(() => {
+                                console.debug('execute fallita')
+                            })
+                        } else {
                             this._afterExecute(result);
-                        }).catch(() => {
-                            console.debug('execute fallita')
-                        })
-                        return ;
+                        }
+                    }catch(e) {
+                        throw e
                     }
-                    this._afterExecute(result);
+                    
+                    
                 }).catch((error) => {
-                    console.debug('beforeExecute failed');
+                     console.debug('beforeExecute failed');
+                     throw error;
                 })
             } else {
                 alert('execute non definita')

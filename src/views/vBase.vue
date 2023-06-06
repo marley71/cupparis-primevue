@@ -179,16 +179,18 @@ export default {
         getWidgetLayout(field,prop) {
             var that = this;
             var layout = that.widgetsConfig[field].layout;
+            //console.debug(field,prop,"PROPLAYOUT",layout,'orignal',that.layout);
             if (!layout) {
                 layout = that.layout;
             } else {
+                layout = {};
                 for (var p in that.layout) {
                     if (!layout[p]) {
                         layout[p] = that.layout[p];
                     }
                 }
             }
-            //console.log(field,"PROPLAYOUT",layout,prop);
+            //console.debug(field,"PROPLAYOUT",layout,prop);
             if (!prop) {
                 return layout;
             }

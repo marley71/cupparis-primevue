@@ -135,6 +135,7 @@ Server.route = function(route,callback) {
     var __cb = callback?callback:function (json) {console.debug(route.className,json)};
     var realUrl = route.getUrl();
     var params = route.getParams();
+    console.debug('route params',params);
     Server[route.getMethod()](realUrl,params,function (json) {
         __cb(json);
     })
