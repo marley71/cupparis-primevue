@@ -86,7 +86,7 @@ const actionConfs = {
         execute (event) {
             return new Promise((resolve,reject) => {
                 this._save(function (esito) {
-                    console.log('save Event',event)
+                    console.log('save Event',event,esito)
                     if (esito) {
                         resolve();
                     } else {

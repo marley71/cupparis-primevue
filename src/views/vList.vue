@@ -1,7 +1,5 @@
 <template>
-
-
-    <BlockUI :blocked="!loaded">
+    <div>
         <div v-if="loaded">
             <template v-for="(v,row) in value">
                 <template v-for="(col) in getHiddenFields()" :key="col">
@@ -89,15 +87,14 @@
 
             </slot>
         </div>
-
-    </BlockUI>
-    <OverlayPanel ref="panel" :showCloseIcon="true" :dismissable="true">
-        <div :class="'' + panelConf.classWidth">
-            <component v-if="panelConf.componentName" :is="panelConf.componentName"
-                       :conf="panelConf.componentConf"></component>
-        </div>
-    </OverlayPanel>
-    <BlockUI :blocked="blocked" fullScreen />
+        <OverlayPanel ref="panel" :showCloseIcon="true" :dismissable="true">
+            <div :class="'' + panelConf.classWidth">
+                <component v-if="panelConf.componentName" :is="panelConf.componentName"
+                        :conf="panelConf.componentConf"></component>
+            </div>
+        </OverlayPanel>
+        <BlockUI :blocked="blocked" fullScreen />
+    </div>
 </template>
 
 <script>

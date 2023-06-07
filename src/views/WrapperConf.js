@@ -24,6 +24,7 @@ export default class WrapperConf {
         selectionMode: null,
         autoload : true,
         blocked : false,
+        modelName : null,
     }
 
     listDefaultConf = {
@@ -52,6 +53,7 @@ export default class WrapperConf {
         actionsLayout : 'simple',
         actionsLayoutTitle :  '',
         blocked : false,
+        modelName : null,
     }
 
     recordDefaultConf = {
@@ -72,6 +74,7 @@ export default class WrapperConf {
         autoload : true,
         actionDivider: false,
         blocked : false,
+        modelName : null,
     }
 
     constructor(view) {

@@ -3,7 +3,8 @@
         <Button :title="translate(title)" :label="translate(text)"
                 :class=getActionClass()
                 :icon="icon"
-                @click="_execute($event)" v-bind:disabled="_disabled()"
+                :disabled="_disabled()"
+                @click="_execute($event)"
         />
     </template>
     <template v-else-if="controlType=='link' && _visible()">
@@ -72,6 +73,9 @@ export default {
             dt.text = '';
         if (!dt.title)
             dt.title = '';
+        // if (!dt.icon) {
+        //     dt.icon = '';
+        // }
         //console.log('widget finalData',dt);
         return dt;
     },
@@ -155,25 +159,27 @@ export default {
             })
         },
         _execute(event) {
-            if (this.execute) {
-                this._beforeExecute().then(() => {
-                    console.debug('execute prima');
+            let that = this;
+            event.preventDefault();
+            if (that.execute) {
+                that._beforeExecute().then(() => {
                     try {
-                        let result =  this.execute(event);
+                        let result =  that.execute(event);
+                        console.debug('execute after',result)
                         if (result && result instanceof Promise) {
                             result.then(() => {
-                                console.debug('1then')
-                                this._afterExecute(result);
+                                that._afterExecute();
                             }).catch(() => {
                                 console.debug('execute fallita')
                             })
                         } else {
-                            this._afterExecute(result);
+                            if (result) {
+                                that._afterExecute();
+                            }
                         }
-                    }catch(e) {
+                    } catch(e) {
                         throw e
                     }
-                    
                     
                 }).catch((error) => {
                      console.debug('beforeExecute failed');
