@@ -1,59 +1,77 @@
 <template>
     <div v-if="loaded">
-        <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected" :rows="getPerPage()" :paginator="paginator"
-            :lazy="routeName==null?false:true" @page="onPage($event)" @sort="onSort($event)"
-                   :total-records="getTotal()"
-                   :first="getFirst()"
-                   :sortField="getSortField()"
-                   :sortOrder="getSortOrder()"
+        <template v-for="(v,row) in value">
+            <template v-for="(col) in getHiddenFields()" :key="col">
+                <c-widget :ref="'w'+row+'_'+col" :conf="getWidgetConf(row,col,v[col])"></c-widget>
+            </template>
+        </template>
+        <slot name="header" :collectionActions="collectionActions">
+            <div class="v-list-edit-header">
+                <div class="surface-section px-4 py-5 md:px-6 lg:px-8">
+                    <div class="flex align-items-start flex-column lg:justify-content-start lg:align-items-center lg:flex-row">
+                        <div class="mr-5 pr-3 border-right-none lg:border-right-1">
+                            <div class="font-medium text-3xl text-900">{{ translateUc(modelName + '.label', null,1) }}</div>
+                            <div class="flex align-items-center text-700 flex-wrap">
+                                <div class="mr-5 flex align-items-center mt-3">
+                                    <!--                                    <i class="pi pi-users mr-2"></i>-->
+                                    <span>{{
+                                            translate('app.numero-records-lista', null, 0, [(value ? value.length : 0), getFirst() + 1, getFirst() + (value ? value.length : 0), getTotal()])
+                                        }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <template v-if="Object.keys(collectionActions).length > 0">
+                            <div class="mt-5 lg:mt-0">
+                                <c-action layout="buttons" :conf="collectionActions"></c-action>
+                            </div>
 
-        >
-            <!--
-                  contextMenu v-model:contextMenuSelection="selectedRow" @rowContextmenu="onRowContextMenu"
-                  :scrollable="true" scrollHeight="100px"
-                  -->
-
-            <template #header>
-                <template v-if="Object.keys(collectionActions).length == 0">
-                    <div class="table-header">
-                        {{title}}
+                        </template>
                     </div>
-                </template>
+                </div>
+            </div>
 
-                <Menubar v-else :model="menuCollection" class="w-full">
-                    <template  v-if="title" #start>
-                        <span>{{title}}</span>
+            
+
+        </slot>
+        <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig">
+            <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected" 
+                :rows="getPerPage()" 
+                :paginator="paginator"
+                :lazy="routeName==null?false:true" 
+                @page="onPage($event)" @sort="onSort($event)"
+                :total-records="getTotal()"
+                :first="getFirst()"
+                :sortField="getSortField()"
+                :sortOrder="getSortOrder()"
+
+            >
+                <Column :selection-mode="selectionMode"></Column>
+                <!-- <Column v-if="getRecordActionsPosition() == 'start' && hasRecordActions()" :exportable="false" :header="translate('app.actions')">
+                    <template #body="slotProps">
+                        <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
+                                    :layout="actionsLayout" :menubar-title="actionsLayoutTitle"></c-action>
                     </template>
-<!--                    <template #end>-->
-<!--                        <div v-if="!label" class="col-12">-->
-<!--                            <div class="p-inputgroup">-->
-<!--                                <InputText v-model="newTargetCase" placeholder="Enter target url or id to be added" style="width:300px"/>-->
-<!--                                <Button icon="pi pi-plus" class="p-button-secondary" @click="newTargetInput"/>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </template>-->
-                </Menubar>
-            </template>
-            <Column :selection-mode="selectionMode"></Column>
-            <Column :exportable="false" header="Actions">
-                <template #body="slotProps">
-                    <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index]" :layout="'simple'"></c-action>
+                </Column> -->
+                <Column :exportable="false" header="Actions">
+                    <template #body="slotProps">
+                        <c-action :ref="'r'+slotProps.index % getPerPage()" :conf="recordActionsConf[slotProps.index % getPerPage()]" :layout="'simple'"></c-action>
+                    </template>
+                </Column>
+                <Column v-for="(col) in fields" :field="col" :header="col" :key="col" :sortable="isSortable(col)" :dir="sortDirection(col)">
+                    <template #body="slotProps">
+    <!--                    {{getWidgetConf(slotProps.index,col,slotProps.data[col])}}-->
+                        <c-widget v-if="!editMode[slotProps.index % getPerPage()]" :ref="'w'+slotProps.index % getPerPage()+'_'+col"
+                                :conf="getWidgetConf(slotProps.index % getPerPage(),col,slotProps.data[col])"></c-widget>
+                        <c-widget v-if="editMode[slotProps.index % getPerPage()]" :ref="'we'+slotProps.index % getPerPage() +'_'+col"
+                                :conf="getWidgetEditConf(slotProps.index % getPerPage(),col,slotProps.data[col])"></c-widget>
+                    </template>
+                </Column>
+                <template #footer>
+                    In total there are {{value ? value.length : 0 }} rows.
                 </template>
-            </Column>
-            <Column v-for="(col) in fields" :field="col" :header="col" :key="col" :sortable="isSortable(col)" :dir="sortDirection(col)">
-                <template #body="slotProps">
-<!--                    {{getWidgetConf(slotProps.index,col,slotProps.data[col])}}-->
-                    <c-widget v-if="!editMode[slotProps.index]" :ref="'w'+slotProps.index+'_'+col"
-                              :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></c-widget>
-                    <c-widget v-if="editMode[slotProps.index]" :ref="'we'+slotProps.index+'_'+col"
-                              :conf="getWidgetEditConf(slotProps.index,col,slotProps.data[col])"></c-widget>
-                </template>
-            </Column>
-            <template #footer>
-                In total there are {{value ? value.length : 0 }} rows.
-            </template>
 
-        </DataTable>
+            </DataTable>
+        </slot>
         <BlockUI :blocked="blocked" fullScreen />
 <!--        <ContextMenu :model="menuModel" ref="cm" />-->
 <!--        <Dialog ></Dialog>-->

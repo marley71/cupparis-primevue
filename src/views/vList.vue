@@ -355,7 +355,7 @@ export default {
         },
         getRecordActionsPosition() {
             let that = this;
-            //console.log('hasRecordActions',that.recordActionsConf);
+            //console.log('getRecordActionsPosition, hasRecordActions',that.recordActionsConf,that.recordActionsPosition);
             switch (that.recordActionsPosition) {
                 case 'end':
                     return 'end';

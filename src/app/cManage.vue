@@ -26,7 +26,7 @@
 <!--                    </span>-->
 <!--                </Divider>-->
 
-                <c-view v-if="!listComponentName"  :conf="list" ref="vList"></c-view>
+                <c-view v-if="!listComponentName"  :conf="list" ref="vList" @loaded="showListMia"></c-view>
                 <component v-else :is="listComponentName" :conf="list" ref="vList"></component>
             </div>
             <template v-if="mode=='edit'">
@@ -135,13 +135,13 @@ export default {
             let that = this;
             let confName = this.$route.params.cConf;
             let context = [];
-            if (event && event instanceof FormData) {
-                for (var key of event.keys()) {
-                    var values = event.getAll(key);
-                    context.push(key+':'+values.join('&'));
-                }
-                window.history.pushState({},'','/#/' + that.baseRouteName + '/'+ confName +'/list/' + context.join('/'));
-            }
+            // if (event && event instanceof FormData) {
+            //     for (var key of event.keys()) {
+            //         var values = event.getAll(key);
+            //         context.push(key+':'+values.join('&'));
+            //     }
+            //     window.history.pushState({},'','/#/' + that.baseRouteName + '/'+ confName +'/list/' + context.join('/'));
+            // }
             this.$refs.vList.instance().setParams(event);
         },
         setManageActions() {
@@ -230,7 +230,8 @@ export default {
                 case 'list':
                     let vList = that.getViewList();
                     if (vList) {
-                        let listParams = context.filter( a => a.indexOf('s_') == 0);
+                        let listParams = context.filter( a => a.indexOf('s_') == 0) || [];
+                        listParams.concat( context.filter( a => a.indexOf('page') == 0));
                         //console.log('LISTPARAMS',listParams,JSON.stringify(vList.value));
                         if (listParams.length > 0) {
                             vList.autoload = false;
@@ -291,6 +292,31 @@ export default {
             } else {
                 console.warn('wait ' + type + ' non gestito');
             }
+        },
+        showListMia() {
+            let that = this;
+            let confName = this.$route.params.cConf;
+            let params = that.getViewList().route.getParams();
+            let context = [];
+            if (params && params instanceof FormData) {
+                for (var key of params.keys()) {
+                    var values = params.getAll(key);
+                    context.push(key+':'+values.join('&'));
+                }
+            } else if (params  && params instanceof Object) {
+                for (var key in params) {
+                    var values = params[key];
+                    if (Array.isArray(values)) {
+                        context.push(key+':'+values.join('&'));
+                    } else {
+                        context.push(key+':'+values);
+                    }
+                    
+                }
+            }
+
+            window.history.pushState({},'','/#/' + that.baseRouteName + '/'+ confName +'/list/' + context.join('/'));
+
         }
     }
 }

@@ -139,6 +139,7 @@
             </div>
         </template>
         <template v-else-if="type=='w-texthtml'">
+            <input type="hidden" :name="name" v-model="value" />
             <Editor v-model="value" editorStyle="height: 320px" @text-change="_change">
                 <template v-if="toolbar" #toolbar>
                     <span class="ql-formats">
