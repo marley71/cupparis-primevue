@@ -127,11 +127,14 @@ export default {
         that.conf.insertComponentName = that.conf.insertComponentName || null;
         that.conf.viewComponentName = that.conf.viewComponentName || null;
 
+        if (this.conf.list) {
+            this.conf.list.autoload = false;
+        }
         return that.conf;
     },
     methods : {
         searchList(event) {
-            console.log('searchList',event);
+            console.debug('searchList',event);
             let that = this;
             let confName = this.$route.params.cConf;
             let context = [];
@@ -142,7 +145,11 @@ export default {
             //     }
             //     window.history.pushState({},'','/#/' + that.baseRouteName + '/'+ confName +'/list/' + context.join('/'));
             // }
-            this.$refs.vList.instance().setParams(event);
+            if (this.getViewList()) {
+                this.getViewList().setParams(event);
+                this.getViewList().load();
+            }
+            //this.$refs.vList.instance().setParams(event);
         },
         setManageActions() {
             let that = this;
@@ -209,7 +216,7 @@ export default {
          */
         showContext() {
             let that = this;
-            console.log('showContext',that.$route.params.context)
+            console.debug('showContext',that.$route.params.context)
             let context = that.$route.params.context;
             if (!context || context.length == 0) {
                 if (that.getViewList()) {
@@ -231,11 +238,13 @@ export default {
                     let vList = that.getViewList();
                     if (vList) {
                         let listParams = context.filter( a => a.indexOf('s_') == 0) || [];
-                        listParams.concat( context.filter( a => a.indexOf('page') == 0));
-                        //console.log('LISTPARAMS',listParams,JSON.stringify(vList.value));
+                        listParams = listParams.concat( context.filter( a => a.indexOf('page') == 0));
+                        console.log('LISTPARAMS',listParams,JSON.stringify(vList.value),context.filter( a => a.indexOf('page') == 0));
                         if (listParams.length > 0) {
                             vList.autoload = false;
-                            that.waitViewLoaded('list',function() {
+                            //that.waitViewLoaded('list',function() {
+                    
+                                console.debug('view loaded');
                                 for (let i in listParams) {
                                     let tmp = listParams[i].split(':');
                                     if (tmp.length != 2) {
@@ -244,8 +253,8 @@ export default {
                                     }
                                     vList.route.setParam(tmp[0],tmp[1]);
                                 }
-                                vList.load();
-                            })
+                                
+                            //})
                             that.waitViewLoaded('search',function() {
                                 let vSearch = that.getViewSearch();
                                 window.VSS = vSearch;
@@ -264,6 +273,7 @@ export default {
                                 
                             })
                         }
+                        vList.load();
                         
                     }
                     break;
@@ -314,8 +324,8 @@ export default {
                     
                 }
             }
-
-            window.history.pushState({},'','/#/' + that.baseRouteName + '/'+ confName +'/list/' + context.join('/'));
+            console.debug('listmia',params,context,window.location.pathname);
+            window.history.pushState({},'',window.location.pathname + '#/' + that.baseRouteName + '/'+ confName +'/list/' + context.join('/'));
 
         }
     }

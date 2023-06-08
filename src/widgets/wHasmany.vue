@@ -37,6 +37,13 @@
             </template>
         </Card>
     </template>
+    <template v-else-if="hasmanyType=='view-only'">
+        <template v-for="(data,index) in hasmanyValue" :key="index">
+            <div v-for="field in getHasmanyConf(index).fields" :key="index">
+                <c-widget :conf="getHasmanyWidgetConf(index,field)"></c-widget>
+            </div>
+        </template>
+    </template>
     <div v-else>
         <span>hasmanyType {{ hasmanyType }} non valido!</span>
     </div>
@@ -254,6 +261,16 @@ export default {
         },
         hasDisplayTitle() {
             return this.displayTitle !== false;
+        },
+        getHasmanyWidgetConf(index,field) {
+            let that = this;
+            let fieldsConfig = that.hasmanyConf.fieldsConfig || {};
+            let conf = fieldsConfig[field] || { type : 'w-text'};
+            conf.value = that.hasmanyValue[index][field];
+            if (!conf.height) {
+                conf.height = '30px';
+            }
+            return conf;
         }
     }
 }

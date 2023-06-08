@@ -21,6 +21,9 @@ export default {
         }
         that.Server = Server;
     },
+    mounted() {
+        this.createViewRoute();
+    },
     data() {
         let that = this;
         let dt = {
@@ -79,13 +82,22 @@ export default {
             that.load();
         },
 
-        setRouteValues() {
+        createViewRoute() {
             let that = this;
             if (!that.routeName)
                 return ;
             if (!that.route) {
                 that.route = that.createRoute(that.routeName);
             }
+        },
+
+        setRouteValues() {
+            let that = this;
+            if (!that.routeName)
+                return ;
+            // if (!that.route) {
+            //     that.route = that.createRoute(that.routeName);
+            // }
             that.route.setValuesFromObj(that);
         },
         beforeLoadData() {

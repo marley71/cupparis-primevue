@@ -170,6 +170,9 @@
                             <template v-else-if="['application/pdf'].indexOf(fileInfo.mimetype) >= 0">
                                 <i class="fa fa-file-pdf fa-2xl"></i>
                             </template>
+                            <template v-else-if="['image/jpeg'].indexOf(fileInfo.mimetype) >= 0">
+                                <img :src="fileInfo.url" />
+                            </template>
                             <template v-else>
                                 <i class="fa fa-file fa-2xl"></i>
                             </template>
@@ -180,6 +183,24 @@
         </template>
         <template v-else-if="type=='w-chip'">
             <Chips v-model="value" @add="add" @remove="remove"/>
+        </template>
+        <template v-else-if="type=='w-preview'">
+            <div>
+                <div class="mt-3" v-if="value">
+                    <template v-if="['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'].indexOf(value.mimetype) >= 0">
+                        <i class="fa fa-file-excel fa-2xl"></i>
+                    </template>
+                    <template v-else-if="['application/pdf'].indexOf(value.mimetype) >= 0">
+                        <i class="fa fa-file-pdf fa-2xl"></i>
+                    </template>
+                    <template v-else-if="['image/jpeg'].indexOf(value.mimetype) >= 0">
+                        <img :src="getRealUrl(value.url)" :height="height" />
+                    </template>
+                    <template v-else>
+                        <i class="fa fa-file fa-2xl"></i>
+                    </template>
+                </div>
+            </div>
         </template>
         <template v-else>
             <component :is="type" :conf="wConf"></component>
@@ -198,7 +219,7 @@ import CrudComponent from "../CrudComponent.vue";
 import wHasmany from "../widgets/wHasmany.vue";
 import moment from "moment";
 import wSwap from "../widgets/wSwap.vue";
-
+import CrudVars from "../lib/CrudVars";
 
 export default {
     name: "c-widget",
@@ -419,6 +440,14 @@ export default {
                 return this.$refs.wRef;
             }
             return this;
+        },
+        getRealUrl(url) {
+            if (url.indexOf('http') == 0) {
+                return url;
+            }
+            if (CrudVars.useApi) {
+                return '/api'+url;
+            }
         }
         // uploadFile(event) {
         //     console.log('uploadevent22',event,this);
