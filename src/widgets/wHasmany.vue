@@ -25,13 +25,13 @@
             <template #footer>
                 <template v-if="outOfLimit()">
 
-                <span class="d-block text-danger text-truncate font-weight-medium" v-if="outOfLimitMessage()">
+                <span class="d-block text-primary text-truncate font-weight-medium" v-if="outOfLimitMessage()">
                         <!-- Limite massimo raggiunto -->
                         {{ outOfLimitMessage() }}
                     </span>
                 </template>
                 <button v-else @click="addItem" type="button"
-                        class="p-button p-button-sm p-component p-button-outlined">
+                        class="p-button p-button-sm p-component p-button-outlined justify-content-center">
                     <span>{{ translate('app.aggiungi') }}</span>&nbsp;
                 </button>
             </template>
@@ -268,8 +268,9 @@ export default {
             let conf = fieldsConfig[field] || { type : 'w-text'};
             conf.value = that.hasmanyValue[index][field];
             if (!conf.height) {
-                conf.height = '30px';
+                conf.height = '30';
             }
+            console.debug('getHasmanyWidgetConf',conf);
             return conf;
         }
     }

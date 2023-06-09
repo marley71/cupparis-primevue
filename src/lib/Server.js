@@ -165,6 +165,23 @@ Server.postJson = function (url, params, callback) {
     });
 };
 
+Server.getErrorMessage = function(message) {
+    var msg = null;
+    try {
+        var tmp = JSON.parse(message);
+        msg = "";
+        for (k in tmp) {
+            msg += tmp[k] + '\n';
+        }
+    } catch (e) {
+        if (Array.isArray(message)) {
+            msg = message.join('<br>');
+        } else {
+            msg = message;
+        }
+    }
+    return msg;
+}
 Server.subdomain = null;
 
 export default Server

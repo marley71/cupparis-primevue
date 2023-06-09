@@ -177,7 +177,7 @@ export default {
                         that.mode = 'edit';
                         let confName = this.$route.params.cConf;
 
-                        window.history.pushState({},'','/#/' + manage.baseRouteName + '/'+ confName +'/edit/' + that.edit.pk);
+                        window.history.pushState({},'',window.location.pathname + '#/' + manage.baseRouteName + '/'+ confName +'/edit/' + that.edit.pk);
                     }
                 }
                 that.conf.list.actionsConfig['action-edit'] = actionEdit;
@@ -188,7 +188,7 @@ export default {
                     actionInsert.execute = function () {
                         that.mode = 'insert';
                         let confName = this.$route.params.cConf;
-                        window.history.pushState({},'','/#/' + manage.baseRouteName + '/'+ confName +'/insert');
+                        window.history.pushState({},'',window.location.pathname + '#/' + manage.baseRouteName + '/'+ confName +'/insert');
                     }
                 }
                 that.conf.list.actionsConfig['action-insert'] = actionInsert;
