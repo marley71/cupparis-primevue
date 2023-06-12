@@ -4,7 +4,7 @@
 
 //import jQuery from 'jquery';
 import CrudVars from "./CrudVars";
-
+import axios from 'axios';
 const Server = {
 
 };
@@ -62,18 +62,27 @@ Server.post = function (url, params, callback) {
         processData = false;
     }
     console.log('serverPost',(params instanceof FormData),contentType,processData);
-    window.jQuery.ajax({
-        url: realUrl,
-        headers: Server.getHearders(),
-        type: 'POST',
-        data: params,
-        contentType: contentType,
-        processData: processData,
-    }).done(function(json) {
-        callback(json);
-    }).fail(function (data, error, msg) {
-        callback({error:1,msg:msg});
-    });
+    axios.post(realUrl,params,{
+        headers : Server.getHearders()
+    }).then((response) => {
+        callback(response.data);
+    }).catch((error) => {
+        callback({error:1,msg:error})
+    })
+
+
+    // window.jQuery.ajax({
+    //     url: realUrl,
+    //     headers: Server.getHearders(),
+    //     type: 'POST',
+    //     data: params,
+    //     contentType: contentType,
+    //     processData: processData,
+    // }).done(function(json) {
+    //     callback(json);
+    // }).fail(function (data, error, msg) {
+    //     callback({error:1,msg:msg});
+    // });
 };
 
 Server.get = function (url, params, callback) {
@@ -100,35 +109,32 @@ Server.get = function (url, params, callback) {
             }
 
         }
-
-        // for (var key of params.keys()) {
-        //     var values = params.getAll(key);
-        //     if (values.length == 1) {
-        //         _data[key] = values[0];
-        //     } else {
-        //         var keyName = key+'[]';
-        //         for (var vi in values) {
-        //             _data[keyName] = values[vi];
-        //         }
-        //     }
-        // }
     } else {
         _data = params;
     }
-    console.log('Server.get _data',_data,contentType,processData);
-    //console.log('serverGet',(params instanceof FormData),contentType,processData,params);
-    window.jQuery.ajax({
-        url: realUrl,
-        headers: Server.getHearders(),
-        type: 'GET',
-        data: _data,
-        contentType: contentType,
-        processData: processData,
-    }).done(function(json) {
-        callback(json);
-    }).fail(function (data, error, msg) {
-        callback({error:1,msg:msg});
-    });
+    console.log('Server.get _data',_data,contentType,processData,realUrl,Server.getHearders());
+
+    axios.get(realUrl,{
+        headers : Server.getHearders(),
+        params : _data,
+    }).then((response) => {
+        callback(response.data);
+    }).catch((error) => {
+        callback({error:1,msg:error});
+    })
+    console.log('serverGet',(params instanceof FormData),contentType,processData,params,realUrl);
+    // window.jQuery.ajax({
+    //     url: realUrl,
+    //     headers: Server.getHearders(),
+    //     type: 'GET',
+    //     data: _data,
+    //     contentType: contentType,
+    //     processData: processData,
+    // }).done(function(json) {
+    //     callback(json);
+    // }).fail(function (data, error, msg) {
+    //     callback({error:1,msg:msg});
+    // });
 };
 
 Server.route = function(route,callback) {
@@ -159,6 +165,23 @@ Server.postJson = function (url, params, callback) {
     });
 };
 
+Server.getErrorMessage = function(message) {
+    var msg = null;
+    try {
+        var tmp = JSON.parse(message);
+        msg = "";
+        for (k in tmp) {
+            msg += tmp[k] + '\n';
+        }
+    } catch (e) {
+        if (Array.isArray(message)) {
+            msg = message.join('<br>');
+        } else {
+            msg = message;
+        }
+    }
+    return msg;
+}
 Server.subdomain = null;
 
 export default Server

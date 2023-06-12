@@ -72,6 +72,9 @@ export default class WrapperConf {
         if (!conf.hasmanyConf.fieldsConfig) {
             conf.hasmanyConf.fieldsConfig = {};
         }
+        if (!conf.displayTitle && conf.displayTitle !== false) {
+            conf.displayTitle = false;
+        }
         conf.hasmanyConf.defaultWidgetType = 'w-input';
         return conf;
     }
@@ -274,6 +277,7 @@ export default class WrapperConf {
         conf = this.wUpload(conf);
         conf.routeName = 'uploadfile';
         conf.error = false;
+        conf.errorMessage = '';
         conf.fileInfo = null;
         if (!conf.setRouteValues) {
             conf.setRouteValues =  function (route) {
@@ -318,60 +322,62 @@ export default class WrapperConf {
             console.log('ajaxFields', that.ajaxFields)
             for (var k in that.ajaxFields)
                 fdata.append(k, that.ajaxFields[k])
-            // TODO inserire axios
-            window.jQuery.ajax({
-                url: realUrl,
-                headers: Server.getHearders(),
-                type: 'POST',
-                data: fdata,
-                processData: false,
-                contentType: false                    // Using FormData, no need to process data.
-            }).done(function (data) {
+            Server.post(realUrl,fdata,function(data) {
                 that.json = data;
-                console.log("Success: Files sent!", data);
-                if (data.error) {
-                    var msg = null;
-                    try {
-                        var tmp = JSON.parse(data.msg);
-                        msg = "";
-                        for (k in tmp) {
-                            msg += tmp[k] + '\n';
-                        }
-                    } catch (e) {
-                        msg = data.msg;
+                if (!data.error) {
+                    console.log("Success: Files sent!", data);
+                    if (data.error) {
+                        // var msg = null;
+                        // try {
+                        //     var tmp = JSON.parse(data.msg);
+                        //     msg = "";
+                        //     for (k in tmp) {
+                        //         msg += tmp[k] + '\n';
+                        //     }
+                        // } catch (e) {
+                        //     msg = data.msg;
+                        // }
+                        that.error = true;
+                        that.errorMessage = Server.getErrorMessage(data.msg);
+                        //self._showError(dialog,msg);
+                        window.jQuery(that.$el).find('[crud-button="ok"]').addClass("disabled");
+                        that.value =  JSON.stringify({});
+                        that.fileInfo = null;
+                        return;
                     }
-                    that.error = true;
-                    that.errorMessage = msg;
-                    //self._showError(dialog,msg);
-                    window.jQuery(that.$el).find('[crud-button="ok"]').addClass("disabled");
-                    that.value =  JSON.stringify({});
+                    that.$emit('success', that);
+                    that.complete = true;
+    
+                    console.log('done, data.result', data.result);
+    
+                    //that.lastUpload = Object.assign({},data.result);
+                    that.fileInfo = Object.assign({},data.result);
+                    // TODO sfruttare meglio l'oggetto upload primeface
+                    that.value = JSON.stringify(data.result); //.replace(/\\"/g, '"');
+                    //that.$refs.preview.setValue(data.result);
+                    that.onSuccess();
+                } else {
+                    console.log("An error occurred, the files couldn't be sent!");
                     that.fileInfo = null;
-                    return;
+                    that.error = true;
+                    that.errorMessage = Server.getErrorMessage(data.msg);
+                    that.value = JSON.stringify({});
+                    that.onError();
                 }
-                that.$emit('success', that);
-                that.complete = true;
-
-                console.log('done, data.result', data.result);
-
-                //that.lastUpload = Object.assign({},data.result);
-                that.fileInfo = Object.assign({},data.result);
-                // TODO sfruttare meglio l'oggetto upload primeface
-                that.value = JSON.stringify(data.result); //.replace(/\\"/g, '"');
-                //that.$refs.preview.setValue(data.result);
-                that.onSuccess();
-            }).fail(function (data, error, msg) {
-                console.log("An error occurred, the files couldn't be sent!");
-                that.fileInfo = null;
-                that.error = true;
-                that.errorMessage = "Upload error " + data + " " + error + " " + msg;
-                that.value = JSON.stringify({});
-                that.onError();
+                
             });
         };
         if (conf.value && (conf.value instanceof Object)) {
             conf.fileInfo = conf.value;
             conf.value = JSON.stringify(conf.value);
         }
+        return conf;
+    }
+    wPreview(conf) {
+        if (!conf.height) {
+            conf.height = '30';
+        }
+        console.debug('wPreview',conf);
         return conf;
     }
 }

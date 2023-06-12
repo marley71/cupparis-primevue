@@ -1,19 +1,13 @@
 <template>
     <Card ref="el">
         <template #title>
-            Importazione Dati
+            {{ translate('app.import-titolo') }}
         </template>
         <template #content>
-            <div class="mb-0">
-                <p>L'importazione avverrà in due fasi:</p>
-                <ul>
-                    <li>la lettura del file e check degli errori</li>
-                    <li>salvataggio del file importato</li>
-                </ul>
-
+            <div class="mb-0" v-html="translate('app.import-desc')">
             </div>
             <div v-if="step == 'upload'" class="panel panel-default">
-                <h5>Seleziona file da importare</h5>
+                <h5>{{ translate('app.import-file') }}</h5>
                 <div class="col-12">
                     <c-view :conf="_uploadConf()" ref="viewUpload"></c-view>
                 </div>
@@ -89,7 +83,7 @@ export default {
                 fieldsConfig: {},
                 actionsConfig: {
                     'action-save': {
-                        text: 'app.importa-csv',
+                        text: 'app.import-button',
                         enabled:false,
                         csvDashboard : that,
                         execute() {
@@ -114,6 +108,9 @@ export default {
             var confUpload = {
                 name: 'resource',
                 type: 'w-upload-ajax',
+                layout : {
+                    labelPosition : 'none',
+                },
                 maxFileSize: '2M',
                 routeName: 'uploadfile',
                 modelName: null,
@@ -137,11 +134,7 @@ export default {
                 },
             }
             confUpload = Object.assign(confUpload,(conf.confUpload || {}));
-            // var tmp = conf.confUpload || {};
-            // for (var k in tmp) {
-            //     confUpload[k] = tmp[k];
-            // }
-            console.log('BBBBB',confUpload);
+            //console.log('BBBBB',confUpload);
             return confUpload;
         },
         importForm() {

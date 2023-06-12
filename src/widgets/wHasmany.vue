@@ -25,17 +25,24 @@
             <template #footer>
                 <template v-if="outOfLimit()">
 
-                <span class="d-block text-danger text-truncate font-weight-medium" v-if="outOfLimitMessage()">
+                <span class="d-block text-primary text-truncate font-weight-medium" v-if="outOfLimitMessage()">
                         <!-- Limite massimo raggiunto -->
                         {{ outOfLimitMessage() }}
                     </span>
                 </template>
                 <button v-else @click="addItem" type="button"
-                        class="p-button p-button-sm p-component p-button-outlined">
+                        class="p-button p-button-sm p-component p-button-outlined justify-content-center">
                     <span>{{ translate('app.aggiungi') }}</span>&nbsp;
                 </button>
             </template>
         </Card>
+    </template>
+    <template v-else-if="hasmanyType=='view-only'">
+        <template v-for="(data,index) in hasmanyValue" :key="index">
+            <div v-for="field in getHasmanyConf(index).fields" :key="index">
+                <c-widget :conf="getHasmanyWidgetConf(index,field)"></c-widget>
+            </div>
+        </template>
     </template>
     <div v-else>
         <span>hasmanyType {{ hasmanyType }} non valido!</span>
@@ -254,6 +261,17 @@ export default {
         },
         hasDisplayTitle() {
             return this.displayTitle !== false;
+        },
+        getHasmanyWidgetConf(index,field) {
+            let that = this;
+            let fieldsConfig = that.hasmanyConf.fieldsConfig || {};
+            let conf = fieldsConfig[field] || { type : 'w-text'};
+            conf.value = that.hasmanyValue[index][field];
+            if (!conf.height) {
+                conf.height = '30';
+            }
+            console.debug('getHasmanyWidgetConf',conf);
+            return conf;
         }
     }
 }

@@ -222,6 +222,12 @@ export default {
                 console.log('conf non trovata',field,index);
                 return {};
             }
+            
+            if (that.widgetsConfig[index][field] instanceof String) {
+                that.widgetsConfig[index][field] = {
+                    type : that.widgetsConfig[index][field]
+                }
+            }
             that.widgetsConfig[index][field].value = data;
             return that.widgetsConfig[index][field];
         },
@@ -355,7 +361,7 @@ export default {
         },
         getRecordActionsPosition() {
             let that = this;
-            //console.log('hasRecordActions',that.recordActionsConf);
+            //console.log('getRecordActionsPosition, hasRecordActions',that.recordActionsConf,that.recordActionsPosition);
             switch (that.recordActionsPosition) {
                 case 'end':
                     return 'end';

@@ -12,12 +12,14 @@
 
             </slot>
             <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig">
-                <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected" :rows="getPerPage()"
-                           :paginator="false"
-                           :total-records="getTotal()"
-                           :first="getFirst()"
-                           :sortField="getSortField()"
-                           :sortOrder="getSortOrder()"
+                <DataTable :value="value" responsiveLayout="scroll" 
+                        v-model:selection="selected" 
+                        :rows="getPerPage()"
+                        :paginator="false"
+                        :total-records="getTotal()"
+                        :first="getFirst()"
+                        :sortField="getSortField()"
+                        :sortOrder="getSortOrder()"
 
 
                 >
@@ -33,19 +35,6 @@
                                 <span>{{title}}</span>
                             </template>
                         </Menubar>
-                        <!-- <div class="surface-section px-4 py-5 md:px-6 lg:px-8">
-                            <div class="flex align-items-start flex-column lg:justify-content-start lg:align-items-center lg:flex-row">
-
-                                <template v-if="Object.keys(collectionActions).length > 0">
-                                    <div class="mt-5 lg:mt-0">
-                                        <c-action layout="buttons" :conf="collectionActions"></c-action>
-                                    </div>
-
-                                </template>
-                            </div>
-                        </div> -->
-
-
                     </template>
                     <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>
                     <Column v-if="hasRecordActions()" :exportable="false" header="Actions">

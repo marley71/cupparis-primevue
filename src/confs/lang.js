@@ -17,6 +17,15 @@ const lang = {
     'app.trova-indirizzo' : 'Trova indirizzo',
     'app.gestione' : 'Gestione',
     'app.action-delete-selected' : 'Cancella Selezionati',
-
+    'app.import-titolo' : 'Importazione Dati',
+    'app.import-desc' : '\
+        <p>L\'importazione avverrà in due fasi:</p>\
+        <ul>\
+            <li>la lettura del file e check degli errori</li>\
+            <li>salvataggio del file importato</li>\
+        </ul>\
+    ',
+    'app.import-file' : 'Seleziona file da importare',
+    'app.import-button' : 'Importa file',
 }
 export default lang
