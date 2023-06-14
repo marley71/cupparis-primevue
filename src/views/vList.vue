@@ -87,10 +87,10 @@
 
             </slot>
         </div>
-        <OverlayPanel ref="panel" :showCloseIcon="true" :dismissable="true">
-            <div :class="'' + panelConf.classWidth">
+        <OverlayPanel ref="panel" :showCloseIcon="true" :dismissable="true" @hide="panelConf.hide()" :class="panelConf.panelClass">
+            <div class="w-full">
                 <component v-if="panelConf.componentName" :is="panelConf.componentName"
-                        :conf="panelConf.componentConf"></component>
+                        :conf="panelConf.componentConf" ></component>
             </div>
         </OverlayPanel>
         <BlockUI :blocked="blocked" fullScreen />
@@ -103,6 +103,16 @@ import cAction from "../actions/cAction.vue";
 import actionConfs from "../confs/actions";
 import vBase from './vBase.vue';
 import CrudCore from "../lib/CrudCore";
+const defaultPanelConf = () => {
+    return {
+        componentName: null,
+        componentConf: {},
+        panelClass: 'w-8',
+        hide() {
+            Function.prototype();
+        }
+    }
+}
 
 export default {
     name: "v-list",
@@ -117,11 +127,7 @@ export default {
         return {
             rows: 5,
             menuCollection: [],
-            panelConf: {
-                componentName: null,
-                componentConf: {},
-                classWidth: 'w-9'
-            },
+            panelConf: defaultPanelConf(),
             labelCols : {}
         }
     },
@@ -386,9 +392,10 @@ export default {
         },
         showPanel(event, conf) {
             if (conf) {
-                this.panelConf = conf;
+                this.panelConf = Object.assign(defaultPanelConf(),conf);
             } else {
-                this.panelConf.componentName = null;
+                //this.panelConf.componentName = null;
+                this.panelConf = defaultPanelConf();
             }
             this.$refs.panel.show(event);
         },

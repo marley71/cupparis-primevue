@@ -114,8 +114,10 @@ export default class WrapperConf {
             conf.autocompleteValue = __initialValue();
             conf.suggestions = [conf.referredData];
         }
+
         conf.search = conf.search || function (event) {
             let that = this;
+
             if (!that.route) {
                 that.route = that.createRoute('autocomplete');
                 that.route.setValuesFromObj(that);
@@ -133,8 +135,10 @@ export default class WrapperConf {
             })
             console.log('search',conf,event);
         }
+        
         conf.getAutocompleteLabel = conf.getAutocompleteLabel || function(event) {
             let that = this;
+
             if (that.labelFields && that.labelFields.length > 0) {
                 let label = '';
                 for (let i in that.labelFields) {
@@ -145,6 +149,7 @@ export default class WrapperConf {
             return event.label;
             //console.log(that,'label',event);
         }
+        
         return conf;
     }
 
