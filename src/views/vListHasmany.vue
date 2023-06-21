@@ -20,7 +20,7 @@
                         :first="getFirst()"
                         :sortField="getSortField()"
                         :sortOrder="getSortOrder()"
-
+                        dataKey="dataKey"
 
                 >
                     <!--
@@ -95,6 +95,7 @@ export default {
             this.load();
     },
     data() {
+        //console.debug('VLISTHASMANY',this.conf);
         return {
             rows: 5,
             selected : null,

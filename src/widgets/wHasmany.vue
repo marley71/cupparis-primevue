@@ -73,12 +73,16 @@ export default {
         window.HS = this;
         var that = this;
         let baseName = that.conf.hasmanyConf.modelName?that.conf.hasmanyConf.modelName:that.conf.name;
-        console.log('BASENAME',baseName,this.conf);
+        //console.log('BASENAME',baseName,this.conf);
         if (!this.conf.hasmanyConf.getFieldName) {
             this.conf.hasmanyConf.getFieldName = (name) => {
                 return baseName + '-' + name + '[]';
             }
         }
+        if (this.conf.hasmanyType == 'list') {
+            that.conf.value = that.addDataKeyField(that.conf.value);  // serve per rendere univoco il record della lista per la multiselezione
+        }
+
         this.conf.hasmanyValue = that.trasformValue(that.conf.value);
         if (!this.conf.limit) {
             this.conf.limit = null;
@@ -91,7 +95,7 @@ export default {
 
         },
         executeActionInlist(index, action) {
-            console.log('ACTIONINLIST::: ', index, action);
+            //console.log('ACTIONINLIST::: ', index, action);
             switch (action) {
                 case 'delete':
                     this.removeItem(index);
@@ -101,7 +105,7 @@ export default {
             }
         },
         getValue() {
-            window.WH = this;
+            //window.WH = this;
             if (this.hasmanyType == 'list') {
                 return this.$refs.listView.getValue();
             }
@@ -123,6 +127,7 @@ export default {
             that.value = val;
             setTimeout(function () {
                 if (that.hasmanyType == 'list') {
+                    that.value = that.addDataKeyField(that.value);
                     that.$refs.listView.value = that.value;
                     that.$refs.listView.reload();
                 } else {
@@ -153,6 +158,7 @@ export default {
             v.status = 'created';
 
             if (this.hasmanyType=='list') {
+                v.dataKey = window.performance.now();
                 this.value.push(v);
                 this.$refs.listView.reload();
             } else {
@@ -183,7 +189,24 @@ export default {
                 'action-delete':{
                     execute() {
                         that.removeItem(this.index);
-                        //that.value.splice(this.index,1);
+
+                    }
+                },
+                'action-delete-selected':{
+                    execute() {
+                        //console.debug('selected',that.$refs.listView.selected,that.$refs.listView.value);
+                        let indexs = [];
+                        let dataKeys = that.$refs.listView.value.map(a => a.dataKey);
+                        for (let i in that.$refs.listView.selected) {
+                            let index = dataKeys.indexOf(that.$refs.listView.selected[i].dataKey);
+                            if (index < 0) {
+                                console.warn('index non trovato per dataKey',that.$refs.listView.selected[i].dataKey,'datakeys',dataKeys);
+                            } else {
+                                indexs.push(index);
+                            }
+                        }
+                        that.removeItem(indexs);
+
                     }
                 },
                 'action-insert':{
@@ -193,20 +216,13 @@ export default {
                         }
                         return false;
                     },
-                    // visible() {
-                    //     alert('pippo');
-                    //     if (that.limit) {
-                    //         return that.value.length < that.limit
-                    //     }
-                    //     return true;
-                    // },
                     execute() {
                         that.addItem();
                     }
                 },
             }
             hs.value = that.value;
-            //console.log('HS', hs);
+            console.debug('HS', hs);
             return hs;
         },
         getHasmanyLabels() {
@@ -234,9 +250,19 @@ export default {
             let that = this;
             if (this.hasmanyType == 'list') {
                 let v = this.$refs.listView.getValue();
-                //console.log('LIST VALUES',v);
-                v.splice(index,1);
-                that.value = v;
+                //console.debug('LIST VALUES',JSON.parse(JSON.stringify(v)),index);
+                if (Array.isArray(index)) {
+                    let arr = index.sort((a,b) => {return a-b});
+                    arr.reverse();
+                    for (let i in arr) {
+                        v.splice(arr[i],1);
+                        //console.debug('LIST VALUES',arr[i],JSON.parse(JSON.stringify(v)));
+                    }
+                } else {
+                    v.splice(index,1);
+                }
+                that.value = that.addDataKeyField(v);
+                //console.debug('LIST VALUES  2',JSON.parse(JSON.stringify(that.value)));
                 this.$refs.listView.value = that.value;
                 this.$refs.listView.reload();
             } else {
@@ -256,6 +282,8 @@ export default {
             let items = value || [];
             for(let i in items) {
                 hasmanyValue[ window.performance.now() ] = items[i];
+                
+                
             }
             return hasmanyValue;
         },
@@ -272,6 +300,12 @@ export default {
             }
             console.debug('getHasmanyWidgetConf',conf);
             return conf;
+        },
+        addDataKeyField(values) {
+            for (let i in values) {
+                values[i].dataKey = window.performance.now() + '_' + Math.floor(Math.random() * 100000);
+            }
+            return values;
         }
     }
 }
