@@ -53,7 +53,7 @@
             </div>
         </template>
         <template v-else-if="type=='w-checkbox'">
-            <div class="w-full flex" :class="layout=='row'?'flex-row':'flex-column'">
+            <div class="w-full flex" :class="direction=='row'?'flex-row':'flex-column'">
                 <div class="field-checkbox mr-2" v-for="(label,key) in domainValues" :key="key">
                     <Checkbox :name="getFieldName()" v-model="value" :value="key" v-bind="extraBind" @change="_change"/>
                     <label :for="key" v-html="label"></label>
@@ -61,7 +61,7 @@
             </div>
         </template>
         <template v-else-if="type=='w-radio'">
-            <div class="w-full flex border-1 border-round-sm surface-border p-2" :class="layout=='row'?'flex-row':'flex-column'">
+            <div class="w-full flex border-1 border-round-sm surface-border p-2" :class="direction=='row'?'flex-row':'flex-column'">
                 <div class="field-radiobutton mr-2" v-for="(label,key) in domainValues" :key="key">
                     <RadioButton :name="name" v-model="value" :value="key" v-bind="extraBind" @change="_change"/>
                     <label :for="key" v-html="label"></label>
@@ -97,7 +97,7 @@
             <div>
                 <input type="hidden" :name="name" v-model="value">
                 <div class="p-inputgroup">
-                    <Button icon="fa fa-times" @click="_change($event,'clear')"/>
+                    <Button icon="fa fa-times" @click="_change($event,'clear')" v-if="buttonClear"/>
                     <Calendar class="w-full" :showButtonBar="true" v-model="dateValue" @date-select="_change" 
                     inputDateFormat="YYYY-MM-DD" date-format="dd/mm/yy" @clear-click="_change($event,'clear')"/>
                 </div>
@@ -107,7 +107,7 @@
             <span>{{ getFormattedValue() }}</span>
         </template>
         <template v-else-if="type=='w-textarea'">
-            <Textarea v-model="value" @change="_change" class="w-full"></Textarea>
+            <Textarea v-model="value" @change="_change" class="w-full" :placeholder="placeholder"></Textarea>
         </template>
         <template v-else-if="type=='w-multi-select'">
             <MultiSelect class="w-full" v-model="value" :options="options" optionLabel="name" optionValue="code"
@@ -286,6 +286,7 @@ export default {
         }
         dt.wConf = ext;
         dt.errors = [];
+        console.debug('widget conf',dt);
         return dt;
     },
     mounted() {

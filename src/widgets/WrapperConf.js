@@ -130,9 +130,9 @@ export default class WrapperConf {
 
             console.log('route',that.route,that);
             that.Server.route(that.route,function (json) {
-                console.log('json',json)
+                console.log('json',json);
                 that.suggestions = json.result;
-            })
+            });
             console.log('search',conf,event);
         }
         
@@ -154,12 +154,17 @@ export default class WrapperConf {
     }
 
     wCheckbox(conf) {
-        conf.layout = 'row';
+        if (!conf.direction) {
+            conf.direction = 'row';
+        }
+        
         return conf;
     }
 
     wRadio(conf) {
-        conf.layout = 'row';
+        if (!conf.direction) {
+            conf.direction = 'row';
+        }
         return conf;
     }
     wDatePicker(conf) {
