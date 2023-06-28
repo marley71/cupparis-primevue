@@ -66,11 +66,10 @@
                                 :conf="getWidgetEditConf(slotProps.index % getPerPage(),col,slotProps.data[col])"></c-widget>
                     </template>
                 </Column>
-                <template #footer>
-                    In total there are {{value ? value.length : 0 }} rows.
-                </template>
-
             </DataTable>
+        </slot>
+        <slot name="footer">
+
         </slot>
         <BlockUI :blocked="blocked" fullScreen />
 <!--        <ContextMenu :model="menuModel" ref="cm" />-->

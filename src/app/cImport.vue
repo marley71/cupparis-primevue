@@ -1,11 +1,15 @@
 <template>
     <Card ref="el">
         <template #title>
-            {{ translate('app.import-titolo') }}
+            <slot name="title">
+                {{ translate('app.import-titolo') }}
+            </slot>
         </template>
         <template #content>
-            <div class="mb-0" v-html="translate('app.import-desc')">
-            </div>
+            <slot name="description">
+                <div class="mb-0" v-html="translate('app.import-desc')"></div>
+            </slot>
+            
             <div v-if="step == 'upload'" class="panel panel-default">
                 <h5>{{ translate('app.import-file') }}</h5>
                 <div class="col-12">

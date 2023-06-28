@@ -286,7 +286,7 @@ export default {
         }
         dt.wConf = ext;
         dt.errors = [];
-        console.debug('widget conf',dt);
+        //console.debug('widget conf',dt);
         return dt;
     },
     mounted() {
