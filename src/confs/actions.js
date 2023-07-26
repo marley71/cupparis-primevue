@@ -86,7 +86,7 @@ const actionConfs = {
         execute (event) {
             return new Promise((resolve,reject) => {
                 this._save(function (esito) {
-                    console.log('save Event',event)
+                    console.log('save Event',event,esito)
                     if (esito) {
                         resolve();
                     } else {
@@ -218,34 +218,38 @@ const actionConfs = {
         text: '',
         icon: 'fa fa-save',
         visible: false,
-        setRouteValues : function(route) {
-            var that = this;
-            route.setValues({
-                modelName: that.view.modelName,
-                pk : that.modelData[that.view.primaryKey]
-            });
-            return route;
-        },
+        // setRouteValues : function(route) {
+        //     var that = this;
+        //     route.setValues({
+        //         modelName: that.view.modelName,
+        //         pk : that.modelData[that.view.primaryKey]
+        //     });
+        //     return route;
+        // },
         execute() {
             var that = this;
-            var values = that.view.getRowEditData(that.index);
-            //var id = that.view.value[that.index][that.view.primaryKey];
-            var r = that.view.createRoute('update');
-            that.setRouteValues(r);
-            r.setParams(values);
-            Server.route(r, function (json) {
-                if (json.error) {
-                    that.view.errorDialog(json.msg);
-                    return;
-                }
-                var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
-                that.view.alertSuccess(msg,3000);
-                var values = json.result;
-                that.view.setRowData(that.index,values);
-                that.view.setViewMode(that.index);
-                //that.view.reload();
+            console.debug('eseguo save-row');
+            that.view.save(that.index,function() {
+                
             })
-            console.log('values', values);
+            // var values = that.view.getRowEditData(that.index);
+            // //var id = that.view.value[that.index][that.view.primaryKey];
+            // var r = that.view.createRoute('update');
+            // that.setRouteValues(r);
+            // r.setParams(values);
+            // Server.route(r, function (json) {
+            //     if (json.error) {
+            //         that.view.errorDialog(json.msg);
+            //         return;
+            //     }
+            //     var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
+            //     that.view.alertSuccess(msg,3000);
+            //     var values = json.result;
+            //     that.view.setRowData(that.index,values);
+            //     that.view.setViewMode(that.index);
+            //     //that.view.reload();
+            // })
+            // console.log('values', values);
         },
     },
     'action-edit-mode':  {

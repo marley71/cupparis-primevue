@@ -1,7 +1,9 @@
 import ProtocolList from "./ProtocolList.js";
 import ProtocolRecord from "./ProtocolRecord.js";
 import cuppariSakai from "../index";
-
+import { defineAsyncComponent, createApp } from 'vue'
+import ViewWrapperConf from "../views/WrapperConf"; 
+import WidgetWrapperConf from "../widgets/WrapperConf"; 
 
 //import cWidget from "../widgets/cWidget.vue";
 // import wHasmany from "../widgets/wHasmany.vue";
@@ -270,15 +272,15 @@ CrudCore.alertSuccess = function(msg,cTime) {
 }
 
 CrudCore.messageDialog = function(msg,props,callbacks) {
-    this.__dialog('message',msg,props,callbacks);
+    __dialog('message',msg,props,callbacks);
 }
 
 CrudCore.errorDialog = function(msg,props,callbacks) {
-    this.__dialog('error',msg,props,callbacks);
+    __dialog('error',msg,props,callbacks);
 }
 
 CrudCore.warningDialog = function(msg,props,callbacks) {
-    this.__dialog('warning',msg,props,callbacks);
+    __dialog('warning',msg,props,callbacks);
 }
 
 CrudCore.confirmDialog = function(msg,props,callbacks) {
@@ -299,7 +301,7 @@ CrudCore.confirmDialog = function(msg,props,callbacks) {
 }
 
 CrudCore.customDialog = function(msg,props,callbacks) {
-    this.__dialog('custom',msg,props,callbacks)
+    __dialog('custom',msg,props,callbacks)
 }
 
 CrudCore.componentDialog = function(compName,componentConf,title,dialogConf) {
@@ -324,5 +326,18 @@ CrudCore.componentDialog = function(compName,componentConf,title,dialogConf) {
     return d;
 }
 
+CrudCore.defaultWidgetConf = function(type) {
+    let wc = new WidgetWrapperConf();
+    return wc.loadConf({
+        type : type,
+    }) 
+}
+
+CrudCore.defaultViewConf = function(type) {
+    let vc = new ViewWrapperConf(null);
+    return vc.loadConf({
+        type : type,
+    })
+}
 
 export default CrudCore;

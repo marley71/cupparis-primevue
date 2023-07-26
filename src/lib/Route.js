@@ -96,7 +96,8 @@ export default class Route {
             }
             return this.routeConf.params;
         }
-        return CrudCore.clone(this.routeConf.params,this.routeConf.commonParams);
+        let params = CrudCore.clone(this.routeConf.params);
+        return Object.assign(params,this.routeConf.commonParams);
     }
 
     getParamsKeys() {

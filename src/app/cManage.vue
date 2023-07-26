@@ -26,7 +26,7 @@
 <!--                    </span>-->
 <!--                </Divider>-->
 
-                <c-view v-if="!listComponentName"  :conf="list" ref="vList"></c-view>
+                <c-view v-if="!listComponentName"  :conf="list" ref="vList" @loaded="showListMia"></c-view>
                 <component v-else :is="listComponentName" :conf="list" ref="vList"></component>
             </div>
             <template v-if="mode=='edit'">
@@ -72,7 +72,7 @@ export default {
         // },
         '$route.params.context': {
             handler: function(context) {
-                console.log('context watch');
+                //console.log('context watch');
                 if (this.getViewList()) {
                     this.showContext();
                 }
@@ -94,7 +94,10 @@ export default {
             that.conf.sectionTitle = null;
         }
         if (!('hideSearch' in that.conf)) {
-            that.hideSearch = false;
+            that.conf.hideSearch = false;
+        }
+        if (!('autoUpdateHash' in that.conf)) {
+            that.conf.autoUpdateHash = true;
         }
         let wc = new viewWrapperConf();
         console.log('wc',wc);
@@ -126,23 +129,23 @@ export default {
         that.conf.searchComponentName = that.conf.searchComponentName || null;
         that.conf.insertComponentName = that.conf.insertComponentName || null;
         that.conf.viewComponentName = that.conf.viewComponentName || null;
-
+        that.conf.viewTitle = '';
+        if (this.conf.list) {
+            this.conf.list.autoload = false;
+        }
         return that.conf;
     },
     methods : {
         searchList(event) {
-            console.log('searchList',event);
+            console.debug('searchList',event);
             let that = this;
             let confName = this.$route.params.cConf;
             let context = [];
-            if (event && event instanceof FormData) {
-                for (var key of event.keys()) {
-                    var values = event.getAll(key);
-                    context.push(key+':'+values.join('&'));
-                }
-                window.history.pushState({},'','/#/' + that.baseRouteName + '/'+ confName +'/list/' + context.join('/'));
+            if (this.getViewList()) {
+                this.getViewList().setParams(event);
+                this.getViewList().load();
             }
-            this.$refs.vList.instance().setParams(event);
+            //this.$refs.vList.instance().setParams(event);
         },
         setManageActions() {
             let that = this;
@@ -157,6 +160,7 @@ export default {
                         let thatAction = this;
                         that.view.pk = thatAction.modelData[that.$refs.vList.instance().primaryKey];
                         that.viewDisplay = true;
+                        that.viewTitle = that.translate('app.dettagli',0,null,[that.view.pk]);
                     }
                 }
                 that.conf.list.actionsConfig['action-view'] = actionView;
@@ -169,8 +173,8 @@ export default {
                         that.edit.pk = thatAction.modelData[manage.getViewList().primaryKey];
                         that.mode = 'edit';
                         let confName = this.$route.params.cConf;
-
-                        window.history.pushState({},'','/#/' + manage.baseRouteName + '/'+ confName +'/edit/' + that.edit.pk);
+                        that.updateHash(confName,'edit',[that.edit.pk]);
+                        //window.history.pushState({},'',window.location.pathname + '#/' + manage.baseRouteName + '/'+ confName +'/edit/' + that.edit.pk);
                     }
                 }
                 that.conf.list.actionsConfig['action-edit'] = actionEdit;
@@ -181,7 +185,8 @@ export default {
                     actionInsert.execute = function () {
                         that.mode = 'insert';
                         let confName = this.$route.params.cConf;
-                        window.history.pushState({},'','/#/' + manage.baseRouteName + '/'+ confName +'/insert');
+                        that.updateHash(confName,'insert');
+                        //window.history.pushState({},'',window.location.pathname + '#/' + manage.baseRouteName + '/'+ confName +'/insert');
                     }
                 }
                 that.conf.list.actionsConfig['action-insert'] = actionInsert;
@@ -191,8 +196,13 @@ export default {
                 if (!actionBack.execute){
                     actionBack.execute = function () {
                         that.mode = 'list';
-                        window.history.back();
-                        that.getViewList().reload();
+                        if (that.autoUpdateHash) {
+                            window.history.back();
+                        } else {
+                            that.getViewList().reload();
+                        }
+
+
                     }
                 }
                 that.conf.edit.actionsConfig['action-back'] = actionBack;
@@ -212,7 +222,7 @@ export default {
          */
         showContext() {
             let that = this;
-            console.log('showContext',that.$route.params.context)
+            console.debug('showContext',that.$route.params.context)
             let context = that.$route.params.context;
             if (!context || context.length == 0) {
                 if (that.getViewList()) {
@@ -233,11 +243,14 @@ export default {
                 case 'list':
                     let vList = that.getViewList();
                     if (vList) {
-                        let listParams = context.filter( a => a.indexOf('s_') == 0);
-                        //console.log('LISTPARAMS',listParams,JSON.stringify(vList.value));
+                        let listParams = context.filter( a => a.indexOf('s_') == 0) || [];
+                        listParams = listParams.concat( context.filter( a => a.indexOf('page') == 0));
+                        console.log('LISTPARAMS',listParams,JSON.stringify(vList.value),context.filter( a => a.indexOf('page') == 0));
                         if (listParams.length > 0) {
                             vList.autoload = false;
-                            that.waitViewLoaded('list',function() {
+                            //that.waitViewLoaded('list',function() {
+
+                                console.debug('view loaded');
                                 for (let i in listParams) {
                                     let tmp = listParams[i].split(':');
                                     if (tmp.length != 2) {
@@ -246,8 +259,8 @@ export default {
                                     }
                                     vList.route.setParam(tmp[0],tmp[1]);
                                 }
-                                vList.load();
-                            })
+
+                            //})
                             that.waitViewLoaded('search',function() {
                                 let vSearch = that.getViewSearch();
                                 window.VSS = vSearch;
@@ -266,6 +279,7 @@ export default {
 
                             })
                         }
+                        vList.load();
 
                     }
                     break;
@@ -293,6 +307,43 @@ export default {
                 }
             } else {
                 console.warn('wait ' + type + ' non gestito');
+            }
+        },
+        showListMia() {
+            let that = this;
+            let confName = this.$route.params.cConf;
+            let params = that.getViewList().route.getParams();
+            let context = [];
+            if (params && params instanceof FormData) {
+                for (var key of params.keys()) {
+                    var values = params.getAll(key);
+                    context.push(key+':'+values.join('&'));
+                }
+            } else if (params  && params instanceof Object) {
+                for (var key in params) {
+                    var values = params[key];
+                    if (Array.isArray(values)) {
+                        context.push(key+':'+values.join('&'));
+                    } else {
+                        context.push(key+':'+values);
+                    }
+
+                }
+            }
+            //console.debug('listmia',params,context,window.location.pathname);192
+            //window.history.pushState({},'',window.location.pathname + '#/' + that.baseRouteName + '/'+ confName +'/list/' + context.join('/'));
+            that.updateHash(confName,'list',context);
+
+        },
+        updateHash(confName,type,context) {
+            let that = this;
+            let hash = '';
+            if (this.autoUpdateHash) {
+                hash = window.location.pathname + '#/' + that.baseRouteName + '/'+ confName +'/' + type;
+                if (context && context.length > 0) {
+                    hash += '/' + context.join('/');
+                }
+                window.history.pushState({},'',hash);
             }
         }
     }

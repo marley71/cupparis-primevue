@@ -1,7 +1,5 @@
 <template>
-
-
-    <BlockUI :blocked="!loaded">
+    <div>
         <div v-if="loaded">
             <template v-for="(v,row) in value">
                 <template v-for="(col) in getHiddenFields()" :key="col">
@@ -89,15 +87,14 @@
 
             </slot>
         </div>
-
-    </BlockUI>
-    <OverlayPanel ref="panel" :showCloseIcon="true" :dismissable="true">
-        <div :class="'' + panelConf.classWidth">
-            <component v-if="panelConf.componentName" :is="panelConf.componentName"
-                       :conf="panelConf.componentConf"></component>
-        </div>
-    </OverlayPanel>
-    <BlockUI :blocked="blocked" fullScreen />
+        <OverlayPanel ref="panel" :showCloseIcon="true" :dismissable="true" @hide="panelConf.hide()" :class="panelConf.panelClass">
+            <div class="w-full">
+                <component v-if="panelConf.componentName" :is="panelConf.componentName"
+                        :conf="panelConf.componentConf" ></component>
+            </div>
+        </OverlayPanel>
+        <BlockUI :blocked="blocked" fullScreen />
+    </div>
 </template>
 
 <script>
@@ -106,6 +103,16 @@ import cAction from "../actions/cAction.vue";
 import actionConfs from "../confs/actions";
 import vBase from './vBase.vue';
 import CrudCore from "../lib/CrudCore";
+const defaultPanelConf = () => {
+    return {
+        componentName: null,
+        componentConf: {},
+        panelClass: 'w-8',
+        hide() {
+            Function.prototype();
+        }
+    }
+}
 
 export default {
     name: "v-list",
@@ -120,11 +127,7 @@ export default {
         return {
             rows: 5,
             menuCollection: [],
-            panelConf: {
-                componentName: null,
-                componentConf: {},
-                classWidth: 'w-9'
-            },
+            panelConf: defaultPanelConf(),
             labelCols : {}
         }
     },
@@ -224,6 +227,12 @@ export default {
             if (!that.widgetsConfig || !that.widgetsConfig[index] || !that.widgetsConfig[index][field]) {
                 console.log('conf non trovata',field,index);
                 return {};
+            }
+            
+            if (that.widgetsConfig[index][field] instanceof String) {
+                that.widgetsConfig[index][field] = {
+                    type : that.widgetsConfig[index][field]
+                }
             }
             that.widgetsConfig[index][field].value = data;
             return that.widgetsConfig[index][field];
@@ -358,7 +367,7 @@ export default {
         },
         getRecordActionsPosition() {
             let that = this;
-            //console.log('hasRecordActions',that.recordActionsConf);
+            //console.log('getRecordActionsPosition, hasRecordActions',that.recordActionsConf,that.recordActionsPosition);
             switch (that.recordActionsPosition) {
                 case 'end':
                     return 'end';
@@ -383,9 +392,10 @@ export default {
         },
         showPanel(event, conf) {
             if (conf) {
-                this.panelConf = conf;
+                this.panelConf = Object.assign(defaultPanelConf(),conf);
             } else {
-                this.panelConf.componentName = null;
+                //this.panelConf.componentName = null;
+                this.panelConf = defaultPanelConf();
             }
             this.$refs.panel.show(event);
         },

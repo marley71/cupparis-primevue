@@ -21,6 +21,9 @@ export default {
         }
         that.Server = Server;
     },
+    mounted() {
+        this.createViewRoute();
+    },
     data() {
         let that = this;
         let dt = {
@@ -39,13 +42,24 @@ export default {
             dt.langContext = dt.modelName ? dt.modelName : ''
             dt.langContext += '.fields';
         }
-        console.log('view Props',dt);
+        // normalizzo i type dei fieldsConfig in quanto si accettano anche stringhe che rappresentano il type 'w-hidden'
+        for (let key in dt.fieldsConfig) {
+            //console.debug('--- key',key,dt.fieldsConfig[key])
+            if (dt.fieldsConfig[key] && ( (dt.fieldsConfig[key] instanceof String) || (typeof dt.fieldsConfig[key] === 'string')) ) {
+                
+                dt.fieldsConfig[key] = {
+                    type : dt.fieldsConfig[key]
+                }
+            }
+        }
+        
+        //console.log('view Props',dt);
         return dt;
     },
     watch : {
         loaded() {
             if (this.loaded) {
-                console.log('LOADEDDDDDD',this.type)
+                //console.log('LOADEDDDDDD',this.type)
                 this.$emit('loaded',this.loaded);
             }
         }
@@ -79,13 +93,22 @@ export default {
             that.load();
         },
 
-        setRouteValues() {
+        createViewRoute() {
             let that = this;
             if (!that.routeName)
                 return ;
             if (!that.route) {
                 that.route = that.createRoute(that.routeName);
             }
+        },
+
+        setRouteValues() {
+            let that = this;
+            if (!that.routeName)
+                return ;
+            // if (!that.route) {
+            //     that.route = that.createRoute(that.routeName);
+            // }
             that.route.setValuesFromObj(that);
         },
         beforeLoadData() {
@@ -179,23 +202,25 @@ export default {
         getWidgetLayout(field,prop) {
             var that = this;
             var layout = that.widgetsConfig[field].layout;
+            //console.debug(field,prop,"PROPLAYOUT",layout,'view layout',that.layout);
             if (!layout) {
                 layout = that.layout;
             } else {
+                layout = layout || {};
                 for (var p in that.layout) {
                     if (!layout[p]) {
                         layout[p] = that.layout[p];
                     }
                 }
             }
-            //console.log(field,"PROPLAYOUT",layout,prop);
+            //console.debug(field,"PROPLAYOUT",layout,prop);
             if (!prop) {
                 return layout;
             }
             return layout[prop];
         },
         isHiddenField: function (key) {
-            //console.log('idHiddenField key',key);
+            //console.debug('idHiddenField key',key);
             let type = this.defaultWidgetType;
             if (this.fieldsConfig[key] && this.fieldsConfig[key].type) {
                 type = this.fieldsConfig[key].type
