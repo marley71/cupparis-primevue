@@ -19,7 +19,7 @@
                     <c-view v-if="!searchComponentName" :conf="search" ref="vSearch" @search="searchList"></c-view>
                     <component v-else :is="searchComponentName" :conf="search" ref="vSearch" @search="searchList"></component>
                 </template>
-                
+
 <!--                <Divider align="center" class="listDivider mt-5">-->
 <!--                    <span class="p-tag bg-primary-700 text-white">-->
 <!--                                    Elenco elementi-->
@@ -30,19 +30,19 @@
                 <component v-else :is="listComponentName" :conf="list" ref="vList"></component>
             </div>
             <template v-if="mode=='edit'">
-                <c-view v-if="!editComponentName"  :conf="edit"></c-view>
-                <component v-else :is="editComponentName" :conf="edit"></component>
+                <c-view v-if="!editComponentName"  :conf="edit" ref="vRecord"></c-view>
+                <component v-else :is="editComponentName" :conf="edit" ref="vRecord"></component>
             </template>
             <template v-else-if="mode=='insert'">
-                <c-view v-if="!insertComponentName"  :conf="insert"></c-view>
-                <component v-else :is="insertComponentName" :conf="insert"></component>
+                <c-view v-if="!insertComponentName"  :conf="insert" ref="vRecord"></c-view>
+                <component v-else :is="insertComponentName" :conf="insert" ref="vRecord"></component>
             </template>
         </div>
         <Dialog class="p-dialog" v-model:visible="viewDisplay" :modal="true" :style="{width: '50vw'}">
             <template #header>
                 <h3>{{ translate(viewTitle) }}</h3>
             </template>
-            
+
             <template v-if="viewDisplay">
                 <c-view v-if="!viewComponentName" :conf="view" ref="vView"></c-view>
                 <component v-else :is="viewComponentName" :conf="view"></component>
@@ -76,7 +76,7 @@ export default {
                 if (this.getViewList()) {
                     this.showContext();
                 }
-                
+
             },
             deep: true,
             //immediate: true
@@ -201,8 +201,8 @@ export default {
                         } else {
                             that.getViewList().reload();
                         }
-                        
-                        
+
+
                     }
                 }
                 that.conf.edit.actionsConfig['action-back'] = actionBack;
@@ -213,6 +213,9 @@ export default {
         },
         getViewSearch() {
             return this.$refs.vSearch?this.$refs.vSearch.instance():null;
+        },
+        getViewRecord() {
+            return this.$refs.vRecord?this.$refs.vRecord.instance():null;
         },
         /**
          * gestione del back mostra la vista giusta in baso allo stato della cmanage
@@ -226,7 +229,7 @@ export default {
                     that.mode = 'list';
                     that.searchList();
                 }
-                
+
                 return ;
             }
             let mode = context[0];
@@ -246,7 +249,7 @@ export default {
                         if (listParams.length > 0) {
                             vList.autoload = false;
                             //that.waitViewLoaded('list',function() {
-                    
+
                                 console.debug('view loaded');
                                 for (let i in listParams) {
                                     let tmp = listParams[i].split(':');
@@ -256,7 +259,7 @@ export default {
                                     }
                                     vList.route.setParam(tmp[0],tmp[1]);
                                 }
-                                
+
                             //})
                             that.waitViewLoaded('search',function() {
                                 let vSearch = that.getViewSearch();
@@ -273,11 +276,11 @@ export default {
                                     }
                                     vSearch.getWidget(fieldName).setValue(tmp[1]);
                                 }
-                                
+
                             })
                         }
                         vList.load();
-                        
+
                     }
                     break;
             }
@@ -324,7 +327,7 @@ export default {
                     } else {
                         context.push(key+':'+values);
                     }
-                    
+
                 }
             }
             //console.debug('listmia',params,context,window.location.pathname);192
@@ -341,7 +344,7 @@ export default {
                     hash += '/' + context.join('/');
                 }
                 window.history.pushState({},'',hash);
-            }            
+            }
         }
     }
 }
