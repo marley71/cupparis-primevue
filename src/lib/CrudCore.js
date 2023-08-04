@@ -150,6 +150,8 @@ CrudCore.setupApp = function (app) {
     for (let k in cuppariSakai.CrudCore.componentItems) {
         app.component(k,CrudCore.componentItems[k])
     }
+    CrudCore.globalProperties = app.config.globalProperties;
+    console.debug('globalProperties',CrudCore.globalProperties)
 }
 
 var _cloneObj = function (item) {
@@ -242,9 +244,9 @@ CrudCore.alertInfo = function(msg,cTime) {
     let severity = 'info';
     let severitySummary = 'Info Message'
     if (cTime) {
-        this.$toast.add({severity:severity, summary: severitySummary, detail:msg, life: cTime,group:'tr'});
+        this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:msg, life: cTime,group:'tr'});
     } else {
-        this.$toast.add({severity:severity, summary: severitySummary, detail:msg, group:'tr'});
+        this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:msg, group:'tr'});
 
     }
 }
@@ -253,9 +255,9 @@ CrudCore.alertWarning = function(msg,cTime) {
     let severity = 'warn';
     let severitySummary = 'Warning Message'
     if (cTime) {
-        this.$toast.add({severity:severity, summary: severitySummary, detail:msg, life: cTime,group:'tr'});
+        this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:msg, life: cTime,group:'tr'});
     } else {
-        this.$toast.add({severity:severity, summary: severitySummary, detail:msg, group:'tr'});
+        this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:msg, group:'tr'});
 
     }
 }
@@ -264,9 +266,9 @@ CrudCore.alertSuccess = function(msg,cTime) {
     let severity = 'success';
     let severitySummary = 'Success Message'
     if (cTime) {
-        this.$toast.add({severity:severity, summary: severitySummary, detail:msg, life: cTime,group:'tr'});
+        this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:msg, life: cTime,group:'tr'});
     } else {
-        this.$toast.add({severity:severity, summary: severitySummary, detail:msg, group:'tr'});
+        this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:msg, group:'tr'});
 
     }
 }
