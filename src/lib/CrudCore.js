@@ -218,13 +218,19 @@ function __dialog(type,msg,props,callbacks) {
             break;
     }
     //let comp = defineAsyncComponent(() => import(componentPath))
+    let p = props || {};
+    let conf = {
+        message : msg,
+        display : true,
+        callbacks : callbacks,
+    };
+    for (let k in p) {
+        conf[k] = p[k];
+    }
     let d = createApp(comp,{
-        conf : {
-            message : msg,
-            display : true,
-            callbacks : callbacks,
-        },
+        conf : conf,
     });
+    console.debug('dialog conf',conf);
     //d.use(PrimeVue);
     // configure gli useItems anche per l'app dialog.
     for (let k in CrudCore.useItems) {
