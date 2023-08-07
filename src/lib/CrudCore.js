@@ -225,7 +225,16 @@ function __dialog(type,msg,props,callbacks) {
             callbacks : callbacks,
         },
     });
-    d.use(PrimeVue);
+    //d.use(PrimeVue);
+    // configure gli useItems anche per l'app dialog.
+    for (let k in CrudCore.useItems) {
+        let item = CrudCore.useItems[k];
+        if (item.param) {
+            d.use(item.obj,item.param)
+        } else {
+            d.use(item.obj);
+        }
+    }
     d.mount(div);
 }
 
