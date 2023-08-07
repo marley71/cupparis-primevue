@@ -295,7 +295,7 @@ CrudCore.warningDialog = function(msg,props,callbacks) {
 }
 
 CrudCore.confirmDialog = function(msg,props,callbacks) {
-    this.$confirm.require({
+    this.globalProperties.$confirm.require({
         message: msg,
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
