@@ -11,7 +11,10 @@
                             @click="removeFromList()">
                     </Button>
                     <template v-for="field in getHiddenFields()">
-                        <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                        <template v-if="!isRemovedWidget(field)">
+                            <c-widget :ref="field" :conf="widgetsConfig[field]" v-show="!isHiddenWidget(field)"></c-widget> 
+                        </template>
+                        
                     </template>
                 </td>
 
@@ -19,7 +22,9 @@
                 <td v-for="(field,indexV) in getVisibleFields()" :key="field" class="" role="cell">
 
                     <div class="">
-                        <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                        <template v-if="!isRemovedWidget(field)">
+                            <c-widget :ref="field" :conf="widgetsConfig[field]" v-show="!isHiddenWidget(field)"></c-widget> 
+                        </template>
                     </div>
 
                 </td>
@@ -42,34 +47,40 @@
                     <template v-if="type==='v-view'">
 
                         <template v-for="field in getHiddenFields()">
-                            <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                            <template v-if="!isRemovedWidget(field)">
+                                <c-widget :ref="field" :conf="widgetsConfig[field]" v-show="!isHiddenWidget(field)"></c-widget>
+                            </template>
+                            
                         </template>
                         <div class="grid">
                             <template v-for="field in getVisibleFields()" :key="field">
-                                <div class="py-3" :class="getWidgetLayout(field,'colClass')">
-                                    <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
+                                <template v-if="!isRemovedWidget(field)" >
+                                    <div class="py-3" :class="getWidgetLayout(field,'colClass')" v-show="!isHiddenWidget(field)">
                                         
-                                        <span class="p-float-label">
-                                            <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
-                                            <label :for="field">{{ widgetsConfig[field].label }}</label>
-                                        </span>
-                                    </template>
-                                    <template v-else>
+                                            <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
+                                                
+                                                <span class="p-float-label">
+                                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget> 
+                                                    <label :for="field">{{ widgetsConfig[field].label }}</label>
+                                                </span>
+                                            </template>
+                                            <template v-else>
+                                                
+                                                <label class="labelTop" :for="field"
+                                                    v-if="getWidgetLayout(field,'labelPosition')=='top'">
+                                                    {{ translateUc(widgetsConfig[field].label) }}
+                                                </label>
+                                                <div class="">
+                                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget> 
+                                                </div>
+                                                <label class="labelBottom" :for="field"
+                                                    v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
+                                                    {{ translateUc(widgetsConfig[field].label) }}
+                                                </label>
+                                            </template>
                                         
-                                        <label class="labelTop" :for="field"
-                                            v-if="getWidgetLayout(field,'labelPosition')=='top'">
-                                            {{ translateUc(widgetsConfig[field].label) }}
-                                        </label>
-                                        <div class="">
-                                            <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
-                                        </div>
-                                        <label class="labelBottom" :for="field"
-                                            v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
-                                            {{ translateUc(widgetsConfig[field].label) }}
-                                        </label>
-                                    </template>
-                                </div>
-
+                                    </div>
+                                </template>
                                 <template v-if="getWidgetLayout(field,'hasDivider')">
                                     <Divider align="center" class="col-10 col-offset-1">
                                             <span v-if="getWidgetLayout(field,'dividerLabel')"
@@ -90,34 +101,37 @@
                         
                     <form ref="form" enctype="multipart/form-data" @submit="handleSubmit" class="p-fluid">
                             <template v-for="field in getHiddenFields()">
-                                <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                <template v-if="isRemovedWidget(field)">
+                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget> 
+                                </template>
                             </template>
                             <div class="grid">
                                 <template v-for="field in getVisibleFields()" :key="field">
-                                    <div class="py-3" :class="getWidgetLayout(field,'colClass')">
-                                        <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
-                                            
-                                            <span class="p-float-label">
-                                                <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
-                                                <label :for="field">{{ widgetsConfig[field].label }}{{ isRequired(field) }}</label>
-                                            </span>
-                                        </template>
-                                        <template v-else>
-                                            
-                                            <label class="labelTop" :for="field"
-                                                v-if="getWidgetLayout(field,'labelPosition')=='top'">
-                                                {{ translateUc(widgetsConfig[field].label) }}{{ isRequired(field) }}
-                                            </label>
-                                            <div class="">
-                                                <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
-                                            </div>
-                                            <label class="labelBottom" :for="field"
-                                                v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
-                                                {{ translateUc(widgetsConfig[field].label) }}{{ isRequired(field) }}
-                                            </label>
-                                        </template>
-                                    </div>
-
+                                    <template v-if="!isRemovedWidget(field)" >
+                                        <div class="py-3" :class="getWidgetLayout(field,'colClass')" v-show="!isHiddenWidget(field)">
+                                            <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
+                                                
+                                                <span class="p-float-label">
+                                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget> 
+                                                    <label :for="field">{{ widgetsConfig[field].label }}{{ isRequired(field) }}</label>
+                                                </span>
+                                            </template>
+                                            <template v-else>
+                                                
+                                                <label class="labelTop" :for="field"
+                                                    v-if="getWidgetLayout(field,'labelPosition')=='top'">
+                                                    {{ translateUc(widgetsConfig[field].label) }}{{ isRequired(field) }}
+                                                </label>
+                                                <div class="">
+                                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget> 
+                                                </div>
+                                                <label class="labelBottom" :for="field"
+                                                    v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
+                                                    {{ translateUc(widgetsConfig[field].label) }}{{ isRequired(field) }}
+                                                </label>
+                                            </template>
+                                        </div>
+                                    </template>
                                     <template v-if="getWidgetLayout(field,'hasDivider')">
                                         <Divider align="center" class="col-10 col-offset-1">
                                             <span v-if="getWidgetLayout(field,'dividerLabel')"
@@ -176,7 +190,7 @@ export default {
             this.load();
     },
     data() {
-        console.log('vRecord', this.conf);
+        //console.log('vRecord', this.conf);
         let ly = this.conf.layout || {};
         if (ly instanceof String) {
             ly = viewConfs.recordLayouts[ly] || viewConfs.recordLayouts.default;
@@ -192,9 +206,25 @@ export default {
             layout: ly,
             isInlist: true,
             blocked : false,
+            removedWidgets : [], // rimuove il widget usando v-if
+            hiddenWidgets : [],   // nasconde il widget usando v-show   
+            myShow : false,                    
         }
     },
     methods: {
+        draw() {
+            //console.debug('record widgetsConfig',this.widgetsConfig);
+            for (let k in this.widgetsConfig) {
+                if (this.widgetsConfig[k].removeWidget) {
+                    this.removedWidgets.push(k);
+                }
+                if (this.widgetsConfig[k].hiddenWidget) {
+                    this.hiddenWidgets.push(k);
+                }
+            }
+            this.setActions();
+            this.loaded = true;
+        },
         removeFromList() {
           this.isInlist = false;
         },
@@ -431,7 +461,42 @@ export default {
                 let name = that.fields[i];
                 this.getWidget(name).setErrors([]);
             }
-        }
+        },
+        isRemovedWidget(field) {
+            console.debug('isRemovedWidget',field,(this.removedWidgets.indexOf(field) >= 0))
+            return (this.removedWidgets.indexOf(field) >= 0);
+        },
+        removeWidget(field) {
+            if (this.removedWidgets.indexOf(field) < 0) {
+                this.removedWidgets.push(field);
+            }
+        },
+        putInWidget(field) {
+            let idx = this.removedWidgets.indexOf(field)
+            if ( idx >= 0) {
+                this.removedWidgets.splice(idx,1);
+            } else {
+                console.warn('widget',field,'is not removed');
+            }
+        },
+        isHiddenWidget(field) {
+            console.debug('isHiddenWidget',field,(this.hiddenWidgets.indexOf(field) >= 0))
+            return (this.hiddenWidgets.indexOf(field) >= 0);
+        },
+        hideWidget(field) {
+            if (this.hiddenWidgets.indexOf(field) < 0) {
+                this.hiddenWidgets.push(field);
+            }
+            console.debug('hideWidget',field,this.hiddenWidgets)
+        },
+        showWidget(field) {
+            let idx = this.hiddenWidgets.indexOf(field);
+            if ( idx >= 0) {
+                this.hiddenWidgets.splice(idx,1);
+            } else {
+                console.warn('widget',field,'is not hidden');
+            }
+        },
     }
 }
 </script>
