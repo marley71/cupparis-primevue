@@ -54,6 +54,7 @@ export default class WrapperConf {
         actionsLayoutTitle :  '',
         blocked : false,
         modelName : null,
+        hiddenColumns : [],
     }
 
     recordDefaultConf = {

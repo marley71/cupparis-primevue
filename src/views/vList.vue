@@ -428,6 +428,32 @@ export default {
             }
             //console.log('rowData values',values);
             return values;
+        },
+        getVisibleFields() {
+            var that = this;
+            var visible = [];
+            for (let i in that.fields) {
+                let keyField = that.fields[i];
+                if ( (that.hiddenColumns.indexOf(keyField) < 0) &&
+                    (!that.isHiddenField(keyField)) ){
+                    visible.push(keyField)
+                }
+            }
+            //console.log('VISIBLE FIELDS',visible);
+            return visible;
+        },
+        hideColumn(field) {
+            if (this.hiddenColumns.indexOf(field) < 0) {
+                this.hiddenColumns.push(field)
+            }
+        },
+        showColumn(field) {
+            let idx = this.hiddenColumns.indexOf(field);
+            if ( idx >= 0) {
+                this.hiddenColumns.splice(idx,1);
+            } else {
+                console.warn('widget',field,'is not hidden column');
+            }
         }
     }
 }
