@@ -33,6 +33,7 @@
         "@vee-validate/i18n": "^4.9.3",
         "@vee-validate/rules": "^4.9.3",
         "jquery": "^3.5.1",
+        "lodash": "^4.17.21",
         "moment": "^2.29.4",
         "moment-with-locales-es6": "^1.0.1",
         "npm": "^8.19.3",
