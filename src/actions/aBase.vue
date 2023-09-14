@@ -14,9 +14,15 @@
             <span>{{ translate(text) }}</span>
         </a>
     </template>
-    <div v-if="['button','link'].indexOf(controlType) < 0">
+    <template v-else-if="controlType  && _visible()" >
+        <component :is="controlType" :conf="conf"></component>
+    </template>
+    <template v-else-if="_visible()">
         <b>controlType ({{ controlType }}) non riconosciuto</b>
-    </div>
+    </template>
+    <!-- <div v-if="['button','link'].indexOf(controlType) < 0">
+        <b>controlType ({{ controlType }}) non riconosciuto</b>
+    </div> -->
 </template>
 
 <script>
@@ -40,7 +46,7 @@ export default {
         }
 
         for (let k in that.wConf) {
-            //console.log('k',k,ext[k]);
+            console.log('action wConf k',k,that.wConf[k]);
 
             if (that.wConf[k] instanceof Function) {
                 //console.log('found method',k);
@@ -76,7 +82,7 @@ export default {
         // if (!dt.icon) {
         //     dt.icon = '';
         // }
-        //console.log('widget finalData',dt);
+        console.debug('action finalData',dt);
         return dt;
     },
     methods: {

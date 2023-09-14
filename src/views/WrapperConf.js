@@ -52,6 +52,8 @@ export default class WrapperConf {
         recordActionsPosition: 'end',
         actionsLayout : 'simple',
         actionsLayoutTitle :  '',
+        actionRecordLayout : 'simple',
+        actionRecordLayoutTitle : '',
         blocked : false,
         modelName : null,
         hiddenColumns : [],

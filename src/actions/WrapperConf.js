@@ -1,7 +1,7 @@
 //import CrudCore from "@/cupparis/lib/CrudCore";
 
 import CrudCore from "../lib/CrudCore";
-
+import _ from "lodash"
 export default class WrapperConf {
     defaultConf() {
         return {
@@ -13,14 +13,17 @@ export default class WrapperConf {
             icon : null,
             target : null,
             text : '',
+            css : '',
+            enabled : true,
         }
     }
 
     loadConf(conf) {
         let that = this;
         //let na = CrudCore.clone(conf);
+        conf = _.cloneDeep(conf)
         conf = Object.assign(that.defaultConf(),conf);
-
+        
         // for (let key in conf.actions) {
 
         //     // console.log('key',key,conf.actions[key]);

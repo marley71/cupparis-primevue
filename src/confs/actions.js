@@ -26,7 +26,7 @@ const actionConfs = {
         title : 'app.reset',
         css: 'rounded',
         text : 'app.reset',
-        execute : function () {
+        execute () {
             if (this.view) {
                 //console.log('target ref',this.view.targetRef);
                 this.view.reset();

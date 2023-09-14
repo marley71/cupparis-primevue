@@ -23,7 +23,7 @@
                             </div>
                             <template v-if="Object.keys(collectionActions).length > 0">
                                 <div class="mt-5 lg:mt-0">
-                                    <c-action layout="buttons" :conf="collectionActions"></c-action>
+                                    <c-action :layout="actionsLayout" :conf="collectionActions"></c-action>
                                 </div>
 
                             </template>
@@ -209,14 +209,17 @@ export default {
                 that.recordActionsConf.push({actions: rowActions});
             }
             that.collectionActions.actions = {};
+            let needSelection = false;
             for (let aName in gActions) {
                 let aConf = Object.assign({}, gActions[aName]);
                 aConf.modelData = that.value;
                 aConf.view = that;
+                needSelection |= aConf.needSelection;
                 that.collectionActions.actions[aName] = aConf;
             }
-            // console.log('RECORDACTIONS', that.recordActionsConf)
-            // console.log('GLOBAL ACTIONS', that.collectionActions);
+            this.selectionMode = needSelection?'multiple':false;
+            console.debug('RECORDACTIONS', that.recordActionsConf)
+            console.debug('GLOBAL ACTIONS', that.collectionActions);
             this._setMenuCollection();
         },
 

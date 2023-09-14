@@ -22,7 +22,7 @@
                         </div>
                         <template v-if="Object.keys(collectionActions).length > 0">
                             <div class="mt-5 lg:mt-0">
-                                <c-action layout="buttons" :conf="collectionActions"></c-action>
+                                <c-action :layout="actionsLayout"  :conf="collectionActions"></c-action>
                             </div>
 
                         </template>
@@ -54,7 +54,7 @@
                 </Column> -->
                 <Column :exportable="false" header="Actions">
                     <template #body="slotProps">
-                        <c-action :ref="'r'+slotProps.index % getPerPage()" :conf="recordActionsConf[slotProps.index % getPerPage()]" :layout="'simple'"></c-action>
+                        <c-action :ref="'r'+slotProps.index % getPerPage()" :conf="recordActionsConf[slotProps.index % getPerPage()]" :layout="'actionRecordLayout'"></c-action>
                     </template>
                 </Column>
                 <Column v-for="(col) in fields" :field="col" :header="col" :key="col" :sortable="isSortable(col)" :dir="sortDirection(col)">
