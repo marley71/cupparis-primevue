@@ -135,7 +135,7 @@ export default class WrapperConf {
             });
             console.log('search',conf,event);
         }
-        
+
         conf.getAutocompleteLabel = conf.getAutocompleteLabel || function(event) {
             let that = this;
 
@@ -149,7 +149,7 @@ export default class WrapperConf {
             return event.label;
             //console.log(that,'label',event);
         }
-        
+
         return conf;
     }
 
@@ -157,7 +157,7 @@ export default class WrapperConf {
         if (!conf.direction) {
             conf.direction = 'row';
         }
-        
+
         return conf;
     }
 
@@ -243,6 +243,28 @@ export default class WrapperConf {
         },conf);
         conf.change = conf.change || function() {};
         //console.log('SWAP',conf);
+        return conf;
+    }
+
+    wSwapSelect(conf) {
+        conf = Object.assign({
+            activeIcon: 'fa-check',
+            routeName: 'set',
+            title: 'swap-select',
+            bgInactive: '#FF0000',
+            bgActive: 'bg-red-400',
+            domainValues: {
+                "-1": 'app.seleziona',
+            },
+            slot: '',
+            toggleActive: false,
+            isAjax:true,  // se e' un controllo che deve fare la chiamata di update altrimenti e' un controllo normale in una form
+            json : null, // ultimo json caricato dalla chiamata ajax,
+            currentIndex : 0,  // indice corrente delle chiavi di domainValues
+        },conf);
+        conf.change = conf.change || function() {};
+        conf.options = this.mapOptions(conf.domainValues,conf.domainValuesOrder);
+        console.log('SWAP-SELECT',conf);
         return conf;
     }
 
@@ -357,9 +379,9 @@ export default class WrapperConf {
                     }
                     that.$emit('success', that);
                     that.complete = true;
-    
+
                     console.log('done, data.result', data.result);
-    
+
                     //that.lastUpload = Object.assign({},data.result);
                     that.fileInfo = Object.assign({},data.result);
                     // TODO sfruttare meglio l'oggetto upload primeface
@@ -374,7 +396,7 @@ export default class WrapperConf {
                     that.value = JSON.stringify({});
                     that.onError();
                 }
-                
+
             });
         };
         if (conf.value && (conf.value instanceof Object)) {

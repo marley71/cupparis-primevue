@@ -4,9 +4,9 @@
             <input type="hidden" :name="name" v-model="value" v-bind="extraBind" @change="_change"/>
         </template>
         <template v-else-if="type=='w-input'">
-            <Password v-if="inputType == 'password'" :inputProps="{'name':name}" :name="name" v-model="value" toggleMask v-bind="extraBind" 
+            <Password v-if="inputType == 'password'" :inputProps="{'name':name}" :name="name" v-model="value" toggleMask v-bind="extraBind"
             @change="_change" :class="errors.length?'p-invalid':''"
-            :promptLabel="translate('app.scegli-password')" :weakLabel="translate('app.password-semplice')" 
+            :promptLabel="translate('app.scegli-password')" :weakLabel="translate('app.password-semplice')"
             :mediumLabel="translate('app.password-media')" :strongLabel="translate('app.password-complessa')" />
             <InputText v-else class="w-full" :name="name" :type="inputType" v-model="value" v-bind="extraBind"
                     @change="_change" :class="errors.length?'p-invalid':''"></InputText>
@@ -25,7 +25,7 @@
                         </template>
                 </Dropdown>
             </div>
-            
+
         </template>
         <template v-else-if="type=='w-select-button'">
             <input type="hidden" :name="name" v-model="value">
@@ -98,7 +98,7 @@
                 <input type="hidden" :name="name" v-model="value">
                 <div class="p-inputgroup">
                     <Button icon="fa fa-times" @click="_change($event,'clear')" v-if="buttonClear"/>
-                    <Calendar class="w-full" :showButtonBar="true" v-model="dateValue" @date-select="_change" 
+                    <Calendar class="w-full" :showButtonBar="true" v-model="dateValue" @date-select="_change"
                     inputDateFormat="YYYY-MM-DD" date-format="dd/mm/yy" @clear-click="_change($event,'clear')"/>
                 </div>
             </div>
@@ -127,6 +127,9 @@
         </template>
         <template v-else-if="type=='w-swap'">
             <w-swap ref="wRef" :conf="wConf"></w-swap>
+        </template>
+        <template v-else-if="type=='w-swap-select'">
+            <w-swap-select ref="wRef" :conf="wConf"></w-swap-select>
         </template>
         <template v-else-if="type=='w-status'">
             <div>
@@ -219,11 +222,12 @@ import CrudComponent from "../CrudComponent.vue";
 import wHasmany from "../widgets/wHasmany.vue";
 import moment from "moment";
 import wSwap from "../widgets/wSwap.vue";
+import wSwapSelect from "../widgets/wSwapSelect.vue";
 import CrudVars from "../lib/CrudVars";
 
 export default {
     name: "c-widget",
-    components: {wSwap, wHasmany},
+    components: {wSwap, wSwapSelect, wHasmany},
     extends: CrudComponent,
     props: {
         conf: Object,
@@ -402,7 +406,7 @@ export default {
                 default:
                     return that.value;
             }
-            
+
         },
         setErrors(errors) {
             this.errors = errors;

@@ -245,7 +245,9 @@ export default class WrapperConf {
         if (!('actions' in conf) ){
             conf.actions = ['action-search','action-search-basic'];
         }
-        conf.advancedSearchOpen = false;
+        if (! ('advancedSearchOpen' in conf) ) {
+            conf.advancedSearchOpen = false;
+        }
         conf.basicSearchPlaceholder = null;
 
         return conf;
