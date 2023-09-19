@@ -6,9 +6,11 @@
         </div>
     </template>
     <template v-else-if="layout=='buttons'">
-        <template v-for="(action,key) in getActions()" :key="key">
-            <a-base  :ref="key" :conf="getConf(action,key)" v-if="inWhitelist(key)"></a-base>
-        </template>
+        <div class="flex">
+            <template v-for="(action,key) in getActions()" :key="key">
+                <a-base :ref="key" :conf="getConf(action,key)" v-if="inWhitelist(key)"></a-base>
+            </template>
+        </div>
     </template>
     <template v-else-if="layout=='menubar'">
         <Menubar :model="menubarActions" class="w-full">
@@ -43,12 +45,12 @@ export default {
         },
         'whitelist': Array,
         'blacklist': Array,
-        'menubarTitle' : String,
+        'menubarTitle': String,
     },
     data() {
         let that = this;
         if (!that.conf) {
-            console.warn('cAction conf null',that.conf);
+            console.warn('cAction conf null', that.conf);
         }
         let cf = that.conf || {};
         cf.title = '';
@@ -59,14 +61,14 @@ export default {
     },
     methods: {
 
-        getConf(actionConf,actionKey) {
+        getConf(actionConf, actionKey) {
             var that = this;
-            actionConf.spacing = that.getSpacing(actionConf,actionKey);
+            actionConf.spacing = that.getSpacing(actionConf, actionKey);
 
             //console.log("ALAYOUT",that.layout,actionConf);
             return actionConf;
         },
-        getSpacing(actionConf,actionKey) {
+        getSpacing(actionConf, actionKey) {
             var that = this;
             if (actionConf.spacing) {
                 return actionConf.spacing;
@@ -76,14 +78,14 @@ export default {
                     return '';
                 case 'buttons':
                     return (actionKey === that.getLastAction())
-                            ? '' : 'mr-2';
+                        ? '' : 'mr-2';
                 default:
                     return '';
             }
         },
         getActions() {
             var that = this;
-            console.log("GETA",that,that.actions);
+            console.log("GETA", that, that.actions);
             if (that.actions) {
                 return that.actions;
             }
@@ -139,12 +141,12 @@ export default {
             //console.log('actions',that.conf);
             let actions = that.conf.actions;
             for (let name in actions) {
-                
+
                 items.push({
                     label: that.translate(actions[name].text),
                     icon: actions[name].icon,
                     command: () => {
-                        console.log('name',name, actions[name]);
+                        console.log('name', name, actions[name]);
                         actions[name].execute()
                     },
                     disabled: actions[name].disabled,
@@ -152,9 +154,9 @@ export default {
                 })
             }
             //console.log('menubar', items, that.conf);
-            return  [{
-                label : this.menubarTitle?this.menubarTitle:this.translate('app.actions'),
-                items : items
+            return [{
+                label: this.menubarTitle ? this.menubarTitle : this.translate('app.actions'),
+                items: items
             }]
         }
     }
