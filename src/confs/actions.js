@@ -43,14 +43,8 @@ const actionConfs = {
         execute () {
             console.log('action-search',this,'view',this.view);
             if (this.view) {
-                //console.log('target ref',this.view.targetRef);
-
-                //var targetView =  this.getComponent(this.view.targetRef);
-                var formData = this.view.getViewData();
-                this.view.$emit('search',formData)
-                //targetView.route.setParams(formData);
-                //targetView.route.setParam('page',1);
-                //targetView.reload();
+                //var formData = this.view.getViewData();
+                this.view.search('advanced')
                 return ;
             }
         }
@@ -64,14 +58,8 @@ const actionConfs = {
         execute () {
             console.log('action-search-basic',this,'view',this.view);
             if (this.view) {
-                //console.log('target ref',this.view.targetRef);
-
-                //var targetView =  this.getComponent(this.view.targetRef);
-                var formData = this.view.getViewData('formBasic');
-                this.view.$emit('search',formData)
-                //targetView.route.setParams(formData);
-                //targetView.route.setParam('page',1);
-                //targetView.reload();
+                //var formData = this.view.getViewData('formBasic');
+                this.view.search('basic')
                 return ;
             }
         }
