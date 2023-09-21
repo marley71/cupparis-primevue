@@ -31,6 +31,7 @@ export default {
             options : this.conf.options,
             placeholder : this.conf.placeholder,
             extraBind : this.conf.extraBind,
+            reload: this.conf.reload,
 
         },this.conf);
 
@@ -65,6 +66,9 @@ export default {
                         return;
                     }
                     that.change();
+                    if (that.reload) {
+                        that.view.reload();
+                    }
                 })
             } else {
                 that.change();

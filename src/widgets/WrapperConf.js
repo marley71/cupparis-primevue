@@ -261,6 +261,7 @@ export default class WrapperConf {
             isAjax:true,  // se e' un controllo che deve fare la chiamata di update altrimenti e' un controllo normale in una form
             json : null, // ultimo json caricato dalla chiamata ajax,
             currentIndex : 0,  // indice corrente delle chiavi di domainValues
+            reload: false,
         },conf);
         conf.change = conf.change || function() {};
         conf.options = this.mapOptions(conf.domainValues,conf.domainValuesOrder);
