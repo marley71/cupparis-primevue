@@ -21,9 +21,10 @@ export default class WrapperConf {
     loadConf(conf) {
         let that = this;
         //let na = CrudCore.clone(conf);
-        conf = _.cloneDeep(conf)
+        //DA LOOP IN COMPILAZIONE
+        //conf = _.cloneDeep(conf)
         conf = Object.assign(that.defaultConf(),conf);
-        
+
         // for (let key in conf.actions) {
 
         //     // console.log('key',key,conf.actions[key]);
