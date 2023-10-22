@@ -85,7 +85,7 @@ export default {
         },
         getActions() {
             var that = this;
-            console.log("GETA", that, that.actions);
+            //console.log("GETA", that, that.actions);
             if (that.actions) {
                 return that.actions;
             }

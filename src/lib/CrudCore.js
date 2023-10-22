@@ -357,4 +357,12 @@ CrudCore.defaultViewConf = function(type) {
     })
 }
 
+CrudCore.setCache = (key,value) => {
+    window.localStorage.setItem(key,value)
+}
+
+CrudCore.getCache = (key) => {
+    return window.localStorage.getItem(key)
+}
+
 export default CrudCore;

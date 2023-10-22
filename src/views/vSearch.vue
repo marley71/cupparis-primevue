@@ -138,11 +138,11 @@ export default {
             return 'advanced';
         },
         hasBasicSearch() {
-            console.log("BSSS:::", this.conf);
+            //console.log("BSSS:::", this.conf);
             return this.conf.searchType === 'basic' || this.conf.searchType === 'both';
         },
         hasAdvancedSearch() {
-            console.log("ASSS:::", this.conf);
+            //console.log("ASSS:::", this.conf);
             return this.conf.searchType === 'advanced' || this.conf.searchType === 'both';
         },
         hasBothSearches() {
