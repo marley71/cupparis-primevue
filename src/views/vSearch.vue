@@ -11,7 +11,7 @@
         <!--            <Divider align="center" class="actionsDivider">-->
         <!--                                <span class="p-tag">-->
         <!--                                    Filtra elementi-->
-        <!--                                </span>-->
+        <!--         @keyup.enter="search('basic')"     @keyup.enter="(event)=> search('basic',event)"                   </span>-->
 
         <!--            </Divider>-->
         <!--        </div>-->
@@ -21,7 +21,8 @@
 
             <div :class="basicSearchClass()" v-if="hasBasicSearch()">
                 <form ref="formBasic" enctype="multipart/form-data"
-                      @keyup.enter="search('basic')"
+                @change="(event)=> search('basic',event)"
+                 @submit.prevent="(event)=> search('basic',event)"
                       class="p-fluid mt-1">
                     <template v-for="field in getHiddenFields()">
                         <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
@@ -29,10 +30,13 @@
 
                     <div class="p-inputgroup">
 
-                        <c-action ref="actions" :conf="recordActionsConf" :whitelist="['action-search-basic']"
-                                  layout="buttons"></c-action>
-
-                        <InputText name="s_basic_query" class="p-inputtext p-component w-full"></InputText>
+                        <!-- <c-action ref="actions" :conf="recordActionsConf" :whitelist="['action-search-basic']"
+                                  layout="buttons"></c-action> -->
+                        <span class="p-input-icon-left">
+                            <i class="pi pi-search" />
+                            <InputText name="s_basic_query" class="p-inputtext p-component w-full" v-model="s_basic_query"   
+                            ></InputText>
+                        </span>
                     </div>
 
                 </form>
@@ -45,7 +49,8 @@
 
                     <AccordionTab :header="advancedSearchHeader()">
                         <form ref="form" enctype="multipart/form-data"
-                            
+                        @change="(event)=> search('advanced',event)"
+                        @submit.prevent="(event)=> search('advanced',event)"
                               class="p-fluid mt-5">
 
                             <template v-for="field in getHiddenFields()">
@@ -116,14 +121,28 @@ export default {
     name: "vSearch",
     extends: vRecord,
     emits: ['search'],
+    data() {
+        return {
+            s_basic_query : '',
+        }
+    },
     methods: {
-        search(type) {
+        
+        search(type,event) {
+            console.debug('type',type,event);
+            // gestione evento change e submit della form
+            if (event) {
+                event.preventDefault();
+                if ((type == 'basic') && event.type != 'submit') {
+                    return ;
+                }
+            }
             let that = this;
             type = type || that.defaultSearch();
             let form = type === 'basic' ? 'formBasic' : 'form';
-            // console.log("FOOORMMMM",form,that);
             var formData = that.getViewData(form);
-            this.$emit('search', formData)
+            this.$emit('search', formData);
+            return true;
         },
         getFieldName(field) {
             return 's_' + field;
@@ -185,8 +204,21 @@ export default {
             return this.conf.basicSearchPlaceholder ?
                 this.conf.basicSearchPlaceholder :
                 this.translate('app.search_placeholder');
+        },
+        /**
+         * setta il valore speciale del campo s_basic_query
+         */
+        setSpecialField(name,value) {
+            if (name == 's_basic_query') {
+                this.s_basic_query = value;
+            }
+        },
+        isSpecialField(name) {
+            if (name == 's_basic_query') {
+                return true;
+            }
+            return false;
         }
-
 
     }
 }

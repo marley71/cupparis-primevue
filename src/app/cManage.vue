@@ -269,7 +269,12 @@ export default {
                                     if (tmp.length != 2) {
                                         continue;
                                     }
-                                    let fieldName = tmp[0].substring(2);
+                                    let fieldName = tmp[0];
+                                    if (vSearch.isSpecialField(fieldName)) {
+                                        vSearch.setSpecialField(fieldName,tmp[1]);
+                                        continue;
+                                    }
+                                    fieldName = fieldName.substring(2);
                                     if (!vSearch.getWidget(fieldName)) {
                                         console.warn('getWidget ha ritornato null per ', fieldName);
                                         continue;

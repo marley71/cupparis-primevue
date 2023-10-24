@@ -36,14 +36,15 @@
             </slot>
             <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig">
                 <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected"
-                            :rows="getPerPage()"
-                           :paginator="paginator" :paginatorPosition="paginatorPosition"
-                           :lazy="routeName==null?false:true"
-                           @page="onPage($event)" @sort="onSort($event)"
-                           :total-records="getTotal()"
-                           :first="getFirst()"
-                           :sortField="getSortField()"
-                           :sortOrder="getSortOrder()"
+                        :rows="getPerPage()"
+                        :paginator="paginator" :paginatorPosition="paginatorPosition"
+                        :lazy="routeName==null?false:true"
+                        @page="onPage($event)" @sort="onSort($event)"
+                        :total-records="getTotal()"
+                        :first="getFirst()"
+                        :sortField="getSortField()"
+                        :sortOrder="getSortOrder()"
+                        :loading="!loaded"
 
 
                 >

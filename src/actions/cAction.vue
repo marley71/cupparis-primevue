@@ -21,7 +21,7 @@
     </template>
     <template v-else>
         <div>
-            Layout non riconosciuto
+            {{layout}} : Layout non riconosciuto 
         </div>
     </template>
 

@@ -54,7 +54,7 @@
                 </Column> -->
                 <Column :exportable="false" header="Actions">
                     <template #body="slotProps">
-                        <c-action :ref="'r'+slotProps.index % getPerPage()" :conf="recordActionsConf[slotProps.index % getPerPage()]" :layout="'actionRecordLayout'"></c-action>
+                        <c-action :ref="'r'+slotProps.index % getPerPage()" :conf="recordActionsConf[slotProps.index % getPerPage()]" :layout="actionRecordLayout"></c-action>
                     </template>
                 </Column>
                 <Column v-for="(col) in fields" :field="col" :header="col" :key="col" :sortable="isSortable(col)" :dir="sortDirection(col)">
