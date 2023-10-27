@@ -139,6 +139,13 @@ export default {
             }
             let that = this;
             type = type || that.defaultSearch();
+            if (type === 'basic') {
+                for (let i in this.fields) {
+                    this.getWidget(this.fields[i]).setValue('');
+                }
+            } else {
+                this.s_basic_query = '';
+            }
             let form = type === 'basic' ? 'formBasic' : 'form';
             var formData = that.getViewData(form);
             this.$emit('search', formData);

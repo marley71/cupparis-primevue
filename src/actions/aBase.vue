@@ -46,7 +46,7 @@ export default {
         }
 
         for (let k in that.wConf) {
-            console.log('action wConf k',k,that.wConf[k]);
+            //console.log('action wConf k',k,that.wConf[k]);
 
             if (that.wConf[k] instanceof Function) {
                 //console.log('found method',k);
@@ -82,7 +82,7 @@ export default {
         // if (!dt.icon) {
         //     dt.icon = '';
         // }
-        console.debug('action finalData',dt);
+        //console.debug('action finalData',dt);
         return dt;
     },
     methods: {
