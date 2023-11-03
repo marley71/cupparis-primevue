@@ -12,9 +12,9 @@
                     </Button>
                     <template v-for="field in getHiddenFields()">
                         <template v-if="!isRemovedWidget(field)">
-                            <c-widget :ref="field" :conf="widgetsConfig[field]" v-show="!isHiddenWidget(field)"></c-widget> 
+                            <c-widget :ref="field" :conf="widgetsConfig[field]" v-show="!isHiddenWidget(field)"></c-widget>
                         </template>
-                        
+
                     </template>
                 </td>
 
@@ -23,7 +23,7 @@
 
                     <div class="">
                         <template v-if="!isRemovedWidget(field)">
-                            <c-widget :ref="field" :conf="widgetsConfig[field]" v-show="!isHiddenWidget(field)"></c-widget> 
+                            <c-widget :ref="field" :conf="widgetsConfig[field]" v-show="!isHiddenWidget(field)"></c-widget>
                         </template>
                     </div>
 
@@ -50,35 +50,35 @@
                             <template v-if="!isRemovedWidget(field)">
                                 <c-widget :ref="field" :conf="widgetsConfig[field]" v-show="!isHiddenWidget(field)"></c-widget>
                             </template>
-                            
+
                         </template>
                         <div class="grid">
                             <template v-for="field in getVisibleFields()" :key="field">
                                 <template v-if="!isRemovedWidget(field)" >
                                     <div class="py-3" :class="getWidgetLayout(field,'colClass')" v-show="!isHiddenWidget(field)">
-                                        
+
                                             <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
-                                                
+
                                                 <span class="p-float-label">
-                                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget> 
+                                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
                                                     <label :for="field">{{ widgetsConfig[field].label }}</label>
                                                 </span>
                                             </template>
                                             <template v-else>
-                                                
+
                                                 <label class="labelTop" :for="field"
                                                     v-if="getWidgetLayout(field,'labelPosition')=='top'">
                                                     {{ translateUc(widgetsConfig[field].label) }}
                                                 </label>
                                                 <div class="">
-                                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget> 
+                                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
                                                 </div>
                                                 <label class="labelBottom" :for="field"
                                                     v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
                                                     {{ translateUc(widgetsConfig[field].label) }}
                                                 </label>
                                             </template>
-                                        
+
                                     </div>
                                 </template>
                                 <template v-if="getWidgetLayout(field,'hasDivider')">
@@ -98,11 +98,11 @@
                         </div>
                     </template>
                     <template v-else>
-                        
+
                     <form ref="form" enctype="multipart/form-data" @submit="handleSubmit" class="p-fluid">
                             <template v-for="field in getHiddenFields()">
                                 <template v-if="isRemovedWidget(field)">
-                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget> 
+                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
                                 </template>
                             </template>
                             <div class="grid">
@@ -110,20 +110,20 @@
                                     <template v-if="!isRemovedWidget(field)" >
                                         <div class="py-3" :class="getWidgetLayout(field,'colClass')" v-show="!isHiddenWidget(field)">
                                             <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
-                                                
+
                                                 <span class="p-float-label">
-                                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget> 
+                                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
                                                     <label :for="field">{{ widgetsConfig[field].label }}{{ isRequired(field) }}</label>
                                                 </span>
                                             </template>
                                             <template v-else>
-                                                
+
                                                 <label class="labelTop" :for="field"
                                                     v-if="getWidgetLayout(field,'labelPosition')=='top'">
                                                     {{ translateUc(widgetsConfig[field].label) }}{{ isRequired(field) }}
                                                 </label>
                                                 <div class="">
-                                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget> 
+                                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
                                                 </div>
                                                 <label class="labelBottom" :for="field"
                                                     v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
@@ -164,9 +164,8 @@ import actionConfs from "../confs/actions";
 import Server from "../lib/Server";
 import viewConfs from "../confs/views";
 import { defineRule,validate } from 'vee-validate';
+import AllRules  from "../lib/AllRules";
 //import { localize,setLocale } from '@vee-validate/i18n';
-
-import AllRules from '@vee-validate/rules';
 
 // configure({
 //   // Generates an English message locale generator
@@ -207,8 +206,8 @@ export default {
             isInlist: true,
             blocked : false,
             removedWidgets : [], // rimuove il widget usando v-if
-            hiddenWidgets : [],   // nasconde il widget usando v-show   
-            myShow : false,                    
+            hiddenWidgets : [],   // nasconde il widget usando v-show
+            myShow : false,
         }
     },
     methods: {
@@ -342,14 +341,14 @@ export default {
                 }
                 route.setParams(that.getViewData());
                 that.block();
-               
+
                 Server.route(route, function (json) {
                     that.unblock();
                     callback(json);
                 })
             })
-            
-            
+
+
         },
         getViewData(ref) {
             let that = this;
@@ -400,7 +399,7 @@ export default {
             //console.log(AllRules)
             let that = this;
             //console.log('widgetsConfig',that.widgetsConfig);
-            
+
             that.defineRules();
             let isValid = true;
             for (let i in that.fields) {
@@ -415,10 +414,10 @@ export default {
                                             label : widget.label,
                                             bails : false,
                                         });
-                    //console.log(name,'res',res);                      
+                    //console.log(name,'res',res);
                     isValid = isValid && res.valid;
                     //console.log('ISVALID',isValid);
-                    that.getWidget(name).setErrors(res.errors);                          
+                    that.getWidget(name).setErrors(res.errors);
                 }
             }
             //console.log('isValid',isValid)
@@ -444,7 +443,7 @@ export default {
         },
         /**
          * se esiste un regola required aggiunge l'asterisco alla label del campo
-         * @param {} field 
+         * @param {} field
          */
         isRequired(field) {
             if (this.widgetsConfig[field].rules.indexOf('required') >= 0) {
