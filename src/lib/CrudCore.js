@@ -1,6 +1,6 @@
 import ProtocolList from "./ProtocolList.js";
 import ProtocolRecord from "./ProtocolRecord.js";
-import cuppariSakai from "../index";
+import CrudVars from "./CrudVars";
 import { defineAsyncComponent, createApp } from 'vue'
 import ViewWrapperConf from "../views/WrapperConf";
 import WidgetWrapperConf from "../widgets/WrapperConf";
@@ -143,11 +143,11 @@ CrudCore.setupApp = function (app) {
         }
     }
 
-    for (let k in cuppariSakai.CrudCore.directiveItems) {
+    for (let k in CrudCore.directiveItems) {
         app.directive(k,CrudCore.directiveItems[k])
     }
 
-    for (let k in cuppariSakai.CrudCore.componentItems) {
+    for (let k in CrudCore.componentItems) {
         app.component(k,CrudCore.componentItems[k])
     }
     CrudCore.globalProperties = app.config.globalProperties;
@@ -181,7 +181,7 @@ CrudCore.clone = function (obj) {
 }
 
 CrudCore.translate = function (key,plural,params) {
-    let lang = cuppariSakai.CrudVars.lang;
+    let lang = CrudVars.lang;
     //console.log('_translate store',key,lang[key]);
     var testi = lang[key];
     if (!testi)
