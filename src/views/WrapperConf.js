@@ -2,83 +2,83 @@ import CrudCore from "../lib/CrudCore";
 import viewConfs from "../confs/views";
 
 export default class WrapperConf {
-    defaultConf =  {
-        name : '',
-        value: null,
-        fields: null,
-        type: 'v-base',
-        extraBind: {},
-        title:'',
-        headerHelp:'',
-        orderFields:{},
-        paginator:true,
-        rows : 20,
-        loaded : false,
-        route : null,
-        routeName : null,
-        defaultWidgetType : 'w-text',
-        fieldsConfig:{},
-        actionsConfig: {},
-        metadata:{},
-        pagination:{},
-        selectionMode: null,
-        autoload : true,
-        blocked : false,
-        modelName : null,
-    }
-
-    listDefaultConf = {
-        name : '',
-        value: null,
-        fields: null,
-        type: 'v-base',
-        extraBind: {},
-        title:'',
-        headerHelp:'',
-        orderFields:{},
-        paginator:true,
-        paginatorPosition:'both',
-        rows : 20,
-        loaded : false,
-        route : null,
-        routeName : null,
-        defaultWidgetType : 'w-text',
-        fieldsConfig:{},
-        actionsConfig: {},
-        metadata:{},
-        pagination:{},
-        selectionMode: 'multiple',
-        autoload : true,
-        recordActionsPosition: 'end',
-        actionsLayout : 'simple',
-        actionsLayoutTitle :  '',
-        actionRecordLayout : 'simple',
-        actionRecordLayoutTitle : '',
-        blocked : false,
-        modelName : null,
-        hiddenColumns : [],
-    }
-
-    recordDefaultConf = {
-        name : '',
-        value: null,
-        fields: null,
-        type: 'v-base',
-        extraBind: {},
-        title:'',
-        headerHelp:'',
-        loaded : false,
-        route : null,
-        routeName : null,
-        defaultWidgetType : 'w-input',
-        fieldsConfig:{},
-        actionsConfig: {},
-        metadata:{},
-        autoload : true,
-        actionDivider: false,
-        blocked : false,
-        modelName : null,
-    }
+    // defaultConf =  {
+    //     name : '',
+    //     value: null,
+    //     fields: null,
+    //     type: 'v-base',
+    //     extraBind: {},
+    //     title:'',
+    //     headerHelp:'',
+    //     orderFields:{},
+    //     paginator:true,
+    //     rows : 20,
+    //     loaded : false,
+    //     route : null,
+    //     routeName : null,
+    //     defaultWidgetType : 'w-text',
+    //     fieldsConfig:{},
+    //     actionsConfig: {},
+    //     metadata:{},
+    //     pagination:{},
+    //     selectionMode: null,
+    //     autoload : true,
+    //     blocked : false,
+    //     modelName : null,
+    // }
+    //
+    // listDefaultConf = {
+    //     name : '',
+    //     value: null,
+    //     fields: null,
+    //     type: 'v-base',
+    //     extraBind: {},
+    //     title:'',
+    //     headerHelp:'',
+    //     orderFields:{},
+    //     paginator:true,
+    //     paginatorPosition:'both',
+    //     rows : 20,
+    //     loaded : false,
+    //     route : null,
+    //     routeName : null,
+    //     defaultWidgetType : 'w-text',
+    //     fieldsConfig:{},
+    //     actionsConfig: {},
+    //     metadata:{},
+    //     pagination:{},
+    //     selectionMode: 'multiple',
+    //     autoload : true,
+    //     recordActionsPosition: 'end',
+    //     actionsLayout : 'simple',
+    //     actionsLayoutTitle :  '',
+    //     actionRecordLayout : 'simple',
+    //     actionRecordLayoutTitle : '',
+    //     blocked : false,
+    //     modelName : null,
+    //     hiddenColumns : [],
+    // }
+    //
+    // recordDefaultConf = {
+    //     name : '',
+    //     value: null,
+    //     fields: null,
+    //     type: 'v-base',
+    //     extraBind: {},
+    //     title:'',
+    //     headerHelp:'',
+    //     loaded : false,
+    //     route : null,
+    //     routeName : null,
+    //     defaultWidgetType : 'w-input',
+    //     fieldsConfig:{},
+    //     actionsConfig: {},
+    //     metadata:{},
+    //     autoload : true,
+    //     actionDivider: false,
+    //     blocked : false,
+    //     modelName : null,
+    // }
 
     constructor(view) {
         this.view = view;
@@ -92,11 +92,11 @@ export default class WrapperConf {
             throw "confurazione non trovata per la view definire il type della vista";
         var defConf = null;
         if (['v-edit','v-view','v-insert','v-record','v-search'].indexOf(conf.type) >= 0) {
-            defConf = CrudCore.clone(that.recordDefaultConf);
+            defConf = CrudCore.clone(viewConfs.recordView);
         } else if (['v-list','v-list-edit','v-list-hasmany'].indexOf(conf.type) >= 0) {
-            defConf = CrudCore.clone(that.listDefaultConf);
+            defConf = CrudCore.clone(viewConfs.listView);
         }
-        let wName = CrudCore.camelCase(conf.type || that.defaultConf.type);
+        let wName = CrudCore.camelCase(conf.type || viewConfs.defaultView.type);
         //console.log('wname',that[wName])
         if (that[wName]) {
             conf = that[wName](conf);

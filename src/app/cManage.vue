@@ -57,6 +57,7 @@
 <script>
 import cView from "../views/cView.vue";
 import CrudComponent from "../CrudComponent.vue";
+import viewConfs from '../confs/views';
 import viewWrapperConf from '../views/WrapperConf'
 import CrudCore from "../lib/CrudCore";
 //import Dialog from "primevue/dialog";
@@ -103,6 +104,7 @@ export default {
         console.log('wc',wc);
         //that.conf.list = that.conf.list?wc.loadConf(that.conf.list):{};
         // that.conf.view = that.conf.view?wc.loadConf(that.conf.view):{};
+        that.conf.list = wc.loadConf(that.conf.list);
         that.conf.edit = that.conf.edit?wc.loadConf(that.conf.edit):{};
         // that.conf.insert = that.conf.insert?wc.loadConf(that.conf.insert):null;
 
@@ -138,9 +140,6 @@ export default {
     methods : {
         searchList(event) {
             console.debug('searchList',event);
-            let that = this;
-            let confName = this.$route.params.cConf;
-            let context = [];
             if (this.getViewList()) {
                 this.getViewList().setParams(event);
                 this.getViewList().load();
@@ -241,7 +240,7 @@ export default {
                 case 'insert':
                     break;
                 case 'list':
-                    let vList = that.getViewList();
+                    var vList = that.getViewList();
                     if (vList) {
                         let listParams = context.filter( a => a.indexOf('s_') == 0) || [];
                         listParams = listParams.concat( context.filter( a => a.indexOf('page') == 0));
@@ -263,7 +262,7 @@ export default {
                             //})
                             that.waitViewLoaded('search',function() {
                                 let vSearch = that.getViewSearch();
-                                window.VSS = vSearch;
+                                //window.VSS = vSearch;
                                 for (let i in listParams) {
                                     let tmp = listParams[i].split(':');
                                     if (tmp.length != 2) {
@@ -320,13 +319,13 @@ export default {
             let params = that.getViewList().route.getParams();
             let context = [];
             if (params && params instanceof FormData) {
-                for (var key of params.keys()) {
-                    var values = params.getAll(key);
+                for (let key of params.keys()) {
+                    let values = params.getAll(key);
                     context.push(key+':'+values.join('&'));
                 }
             } else if (params  && params instanceof Object) {
-                for (var key in params) {
-                    var values = params[key];
+                for (let key in params) {
+                    let values = params[key];
                     if (Array.isArray(values)) {
                         context.push(key+':'+values.join('&'));
                     } else {

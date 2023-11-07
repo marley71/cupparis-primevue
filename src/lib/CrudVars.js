@@ -1,5 +1,7 @@
 import lang from "../confs/lang";
 import ActionConfs from "../confs/actions";
+import ViewConfs from '../confs/views';
+
 const CrudVars = {
     modelConfs : {},
     viewDefaultConfs : {
@@ -22,5 +24,6 @@ const CrudVars = {
       },
     },
     actionConfs: ActionConfs,
+    viewConfs:ViewConfs
 }
 export default CrudVars;
