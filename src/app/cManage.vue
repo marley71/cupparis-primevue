@@ -66,7 +66,7 @@ export default {
     name: "Manage",
     extends : CrudComponent,
     components: {cView},
-    props : ['conf'],
+    //props : ['conf'],
     watch : {
         // '$route' (to, from) {
         //     console.log('TOOOOO',to,from);

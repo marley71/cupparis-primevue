@@ -42,74 +42,82 @@ function _getManageConf(key,route) {
     }
     return  CrudCore.clone(CrudVars.modelConfs[key]);
 }
-
-const routerConf =  [
-    // {
-    //     path: '/',
-    //     name: 'default',
-    //     component: cPage,
-    //     props: {cPath: ''}
-    // },
-    {
-        path: '/list/:cConf',
-        name: 'v-list',
-        component: vList,
-        props: route => ({ conf: _getModelConf(CrudVars.modelConfs,route.params.cConf) })
-    },
-    {
-        path: '/list-edit/:cConf',
-        name: 'v-list-edit',
-        component: vListEdit,
-        props: route => ({ conf: _getModelConf(CrudVars.modelConfs,route.params.cConf) })
-    },
-    {
-        path: '/insert/:cConf',
-        name: 'v-insert',
-        component: vRecord,
-        props: route => ({ conf: _getModelConfInsert(CrudVars.modelConfs,route.params.cConf) })
-    },
-    {
-        path: '/edit/:cConf/:cPk',
-        name: 'v-edit',
-        component: vRecord,
-        props: route => ({ conf: Object.assign(_getModelConf(CrudVars.modelConfs,route.params.cConf),{pk:route.params.cPk} )})
-    },
-    {
-        path: '/view/:cConf/:cPk',
-        name: 'v-view',
-        component: vRecord,
-        props: route => ({ conf: Object.assign(_getModelConf(CrudVars.modelConfs,route.params.cConf),{pk:route.params.pk} )})
-    },
-    // {
-    //     path: '/page/:cPath',
-    //     name: 'c-page',
-    //     component: cPage,
-    //     props: true
-    // },
-    {
-        path: '/manage/:cConf/:context*',
-        name: 'c-manage',
-        component: cManage,
-        // redirect: to => {
-        //     console.log('to',to,CrudVars.modelConfs);
-        //     return {
-        //         path: '/manage/:cConf',
-        //         conf : _getManageConf(to.params.cConf,to)
-        //     }
+var routerConf = null;
+try {
+    routerConf =  [
+        // {
+        //     path: '/',
+        //     name: 'default',
+        //     component: cPage,
+        //     props: {cPath: ''}
         // },
-        props: route => ({ conf: _getManageConf(route.params.cConf,route) })
-    },
-    {
-        path: '/import/:cConf',
-        name: 'c-import',
-        component: cImport,
-        props: route => ({ conf: CrudVars.modelConfs[route.params.cConf] })
-    },
-    // {
-    //     path: '/calendar/:cConf',
-    //     name: 'c-calendar',
-    //     component: cCalendar,
-    //     props: true
-    // }
-];
+        {
+            path: '/list/:cConf',
+            name: 'v-list',
+            component: vList,
+            props: route => ({ conf: _getModelConf(CrudVars.modelConfs,route.params.cConf) })
+        },
+        {
+            path: '/list-edit/:cConf',
+            name: 'v-list-edit',
+            component: vListEdit,
+            props: route => ({ conf: _getModelConf(CrudVars.modelConfs,route.params.cConf) })
+        },
+        {
+            path: '/insert/:cConf',
+            name: 'v-insert',
+            component: vRecord,
+            props: route => ({ conf: _getModelConfInsert(CrudVars.modelConfs,route.params.cConf) })
+        },
+        {
+            path: '/edit/:cConf/:cPk',
+            name: 'v-edit',
+            component: vRecord,
+            props: route => ({ conf: Object.assign(_getModelConf(CrudVars.modelConfs,route.params.cConf),{pk:route.params.cPk} )})
+        },
+        {
+            path: '/view/:cConf/:cPk',
+            name: 'v-view',
+            component: vRecord,
+            props: route => ({ conf: Object.assign(_getModelConf(CrudVars.modelConfs,route.params.cConf),{pk:route.params.pk} )})
+        },
+        // {
+        //     path: '/page/:cPath',
+        //     name: 'c-page',
+        //     component: cPage,
+        //     props: true
+        // },
+        {
+            path: '/manage/:cConf/:context*',
+            name: 'c-manage',
+            component: cManage,
+            // redirect: to => {
+            //     console.log('to',to,CrudVars.modelConfs);
+            //     return {
+            //         path: '/manage/:cConf',
+            //         conf : _getManageConf(to.params.cConf,to)
+            //     }
+            // },
+            props: route => ({ conf: _getManageConf(route.params.cConf,route) })
+        },
+        {
+            path: '/import/:cConf',
+            name: 'c-import',
+            component: cImport,
+            props: route => ({ conf: CrudVars.modelConfs[route.params.cConf] })
+        },
+        // {
+        //     path: '/calendar/:cConf',
+        //     name: 'c-calendar',
+        //     component: cCalendar,
+        //     props: true
+        // }
+    ];
+
+
+} catch (e) {
+    alert('route non trovata');
+    //document.location.href='/'
+}
+
 export default routerConf;

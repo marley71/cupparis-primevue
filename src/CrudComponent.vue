@@ -9,6 +9,12 @@ import CrudVars from "./lib/CrudVars";
 
 export default {
     name: "CrudComponent",
+    props: {
+        conf: Object,
+    },
+    data() {
+        return Object.assign({},(this.conf || {}));
+    },
     methods: {
         /**
          * istanzia una nuova route a partire dalla configurazione trovata in store
@@ -56,7 +62,7 @@ export default {
             var langKey = context ? context + '.' + key : key
             return CrudCore.upperCaseFirst(CrudCore.translate(langKey, plural, params))
         },
-        
+
         getDefaultViewConf(modelName,type) {
             let mn = 'Model' + CrudCore.upperCaseFirst(CrudCore.camelCase(modelName));
             let mc = CrudVars.modelConfs[mn] || {};

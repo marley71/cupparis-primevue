@@ -229,9 +229,6 @@ export default {
     name: "c-widget",
     components: {wSwap, wSwapSelect, wHasmany},
     extends: CrudComponent,
-    props: {
-        conf: Object,
-    },
     filters: {
         decodeEntities: function (value) {
             if (!value) return '';

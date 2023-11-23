@@ -30,14 +30,14 @@
                 </div>
             </div>
 
-            
+
 
         </slot>
         <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig">
-            <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected" 
-                :rows="getPerPage()" 
+            <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected"
+                :rows="getPerPage()"
                 :paginator="paginator"
-                :lazy="routeName==null?false:true" 
+                :lazy="routeName==null?false:true"
                 @page="onPage($event)" @sort="onSort($event)"
                 :total-records="getTotal()"
                 :first="getFirst()"
@@ -88,7 +88,7 @@ import vList from './vList.vue';
 export default {
     name: "vListEdit",
     extends: vList,
-    props : ['conf'],
+    //props : ['conf'],
     components: {cAction},
     mounted() {
         window.VLISTEDIT = this;
@@ -267,7 +267,7 @@ export default {
         },
         /**
          * salva una riga
-         * @param {indice della row da salvare} index 
+         * @param {indice della row da salvare} index
          */
         save(index) {
             let that = this;

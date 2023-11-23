@@ -6,7 +6,7 @@ import WrapperConf from "../views/WrapperConf";
 export default {
     name: "vBase",
     extends: CrudComponent,
-    props: ['conf'],
+    // props: ['conf'],
     emits : ['loaded'],
     created() {
         let that = this;
@@ -46,13 +46,13 @@ export default {
         for (let key in dt.fieldsConfig) {
             //console.debug('--- key',key,dt.fieldsConfig[key])
             if (dt.fieldsConfig[key] && ( (dt.fieldsConfig[key] instanceof String) || (typeof dt.fieldsConfig[key] === 'string')) ) {
-                
+
                 dt.fieldsConfig[key] = {
                     type : dt.fieldsConfig[key]
                 }
             }
         }
-        
+
         //console.log('view Props',dt);
         return dt;
     },

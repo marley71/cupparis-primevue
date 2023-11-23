@@ -12,8 +12,8 @@
 
             </slot>
             <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig">
-                <DataTable :value="value" responsiveLayout="scroll" 
-                        v-model:selection="selected" 
+                <DataTable :value="value" responsiveLayout="scroll"
+                        v-model:selection="selected"
                         :rows="getPerPage()"
                         :paginator="false"
                         :total-records="getTotal()"
@@ -88,7 +88,7 @@ import vList from './vList.vue';
 export default {
     name: "v-list-hasmany",
     extends: vList,
-    props: ['conf'],
+    //props: ['conf'],
     components: {cAction},
     mounted() {
         if (this.autoload)

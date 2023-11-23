@@ -9,7 +9,7 @@
             <slot name="description">
                 <div class="mb-0" v-html="translate('app.import-desc')"></div>
             </slot>
-            
+
             <div v-if="step == 'upload'" class="panel panel-default">
                 <h5>{{ translate('app.import-file') }}</h5>
                 <div class="col-12">
@@ -47,7 +47,7 @@ export default {
     name: "c-import",
     components: {vRecord, cView},
     extends : CrudComponent,
-    props : ['conf'],
+    //props : ['conf'],
     data() {
         let that = this;
         window.IMPORT = this;
@@ -302,7 +302,7 @@ export default {
             userConf.modelName = that.providerName;
             userConf.actionsConfig = that.viewSave.actionsConfig || {};
             userConf.fieldsConfig = that.viewSave.fieldsConfig || {};
-            
+
             var aS = userConf.actionsConfig['action-save'] || {};
             aS.csvDashboard = that;
             aS.execute = function () {

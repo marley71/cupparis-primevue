@@ -21,7 +21,7 @@
     </template>
     <template v-else>
         <div>
-            {{layout}} : Layout non riconosciuto 
+            {{layout}} : Layout non riconosciuto
         </div>
     </template>
 
@@ -38,7 +38,7 @@ export default {
     components: {ABase},
     extends: CrudComponent,
     props: {
-        'conf': Object,
+        //'conf': Object,
         'layout': {
             type: String,
             default: 'buttons'

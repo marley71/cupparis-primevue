@@ -180,7 +180,7 @@ import AllRules  from "../lib/AllRules";
 export default {
     name: "vRecord",
     extends: vBase,
-    props: ['conf', 'inlist', 'indexInlist'],
+    props: ['inlist', 'indexInlist'],
     emits: ['deleteInlist'],
     components: {cWidget, cAction},
     mounted() {

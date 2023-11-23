@@ -33,7 +33,7 @@ import WrapperConf from "./WrapperConf";
 export default {
     name: "aBase",
     extends: CrudComponent,
-    props: ['conf'],
+    //props: ['conf'],
     created() {
         let that = this;
         //console.log('CREATEDDD',that)
@@ -60,7 +60,7 @@ export default {
     //     let that = this;
     //     if(that.controlType == 'link') {
     //         that.execute();
-    //     }   
+    //     }
     // },
     data() {
         let that = this;
@@ -72,7 +72,7 @@ export default {
                 dt[k] = ext[k];
             }
         }
-        
+
         dt.wConf = ext;
         // bug da capire perche'
         if (!dt.text)
@@ -159,9 +159,9 @@ export default {
                         resolve(true);
                     } else {
                         reject(false);
-                    }  
+                    }
                 }
-                
+
             })
         },
         _execute(event) {
@@ -186,7 +186,7 @@ export default {
                     } catch(e) {
                         throw e
                     }
-                    
+
                 }).catch((error) => {
                      console.debug('beforeExecute failed');
                      throw error;
