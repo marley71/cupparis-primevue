@@ -152,7 +152,6 @@
                 </slot>
             </div>
         </template>
-        <BlockUI :blocked="blocked" fullScreen />
     </div>
 </template>
 

@@ -143,16 +143,13 @@
         </template>
         <template v-else-if="type=='w-texthtml'">
             <input type="hidden" :name="name" v-model="value" />
-            <Editor v-model="value" editorStyle="height: 320px" @text-change="_change">
-                <template v-if="toolbar" #toolbar>
-                    <span class="ql-formats">
-                        <button v-for="(cssClass,index) in toolbar" :key="index" :class="cssClass"></button>
-                        <!--                    <button class="ql-bold"></button>-->
-                        <!--                    <button class="ql-italic"></button>-->
-                        <!--                    <button class="ql-underline"></button>-->
-                    </span>
-                </template>
-            </Editor>
+<!--            <Editor v-model="value" editorStyle="height: 320px" @text-change="_change">-->
+<!--                <template v-if="toolbar" #toolbar>-->
+<!--                    <span class="ql-formats">-->
+<!--                        <button v-for="(cssClass,index) in toolbar" :key="index" :class="cssClass"></button>-->
+<!--                    </span>-->
+<!--                </template>-->
+<!--            </Editor>-->
         </template>
         <template v-else-if="type=='w-upload'">
             <FileUpload mode="basic" :name="getFieldName()" :auto="true" :customUpload="true" @uploader="uploadFile"

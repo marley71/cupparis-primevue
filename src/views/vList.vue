@@ -184,7 +184,6 @@
                         :conf="panelConf.componentConf" ></component>
             </div>
         </OverlayPanel>
-        <BlockUI :blocked="blocked" fullScreen />
     </div>
 </template>
 
