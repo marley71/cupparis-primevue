@@ -81,93 +81,40 @@ export default {
             };
         },
 
-
-
         waitStart(msg) {
-            console.log('waitStart',msg);
+            CrudCore.waitStart(msg);
         },
         waitEnd() {
-
+            console.log('waitEnd');
+            CrudCore.waitEnd()
         },
         alertError(msg,cTime) {
             CrudCore.alertError(msg,cTime);
-            // let severity = 'error';
-            // let severitySummary = 'Error Message'
-            // if (cTime) {
-            //     this.$toast.add({severity:severity, summary: severitySummary, detail:msg, life: cTime,group:'tr'});
-            // } else {
-            //     this.$toast.add({severity:severity, summary: severitySummary, detail:msg, group:'tr'});
-
-            // }
         },
         alertInfo(msg,cTime) {
             CrudCore.alertInfo(msg,cTime);
-            // let severity = 'info';
-            // let severitySummary = 'Info Message'
-            // if (cTime) {
-            //     this.$toast.add({severity:severity, summary: severitySummary, detail:msg, life: cTime,group:'tr'});
-            // } else {
-            //     this.$toast.add({severity:severity, summary: severitySummary, detail:msg, group:'tr'});
-
-            // }
         },
         alertWarning(msg,cTime) {
             CrudCore.alertWarning(msg,cTime);
-            // let severity = 'warn';
-            // let severitySummary = 'Warning Message'
-            // if (cTime) {
-            //     this.$toast.add({severity:severity, summary: severitySummary, detail:msg, life: cTime,group:'tr'});
-            // } else {
-            //     this.$toast.add({severity:severity, summary: severitySummary, detail:msg, group:'tr'});
-
-            // }
         },
         alertSuccess(msg,cTime) {
             CrudCore.alertSuccess(msg,cTime);
-            // let severity = 'success';
-            // let severitySummary = 'Success Message'
-            // if (cTime) {
-            //     this.$toast.add({severity:severity, summary: severitySummary, detail:msg, life: cTime,group:'tr'});
-            // } else {
-            //     this.$toast.add({severity:severity, summary: severitySummary, detail:msg, group:'tr'});
-
-            // }
         },
         messageDialog(msg,props,callbacks) {
             CrudCore.messageDialog(msg,props,callbacks);
-            //this.__dialog('message',msg,props,callbacks);
         },
         errorDialog(msg,props,callbacks) {
             CrudCore.errorDialog(msg,props,callbacks);
-            //this.__dialog('error',msg,props,callbacks);
         },
         warningDialog(msg,props,callbacks) {
             CrudCore.warningDialog(msg,props,callbacks);
-            //this.__dialog('warning',msg,props,callbacks);
         },
 
         confirmDialog(msg,props,callbacks) {
             CrudCore.confirmDialog(msg,props,callbacks);
-            // this.$confirm.require({
-            //     message: msg,
-            //     icon: 'pi pi-exclamation-triangle',
-            //     acceptLabel : this.translate('app.yes'),
-            //     rejectLabel : this.translate('app.no'),
-            //     accept: () => {
-            //         //callback to execute when user confirms the action
-            //         let cOk = callbacks && callbacks.ok?callbacks.ok:function (){};
-            //         cOk();
-            //     },
-            //     reject: () => {
-            //         //callback to execute when user rejects the action
-            //         let cCancel = callbacks && callbacks.cancel?callbacks.cancel:function (){};
-            //         cCancel();
-            //     }
-            // });
         },
         customDialog(msg,props,callbacks) {
             CrudCore.customDialog(msg,props,callbacks);
-            //this.__dialog('custom',msg,props,callbacks)
         },
 
         componentDialog(compName,componentConf,title,dialogConf) {
@@ -191,37 +138,6 @@ export default {
             d.mount(div);
             return d;
         },
-
-        // __dialog(type,msg,props,callbacks) {
-        //     const div = document.createElement('div');
-        //     document.body.appendChild(div);
-        //     callbacks = callbacks || {};
-        //     let comp = null;
-        //     switch (type) {
-        //         case 'message':
-        //             comp = defineAsyncComponent(() => import('./dialogs/dMessage.vue'))
-        //             break;
-        //         case 'error':
-        //             comp = defineAsyncComponent(() => import('./dialogs/dError.vue'))
-        //             break;
-        //         case 'warning':
-        //             comp = defineAsyncComponent(() => import('./dialogs/dWarning.vue'))
-        //             break;
-        //         case 'custom':
-        //             comp = defineAsyncComponent(() => import('./dialogs/dCustom.vue'))
-        //             break;
-        //     }
-        //     //let comp = defineAsyncComponent(() => import(componentPath))
-        //     let d = createApp(comp,{
-        //         conf : {
-        //             message : msg,
-        //             display : true,
-        //             callbacks : callbacks,
-        //         },
-        //     });
-        //     d.use(PrimeVue);
-        //     d.mount(div);
-        // }
     }
 }
 </script>

@@ -4,7 +4,8 @@ import CrudVars from "./CrudVars";
 import { defineAsyncComponent, createApp } from 'vue'
 import ViewWrapperConf from "../views/WrapperConf";
 import WidgetWrapperConf from "../widgets/WrapperConf";
-
+import {EventBus} from 'primevue/utils';
+const Ev = EventBus();
 //import cWidget from "../widgets/cWidget.vue";
 // import wHasmany from "../widgets/wHasmany.vue";
 // import wSwap from "../widgets/wSwap.vue";
@@ -368,6 +369,30 @@ CrudCore.setCache = (key,value) => {
 
 CrudCore.getCache = (key) => {
     return window.localStorage.getItem(key)
+}
+/**
+ * meccanismo eventi globali
+ * @returns {{on(type: string, fn: any): void, emit(type: string, evt?: any): void, off(type: string, fn: any): void}}
+ */
+CrudCore.event = () => {
+    return Ev;
+}
+
+/**
+ * evento emesso quando viene richiesto che l'applicazione resti in standby per un operazione lunga
+ * @param msg messaggio da mostrare
+ */
+CrudCore.waitStart = (msg) => {
+    console.log('CrudCore.waitStart',msg);
+    CrudCore.event().emit('wait-start',{msg:msg})
+}
+/**
+ * evento emesso quando un operazione che ha richiesto lo standby finisce
+ * @param msg
+ */
+CrudCore.waitEnd = () => {
+    console.log('CrudCore.waitEnd');
+    CrudCore.event().emit('wait-end')
 }
 
 export default CrudCore;

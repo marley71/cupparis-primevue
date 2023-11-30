@@ -19,6 +19,8 @@ import routeConfs from "./confs/routes";
 import cManage from './app/cManage.vue';
 import aBase from './actions/aBase.vue';
 import Server from './lib/Server.js';
+import Wait from "./Wait.vue";
+
 import { configure } from 'vee-validate';
 import { localize,setLocale } from '@vee-validate/i18n';
 
@@ -44,6 +46,6 @@ export default {
     cView,
     vRecord,vSearch,cManage,vList,vListEdit,cImport,vListHasmany,
     aBase,
-    Server
+    Server,Wait
 
 }
