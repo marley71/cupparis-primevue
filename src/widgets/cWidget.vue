@@ -226,6 +226,7 @@ export default {
     name: "c-widget",
     components: {wSwap, wSwapSelect, wHasmany},
     extends: CrudComponent,
+    emits: ['change'],
     filters: {
         decodeEntities: function (value) {
             if (!value) return '';
@@ -300,7 +301,7 @@ export default {
         _change(event,type) {
             let evt = event || {};
             evt.widget = this;
-            console.log('EVENTSSS', evt);
+            //console.log('EVENTSSS', evt);
             switch (this.type) {
                 case 'w-autocomplete':
                     if (type == 'clear') {
@@ -317,7 +318,7 @@ export default {
                     } else {
                         let inputDateFormat = evt.widget.inputDateFormat || 'YYYY-MM-DD';
                         var date = event ? moment(event).format(inputDateFormat) : null;
-                        console.log("DATE",date, inputDateFormat)
+                        //console.log("DATE",date, inputDateFormat)
                         //var date = new Date();
                         this.value = date;
                     }
@@ -326,7 +327,7 @@ export default {
                     break;
             }
             this.$emit('change', evt);
-            this.change();
+            this.change(evt);
         },
         add(event) {
             console.log('add event', event)
