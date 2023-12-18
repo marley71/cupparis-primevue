@@ -226,7 +226,11 @@ export default {
                 type = this.fieldsConfig[key].type
             }
             //console.log('idHiddenField',type);
-            if (type == 'w-hidden') {
+            if (type == 'w-hidden' ||
+                (type == 'w-input' &&
+                    this.fieldsConfig[key] &&
+                    this.fieldsConfig[key].inputType === 'hidden')
+            ) {
                 return true;
             }
             return false;

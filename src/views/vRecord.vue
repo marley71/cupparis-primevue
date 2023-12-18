@@ -404,7 +404,8 @@ export default {
             for (let i in that.fields) {
                 let name = that.fields[i];
                 let widget = this.getWidget(name);
-                if (widget.rules) {
+
+                if (widget && widget.rules) {
                     //console.log('name',name,widget.getValue());
                     let res = await validate(widget.getValue(),
                                         widget.rules,
@@ -431,7 +432,9 @@ export default {
             for (let i in that.fields) {
                 let name = that.fields[i];
                 let widget = this.getWidget(name);
-                rulesArray = rulesArray.concat(widget.rules.split('|'));
+                if (widget) {
+                    rulesArray = rulesArray.concat(widget.rules.split('|'));
+                }
             }
             for (let i in rulesArray) {
                 let ruleName = rulesArray[i].split(':')[0];
@@ -457,7 +460,9 @@ export default {
             let that = this;
             for (let i in that.fields) {
                 let name = that.fields[i];
-                this.getWidget(name).setErrors([]);
+                if (this.getWidget(name)) {
+                    this.getWidget(name).setErrors([]);
+                }
             }
         },
         isRemovedWidget(field) {
