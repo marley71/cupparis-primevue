@@ -4,12 +4,12 @@ class CrudHelpers {
 
 }
 
-CrudHelpers.lining = (text,maxLength,char) => {
+CrudHelpers.lining = (text, maxLength, char) => {
     if (!text) {
         return "";
     }
     char = char || " ";
-    maxLength= maxLength || 40;
+    maxLength = maxLength || 40;
 
     var indTokens = text.split(" ");
     var textSpaced = '';
@@ -28,5 +28,20 @@ CrudHelpers.lining = (text,maxLength,char) => {
     return textSpaced;
 
 }
+
+/*
+    Sistema la stringa per il blob da scaricare
+ */
+CrudHelpers.s2ab = (s) => {
+    var buf = new ArrayBuffer(s.length);
+    var view = new Uint8Array(buf);
+    for (var i = 0; i !== s.length; ++i) view[i] = s.charCodeAt(i) & 0xFF;
+    return buf;
+}
+
+CrudHelpers.toBlob = (s) => {
+    return CrudHelpers.s2ab(atob(s));
+}
+
 
 export default CrudHelpers;
