@@ -107,7 +107,7 @@
             <span>{{ getFormattedValue() }}</span>
         </template>
         <template v-else-if="type=='w-textarea'">
-            <Textarea v-model="value" @change="_change" class="w-full" :placeholder="placeholder"></Textarea>
+            <Textarea v-model="value" :name="name" @change="_change" class="w-full" :placeholder="placeholder"></Textarea>
         </template>
         <template v-else-if="type=='w-multi-select'">
             <MultiSelect class="w-full" v-model="value" :options="options" optionLabel="name" optionValue="code"
