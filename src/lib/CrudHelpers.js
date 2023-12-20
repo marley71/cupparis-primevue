@@ -43,5 +43,17 @@ CrudHelpers.toBlob = (s) => {
     return CrudHelpers.s2ab(atob(s));
 }
 
+CrudHelpers.createRuntimeDownload = (content,mime,name) => {
+    const pdfData = CrudHelpers.toBlob(content);
+
+
+    const url = window.URL.createObjectURL(new Blob([pdfData], {type: mime}));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', name);
+    document.body.appendChild(link);
+    link.click();
+}
+
 
 export default CrudHelpers;

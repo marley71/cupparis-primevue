@@ -2,6 +2,7 @@ import Server from "../lib/Server";
 import CrudCore from "../lib/CrudCore";
 import CrudVars from "../lib/CrudVars";
 import { reject } from "lodash";
+import CrudHelpers from "../lib/CrudHelpers";
 
 const actionConfs = {
     'default': {
@@ -80,10 +81,10 @@ const actionConfs = {
                     } else {
                         reject()
                     }
-                    
+
                 })
             })
-            
+
         },
 
         _save (callback) {
@@ -218,7 +219,7 @@ const actionConfs = {
             var that = this;
             console.debug('eseguo save-row');
             that.view.save(that.index,function() {
-                
+
             })
             // var values = that.view.getRowEditData(that.index);
             // //var id = that.view.value[that.index][that.view.primaryKey];
@@ -381,10 +382,16 @@ const actionConfs = {
                 }
                 //let prefix = CrudVars.useApi?'/api':'';
                 //document.location.href = prefix + json.result.link
-                var anchor = document.createElement('a');
-                anchor.href = json.result.link;
-                anchor.target="_blank";
-                anchor.click();
+                if (that.blob) {
+                    let filename = json.result[that.nameField]?json.result[that.nameField]:'file.pdf';
+                    CrudHelpers.createRuntimeDownload(json.result[that.contentField],json.result[that.mimeField],filename);
+                } else {
+                    var anchor = document.createElement('a');
+                    anchor.href = json.result.link;
+                    anchor.target="_blank";
+                    anchor.click();
+                }
+
                 console.log(json)
             })
 
@@ -396,7 +403,11 @@ const actionConfs = {
         css: 'p-button-sm p-button-text p-button-secondary',
         csvType: 'default',
         routeName: 'csv-exporta',
-        startMessage: 'Generazione csv in corso...'
+        startMessage: 'Generazione csv in corso...',
+        blob: true,
+        contentField: 'content',
+        mimeField: 'mime',
+        nameField: 'name',
     },
     'action-export-pdf' : {
         execute () {
@@ -421,8 +432,13 @@ const actionConfs = {
                     that.view.errorDialog(json.msg)
                     return
                 }
-                let prefix = CrudVars.useApi?'/api':'';
-                document.location.href = prefix + json.result.link
+                if (that.blob) {
+                    let filename = json.result[that.nameField]?json.result[that.nameField]:'file.pdf';
+                    CrudHelpers.createRuntimeDownload(json.result[that.contentField],json.result[that.mimeField],filename);
+                } else {
+                    let prefix = CrudVars.useApi?'/api':'';
+                    document.location.href = prefix + json.result.link
+                }
                 console.log(json)
             })
 
@@ -434,7 +450,11 @@ const actionConfs = {
         css: 'p-button-sm p-button-text p-button-secondary',
         pdfType: 'record',
         routeName: 'pdf-exporta',
-        startMessage: 'Generazione pdf in corso...'
+        startMessage: 'Generazione pdf in corso...',
+        blob: true,
+        contentField: 'content',
+        mimeField: 'mime',
+        nameField: 'name',
     }
 }
 export default actionConfs
