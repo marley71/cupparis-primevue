@@ -24,8 +24,8 @@
                 @change="(event)=> search('basic',event)"
                  @submit.prevent="(event)=> search('basic',event)"
                       class="p-fluid mt-1">
-                    <template v-for="field in getHiddenFields()">
-                        <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                    <template v-for="field in getHiddenFields()" :key="field">
+                        <c-widget :ref="field" :conf="widgetsConfig[field]" ></c-widget>
                     </template>
 
                     <div class="p-inputgroup">
@@ -34,7 +34,7 @@
                                   layout="buttons"></c-action> -->
                         <span class="p-input-icon-left">
                             <i class="pi pi-search" />
-                            <InputText name="s_basic_query" class="p-inputtext p-component w-full" v-model="s_basic_query"   
+                            <InputText name="s_basic_query" class="p-inputtext p-component w-full" v-model="s_basic_query"
                             ></InputText>
                         </span>
                     </div>
@@ -127,7 +127,7 @@ export default {
         }
     },
     methods: {
-        
+
         search(type,event) {
             console.debug('type',type,event);
             // gestione evento change e submit della form
@@ -141,7 +141,11 @@ export default {
             type = type || that.defaultSearch();
             if (type === 'basic') {
                 for (let i in this.fields) {
-                    this.getWidget(this.fields[i]).setValue('');
+                    let widget = this.getWidget(this.fields[i]);
+                    if (widget) {
+                        widget.setValue('');
+                    }
+
                 }
             } else {
                 this.s_basic_query = '';
