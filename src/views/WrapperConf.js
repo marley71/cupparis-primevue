@@ -164,6 +164,10 @@ export default class WrapperConf {
         if (!conf.searchType) {
             conf.searchType = conf.searchType = 'both';
         }
+        if (!conf.advancedSearchAccordion) {
+            conf.advancedSearchAccordion =
+                conf.searchType === 'both' ? true : false;
+        }
         conf = this.vRecord(conf);
         if (! ('routeName' in conf) ){
             conf.routeName = 'search';
