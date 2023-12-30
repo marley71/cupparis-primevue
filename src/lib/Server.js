@@ -5,9 +5,8 @@
 //import jQuery from 'jquery';
 import CrudVars from "./CrudVars";
 import axios from 'axios';
-const Server = {
 
-};
+const Server = {};
 
 
 /**
@@ -18,35 +17,49 @@ const Server = {
  *
  * **/
 Server.getUrl = function (url) {
-    return Server.subdomain?Server.subdomain + url:url;
+    return Server.subdomain ? Server.subdomain + url : url;
 };
 
-Server.getHearders = function() {
+Server.getHearders = function () {
     var headers = {};
+
+    var hasBasic = import.meta.env.HTTP_BASIC_AUTH;
+    var auth = '';
+    if (hasBasic) {
+        auth = "Basic " + btoa(import.meta.env.HTTP_BASIC_AUTH) + ', ';
+    }
+
     if (import.meta.env.VITE_TOKEN && !import.meta.env.PROD) {
+
+        auth += 'Bearer ' + import.meta.env.VITE_TOKEN;
+
         headers = {
-            'Authorization': 'Bearer ' +  import.meta.env.VITE_TOKEN,
+            'Authorization': auth,
             'Accept': 'application/json'
         }
         return headers;
     }
     if (!import.meta.env.VITE_TOKEN && !import.meta.env.PROD) {
+        auth += 'Bearer ' +  window.localStorage.getItem('token');
         headers = {
-            'Authorization': 'Bearer ' +  window.localStorage.getItem('token'),
+            'Authorization': auth,
             'Accept': 'application/json'
         }
         return headers;
     }
     if (CrudVars.useApi) {
+
         let selector = document.querySelector('meta[name="bearer-token"]');
-       headers = {
-           'Authorization': 'Bearer ' +  (selector?selector.content:''), // jQuery('meta[name="bearer-token"]').attr('content')
-           'Accept': 'application/json'
-       }
+        auth += 'Bearer ' + (selector ? selector.content : '');
+        headers = {
+            'Authorization': auth,
+            // jQuery('meta[name="bearer-token"]').attr('content')
+            'Accept': 'application/json'
+        }
     } else {
         let selector = document.querySelector('meta[name="csrf-token"]');
         headers = {
-            'X-CSRF-TOKEN': (selector?selector.content:'') //jQuery('meta[name="csrf-token"]').attr('content')
+            'X-CSRF-TOKEN': (selector ? selector.content : '') //jQuery('meta[name="csrf-token"]').attr('content')
         }
     }
     //console.log('HEADERS',headers);
@@ -61,13 +74,13 @@ Server.post = function (url, params, callback) {
         contentType = false;
         processData = false;
     }
-    console.log('serverPost',(params instanceof FormData),contentType,processData);
-    axios.post(realUrl,params,{
-        headers : Server.getHearders()
+    console.log('serverPost', (params instanceof FormData), contentType, processData);
+    axios.post(realUrl, params, {
+        headers: Server.getHearders()
     }).then((response) => {
         callback(response.data);
     }).catch((error) => {
-        callback({error:1,msg:error})
+        callback({error: 1, msg: error})
     })
 
 
@@ -96,8 +109,8 @@ Server.get = function (url, params, callback) {
         console.log('is FormData')
         for (var key of params.keys()) {
             var values = params.getAll(key);
-            console.log('key',key,'values',values);
-            if (! (key in _data) ) {
+            console.log('key', key, 'values', values);
+            if (!(key in _data)) {
                 if (values.length == 1) {
                     _data[key] = values[0];
                 } else {
@@ -112,17 +125,17 @@ Server.get = function (url, params, callback) {
     } else {
         _data = params;
     }
-    console.log('Server.get _data',_data,contentType,processData,realUrl,Server.getHearders());
+    console.log('Server.get _data', _data, contentType, processData, realUrl, Server.getHearders());
 
-    axios.get(realUrl,{
-        headers : Server.getHearders(),
-        params : _data,
+    axios.get(realUrl, {
+        headers: Server.getHearders(),
+        params: _data,
     }).then((response) => {
         callback(response.data);
     }).catch((error) => {
-        callback({error:1,msg:error});
+        callback({error: 1, msg: error});
     })
-    console.log('serverGet',(params instanceof FormData),contentType,processData,params,realUrl);
+    console.log('serverGet', (params instanceof FormData), contentType, processData, params, realUrl);
     // window.jQuery.ajax({
     //     url: realUrl,
     //     headers: Server.getHearders(),
@@ -137,12 +150,14 @@ Server.get = function (url, params, callback) {
     // });
 };
 
-Server.route = function(route,callback) {
-    var __cb = callback?callback:function (json) {console.debug(route.className,json)};
+Server.route = function (route, callback) {
+    var __cb = callback ? callback : function (json) {
+        console.debug(route.className, json)
+    };
     var realUrl = route.getUrl();
     var params = route.getParams();
-    console.debug('route params',params);
-    Server[route.getMethod()](realUrl,params,function (json) {
+    console.debug('route params', params);
+    Server[route.getMethod()](realUrl, params, function (json) {
         __cb(json);
     })
 };
@@ -150,22 +165,22 @@ Server.route = function(route,callback) {
 Server.postJson = function (url, params, callback) {
     var realUrl = Server.getUrl(url);
     var contentType = 'application/json; charset=UTF-8';
-    console.log('serverPost',(params instanceof FormData),contentType);
+    console.log('serverPost', (params instanceof FormData), contentType);
     window.jQuery.ajax({
         url: realUrl,
         headers: Server.getHearders(),
         type: 'POST',
         data: JSON.stringify(params),
         contentType: contentType,
-        processData:  false,
-    }).done(function(json) {
+        processData: false,
+    }).done(function (json) {
         callback(json);
     }).fail(function (data, error, msg) {
-        callback({error:1,msg:msg});
+        callback({error: 1, msg: msg});
     });
 };
 
-Server.getErrorMessage = function(message) {
+Server.getErrorMessage = function (message) {
     var msg = null;
     try {
         var tmp = JSON.parse(message);
