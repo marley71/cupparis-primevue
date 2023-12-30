@@ -23,26 +23,30 @@ Server.getUrl = function (url) {
 Server.getHearders = function () {
     var headers = {};
 
-    var hasBasic = import.meta.env.HTTP_BASIC_AUTH;
+    var hasBasic = import.meta.env.VITE_HTTP_BASIC_AUTH;
     var auth = '';
     if (hasBasic) {
-        auth = "Basic " + btoa(import.meta.env.HTTP_BASIC_AUTH) + ', ';
+        auth = "Basic " + btoa(import.meta.env.VITE_HTTP_BASIC_AUTH) + ', ';
     }
-
+    var bearer = '';
     if (import.meta.env.VITE_TOKEN && !import.meta.env.PROD) {
 
-        auth += 'Bearer ' + import.meta.env.VITE_TOKEN;
+        bearer = 'Bearer ' + import.meta.env.VITE_TOKEN;
+        auth += bearer;
 
         headers = {
             'Authorization': auth,
+            'AuthBT': bearer,
             'Accept': 'application/json'
         }
         return headers;
     }
     if (!import.meta.env.VITE_TOKEN && !import.meta.env.PROD) {
-        auth += 'Bearer ' +  window.localStorage.getItem('token');
+        bearer = 'Bearer ' +  window.localStorage.getItem('token');
+        auth += bearer;
         headers = {
             'Authorization': auth,
+            'AuthBT': bearer,
             'Accept': 'application/json'
         }
         return headers;
@@ -50,9 +54,11 @@ Server.getHearders = function () {
     if (CrudVars.useApi) {
 
         let selector = document.querySelector('meta[name="bearer-token"]');
-        auth += 'Bearer ' + (selector ? selector.content : '');
+        bearer = 'Bearer ' + (selector ? selector.content : '');
+        auth += bearer;
         headers = {
             'Authorization': auth,
+            'AuthBT': bearer,
             // jQuery('meta[name="bearer-token"]').attr('content')
             'Accept': 'application/json'
         }
