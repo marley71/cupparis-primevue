@@ -1,4 +1,3 @@
-
 import CrudComponent from "./CrudComponent.vue"
 import cAction from './actions/cAction.vue'
 import cView from './views/cView.vue'
@@ -22,6 +21,8 @@ import Server from './lib/Server.js';
 import Wait from "./Wait.vue";
 import CrudHelpers from "./lib/CrudHelpers";
 
+import actionConfs from "./confs/actions";
+
 import { configure } from 'vee-validate';
 import { localize,setLocale } from '@vee-validate/i18n';
 
@@ -43,8 +44,9 @@ export default {
         });
         setLocale('appLang');
     },
-    CrudComponent,cAction,CrudCore,routerConf,CrudVars,routeConfs,
+    CrudComponent,cAction,CrudCore,CrudVars,
     cView,
+    routerConf,routeConfs,actionConfs,
     vRecord,vSearch,cManage,vList,vListEdit,cImport,vListHasmany,
     aBase,
     Server,Wait,

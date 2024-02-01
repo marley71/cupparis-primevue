@@ -196,7 +196,7 @@ export default {
             if (event) {
                 event.preventDefault();
                 if ((type == 'basic') && event.type != 'submit') {
-                    return;
+                    return true;
                 }
             }
             let that = this;

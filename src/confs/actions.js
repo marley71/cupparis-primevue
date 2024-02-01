@@ -29,9 +29,8 @@ const actionConfs = {
         text : 'app.reset',
         execute () {
             if (this.view) {
-                //console.log('target ref',this.view.targetRef);
                 this.view.reset();
-                return ;
+                return true;
             }
         }
     },
@@ -41,13 +40,29 @@ const actionConfs = {
         buttonClass: '',
         icon : 'fa fa-search',
         text : 'app.cerca',
-        execute () {
+        execute (event) {
+            let tA = this;
+            return new Promise(function (resolve,reject) {
+                tA._search(function (esito) {
+                    console.log('search Event',event,esito);
+                    if (esito) {
+                        resolve();
+                    } else {
+                        reject();
+                    }
+
+                })
+            })
+
+        },
+        _search (callback) {
             console.log('action-search',this,'view',this.view);
             if (this.view) {
-                //var formData = this.view.getViewData();
                 this.view.search('advanced')
+                callback(true)
                 return ;
             }
+            callback(true)
         }
     },
     'action-search-basic' : {
@@ -55,14 +70,27 @@ const actionConfs = {
         title : 'app.cerca',
         buttonClass: 'p-button p-button-primary',
         icon : 'fa fa-search',
-//        text : 'app.cerca',
-        execute () {
+        execute (event) {
+            let tA = this;
+            return new Promise(function (resolve,reject) {
+                tA._search(function (esito) {
+                    console.log('search Event',event,esito);
+                    if (esito) {
+                        resolve();
+                    } else {
+                        reject();
+                    }
+
+                })
+            })
+
+        },
+        _search (callback) {
             console.log('action-search-basic',this,'view',this.view);
             if (this.view) {
-                //var formData = this.view.getViewData('formBasic');
                 this.view.search('basic')
-                return ;
             }
+            callback(true)
         }
     },
     'action-save' : {
@@ -73,13 +101,14 @@ const actionConfs = {
         text : 'app.salva',
         json : null,
         execute (event) {
-            return new Promise((resolve,reject) => {
-                this._save(function (esito) {
-                    console.log('save Event',event,esito)
+            let tA = this;
+            return new Promise(function (resolve,reject) {
+                tA._save(function (esito) {
+                    console.log('save Event',event,esito);
                     if (esito) {
                         resolve();
                     } else {
-                        reject()
+                        reject();
                     }
 
                 })
@@ -89,11 +118,15 @@ const actionConfs = {
 
         _save (callback) {
             var that = this;
+            if (!that.view) {
+                console.error("impossibile eseguire _save view non definita");
+                callback(false)
+            }
             //that.waitStart();
             that.view.save(function (json) {
                 //that.waitEnd();
                 if (json.error) {
-                    that.view.errorDialog(json.msg)
+                    that.view.errorDialog(json.msg);
                     callback(false);
                     return ;
                 }
@@ -112,25 +145,36 @@ const actionConfs = {
         icon : 'fa fa-save',
         text : 'app.salva',
         json : null,
-        execute (callback) {
-            this._save(callback)
-        },
-        methods: {
-            _save (callback) {
-                var that = this;
-                that.waitStart();
-                that.view.save(function (json) {
-                    that.waitEnd();
-                    if (json.error) {
-                        that.view.errorDialog(json.msg)
-                        return ;
+        execute (event) {
+            let tA = this;
+            return new Promise(function (resolve,reject) {
+                tA._save(function (esito) {
+                    console.log('save back Event',event,esito);
+                    if (esito) {
+                        resolve();
+                    } else {
+                        reject();
                     }
-                    that.json = json;
-                    var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
-                    that.view.alertSuccess(msg,3000);
-                    callback();
+
                 })
-            }
+            })
+            //this._save(callback)
+        },
+        _save (callback) {
+            var that = this;
+            that.waitStart();
+            that.view.save(function (json) {
+                that.waitEnd();
+                if (json.error) {
+                    that.view.errorDialog(json.msg)
+                    callback(false);
+                    return ;
+                }
+                that.json = json;
+                var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
+                that.view.alertSuccess(msg,3000);
+                callback(true);
+            })
         },
         afterExecute () {
             window.history.back();
@@ -156,11 +200,12 @@ const actionConfs = {
         viewType : 'v-view',
         execute () {
             let ta = this;
-            console.log('ta',ta);
             let defaultConf = ta.getDefaultViewConf(ta.view.modelName,ta.viewType);
             defaultConf.pk = ta.modelData.id;
-
-            this.componentDialog(ta.viewType,defaultConf)
+            console.log('ta',ta.viewType,defaultConf);
+            CrudCore.componentDialog('c-view',defaultConf);
+            return true;
+            //ta.componentDialog(ta.viewType,defaultConf)
         }
     },
     'action-delete' : {
@@ -181,7 +226,22 @@ const actionConfs = {
             });
             return route;
         },
-        execute : function () {
+        execute (event) {
+            let tA = this;
+            return new Promise(function (resolve,reject) {
+                tA._delete(function (esito) {
+                    console.log('save back Event',event,esito);
+                    if (esito) {
+                        resolve();
+                    } else {
+                        reject();
+                    }
+
+                })
+            })
+            //this._save(callback)
+        },
+        _delete : function (callback) {
             var that = this;
             that.view.confirmDialog(that.view.translate('app.conferma-cancellazione') ,{},{
                 ok : function () {
@@ -190,12 +250,17 @@ const actionConfs = {
                     Server.route(r,function (json) {
                         if (json.error) {
                             that.errorDialog(json.msg);
-                            return ;
+                            callback(false);
+                            return
                         }
                         var msg = json.msg?json.msg:that.view.translate('app.cancellazione-successo');
                         that.view.alertSuccess(msg,3000);
                         that.view.reload();
+                        callback(true);
                     });
+                },
+                cancel () {
+                    callback(false);
                 }
             });
         }
@@ -207,38 +272,27 @@ const actionConfs = {
         text: '',
         icon: 'fa fa-save',
         visible: false,
-        // setRouteValues : function(route) {
-        //     var that = this;
-        //     route.setValues({
-        //         modelName: that.view.modelName,
-        //         pk : that.modelData[that.view.primaryKey]
-        //     });
-        //     return route;
-        // },
-        execute() {
+        execute (event) {
+            let tA = this;
+            return new Promise(function (resolve,reject) {
+                tA._saveRow(function (esito) {
+                    console.log('save back Event',event,esito);
+                    if (esito) {
+                        resolve();
+                    } else {
+                        reject();
+                    }
+
+                })
+            })
+            //this._save(callback)
+        },
+        _saveRow(callback) {
             var that = this;
             console.debug('eseguo save-row');
             that.view.save(that.index,function() {
-
+                callback(true)
             })
-            // var values = that.view.getRowEditData(that.index);
-            // //var id = that.view.value[that.index][that.view.primaryKey];
-            // var r = that.view.createRoute('update');
-            // that.setRouteValues(r);
-            // r.setParams(values);
-            // Server.route(r, function (json) {
-            //     if (json.error) {
-            //         that.view.errorDialog(json.msg);
-            //         return;
-            //     }
-            //     var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
-            //     that.view.alertSuccess(msg,3000);
-            //     var values = json.result;
-            //     that.view.setRowData(that.index,values);
-            //     that.view.setViewMode(that.index);
-            //     //that.view.reload();
-            // })
-            // console.log('values', values);
         },
     },
     'action-edit-mode':  {
@@ -302,13 +356,30 @@ const actionConfs = {
             });
             return route;
         },
-        execute : function () {
+        execute (event) {
+            let tA = this;
+            return new Promise(function (resolve,reject) {
+                tA._deleteSelected(function (esito) {
+                    console.log('save back Event',event,esito);
+                    if (esito) {
+                        resolve();
+                    } else {
+                        reject();
+                    }
+
+                })
+            })
+            //this._save(callback)
+        },
+        _deleteSelected : function (callback) {
             var that = this;
             var checked = that.view.selectedRows();
             var num = checked.length;
             console.log(num,'view',that.view)
-            if (num === 0)
+            if (num === 0) {
+                callback(true);
                 return ;
+            }
             that.view.confirmDialog(that.view.translate('app.conferma-multidelete',null,false,[num]), {
                 ok : function () {
                     var r = that.createRoute('multi-delete');
@@ -319,10 +390,11 @@ const actionConfs = {
                         that.waitEnd();
                         if (json.error) {
                             that.errorDialog(json.msg);
+                            callback(false);
                             return ;
                         }
                         that.view.reload();
-                        //that.callback(json);
+                        callback(true);
                     })
                 }
             });
@@ -360,24 +432,35 @@ const actionConfs = {
 
     },
     'action-export-csv' : {
-        execute () {
+        execute (event) {
+            let tA = this;
+            return new Promise(function (resolve,reject) {
+                tA._exportCsv(function (esito) {
+                    console.log('save back Event',event,esito);
+                    if (esito) {
+                        resolve();
+                    } else {
+                        reject();
+                    }
+
+                })
+            })
+            //this._save(callback)
+        },
+        _exportCsv (callback) {
             var that = this
             var r = that.view.createRoute(that.routeName)
             r.setValues({
                 'foorm': that.view.modelName,
                 'foormtype': 'list'
             })
-            //console.log('action-export-csv',that.view.modelName,that.view.cType)
-            // var p = {
-            //     'csvType': that.csvType
-            // }
-            // var viewP = that.view.route.getParams()
             r.setParam('csvType', that.csvType)
             that.view.waitStart(that.startMessage)
             Server.route(r, function (json) {
                 that.view.waitEnd()
                 if (json.error) {
                     that.view.errorDialog(json.msg)
+                    callback(false)
                     return
                 }
                 //let prefix = CrudVars.useApi?'/api':'';
@@ -391,11 +474,11 @@ const actionConfs = {
                     anchor.target="_blank";
                     anchor.click();
                 }
-
-                console.log(json)
+                callback(true)
+                //console.log(json)
             })
 
-            console.log('r', r)
+            //console.log('r', r)
         },
         type: 'collection',
         icon: 'fa fa-file-csv',
@@ -410,7 +493,22 @@ const actionConfs = {
         nameField: 'name',
     },
     'action-export-pdf' : {
-        execute () {
+        execute (event) {
+            let tA = this;
+            return new Promise(function (resolve,reject) {
+                tA._exportPdf(function (esito) {
+                    console.log('save back Event',event,esito);
+                    if (esito) {
+                        resolve();
+                    } else {
+                        reject();
+                    }
+
+                })
+            })
+            //this._save(callback)
+        },
+        _exportPdf (callback) {
             var that = this
             var r = that.view.createRoute(that.routeName)
             let foormPk = that.modelData[that.view.primaryKey];
@@ -419,17 +517,13 @@ const actionConfs = {
                 'foormtype': 'list',
                 'foormpk' : foormPk
             })
-            //console.log('action-export-csv',that.view.modelName,that.view.cType)
-            // var p = {
-            //     'csvType': that.csvType
-            // }
-            // var viewP = that.view.route.getParams()
             r.setParam('pdfType', that.pdfType)
             that.view.waitStart(that.startMessage)
             Server.route(r, function (json) {
                 that.view.waitEnd()
                 if (json.error) {
                     that.view.errorDialog(json.msg)
+                    callback(false);
                     return
                 }
                 if (that.blob) {
@@ -439,10 +533,11 @@ const actionConfs = {
                     let prefix = CrudVars.useApi?'/api':'';
                     document.location.href = prefix + json.result.link
                 }
-                console.log(json)
+                callback(true);
+                //console.log(json)
             })
 
-            console.log('r', r)
+            //console.log('r', r)
         },
         type: 'record',
         icon: 'fa fa-file-pdf',

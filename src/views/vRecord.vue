@@ -164,6 +164,7 @@ import Server from "../lib/Server";
 import viewConfs from "../confs/views";
 import { defineRule,validate } from 'vee-validate';
 import AllRules  from "../lib/AllRules";
+import CrudCore from "../lib/CrudCore";
 //import { localize,setLocale } from '@vee-validate/i18n';
 
 // configure({
@@ -253,10 +254,6 @@ export default {
         },
         setActions() {
             let that = this;
-            // this.menuModel = [
-            //     {label: 'View', icon: 'pi pi-fw pi-search', command: () => this.viewRow()},
-            //     {label: 'Delete', icon: 'pi pi-fw pi-times', command: () => this.deleteRow()}
-            // ]
             that.recordActionsConf = {
                 actions: {}
             };
@@ -264,17 +261,29 @@ export default {
             console.log('actionsConfig', that.actionsConfig)
             for (let k in rActions) {
                 let aName = rActions[k];
-                let aConf = Object.assign({}, actionConfs['default']);
-                aConf = Object.assign(aConf, (actionConfs[aName] || {}));
-                if (that.actionsConfig[aName]) {
-                    aConf = Object.assign(aConf, that.actionsConfig[aName]);
-                }
-                //aConf = Object.assign(actionConfs[aName],vConf);
-                aConf.modelData = that.value;
-                aConf.view = that;
+                let currenConfig = Object.assign({},(that.actionsConfig[aName] || {}));
+                currenConfig.modelData = that.value;
+                currenConfig.view = that;
+                let aConf = CrudCore.getActionConf(aName,currenConfig);
                 that.recordActionsConf.actions[aName] = aConf;
             }
             console.log('recordActionsConf', that.recordActionsConf)
+
+            // vecchio modo
+            // console.log('actionsConfig', that.actionsConfig)
+            // for (let k in rActions) {
+            //     let aName = rActions[k];
+            //     let aConf = Object.assign({}, actionConfs['default']);
+            //     aConf = Object.assign(aConf, (actionConfs[aName] || {}));
+            //     if (that.actionsConfig[aName]) {
+            //         aConf = Object.assign(aConf, that.actionsConfig[aName]);
+            //     }
+            //     //aConf = Object.assign(actionConfs[aName],vConf);
+            //     aConf.modelData = that.value;
+            //     aConf.view = that;
+            //     that.recordActionsConf.actions[aName] = aConf;
+            // }
+            // console.log('recordActionsConf', that.recordActionsConf)
         },
         getWidgegConf(index, field, data) {
             let that = this;

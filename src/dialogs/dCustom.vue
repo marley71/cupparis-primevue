@@ -19,7 +19,7 @@
         <template v-if="Object.keys(callbacks).length > 0"  #footer>
             <Button v-for="(cb,key) in callbacks" :key="key" :callback-name="key" :label="translate(key)" icon="pi pi-check" autofocus v-on:click="callCb(key)" />
         </template>
-        <template v-if="buttons.length > 0"  #footer>
+        <template v-else-if="buttons.length > 0"  #footer>
             <Button v-for="(bt,index) in buttons"
               :key="index"
               :callback-name="'bt'+index"
