@@ -289,15 +289,17 @@ export default {
         return dt;
     },
     mounted() {
-        setTimeout(this.ready, 10);
+        setTimeout(this._ready, 10);
     },
     methods: {
-        ready() {
-
+        _ready() {
+            if (this.ready) {
+                this.ready();
+            }
         },
-        change() {
-
-        },
+        // change() {
+        //
+        // },
         _change(event,type) {
             let evt = event || {};
             evt.widget = this;
@@ -327,7 +329,10 @@ export default {
                     break;
             }
             this.$emit('change', evt);
-            this.change(evt);
+            if (this.change) {
+                this.change(evt);
+            }
+
         },
         add(event) {
             console.log('add event', event)
@@ -381,8 +386,8 @@ export default {
                     break;
                 case 'w-select':
                     // siccome i valori possono essere diversi prima del check li trasformo in stringa
-                    let stringValues = that.options.map(a => a.id+"");
-                    let index = stringValues.indexOf(val+"");
+                    var stringValues = that.options.map(a => a.id+"");
+                    var index = stringValues.indexOf(val+"");
                     if (index >= 0) {
                         that.value = that.options[index].id
                     }
