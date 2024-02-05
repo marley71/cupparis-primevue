@@ -125,6 +125,7 @@ export default {
             let that = this;
             that.value = [];
             that.value = val;
+
             setTimeout(function () {
                 if (that.hasmanyType == 'list') {
                     that.value = that.addDataKeyField(that.value);
@@ -152,7 +153,7 @@ export default {
             for (let f in fields) {
                 let field = fields[f];
                 let fieldConfig = that.hasmanyConf.fieldsConfig[field];
-                let defVal = (fieldConfig && fieldConfig.default) ? fieldConfig.default : '';
+                let defVal = (fieldConfig && (fieldConfig.default || fieldConfig.default === 0)) ? fieldConfig.default : '';
                 v[fields[f]] = defVal;
             }
             v.status = 'created';
@@ -282,8 +283,8 @@ export default {
             let items = value || [];
             for(let i in items) {
                 hasmanyValue[ window.performance.now() ] = items[i];
-                
-                
+
+
             }
             return hasmanyValue;
         },
