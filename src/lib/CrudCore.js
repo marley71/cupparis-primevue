@@ -250,6 +250,7 @@ function __dialog(type,msg,props,callbacks) {
 CrudCore.alertError = function(msg,cTime) {
     let severity = 'error';
     let severitySummary = 'Error Message';
+    console.error(msg);
     if (cTime || cTime !== 0) {
         let life = cTime?cTime:CrudCore.defaultAlertTime;
         this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:msg, life: life,group:'tr'});

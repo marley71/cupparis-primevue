@@ -55,5 +55,27 @@ CrudHelpers.createRuntimeDownload = (content,mime,name) => {
     link.click();
 }
 
+CrudHelpers.getHashParams = (key) => {
+
+    let hash = document.location.hash.split('?');
+
+    if (hash.length <= 1) {
+        return {};
+    }
+
+    let hashParams = hash[1].split('&');
+
+    let params = {};
+
+    for (var p of hashParams) {
+        let tmp = p.split('=');
+        if (key && key !== tmp[0]) {
+            continue;
+        }
+        params[tmp[0]] = tmp[1];
+    }
+
+    return params;
+}
 
 export default CrudHelpers;
