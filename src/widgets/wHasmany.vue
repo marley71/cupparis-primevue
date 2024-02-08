@@ -14,12 +14,10 @@
             </template>
             <template #content>
                 <div class="flex flex-column">
-                    {{hasmanyValue}}
                     <template v-for="(data,index) in hasmanyValue" :key="index">
                         <div class="flex align-self-end">
                             <Button class="p-button-outlined p-button-danger" icon="fa fa-times" @click="removeItem(index)"></Button>
                         </div>
-                        ciccio
                         <v-record ref="recordView" :conf="getHasmanyConf(index)"></v-record>
                     </template>
                 </div>
@@ -130,7 +128,7 @@ export default {
 
             setTimeout(function () {
                 if (that.hasmanyType == 'list') {
-                    console.log("HS",that.value)
+                    //console.log("HS",that.value)
                     that.value = that.addDataKeyField(that.value);
                     that.$refs.listView.value = that.value;
                     that.$refs.listView.reload();
