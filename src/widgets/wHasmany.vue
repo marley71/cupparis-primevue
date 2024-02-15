@@ -148,6 +148,7 @@ export default {
         },
         addItem() {
             let that = this;
+            console.debug('vHasmany.addItem',this.$refs.listView.value);
             let fields = that.hasmanyConf.fields;
             let v = {};
             for (let f in fields) {
@@ -159,9 +160,11 @@ export default {
             v.status = 'created';
 
             if (this.hasmanyType=='list') {
-                v.dataKey = window.performance.now();
-                this.value.push(v);
-                this.$refs.listView.reload();
+                v.dataKey = window.performance.now() + '_' + (Math.random() * 1000);
+                let value = this.getValue();
+                value.push(v);
+                //this.value.push(v);
+                this.setValue(value);
             } else {
                 this.value.push(v);
                 this.hasmanyValue[window.performance.now()] = v;
@@ -188,6 +191,7 @@ export default {
             hs.actions = hs.actions || ['action-delete','action-insert'];
             hs.actionsConfig = {
                 'action-delete':{
+                    type : 'record',
                     execute() {
                         that.removeItem(this.index);
 
