@@ -127,6 +127,7 @@ export default {
 
             setTimeout(function () {
                 if (that.hasmanyType == 'list') {
+                    //console.log("HS",that.value)
                     that.value = that.addDataKeyField(that.value);
                     that.$refs.listView.value = that.value;
                     that.$refs.listView.reload();
@@ -281,11 +282,9 @@ export default {
             let hasmanyValue = {};
             let items = value || [];
             for(let i in items) {
-                hasmanyValue[ window.performance.now() ] = items[i];
-
-
+                hasmanyValue[ window.performance.now() + "--" + i] = items[i];
             }
-            return hasmanyValue;
+            return hasmanyValue;//Object.values(hasmanyValue);
         },
         hasDisplayTitle() {
             return this.displayTitle !== false;
