@@ -70,25 +70,24 @@ export default {
         setTimeout(this.ready, 10);
     },
     data() {
-        window.HS = this;
         var that = this;
-        let baseName = that.conf.hasmanyConf.modelName?that.conf.hasmanyConf.modelName:that.conf.name;
+        var baseName = that.conf.hasmanyConf.modelName?that.conf.hasmanyConf.modelName:that.conf.name;
         //console.log('BASENAME',baseName,this.conf);
-        if (!this.conf.hasmanyConf.getFieldName) {
-            this.conf.hasmanyConf.getFieldName = (name) => {
+        if (!that.conf.hasmanyConf.getFieldName) {
+            that.conf.hasmanyConf.getFieldName = function (name) {
                 return baseName + '-' + name + '[]';
             }
         }
-        if (this.conf.hasmanyType == 'list') {
+        if (that.conf.hasmanyType == 'list') {
             that.conf.value = that.addDataKeyField(that.conf.value);  // serve per rendere univoco il record della lista per la multiselezione
         }
 
-        this.conf.hasmanyValue = that.trasformValue(that.conf.value);
+        that.conf.hasmanyValue = that.trasformValue(that.conf.value);
         if (!this.conf.limit) {
-            this.conf.limit = null;
+            that.conf.limit = null;
         }
-        this.conf.hasmanyConf.metadata = this.conf.relationConf || {};
-        return this.conf;
+        that.conf.hasmanyConf.metadata = that.conf.relationConf || {};
+        return that.conf;
     },
     methods: {
         ready() {
