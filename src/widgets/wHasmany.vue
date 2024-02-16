@@ -148,7 +148,7 @@ export default {
         },
         addItem() {
             let that = this;
-            console.debug('vHasmany.addItem',this.$refs.listView.value);
+
             let fields = that.hasmanyConf.fields;
             let v = {};
             for (let f in fields) {
@@ -160,6 +160,7 @@ export default {
             v.status = 'created';
 
             if (this.hasmanyType=='list') {
+                console.debug('vHasmany.addItem',this.$refs.listView.value);
                 v.dataKey = window.performance.now() + '_' + (Math.random() * 1000);
                 let value = this.getValue();
                 value.push(v);
