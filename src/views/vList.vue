@@ -273,9 +273,12 @@ export default {
             let gActions = {};
             for (let i in that.actions) {
                 let aName = that.actions[i];
-                let aConf = Object.assign({}, actionConfs['default']);
-                aConf = Object.assign(aConf, actionConfs[aName]);
-                aConf = Object.assign(aConf, (that.actionsConfig[aName] || {}));
+                let aConf = CrudCore.getActionConf(aName,that.actionsConfig[aName]);
+                console.debug(aName,'caso parent --view',aConf)
+                // --vecchio modo
+                // let aConf = Object.assign({}, actionConfs['default']);
+                // aConf = Object.assign(aConf, actionConfs[aName]);
+                // aConf = Object.assign(aConf, (that.actionsConfig[aName] || {}));
                 if (aConf.type == 'record') {
                     rActions[aName] = aConf;
                 } else {
@@ -290,7 +293,6 @@ export default {
             for (let i in that.value) {
                 let rowActions = {};
                 for (let aName in rActions) {
-                    //let aName = rActions[k];
                     let aConf = Object.assign({}, rActions[aName]);
                     aConf.modelData = that.value[i];
                     aConf.view = that;

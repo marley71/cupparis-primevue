@@ -175,8 +175,8 @@ export default {
                         if (result && result instanceof Promise) {
                             result.then(() => {
                                 that._afterExecute();
-                            }).catch(() => {
-                                console.debug('execute fallita')
+                            }).catch((error) => {
+                                console.error('execute fallita',error)
                             })
                         } else {
                             if (result) {
@@ -188,7 +188,7 @@ export default {
                     }
 
                 }).catch((error) => {
-                     console.debug('beforeExecute failed');
+                     console.error('beforeExecute failed',error);
                      throw error;
                 })
             } else {

@@ -70,25 +70,24 @@ export default {
         setTimeout(this.ready, 10);
     },
     data() {
-        window.HS = this;
         var that = this;
-        let baseName = that.conf.hasmanyConf.modelName?that.conf.hasmanyConf.modelName:that.conf.name;
+        var baseName = that.conf.hasmanyConf.modelName?that.conf.hasmanyConf.modelName:that.conf.name;
         //console.log('BASENAME',baseName,this.conf);
-        if (!this.conf.hasmanyConf.getFieldName) {
-            this.conf.hasmanyConf.getFieldName = (name) => {
+        if (!that.conf.hasmanyConf.getFieldName) {
+            that.conf.hasmanyConf.getFieldName = function (name) {
                 return baseName + '-' + name + '[]';
             }
         }
-        if (this.conf.hasmanyType == 'list') {
+        if (that.conf.hasmanyType == 'list') {
             that.conf.value = that.addDataKeyField(that.conf.value);  // serve per rendere univoco il record della lista per la multiselezione
         }
 
-        this.conf.hasmanyValue = that.trasformValue(that.conf.value);
+        that.conf.hasmanyValue = that.trasformValue(that.conf.value);
         if (!this.conf.limit) {
-            this.conf.limit = null;
+            that.conf.limit = null;
         }
-        this.conf.hasmanyConf.metadata = this.conf.relationConf || {};
-        return this.conf;
+        that.conf.hasmanyConf.metadata = that.conf.relationConf || {};
+        return that.conf;
     },
     methods: {
         ready() {
@@ -125,8 +124,10 @@ export default {
             let that = this;
             that.value = [];
             that.value = val;
+
             setTimeout(function () {
                 if (that.hasmanyType == 'list') {
+                    //console.log("HS",that.value)
                     that.value = that.addDataKeyField(that.value);
                     that.$refs.listView.value = that.value;
                     that.$refs.listView.reload();
@@ -147,20 +148,24 @@ export default {
         },
         addItem() {
             let that = this;
+
             let fields = that.hasmanyConf.fields;
             let v = {};
             for (let f in fields) {
                 let field = fields[f];
                 let fieldConfig = that.hasmanyConf.fieldsConfig[field];
-                let defVal = (fieldConfig && fieldConfig.default) ? fieldConfig.default : '';
+                let defVal = (fieldConfig && (fieldConfig.default || fieldConfig.default === 0)) ? fieldConfig.default : '';
                 v[fields[f]] = defVal;
             }
             v.status = 'created';
 
             if (this.hasmanyType=='list') {
-                v.dataKey = window.performance.now();
-                this.value.push(v);
-                this.$refs.listView.reload();
+                console.debug('vHasmany.addItem',this.$refs.listView.value);
+                v.dataKey = window.performance.now() + '_' + (Math.random() * 1000);
+                let value = this.getValue();
+                value.push(v);
+                //this.value.push(v);
+                this.setValue(value);
             } else {
                 this.value.push(v);
                 this.hasmanyValue[window.performance.now()] = v;
@@ -187,6 +192,7 @@ export default {
             hs.actions = hs.actions || ['action-delete','action-insert'];
             hs.actionsConfig = {
                 'action-delete':{
+                    type : 'record',
                     execute() {
                         that.removeItem(this.index);
 
@@ -281,11 +287,9 @@ export default {
             let hasmanyValue = {};
             let items = value || [];
             for(let i in items) {
-                hasmanyValue[ window.performance.now() ] = items[i];
-                
-                
+                hasmanyValue[ window.performance.now() + "--" + i] = items[i];
             }
-            return hasmanyValue;
+            return hasmanyValue;//Object.values(hasmanyValue);
         },
         hasDisplayTitle() {
             return this.displayTitle !== false;

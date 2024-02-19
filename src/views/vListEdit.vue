@@ -71,10 +71,6 @@
         <slot name="footer">
 
         </slot>
-
-<!--        <ContextMenu :model="menuModel" ref="cm" />-->
-<!--        <Dialog ></Dialog>-->
-<!--        <Widget :conf="{}"></Widget>-->
     </div>
 </template>
 
@@ -91,7 +87,7 @@ export default {
     //props : ['conf'],
     components: {cAction},
     mounted() {
-        window.VLISTEDIT = this;
+        //window.VLISTEDIT = this;
         this.load();
     },
     data() {
@@ -102,19 +98,6 @@ export default {
       }
     },
     methods: {
-        // draw: function () {
-        //     var that = this;
-        //     that.editMode = new Array(that.value.length).fill(false);
-        //     that.createWidgets();
-        //     that.createWidgetsEdit();
-        //     that.checkValidActions();
-        //     that.createActionsConf();
-        //     that.loading = false;
-        //     //window.COLLECTION = this;
-        //     setTimeout(function () {
-        //         that.completed();
-        //     }, 10);
-        // },
         setWidgetsConfig() {
             this._setWidgetsConfig();
             this._setWidgetsEditConfig();
@@ -151,37 +134,7 @@ export default {
                     //widgetsConfig[i][key].label = that.getFieldLabel(key);
                 }
             }
-
             that.widgetsEditConfig = widgetsEditConfig;
-
-
-            // that.setKeys();
-            // //console.log('Vlist-create widgets',that.data);
-            // var widgetsEdit = [];
-            // //var data = that.data;
-            // //var keys = that.getKeys();
-            // for (var i in that.value) {
-            //     widgetsEdit.push({});
-            //     for (var k in that.keys) {
-            //         var key = that.keys[k];
-            //         var dconf = that._defaultWidgetConfig(key, 'fieldsConfigEditMode');
-            //         // se non c'e' la configurazione in modalità edit lo forzo ad essere un w-input
-            //         if (!that.fieldsConfigEditMode || !that.fieldsConfigEditMode[key])
-            //             dconf.type = 'w-input';
-            //         dconf.cRef = that.getRefId(that.uid, 'redit', i, key);
-            //         dconf.modelData = that.value[i];
-            //         dconf.value = that.value[i][key];
-            //         dconf.name = that.getFieldName(key);
-            //         if (!('label' in dconf)) {
-            //             dconf.label = key;
-            //             dconf.label = that.translate(dconf.label + '.label', that.langContext);
-            //         } else {
-            //             dconf.label = that.translate(dconf.label);
-            //         }
-            //         widgetsEdit[i][key] = dconf;
-            //     }
-            // }
-            // that.widgetsEdit = widgetsEdit;
         },
         getWidgetEditConf(index,field,data) {
             let that = this;
@@ -269,7 +222,7 @@ export default {
          * salva una riga
          * @param {indice della row da salvare} index
          */
-        save(index) {
+        save(index,callback) {
             let that = this;
             var values = that.getRowEditData(index);
             //var id = that.view.value[that.index][that.view.primaryKey];
@@ -284,6 +237,7 @@ export default {
             Server.route(r, function (json) {
                 if (json.error) {
                     that.errorDialog(json.msg);
+                    callback(false)
                     return;
                 }
                 var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
@@ -291,9 +245,10 @@ export default {
                 var values = json.result;
                 that.setRowData(that.index,values);
                 that.setViewMode(that.index);
+                callback(true)
                 //that.view.reload();
             })
-            console.log('values', values);
+            //console.log('values', values);
         }
     }
 }

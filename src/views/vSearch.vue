@@ -4,7 +4,7 @@
 
         <div class="preSearch" v-if="hasSearchLabel()">
                                 <span class="p-tag">
-                                    {{searchLabel()}}
+                                    {{ searchLabel() }}
                                 </span>
         </div>
         <!--        <div>-->
@@ -17,14 +17,14 @@
         <!--        </div>-->
 
 
-        <div class="panel-search-content grid">
+        <div class="panel-search-content grid" :class="hasBothSearches() ? ' panel-search-content-both' : ''">
 
             <div :class="basicSearchClass()" v-if="hasBasicSearch()">
                 <form ref="formBasic" enctype="multipart/form-data"
-                @change="(event)=> search('basic',event)"
-                 @submit.prevent="(event)=> search('basic',event)"
+                      @change="(event)=> search('basic',event)"
+                      @submit.prevent="(event)=> search('basic',event)"
                       class="p-fluid mt-1">
-                    <template v-for="field in getHiddenFields()">
+                    <template v-for="field in getHiddenFields()" :key="field">
                         <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
                     </template>
 
@@ -33,8 +33,9 @@
                         <!-- <c-action ref="actions" :conf="recordActionsConf" :whitelist="['action-search-basic']"
                                   layout="buttons"></c-action> -->
                         <span class="p-input-icon-left">
-                            <i class="pi pi-search" />
-                            <InputText name="s_basic_query" class="p-inputtext p-component w-full" v-model="s_basic_query"   
+                            <i class="pi pi-search"/>
+                            <InputText name="s_basic_query" class="p-inputtext p-component w-full"
+                                       v-model="s_basic_query"
                             ></InputText>
                         </span>
                     </div>
@@ -44,68 +45,129 @@
             </div>
             <div :class="advancedSearchClass()" v-if="hasAdvancedSearch()">
 
+                <div v-if="hasAdvancedSearchAccordion()">
 
-                <Accordion :activeIndex="isAdvancedSearchOpen()">
 
-                    <AccordionTab :header="advancedSearchHeader()">
-                        <form ref="form" enctype="multipart/form-data"
-                        @change="(event)=> search('advanced',event)"
-                        @submit.prevent="(event)=> search('advanced',event)"
-                              class="p-fluid mt-5">
+                    <Accordion :activeIndex="isAdvancedSearchOpen()">
 
-                            <template v-for="field in getHiddenFields()">
-                                <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
-                            </template>
-                            <div class="grid">
-                                <template v-for="field in getVisibleFields()" :key="field">
-                                    <div class="py-3" :class="getWidgetLayout(field,'colClass')">
-                                        <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
+                        <AccordionTab :header="advancedSearchHeader()">
+                            <form ref="form" enctype="multipart/form-data"
+                                  @change="(event)=> search('advanced',event)"
+                                  @submit.prevent="(event)=> search('advanced',event)"
+                                  class="p-fluid mt-5">
+
+                                <template v-for="field in getHiddenFields()">
+                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                </template>
+                                <div class="grid">
+                                    <template v-for="field in getVisibleFields()" :key="field">
+                                        <div class="py-3" :class="getWidgetLayout(field,'colClass')">
+                                            <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
                                 <span class="p-float-label">
                                 <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
                                 <label :for="field">{{ widgetsConfig[field].label }}</label>
                                 </span>
-                                        </template>
-                                        <template v-else>
+                                            </template>
+                                            <template v-else>
 
-                                            <label class="labelTop" :for="field"
-                                                   v-if="getWidgetLayout(field,'labelPosition')=='top'">
-                                                {{ translateUc(widgetsConfig[field].label) }}
-                                            </label>
-                                            <div class="">
-                                                <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
-                                            </div>
-                                            <label class="labelBottom" :for="field"
-                                                   v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
-                                                {{ translateUc(widgetsConfig[field].label) }}
-                                            </label>
-                                        </template>
-                                    </div>
+                                                <label class="labelTop" :for="field"
+                                                       v-if="getWidgetLayout(field,'labelPosition')=='top'">
+                                                    {{ translateUc(widgetsConfig[field].label) }}
+                                                </label>
+                                                <div class="">
+                                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                                </div>
+                                                <label class="labelBottom" :for="field"
+                                                       v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
+                                                    {{ translateUc(widgetsConfig[field].label) }}
+                                                </label>
+                                            </template>
+                                        </div>
 
-                                    <template v-if="getWidgetLayout(field,'hasDivider')">
-                                        <Divider align="center" class="col-10 col-offset-1">
+                                        <template v-if="getWidgetLayout(field,'hasDivider')">
+                                            <Divider align="center" class="col-10 col-offset-1">
                                 <span v-if="getWidgetLayout(field,'dividerLabel')"
                                       class="p-tag">{{ getWidgetLayout(field, 'dividerLabel') }}</span>
-                                        </Divider>
+                                            </Divider>
 
+                                        </template>
+                                        <template v-else-if="getWidgetLayout(field,'lastInRow')">
+                                            <div class="col-12 max-h-0 p-0">&nbsp;</div>
+                                        </template>
                                     </template>
-                                    <template v-else-if="getWidgetLayout(field,'lastInRow')">
-                                        <div class="col-12 max-h-0 p-0">&nbsp;</div>
-                                    </template>
+                                </div>
+                                <Divider align="center" class="actionsDivider">
+
+                                </Divider>
+                                <div class="flex flex-row justify-content-center">
+
+
+                                    <c-action ref="actions" :conf="recordActionsConf"
+                                              :blacklist="['action-search-basic']"
+                                              layout="buttons"></c-action>
+                                </div>
+                            </form>
+                        </AccordionTab>
+                    </Accordion>
+                </div>
+                <form v-else ref="form" enctype="multipart/form-data"
+                      @change="(event)=> search('advanced',event)"
+                      @submit.prevent="(event)=> search('advanced',event)"
+                      class="p-fluid mt-5">
+
+                    <template v-for="field in getHiddenFields()">
+                        <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                    </template>
+                    <div class="grid">
+                        <template v-for="field in getVisibleFields()" :key="field">
+                            <div class="py-3" :class="getWidgetLayout(field,'colClass')">
+                                <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
+                                <span class="p-float-label">
+                                <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                <label :for="field">{{ widgetsConfig[field].label }}</label>
+                                </span>
+                                </template>
+                                <template v-else>
+
+                                    <label class="labelTop" :for="field"
+                                           v-if="getWidgetLayout(field,'labelPosition')=='top'">
+                                        {{ translateUc(widgetsConfig[field].label) }}
+                                    </label>
+                                    <div class="">
+                                        <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                    </div>
+                                    <label class="labelBottom" :for="field"
+                                           v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
+                                        {{ translateUc(widgetsConfig[field].label) }}
+                                    </label>
                                 </template>
                             </div>
-                            <Divider align="center" class="actionsDivider">
 
-                            </Divider>
-                            <div class="flex flex-row justify-content-center">
+                            <template v-if="getWidgetLayout(field,'hasDivider')">
+                                <Divider align="center" class="col-10 col-offset-1">
+                                <span v-if="getWidgetLayout(field,'dividerLabel')"
+                                      class="p-tag">{{ getWidgetLayout(field, 'dividerLabel') }}</span>
+                                </Divider>
+
+                            </template>
+                            <template v-else-if="getWidgetLayout(field,'lastInRow')">
+                                <div class="col-12 max-h-0 p-0">&nbsp;</div>
+                            </template>
+                        </template>
+                    </div>
+                    <Divider align="center" class="actionsDivider">
+
+                    </Divider>
+                    <div class="flex flex-row justify-content-center">
 
 
-                                <c-action ref="actions" :conf="recordActionsConf"
-                                          :blacklist="['action-search-basic']"
-                                          layout="buttons"></c-action>
-                            </div>
-                        </form>
-                    </AccordionTab>
-                </Accordion>
+                        <c-action ref="actions" :conf="recordActionsConf"
+                                  :blacklist="['action-search-basic']"
+                                  layout="buttons"></c-action>
+                    </div>
+                </form>
+
+
             </div>
         </div>
 
@@ -123,25 +185,29 @@ export default {
     emits: ['search'],
     data() {
         return {
-            s_basic_query : '',
+            s_basic_query: '',
         }
     },
     methods: {
-        
-        search(type,event) {
-            console.debug('type',type,event);
+
+        search(type, event) {
+            console.debug('type', type, event);
             // gestione evento change e submit della form
             if (event) {
                 event.preventDefault();
                 if ((type == 'basic') && event.type != 'submit') {
-                    return ;
+                    return true;
                 }
             }
             let that = this;
             type = type || that.defaultSearch();
             if (type === 'basic') {
                 for (let i in this.fields) {
-                    this.getWidget(this.fields[i]).setValue('');
+                    let widget = this.getWidget(this.fields[i]);
+                    if (widget) {
+                        widget.setValue('');
+                    }
+
                 }
             } else {
                 this.s_basic_query = '';
@@ -170,6 +236,10 @@ export default {
         hasAdvancedSearch() {
             //console.log("ASSS:::", this.conf);
             return this.conf.searchType === 'advanced' || this.conf.searchType === 'both';
+        },
+        hasAdvancedSearchAccordion() {
+            //console.log("ASSS:::", this.conf);
+            return this.conf.advancedSearchAccordion;
         },
         hasBothSearches() {
             return this.conf.searchType === 'both';
@@ -215,7 +285,7 @@ export default {
         /**
          * setta il valore speciale del campo s_basic_query
          */
-        setSpecialField(name,value) {
+        setSpecialField(name, value) {
             if (name == 's_basic_query') {
                 this.s_basic_query = value;
             }
@@ -233,7 +303,7 @@ export default {
 
 <style lang="scss" scoped>
 
-.panel-search-content {
+.panel-search-content-both {
     background-color: var(--primary-50);
 }
 
@@ -288,7 +358,7 @@ label.labelTop {
 
     :deep(.p-accordion-tab a) {
         background-color: white;
-        padding:1rem;
+        padding: 1rem;
     }
 
     :deep(.p-accordion-header:hover) {
@@ -314,5 +384,6 @@ label.labelTop {
     //    border-color: var(--primary-color);
     //}
 }
+
 
 </style>

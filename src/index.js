@@ -20,6 +20,9 @@ import cManage from './app/cManage.vue';
 import aBase from './actions/aBase.vue';
 import Server from './lib/Server.js';
 import Wait from "./Wait.vue";
+import CrudHelpers from "./lib/CrudHelpers";
+
+import actionConfs from "./confs/actions";
 
 import { configure } from 'vee-validate';
 import { localize,setLocale } from '@vee-validate/i18n';
@@ -53,9 +56,12 @@ export default {
         CrudCore.componentItems['v-list-hasmany'] = vListHasmany;
         CrudCore.componentItems['a-base'] = aBase;
     },
-    CrudComponent,cAction,CrudCore,routerConf,CrudVars,routeConfs,
+    CrudComponent,cAction,CrudCore,CrudVars,
     cView,
+    routerConf,routeConfs,actionConfs,
     vRecord,vSearch,cManage,vList,vListEdit,cImport,vListHasmany,
     aBase,
-    Server,Wait
+    Server,Wait,
+    CrudHelpers
+
 }

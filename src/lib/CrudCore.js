@@ -5,6 +5,8 @@ import { defineAsyncComponent, createApp } from 'vue'
 import ViewWrapperConf from "../views/WrapperConf";
 import WidgetWrapperConf from "../widgets/WrapperConf";
 import {EventBus} from 'primevue/utils';
+import actions from "../confs/actions";
+
 const Ev = EventBus();
 class CrudCore {
 
@@ -243,6 +245,7 @@ function __dialog(type,msg,props,callbacks) {
 CrudCore.alertError = function(msg,cTime) {
     let severity = 'error';
     let severitySummary = 'Error Message';
+    console.error(msg);
     if (cTime || cTime !== 0) {
         let life = cTime?cTime:CrudCore.defaultAlertTime;
         this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:msg, life: life,group:'tr'});
@@ -326,6 +329,7 @@ CrudCore.componentDialog = function(compName,componentConf,title,dialogConf) {
     const div = document.createElement('div');
     document.body.appendChild(div);
     let  comp = defineAsyncComponent(() => import('../dialogs/dCustom.vue'))
+    console.debug('ta',compName)
     dialogConf = dialogConf || {
         title : title,
         display : true,
@@ -390,4 +394,21 @@ CrudCore.waitEnd = () => {
     CrudCore.event().emit('wait-end')
 }
 
+CrudCore.getActionConf = (name,options) => {
+    let aConf = Object.assign({}, actions['default']);
+    let opt = options || {};
+    let defaultActionConf = actions[name]?actions[name]:null;
+    if (!defaultActionConf) {
+        console.debug('actions caso parent ',opt.actionParent ,actions[opt.actionParent])
+        if (opt.actionParent && actions[opt.actionParent]) {
+            defaultActionConf = actions[opt.actionParent];
+        } else {
+            defaultActionConf = {};
+        }
+        console.debug('actions caso parent 2',defaultActionConf)
+    }
+    aConf = Object.assign(aConf, defaultActionConf);
+    aConf = Object.assign(aConf,opt );
+    return aConf;
+}
 export default CrudCore;
