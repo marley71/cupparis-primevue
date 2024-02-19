@@ -6,11 +6,6 @@ import ViewWrapperConf from "../views/WrapperConf";
 import WidgetWrapperConf from "../widgets/WrapperConf";
 import {EventBus} from 'primevue/utils';
 const Ev = EventBus();
-//import cWidget from "../widgets/cWidget.vue";
-// import wHasmany from "../widgets/wHasmany.vue";
-// import wSwap from "../widgets/wSwap.vue";
-// import CrudComponent from "../CrudComponent.vue";
-
 class CrudCore {
 
 }

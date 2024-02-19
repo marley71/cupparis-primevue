@@ -41,11 +41,21 @@ export default {
             generateMessage: localize('appLang', CrudVars.validationMessages),
         });
         setLocale('appLang');
+        CrudCore.componentItems['CrudComponent'] = CrudComponent;
+        CrudCore.componentItems['c-action'] = cAction;
+        CrudCore.componentItems['c-view'] = cView;
+        CrudCore.componentItems['v-record'] = vRecord;
+        CrudCore.componentItems['v-search'] = vSearch;
+        CrudCore.componentItems['c-Manage'] = cManage;
+        CrudCore.componentItems['v-list'] = vList;
+        CrudCore.componentItems['v-list-edit'] = vListEdit;
+        CrudCore.componentItems['c-import'] = cImport;
+        CrudCore.componentItems['v-list-hasmany'] = vListHasmany;
+        CrudCore.componentItems['a-base'] = aBase;
     },
     CrudComponent,cAction,CrudCore,routerConf,CrudVars,routeConfs,
     cView,
     vRecord,vSearch,cManage,vList,vListEdit,cImport,vListHasmany,
     aBase,
     Server,Wait
-
 }
