@@ -9,13 +9,20 @@ import CrudVars from "./lib/CrudVars";
 
 export default {
     name: "CrudComponent",
+    props: {
+        conf: Object,
+    },
+    data() {
+        return Object.assign({},(this.conf || {}));
+    },
     methods: {
         /**
          * istanzia una nuova route a partire dalla configurazione trovata in store
          * @param routeName : nome della configurazione della route
          */
         createRoute : function(routeName) {
-            let routeConf = Object.assign({},routeConfs[routeName]);
+
+            let routeConf =  JSON.parse(JSON.stringify(routeConfs[routeName]))  //Object.assign({},routeConfs[routeName]);
             console.log('routeName',routeName,routeConf);
             if (!routeConf)
                 throw "Impossibile trovare la route " + routeName;
@@ -48,154 +55,89 @@ export default {
          */
         translate : function (key,context,plural,params) {
             var langKey = context ? context + '.' + key : key
-            return this._translate(langKey, plural, params)
-
-            //return this._translate(key,plural,params);
-            //return translations_interface._translate.apply(this,[key,plural,params]);
+            return CrudCore.translate(langKey, plural, params)
         },
 
-        _translate : function (key,plural,params) {
-            let lang = CrudVars.lang;
-            //console.log('_translate store',key,lang[key]);
-            var testi = lang[key];
-            if (!testi)
-                return key;
-            testi = testi.split('|');
-            var testo = (plural && testi.length>1)?testi[1]:testi[0];
-            //console.log('testi',testi);
-            if (params instanceof Array) {
-                for (var i = 0; i < params.length; i++) {
-                    testo= testo.replace("(" + i +")", params[i] );
-                }
+        translateUc : function (key,context,plural,params) {
+            var langKey = context ? context + '.' + key : key
+            return CrudCore.upperCaseFirst(CrudCore.translate(langKey, plural, params))
+        },
+
+        getDefaultViewConf(modelName,type) {
+            let mn = 'Model' + CrudCore.upperCaseFirst(CrudCore.camelCase(modelName));
+            let mc = CrudVars.modelConfs[mn] || {};
+            console.log('ModelConfs key',mn,mc);
+            if (mc[type]) {
+                return CrudCore.clone(mc[type]); // TODO mettere il clone
             }
-            return testo;
+            let dt = CrudVars.viewTypeToViewConf[type];
+            console.log('ModelConfs.'+modelName+'.'+dt,mc[dt])
+            if (mc[dt]) {
+                return CrudCore.clone(mc[dt]);
+            }
+            return CrudVars.viewDefaultConfs[type] || {
+                modelName : modelName,
+                type : type,
+            };
         },
-
-
-
 
         waitStart(msg) {
-            console.log('waitStart',msg);
+            CrudCore.waitStart(msg);
         },
         waitEnd() {
-
+            console.log('waitEnd');
+            CrudCore.waitEnd()
         },
         alertError(msg,cTime) {
-            let severity = 'error';
-            let severitySummary = 'Error Message'
-            if (cTime) {
-                this.$toast.add({severity:severity, summary: severitySummary, detail:msg, life: cTime,group:'tr'});
-            } else {
-                this.$toast.add({severity:severity, summary: severitySummary, detail:msg, group:'tr'});
-
-            }
+            CrudCore.alertError(msg,cTime);
         },
         alertInfo(msg,cTime) {
-            let severity = 'info';
-            let severitySummary = 'Info Message'
-            if (cTime) {
-                this.$toast.add({severity:severity, summary: severitySummary, detail:msg, life: cTime,group:'tr'});
-            } else {
-                this.$toast.add({severity:severity, summary: severitySummary, detail:msg, group:'tr'});
-
-            }
+            CrudCore.alertInfo(msg,cTime);
         },
         alertWarning(msg,cTime) {
-            let severity = 'warn';
-            let severitySummary = 'Warning Message'
-            if (cTime) {
-                this.$toast.add({severity:severity, summary: severitySummary, detail:msg, life: cTime,group:'tr'});
-            } else {
-                this.$toast.add({severity:severity, summary: severitySummary, detail:msg, group:'tr'});
-
-            }
+            CrudCore.alertWarning(msg,cTime);
         },
         alertSuccess(msg,cTime) {
-            let severity = 'success';
-            let severitySummary = 'Success Message'
-            if (cTime) {
-                this.$toast.add({severity:severity, summary: severitySummary, detail:msg, life: cTime,group:'tr'});
-            } else {
-                this.$toast.add({severity:severity, summary: severitySummary, detail:msg, group:'tr'});
-
-            }
+            CrudCore.alertSuccess(msg,cTime);
         },
         messageDialog(msg,props,callbacks) {
-            this.__dialog('message',msg,props,callbacks);
+            CrudCore.messageDialog(msg,props,callbacks);
         },
         errorDialog(msg,props,callbacks) {
-            this.__dialog('error',msg,props,callbacks);
+            CrudCore.errorDialog(msg,props,callbacks);
         },
         warningDialog(msg,props,callbacks) {
-            this.__dialog('warning',msg,props,callbacks);
+            CrudCore.warningDialog(msg,props,callbacks);
         },
 
         confirmDialog(msg,props,callbacks) {
-            this.$confirm.require({
-                message: msg,
-                icon: 'pi pi-exclamation-triangle',
-                accept: () => {
-                    //callback to execute when user confirms the action
-                    let cOk = callbacks && callbacks.ok?callbacks.ok:function (){};
-                    cOk();
-                },
-                reject: () => {
-                    //callback to execute when user rejects the action
-                    let cCancel = callbacks && callbacks.ok?callbacks.cancel:function (){};
-                    cCancel();
-                }
-            });
+            CrudCore.confirmDialog(msg,props,callbacks);
         },
         customDialog(msg,props,callbacks) {
-            this.__dialog('custom',msg,props,callbacks)
+            CrudCore.customDialog(msg,props,callbacks);
         },
 
-        componentDialog(compName,componentConf) {
+        componentDialog(compName,componentConf,title,dialogConf) {
             const div = document.createElement('div');
             document.body.appendChild(div);
             let  comp = defineAsyncComponent(() => import('./dialogs/dCustom.vue'))
+            dialogConf = dialogConf || {
+                title : title,
+                display : true,
+                callbacks : {},
+            };
+            let cc = {
+                componentName : compName,
+                componentConf : componentConf,
+            };
             let d = createApp(comp,{
-                conf : {
-                    componentName : compName,
-                    cConf : componentConf,
-                    display : true,
-                    callbacks : {},
-                },
+                confComponent : cc,
+                conf : dialogConf
             });
-            d.use(PrimeVue);
-            //d.use(VList);
+            CrudCore.setupApp(d);
             d.mount(div);
+            return d;
         },
-        __dialog(type,msg,props,callbacks) {
-            const div = document.createElement('div');
-            document.body.appendChild(div);
-            callbacks = callbacks || {};
-            let comp = null;
-            switch (type) {
-                case 'message':
-                    comp = defineAsyncComponent(() => import('./dialogs/dMessage.vue'))
-                    break;
-                case 'error':
-                    comp = defineAsyncComponent(() => import('./dialogs/dError.vue'))
-                    break;
-                case 'warning':
-                    comp = defineAsyncComponent(() => import('./dialogs/dWarning.vue'))
-                    break;
-                case 'custom':
-                    comp = defineAsyncComponent(() => import('./dialogs/dCustom.vue'))
-                    break;
-            }
-            //let comp = defineAsyncComponent(() => import(componentPath))
-            let d = createApp(comp,{
-                conf : {
-                    message : msg,
-                    display : true,
-                    callbacks : callbacks,
-                },
-            });
-            d.use(PrimeVue);
-            d.mount(div);
-        }
     }
 }
 </script>

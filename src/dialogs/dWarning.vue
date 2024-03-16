@@ -1,5 +1,5 @@
 <template>
-    <Dialog class="p-dialog" v-model:visible="display" :modal="true" :style="{width: '50vw'}">
+    <Dialog class="p-dialog" v-model:visible="display" :modal="true" :style="{width: width}">
         <template #header>
             <h3>{{ translate(title) }}</h3>
         </template>
@@ -27,7 +27,7 @@ import Dialog from "primevue/dialog";
 export default {
   name: 'd-warning',
   extends: dBase,
-    components: {Button, Dialog},
+    components: {Button,Dialog},
   mounted () {
     if (!this.title) {
       this.title = 'app.attenzione'

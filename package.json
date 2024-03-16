@@ -1,8 +1,8 @@
 {
-    "name": "cup-sakai",
+    "name": "cupparis-primevue",
     "version": "1.0.0",
     "private": true,
-    "description": "crud cupparis basato su sakai",
+    "description": "crud cupparis basato su primevue",
     "main": "src/index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
@@ -30,14 +30,22 @@
     ],
     "dependencies": {
         "@babel/eslint-parser": "^7.12.16",
-        "vue": "3.2.9",
-        "vue-axios": "^3.4.1",
+        "@vee-validate/i18n": "^4.9.3",
+        "@vee-validate/rules": "^4.9.3",
+        "jquery": "^3.5.1",
+        "lodash": "^4.17.21",
         "moment": "^2.29.4",
-        "moment-with-locales-es6": "^1.0.1"
+        "moment-with-locales-es6": "^1.0.1",
+        "npm": "^8.19.3",
+        "primevue": "^3.18.1",
+        "vee-validate": "^4.9.2",
+        "vue": "^3.3.0",
+        "vue-axios": "^3.4.1"
     },
     "devDependencies": {
-        "eslint": "^6.7.2",
+        "eslint": "^7.5.0",
         "eslint-plugin-vue": "^7.0.0",
+        "jquery": "^3.5.1",
         "moment": "^2.29.4",
         "moment-with-locales-es6": "^1.0.1"
     }

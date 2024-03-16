@@ -5,20 +5,19 @@ import CrudComponent from "../CrudComponent.vue";
 export default {
     name: 'd-base',
     extends : CrudComponent,
-    props:['conf'],
+    //props:['conf'],
     data() {
       let d = Object.assign({
           cBig : false,
           display : true,
-          confParent: 'c-component',
           content: null,
           visible: true,
           message: '',
           title: '',
-          typeSize: 'w-1/2',
+          width: '50vw',
           callbacks: {},
           customClass:'',
-          component : null, // eventuale componente istanziato per le dialog con componente
+          buttons: [],
       },this.conf);
       return d;
     },
@@ -31,36 +30,44 @@ export default {
         let that = this
         that.display = false;
     },
-        ok : function () {
-            var that = this;
-            var exist = that.callbacks['ok'] && {}.toString.call(that.callbacks['ok']) === '[object Function]'
-            if (exist)
-                return that.callbacks['ok'].apply(that);
-            console.log('default ok');
-            this.hide();
-        },
-        cancel : function () {
-            var that = this;
-            var exist = that.callbacks['cancel'] && {}.toString.call(that.callbacks['cancel']) === '[object Function]'
-            if (exist)
-                return that.callbacks['cancel'].apply(that);
-            console.log('default cancel');
-            this.hide();
-        },
+    ok : function () {
+        let that = this;
+        let exist = that.callbacks['ok'] && {}.toString.call(that.callbacks['ok']) === '[object Function]'
+        if (exist)
+            return that.callbacks['ok'].apply(that);
+        console.log('default ok');
+        this.hide();
+    },
+    cancel : function () {
+        let that = this;
+        let exist = that.callbacks['cancel'] && {}.toString.call(that.callbacks['cancel']) === '[object Function]'
+        if (exist)
+            return that.callbacks['cancel'].apply(that);
+        console.log('default cancel');
+        this.hide();
+    },
 
-        callCb : function (key) {
-            var that = this;
-            that.callbacks[key].apply(that);
-        },
-        destroy() {
-            let that = this;
-            console.log('destroy dialog component', that.component);
-            that.$destroy();
-            that.jQe().html(' ');
-            that.jQe().remove();
-            if (that.component)
-                that.component.unmount();
+    callCb : function (key) {
+        let that = this;
+        that.callbacks[key].apply(that);
+    },
+    buttonCallback(index) {
+        let that = this;
+        if (that.buttons[index].callback) {
+            that.buttons[index].callback.apply(that);
+        } else {
+            console.warning('button index',index,'non ha una callback',that.buttons);
         }
+    },
+    destroy() {
+        let that = this;
+        console.log('destroy dialog component', that.component);
+        that.$destroy();
+        that.jQe().html(' ');
+        that.jQe().remove();
+        if (that.component)
+            that.component.unmount();
+    }
     }
 }
 </script>

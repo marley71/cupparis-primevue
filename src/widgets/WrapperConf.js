@@ -1,5 +1,6 @@
 import CrudCore from "../lib/CrudCore";
 import Server from "../lib/Server";
+// import moment from "moment"
 
 export default class WrapperConf {
     defaultConf =  {
@@ -9,88 +10,184 @@ export default class WrapperConf {
         extraBind: {},
         type : 'w-input',
         label : '',
+        rules:'',
     }
 
     loadConf(conf) {
         let that = this;
         //console.log('WIDGET CONF',conf);
-        let dC = Object.assign({},this.defaultConf);
+        let dC = CrudCore.clone(this.defaultConf); //Object.assign({},this.defaultConf);
         conf.type = conf.type || that.defaultConf.type;
-        let wName = CrudCore.camelCase(conf.type);
-        //console.log('wName',wName)
-        if (that[wName]) {
-             conf = that[wName](conf);
+        let functionName = CrudCore.camelCase(conf.type);
+        //console.log('functionName',functionName)
+        if (that[functionName]) {
+             conf = that[functionName](conf);
         }
         conf = Object.assign(dC,conf);
         //console.log('WIDGET',conf);
         return conf;
     }
 
-    wSelect(conf) {
-        //console.log('conf',conf);
+    mapOptions(domainValues,domainValuesOrder) {
         let options = [];
-        if (conf.domainValuesOrder) {
-            for (let i in conf.domainValuesOrder) {
+        if (domainValuesOrder) {
+            for (let i in domainValuesOrder) {
                 let opt = {
-                    id : conf.domainValuesOrder[i],
-                    label : conf.domainValues[conf.domainValuesOrder[i]],
+                    id : domainValuesOrder[i],
+                    label : domainValues[domainValuesOrder[i]],
                 }
                 options.push(opt);
             }
         } else {
-            for (let k in conf.domainValues) {
+            for (let k in domainValues) {
                 let opt = {
                     id : k,
-                    label : conf.domainValues[k],
+                    label : domainValues[k],
                 }
                 options.push(opt);
             }
         }
         //console.log('options',options);
-        conf.options = options;
+        return options;
+    }
+    wInput(conf) {
+        if ( !('inputType' in conf) ) {
+            conf.inputType = 'text';
+        }
+        return conf;
+    }
+
+    wSelect(conf) {
+        conf.options = this.mapOptions(conf.domainValues,conf.domainValuesOrder);
+        return conf;
+    }
+
+    wHasmany(conf) {
+        if (!conf.hasmanyType) {
+            conf.hasmanyType = 'record';
+        }
+        if (!conf.hasmanyConf) {
+            conf.hasmanyConf = {};
+        }
+        if (!conf.hasmanyConf.fieldsConfig) {
+            conf.hasmanyConf.fieldsConfig = {};
+        }
+        if (!conf.displayTitle && conf.displayTitle !== false) {
+            conf.displayTitle = false;
+        }
+        conf.hasmanyConf.defaultWidgetType = 'w-input';
+        return conf;
+    }
+    wSelectButton(conf) {
+        conf.options = this.mapOptions(conf.domainValues,conf.domainValuesOrder);
+        return conf;
+    }
+
+    wText(conf) {
+        conf.textClass = conf.textClass || '';
+        return conf;
+    }
+
+    wBelongsto(conf) {
+        conf.labelFields = conf.labelFields || ['label'];
+        conf.separator =  conf.separator || ' ';
         return conf;
     }
 
     wAutocomplete(conf) {
         conf.route = null;
         conf.suggestions = [];
+        //console.log('referredData',conf.referredData);
+        let __initialValue = function () {
+            //console.log('extra bind ',conf.extraBind['option-label'],conf);
+            if (conf.extraBind['option-label']) {
+                if (conf.extraBind['option-label'] instanceof  Function) {
+                    return conf.extraBind['option-label'](conf.referredData);
+                }
+                return conf.referredData[conf.extraBind['option-label']];
+            }
+            return conf.referredData['label'];
+        }
+        if (conf.referredData) {
+            // let label = 'label'
+            // conf.autocompleteValue  = conf.referredData[label]; //conf.referredData;
+            conf.autocompleteValue = __initialValue();
+            conf.suggestions = [conf.referredData];
+        }
 
         conf.search = conf.search || function (event) {
             let that = this;
+
             if (!that.route) {
                 that.route = that.createRoute('autocomplete');
                 that.route.setValuesFromObj(that);
             }
+            let field = that.autocompleteField?that.autocompleteField:that.name;
             that.route.setParams({
-                field : that.name,
+                field : field,
                 value : event.query,
             });
 
             console.log('route',that.route,that);
             that.Server.route(that.route,function (json) {
-                console.log('json',json)
+                console.log('json',json);
                 that.suggestions = json.result;
-            })
+            });
             console.log('search',conf,event);
         }
+
+        conf.getAutocompleteLabel = conf.getAutocompleteLabel || function(event) {
+            let that = this;
+
+            if (that.labelFields && that.labelFields.length > 0) {
+                let label = '';
+                for (let i in that.labelFields) {
+                    label += event[that.labelFields[i]] + ' ';
+                }
+                return label;
+            }
+            return event.label;
+            //console.log(that,'label',event);
+        }
+
         return conf;
     }
 
     wCheckbox(conf) {
-        conf.layout = 'row';
+        if (!conf.direction) {
+            conf.direction = 'row';
+        }
+
         return conf;
     }
 
     wRadio(conf) {
-        conf.layout = 'row';
+        if (!conf.direction) {
+            conf.direction = 'row';
+        }
+        return conf;
+    }
+    wDatePicker(conf) {
+        console.log("DATEEEE",conf.value);
+        if (conf.value) {
+            conf.dateValue = new Date(conf.value);
+            console.log("DATEEEE",conf.dateValue);
+        }
         return conf;
     }
     wDateText(conf) {
-        conf.displayFormat = 'DD/MM/YYYY';
-        conf.dateFormat = 'yyyy-mm-dd';
-        conf.formattedValue = null;
-        conf.invalidDateString ='app.data-non-valida';
-        return conf;
+        // if (!conf.displayFormat)
+        //     conf.displayFormat = 'DD/MM/YYYY';
+        // conf.dateFormat = 'yyyy-mm-dd';
+        // conf.formattedValue = null;
+        // conf.invalidDateString ='app.data-non-valida';
+        return Object.assign({
+            displayFormat : 'DD/MM/YYYY',
+            dateFormat : 'yyyy-mm-dd',
+            formattedValue : null,
+            invalidDateString : 'app.data-non-valida'
+        },conf);
+        //return conf;
     }
     wMultiSelect(conf) {
         let value = conf.value || [];
@@ -144,7 +241,31 @@ export default class WrapperConf {
             json : null, // ultimo json caricato dalla chiamata ajax,
             currentIndex : 0,  // indice corrente delle chiavi di domainValues
         },conf);
+        conf.change = conf.change || function() {};
         //console.log('SWAP',conf);
+        return conf;
+    }
+
+    wSwapSelect(conf) {
+        conf = Object.assign({
+            activeIcon: 'fa-check',
+            routeName: 'set',
+            title: 'swap-select',
+            bgInactive: '#FF0000',
+            bgActive: 'bg-red-400',
+            domainValues: {
+                "-1": 'app.seleziona',
+            },
+            slot: '',
+            toggleActive: false,
+            isAjax:true,  // se e' un controllo che deve fare la chiamata di update altrimenti e' un controllo normale in una form
+            json : null, // ultimo json caricato dalla chiamata ajax,
+            currentIndex : 0,  // indice corrente delle chiavi di domainValues
+            reload: false,
+        },conf);
+        conf.change = conf.change || function() {};
+        conf.options = this.mapOptions(conf.domainValues,conf.domainValuesOrder);
+        console.log('SWAP-SELECT',conf);
         return conf;
     }
 
@@ -188,6 +309,9 @@ export default class WrapperConf {
     wUploadAjax(conf) {
         conf = this.wUpload(conf);
         conf.routeName = 'uploadfile';
+        conf.error = false;
+        conf.errorMessage = '';
+        conf.fileInfo = null;
         if (!conf.setRouteValues) {
             conf.setRouteValues =  function (route) {
                 route.setValues({
@@ -231,55 +355,62 @@ export default class WrapperConf {
             console.log('ajaxFields', that.ajaxFields)
             for (var k in that.ajaxFields)
                 fdata.append(k, that.ajaxFields[k])
-            // TODO inserire axios
-            window.jQuery.ajax({
-                url: realUrl,
-                headers: Server.getHearders(),
-                type: 'POST',
-                data: fdata,
-                processData: false,
-                contentType: false                    // Using FormData, no need to process data.
-            }).done(function (data) {
-                that.error = data.error;
-                that.lastUpload = null;
+            Server.post(realUrl,fdata,function(data) {
                 that.json = data;
-                console.log("Success: Files sent!", data);
-                if (data.error) {
-                    var msg = null;
-                    try {
-                        var tmp = JSON.parse(data.msg);
-                        msg = "";
-                        for (k in tmp) {
-                            msg += tmp[k] + '\n';
-                        }
-                    } catch (e) {
-                        msg = data.msg;
+                if (!data.error) {
+                    console.log("Success: Files sent!", data);
+                    if (data.error) {
+                        // var msg = null;
+                        // try {
+                        //     var tmp = JSON.parse(data.msg);
+                        //     msg = "";
+                        //     for (k in tmp) {
+                        //         msg += tmp[k] + '\n';
+                        //     }
+                        // } catch (e) {
+                        //     msg = data.msg;
+                        // }
+                        that.error = true;
+                        that.errorMessage = Server.getErrorMessage(data.msg);
+                        //self._showError(dialog,msg);
+                        window.jQuery(that.$el).find('[crud-button="ok"]').addClass("disabled");
+                        that.value =  JSON.stringify({});
+                        that.fileInfo = null;
+                        return;
                     }
-                    that.errorMessage = msg;
-                    //self._showError(dialog,msg);
-                    window.jQuery(that.$el).find('[crud-button="ok"]').addClass("disabled");
-                    that.value =  JSON.stringify({});
-                    return;
+                    that.$emit('success', that);
+                    that.complete = true;
+
+                    console.log('done, data.result', data.result);
+
+                    //that.lastUpload = Object.assign({},data.result);
+                    that.fileInfo = Object.assign({},data.result);
+                    // TODO sfruttare meglio l'oggetto upload primeface
+                    that.value = JSON.stringify(data.result); //.replace(/\\"/g, '"');
+                    //that.$refs.preview.setValue(data.result);
+                    that.onSuccess();
+                } else {
+                    console.log("An error occurred, the files couldn't be sent!");
+                    that.fileInfo = null;
+                    that.error = true;
+                    that.errorMessage = Server.getErrorMessage(data.msg);
+                    that.value = JSON.stringify({});
+                    that.onError();
                 }
-                that.$emit('success', that);
-                that.complete = true;
 
-                console.log('done, data.result', data.result);
-
-                that.lastUpload = Object.assign({},data.result);
-                // TODO sfruttare meglio l'oggetto upload primeface
-                that.value = JSON.stringify(data.result); //.replace(/\\"/g, '"');
-                //that.$refs.preview.setValue(data.result);
-                that.onSuccess();
-            }).fail(function (data, error, msg) {
-                console.log("An error occurred, the files couldn't be sent!");
-                that.lastUpload = false;
-                that.error = true;
-                that.errorMessage = "Upload error " + data + " " + error + " " + msg;
-                that.value = JSON.stringify({});
-                that.onError();
             });
         };
+        if (conf.value && (conf.value instanceof Object)) {
+            conf.fileInfo = conf.value;
+            conf.value = JSON.stringify(conf.value);
+        }
+        return conf;
+    }
+    wPreview(conf) {
+        if (!conf.height) {
+            conf.height = '30';
+        }
+        console.debug('wPreview',conf);
         return conf;
     }
 }

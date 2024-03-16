@@ -3,7 +3,7 @@
  *
  */
 
-import jQuery from "jquery"
+import CrudCore from "./CrudCore";
 
 var defaultConf =  {
     method : 'get',       // metodo della richiesta http, GET o POST
@@ -96,7 +96,8 @@ export default class Route {
             }
             return this.routeConf.params;
         }
-        return jQuery.extend(this.routeConf.params,this.routeConf.commonParams);
+        let params = CrudCore.clone(this.routeConf.params);
+        return Object.assign(params,this.routeConf.commonParams);
     }
 
     getParamsKeys() {

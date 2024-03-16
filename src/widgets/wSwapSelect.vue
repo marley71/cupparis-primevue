@@ -1,7 +1,16 @@
 <template>
     <div>
-        <input :name="getFieldName()" type="hidden" :value="toggleValue?1:0">
-        <InputSwitch v-model="toggleValue" @change="swap()" :disabled="extraBind.disabled?true:false"/>
+        <input type="hidden" :name=getFieldName() :value="value">
+        <Dropdown class="w-full" :name=getFieldName() v-model="value" :options="options"
+                  option-label="label" option-value="id" :placeholder="placeholder || translate('app.seleziona')"
+                   @change="swap()" v-bind="extraBind">
+            <template #option="slotProps">
+                <div
+                    :class="'select-button-option select-button-option-'+name+ ' select-button-option-'+name+'-'+slotProps.option.id"
+                    v-html="slotProps.option.label">
+                </div>
+            </template>
+        </Dropdown>
     </div>
 </template>
 
@@ -10,25 +19,26 @@ import Server from "../lib/Server";
 import CrudComponent from "../CrudComponent.vue";
 
 export default {
-    name: "wSwap",
+    name: "wSwapSelect",
     extends: CrudComponent,
+
     props: {
         //modelValue: String,
-        conf : Object,
+        conf: Object,
     },
-    data () {
-        //console.log('VALUE',this.conf.value);
+    data() {
         return Object.assign({
-            toggleValue : this.conf.value?true:false,
+            options : this.conf.options,
+            placeholder : this.conf.placeholder,
+            extraBind : this.conf.extraBind,
+            reload: this.conf.reload,
+
         },this.conf);
+
     },
     methods: {
         _ready() {
-            var that = this;
-            var keys = Object.keys(that.domainValues);
-            that.currentIndex = keys.indexOf(''+that.value);
-            that.toggleActive = that.currentIndex?true:false;
-            //console.log('index e toggle ',that.currentIndex,that.toggleActive,keys,that.value,that.domainValues);
+
         },
         setRouteValues: function (route) {
             var that = this;
@@ -38,7 +48,7 @@ export default {
             route.setParams({
                 id: that.modelData.id,
                 field: that.name,
-                value: that.toggleValue?1:0,
+                value: that.value,
             });
             return route;
         },
@@ -55,18 +65,19 @@ export default {
                         that.errorDialog(json.msg);
                         return;
                     }
-                    that.value = that.toggleValue?1:0;
                     that.change();
+                    if (that.reload) {
+                        that.view.reload();
+                    }
                 })
             } else {
-                that.value = that.toggleValue?1:0;
                 that.change();
             }
 
         },
         swap(event) {
             var that = this;
-            console.log('event',event)
+            console.log('event', event)
             // event.preventDefault();
             that._swap();
         },
@@ -74,21 +85,24 @@ export default {
          * sposta l'indice di uno e restituisce il valore successivo
          * @private
          */
-        _getNext() {
-            var that = this;
-            window.SW = this;
-            var keys = Object.keys(that.domainValues);
-            var newIndex = (that.currentIndex + 1) % keys.length;
-            //console.log('_getNext','value',keys[newIndex], 'index', newIndex);
-            that.currentIndex = newIndex;
-            return keys[newIndex];
-        },
 
         getFieldName(key) {
             return key;
         },
+
         getValue() {
             return this.value;
+        },
+
+        setValue(val) {
+            let that = this;
+            // siccome i valori possono essere diversi prima del check li trasformo in stringa
+            let stringValues = that.options.map(a => a.id + "");
+            let index = stringValues.indexOf(val + "");
+            if (index >= 0) {
+                that.value = that.options[index].id
+            }
+
         },
     }
 }

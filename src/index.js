@@ -1,6 +1,12 @@
-
 import CrudComponent from "./CrudComponent.vue"
 import cAction from './actions/cAction.vue'
+import cView from './views/cView.vue'
+import vRecord from './views/vRecord.vue'
+import vSearch from './views/vSearch.vue'
+import vList from './views/vList.vue'
+import vListEdit from './views/vListEdit.vue'
+import vListHasmany from './views/vListHasmany.vue'
+import cImport from './app/cImport.vue'
 import widgets from './widgets'
 import views from './views'
 import apps from './app'
@@ -8,6 +14,17 @@ import dialogs from './dialogs'
 import CrudCore from "./lib/CrudCore.js";
 import routerConf from "./confs/router";
 import CrudVars from "./lib/CrudVars";
+import routeConfs from "./confs/routes";
+import cManage from './app/cManage.vue';
+import aBase from './actions/aBase.vue';
+import Server from './lib/Server.js';
+import Wait from "./Wait.vue";
+import CrudHelpers from "./lib/CrudHelpers";
+
+import actionConfs from "./confs/actions";
+
+import { configure } from 'vee-validate';
+import { localize,setLocale } from '@vee-validate/i18n';
 
 export default {
     install(app) {
@@ -17,9 +34,22 @@ export default {
         views.install(app);
         apps.install(app);
         dialogs.install(app);
-        // app.component('a-order', aOrder)
-        // app.component('a-square', aSquare)
-        // app.component('a-grouped', aGrouped)
+        let prefix = CrudVars.useApi?'/api':'';
+        for (let k in routeConfs) {
+            routeConfs[k].url = prefix + routeConfs[k].url;
+        }
+        configure({
+            // Generates an English message locale generator
+            generateMessage: localize('appLang', CrudVars.validationMessages),
+        });
+        setLocale('appLang');
     },
-    CrudComponent,cAction,CrudCore,routerConf,CrudVars
+    CrudComponent,cAction,CrudCore,CrudVars,
+    cView,
+    routerConf,routeConfs,actionConfs,
+    vRecord,vSearch,cManage,vList,vListEdit,cImport,vListHasmany,
+    aBase,
+    Server,Wait,
+    CrudHelpers
+
 }

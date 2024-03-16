@@ -1,44 +1,38 @@
 import CrudCore from "../lib/CrudCore";
+import viewConfs from "../confs/views";
 
 export default class WrapperConf {
-    defaultConf =  {
-        name : '',
-        value: null,
-        fields: null,
-        type: 'v-base',
-        extraBind: {},
-        title:'',
-        headerHelp:'',
-        orderFields:{},
-        paginator:true,
-        rows : 20,
-        loaded : false,
-        route : null,
-        routeName : null,
-        defaultWidgetType : 'w-text',
-        actionsConfig: {},
-        metadata:{},
-        pagination:{},
-    }
+
     constructor(view) {
         this.view = view;
     }
 
     loadConf(conf) {
         let that = this;
-        console.log('VIEW CONF',conf);
-        let wName = CrudCore.camelCase(conf.type || that.defaultConf.type);
-
+        //console.log('VIEW CONF',conf);
+        console.log('View.WrapperConf type',conf.type);
+        if (!conf.type)
+            throw "confurazione non trovata per la view definire il type della vista";
+        var defConf = null;
+        if (['v-edit','v-view','v-insert','v-record','v-search'].indexOf(conf.type) >= 0) {
+            defConf = CrudCore.clone(viewConfs.recordView);
+        } else if (['v-list','v-list-edit','v-list-hasmany'].indexOf(conf.type) >= 0) {
+            defConf = CrudCore.clone(viewConfs.listView);
+        } else {
+            defConf = CrudCore.clone(viewConfs.defaultView);
+        }
+        let wName = CrudCore.camelCase(conf.type || viewConfs.defaultView.type);
+        console.log('wname',that[wName])
         if (that[wName]) {
             conf = that[wName](conf);
         }
-        conf = Object.assign(that.defaultConf,conf);
+        conf = Object.assign(defConf,conf);
         return conf;
     }
 
     vList(conf) {
         console.log('wList conf',conf);
-        conf.selectionMode = 'multiple';
+        //conf.selectionMode = 'multiple';
         conf.selected = null;
         if (!conf.type) {
             conf.type = 'v-list'
@@ -52,12 +46,12 @@ export default class WrapperConf {
         }
         if (! ('actions' in conf) ){
             conf.actions = ['action-view','action-edit','action-delete','action-delete-selected','action-insert'];
-            conf.recordActionsConf = [];
-            conf.collectionActions = {};
         }
         if (! ('primaryKey' in conf) ){
             conf.primaryKey = 'id';
         }
+        conf.recordActionsConf = [];
+        conf.collectionActions = {};
         conf.widgetsConfig = [];
         conf.selectedRow = null;
         conf.menuModel = [];
@@ -78,9 +72,11 @@ export default class WrapperConf {
                 'action-save-row',
                 'action-view-mode'
             ];
-            conf.recordActionsConf = [];
-            conf.collectionActions = {};
         }
+        conf.widgetsConfig = [];
+        conf.widgetsEditConfig = [];
+        conf.recordActionsConf = [];
+        conf.collectionActions = {};
         conf = this.vList(conf);
         return conf;
 
@@ -117,7 +113,14 @@ export default class WrapperConf {
          */
     }
 
+    vListHasmany(conf) {
+        conf.type = 'v-list-hasmany';
+        return conf;
+    }
     vRecord(conf) {
+        if (!conf.layout) {
+            conf.layout = viewConfs.recordLayouts.record
+        }
         if (!conf.fields && conf.value) {
             console.log('keys',Object.keys(conf.value))
             conf.fields = Object.keys(conf.value);
@@ -128,6 +131,7 @@ export default class WrapperConf {
     }
 
     vView(conf) {
+        let defaultWidgetType = conf.defaultWidgetType;
         conf = this.vRecord(conf);
         if (! ('routeName' in conf) ){
             conf.routeName = 'view';
@@ -135,6 +139,8 @@ export default class WrapperConf {
         if (!('actions' in conf) ){
             conf.actions = [];
         }
+        if (!defaultWidgetType)
+            conf.defaultWidgetType = 'w-text';
         console.log('vViewConf',conf);
         return conf;
     }
@@ -146,20 +152,35 @@ export default class WrapperConf {
         }
         conf.defaultWidgetType = 'w-input';
         if (!('actions' in conf) ){
-            conf.actions = ['action-save'];
+            conf.actions = ['action-save','action-back'];
         }
         return conf;
     }
 
     vSearch(conf) {
+        if (!conf.layout) {
+            conf.layout = viewConfs.recordLayouts.search
+        }
+        if (!conf.searchType) {
+            conf.searchType = conf.searchType = 'both';
+        }
+        if (!conf.advancedSearchAccordion) {
+            conf.advancedSearchAccordion =
+                conf.searchType === 'both' ? true : false;
+        }
         conf = this.vRecord(conf);
         if (! ('routeName' in conf) ){
             conf.routeName = 'search';
         }
         conf.defaultWidgetType = 'w-input';
         if (!('actions' in conf) ){
-            conf.actions = ['action-search'];
+            conf.actions = ['action-search','action-search-basic'];
         }
+        if (! ('advancedSearchOpen' in conf) ) {
+            conf.advancedSearchOpen = false;
+        }
+        conf.basicSearchPlaceholder = null;
+
         return conf;
     }
 
@@ -171,8 +192,13 @@ export default class WrapperConf {
         conf.defaultWidgetType = 'w-input';
         conf.targetRef = null;
         if (!('actions' in conf) ){
-            conf.actions = ['action-save'];
+            conf.actions = ['action-save','action-back'];
         }
+        return conf;
+    }
+
+    vBase(conf) {
+        conf = Object.assign(viewConfs.defaultView,conf);
         return conf;
     }
 }

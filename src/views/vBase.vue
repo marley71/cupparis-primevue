@@ -6,7 +6,8 @@ import WrapperConf from "../views/WrapperConf";
 export default {
     name: "vBase",
     extends: CrudComponent,
-    props: ['conf'],
+    // props: ['conf'],
+    emits : ['loaded'],
     created() {
         let that = this;
         var __call = function (lk) {
@@ -19,6 +20,9 @@ export default {
             __call(k);
         }
         that.Server = Server;
+    },
+    mounted() {
+        this.createViewRoute();
     },
     data() {
         let that = this;
@@ -34,10 +38,34 @@ export default {
                 dt.__methods[k] = ext[k];
             }
         }
-        console.log('view Props',dt);
+        if (!dt.langContext && dt.langContext !== null) {
+            dt.langContext = dt.modelName ? dt.modelName : ''
+            dt.langContext += '.fields';
+        }
+        // normalizzo i type dei fieldsConfig in quanto si accettano anche stringhe che rappresentano il type 'w-hidden'
+        for (let key in dt.fieldsConfig) {
+            //console.debug('--- key',key,dt.fieldsConfig[key])
+            if (dt.fieldsConfig[key] && ( (dt.fieldsConfig[key] instanceof String) || (typeof dt.fieldsConfig[key] === 'string')) ) {
+
+                dt.fieldsConfig[key] = {
+                    type : dt.fieldsConfig[key]
+                }
+            }
+        }
+
+        //console.log('view Props',dt);
         return dt;
     },
+    watch : {
+        loaded() {
+            if (this.loaded) {
+                //console.log('LOADEDDDDDD',this.type)
+                this.$emit('loaded',this.loaded);
+            }
+        }
+    },
     methods : {
+
         draw() {
             this.setActions();
             this.loaded = true;
@@ -48,8 +76,8 @@ export default {
         },
         load() {
             let that = this;
-            that.beforeLoadData();
             that.setRouteValues();
+            that.beforeLoadData();
             that.loadData(function (json) {
                 that.json = json;
                 that.fillData(json);
@@ -65,13 +93,22 @@ export default {
             that.load();
         },
 
-        setRouteValues() {
+        createViewRoute() {
             let that = this;
             if (!that.routeName)
                 return ;
             if (!that.route) {
                 that.route = that.createRoute(that.routeName);
             }
+        },
+
+        setRouteValues() {
+            let that = this;
+            if (!that.routeName)
+                return ;
+            // if (!that.route) {
+            //     that.route = that.createRoute(that.routeName);
+            // }
             that.route.setValuesFromObj(that);
         },
         beforeLoadData() {
@@ -125,11 +162,97 @@ export default {
             this.route.setParams(params);
             this.reload();
         },
+        getParams() {
+            return this.route.getParams();
+        },
+
         getFieldName(field) {
             return field;
         },
-        getFieldLabel(field) {
-            return field;
+
+        setFieldLabel(key,conf) {
+            let that = this;
+            if (!('label' in conf)) {
+                conf.label = key;
+                // se c'e' un langContext, applico la regola
+                if (that.langContext) {
+                    conf.label = that.translate(key + '.label', that.langContext);
+                }
+            } else {
+                conf.label = that.translate(conf.label);
+            }
+            return conf;
+        },
+        getType() {
+            return this.type.replace('v-','');
+        },
+        instance() {
+            return this;
+        },
+        getVisibleFields() {
+            var that = this;
+            var visible = [];
+            for (let i in that.fields) {
+                if (!that.isHiddenField(that.fields[i]))
+                    visible.push(that.fields[i]);
+            }
+            //console.log('VISIBLE FIELDS',visible);
+            return visible;
+        },
+        getWidgetLayout(field,prop) {
+            var that = this;
+            var layout = that.widgetsConfig[field].layout;
+            //console.debug(field,prop,"PROPLAYOUT",layout,'view layout',that.layout);
+            if (!layout) {
+                layout = that.layout;
+            } else {
+                layout = layout || {};
+                for (var p in that.layout) {
+                    if (!layout[p]) {
+                        layout[p] = that.layout[p];
+                    }
+                }
+            }
+            //console.debug(field,"PROPLAYOUT",layout,prop);
+            if (!prop) {
+                return layout;
+            }
+            return layout[prop];
+        },
+        isHiddenField: function (key) {
+            //console.debug('idHiddenField key',key);
+            let type = this.defaultWidgetType;
+            if (this.fieldsConfig[key] && this.fieldsConfig[key].type) {
+                type = this.fieldsConfig[key].type
+            }
+            //console.log('idHiddenField',type);
+            if (type == 'w-hidden' ||
+                (type == 'w-input' &&
+                    this.fieldsConfig[key] &&
+                    this.fieldsConfig[key].inputType === 'hidden')
+            ) {
+                return true;
+            }
+            return false;
+        },
+        getHiddenFields() {
+            var that = this;
+            var hidden = [];
+            for (let i in that.fields) {
+                if (that.isHiddenField(that.fields[i]))
+                    hidden.push(that.fields[i]);
+            }
+            //console.log('HIDDEN FIELDS',hidden);
+            return hidden;
+        },
+        block() {
+            this.blocked = true;
+        },
+        unblock() {
+            this.blocked = false;
+        },
+        isBlocked() {
+            return this.blocked;
         }
     }
 }

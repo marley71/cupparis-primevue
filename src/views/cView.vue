@@ -1,26 +1,29 @@
 <template>
-    <template v-if="conf.type=='v-base'">
+    <template v-if="conf.type==='v-base'">
         <v-base :conf="conf" ref="vRef"></v-base>
     </template>
-    <template v-else-if="conf.type=='v-list'">
+    <template v-else-if="conf.type==='v-list'">
         <v-list :conf="conf" ref="vRef"></v-list>
     </template>
-    <template v-else-if="conf.type=='v-list-edit'">
+    <template v-else-if="conf.type==='v-list-hasmany'">
+        <v-list-hasmany :conf="conf" ref="vRef"></v-list-hasmany>
+    </template>
+    <template v-else-if="conf.type==='v-list-edit'">
         <v-list-edit :conf="conf" ref="vRef"></v-list-edit>
     </template>
-    <template v-else-if="conf.type=='v-record'">
+    <template v-else-if="conf.type==='v-record'">
         <v-record :conf="conf" ref="vRef"></v-record>
     </template>
-    <template v-else-if="conf.type=='v-view'">
+    <template v-else-if="conf.type==='v-view'">
         <v-record :conf="conf" ref="vRef"></v-record>
     </template>
-    <template v-else-if="conf.type=='v-edit'">
+    <template v-else-if="conf.type==='v-edit'">
         <v-record :conf="conf" ref="vRef"></v-record>
     </template>
-    <template v-else-if="conf.type=='v-search'">
+    <template v-else-if="conf.type==='v-search'">
         <v-search :conf="conf" ref="vRef"></v-search>
     </template>
-    <template v-else-if="conf.type=='v-insert'">
+    <template v-else-if="conf.type==='v-insert'">
         <v-record :conf="conf" ref="vRef"></v-record>
     </template>
     <template v-else>
@@ -29,18 +32,17 @@
 </template>
 
 <script>
-//import Server from "@/cupparis/lib/Server";
-import CrudComponent from "../CrudComponent";
-//import WrapperConf from "@/cupparis/views/WrapperConf";
-import vBase from "./vBase";
-import vList from "./vList";
-import vListEdit from './vListEdit';
-import vRecord from "./vRecord";
+import CrudComponent from "../CrudComponent.vue";
+import vBase from "./vBase.vue";
+import vList from "./vList.vue";
+import vListEdit from './vListEdit.vue';
+import vListHasmany from "./vListHasmany.vue";
+import vRecord from "./vRecord.vue";
 import vSearch from "./vSearch.vue";
 
 export default {
     name : "cView",
-    components: {vBase,vList,vListEdit,vRecord,vSearch},
+    components: {vBase,vList,vListEdit,vRecord,vSearch,vListHasmany},
     extends: CrudComponent,
     props : ['conf'],
     methods: {
