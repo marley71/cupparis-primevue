@@ -175,6 +175,14 @@ export default class WrapperConf {
         }
         return conf;
     }
+    wDateRangePicker(conf) {
+        console.log("DATEEEE",conf.value);
+        if (conf.value) {
+            conf.dateValue = new Date(conf.value);
+            console.log("DATEEEE",conf.dateValue);
+        }
+        return conf;
+    }
     wDateText(conf) {
         // if (!conf.displayFormat)
         //     conf.displayFormat = 'DD/MM/YYYY';
