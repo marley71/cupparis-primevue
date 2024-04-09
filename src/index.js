@@ -20,6 +20,7 @@ import cManage from './app/cManage.vue';
 import aBase from './actions/aBase.vue';
 import Server from './lib/Server.js';
 import Wait from "./Wait.vue";
+import viewConfs from "./confs/views.js";
 import CrudHelpers from "./lib/CrudHelpers";
 
 import actionConfs from "./confs/actions";
@@ -58,7 +59,7 @@ export default {
     },
     CrudComponent,cAction,CrudCore,CrudVars,
     cView,
-    routerConf,routeConfs,actionConfs,
+    routerConf,routeConfs,actionConfs,viewConfs,
     vRecord,vSearch,cManage,vList,vListEdit,cImport,vListHasmany,
     aBase,
     Server,Wait,

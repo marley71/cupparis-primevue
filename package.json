@@ -37,7 +37,7 @@
         "moment": "^2.29.4",
         "moment-with-locales-es6": "^1.0.1",
         "npm": "^8.19.3",
-        "primevue": "^3.18.1",
+        "primevue": "^3.50",
         "vee-validate": "^4.9.2",
         "vue": "^3.3.0",
         "vue-axios": "^3.4.1"
