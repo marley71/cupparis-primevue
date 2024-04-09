@@ -293,6 +293,13 @@ export default class WrapperConf {
             conf.value = Object.keys(conf.domainValues)[0];
         }
         conf.currentValue = conf.domainValues[conf.value];
+        // in caso di action diamo la possibilita' di customizzare il contento dello stato che eseguira' l'azione
+        if (!("domainValuesHtml" in conf)) {
+            conf.domainValuesHtml = {};
+            for (let k in conf.domainValues) {
+                conf.domainValuesHtml[k] = k;
+            }
+        }
         return conf;
     }
 

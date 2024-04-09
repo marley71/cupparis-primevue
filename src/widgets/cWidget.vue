@@ -169,12 +169,18 @@
         </template>
         <template v-else-if="type=='w-status'">
             <div>
-                <span v-if="statusType=='icon'">
+                <template v-if="statusType=='icon'">
                     <i :class="currentValue"></i>
-                </span>
-                <span v-else>
-                    {{ currentValue }}
-                </span>
+                </template>
+                <template v-else-if="statusType=='action'">
+                    <span class="cursor-pointer" v-html="domainValuesHtml[value]" @click="executeFunc('w-status', value)" >
+
+                    </span>
+<!--                    {{ currentValue }}-->
+                </template>
+                <template v-else>
+                    <span v-html="domainValuesHtml[value]"></span>
+                </template>
             </div>
         </template>
         <template v-else-if="type=='w-texthtml'">
@@ -507,6 +513,16 @@ export default {
             }
             if (CrudVars.useApi) {
                 return '/api' + url;
+            }
+        },
+        executeFunc(widgetType,funcName) {
+            switch (widgetType) {
+                case 'w-status':
+                    console.debug('funcName',funcName);
+                    this.domainValues[funcName].apply(this);
+                    break;
+                default:
+                    throw widgetType + "status widget non supportato funcName " + funcName
             }
         }
         // uploadFile(event) {
