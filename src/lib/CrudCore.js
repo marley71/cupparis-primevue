@@ -329,7 +329,7 @@ CrudCore.componentDialog = function(compName,componentConf,title,dialogConf) {
     const div = document.createElement('div');
     document.body.appendChild(div);
     let  comp = defineAsyncComponent(() => import('../dialogs/dCustom.vue'))
-    console.debug('ta',compName)
+    console.debug('componentDialog',compName,componentConf)
     dialogConf = dialogConf || {
         title : title,
         display : true,
@@ -344,7 +344,9 @@ CrudCore.componentDialog = function(compName,componentConf,title,dialogConf) {
         conf : dialogConf
     });
     CrudCore.setupApp(d);
+    d.comp = comp;
     d.mount(div);
+    window.DIALOG = d;
     return d;
 }
 

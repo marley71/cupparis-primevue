@@ -169,6 +169,11 @@ export default class WrapperConf {
     }
     wDatePicker(conf) {
         console.log("DATEEEE",conf.value);
+        let _conf = {
+            buttonClear : false,
+            dateValue : null,
+        }
+        conf = Object.assign(_conf,conf);
         if (conf.value) {
             conf.dateValue = new Date(conf.value);
             console.log("DATEEEE",conf.dateValue);
