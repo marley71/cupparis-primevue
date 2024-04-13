@@ -310,7 +310,7 @@ export default {
                 needSelection |= aConf.needSelection;
                 that.collectionActions.actions[aName] = aConf;
             }
-            this.selectionMode = needSelection?'multiple':false;
+            this.selectionMode = needSelection?'multiple':null;
             console.debug('RECORDACTIONS', that.recordActionsConf)
             console.debug('GLOBAL ACTIONS', that.collectionActions);
             this._setMenuCollection();
@@ -352,7 +352,7 @@ export default {
                     type: that.defaultWidgetType,
                 }
                 if (fieldsConfig[key]) {
-                    fConf[key] = Object.assign(fConf[key], fieldsConfig[key]);
+                    fConf[key] = Object.assign(fConf[key], CrudCore.normalizeConf(fieldsConfig[key]) );
                 }
                 that.setFieldLabel(key,fConf[key]);
                 that.labelCols[key] = fConf[key].label;
@@ -435,8 +435,12 @@ export default {
             return parseInt(Math.floor(this.getTotal()/this.getPerPage()));
         },
         getRecordAction(index, name) {
-            console.log('getRecordAction', index, name,);
-            return this.$refs['r' + index].instance(name);
+            let key = 'r' + index
+            console.log('getRecordAction', index, name,key,this.$refs);
+            if (this.$refs[key]) {
+                return this.$refs[key].instance(name);
+            }
+            return null;
         },
         selectedRows() {
             let that = this;

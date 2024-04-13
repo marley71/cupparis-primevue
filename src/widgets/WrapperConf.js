@@ -283,10 +283,13 @@ export default class WrapperConf {
     }
 
     wStatus(conf) {
+        if (!conf.statusType) {
+            conf.statusType = 'text';
+        }
         if (!("domainValues" in conf)) {
             conf.domainValues = {
-                0: 'app.no',
-                1: 'app.si'
+                0: CrudCore.translate('app.no'),
+                1: CrudCore.translate('app.si')
             };
         }
         if (! ("value" in conf) ){
@@ -297,7 +300,12 @@ export default class WrapperConf {
         if (!("domainValuesHtml" in conf)) {
             conf.domainValuesHtml = {};
             for (let k in conf.domainValues) {
-                conf.domainValuesHtml[k] = k;
+                if (conf.statusType == 'action') {
+                    conf.domainValuesHtml[k] = k;
+                } else {
+                    conf.domainValuesHtml[k] = conf.domainValues[k];
+                }
+
             }
         }
         return conf;

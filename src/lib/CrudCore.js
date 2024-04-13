@@ -413,4 +413,17 @@ CrudCore.getActionConf = (name,options) => {
     aConf = Object.assign(aConf,opt );
     return aConf;
 }
+/**
+ * la conf puo' essere una stringa o un object questa funziona la normalizza ad un oggetto.
+ * esempio un widget lo possiamo definire come field : 'w-text' oppure field : { type : 'w-text'}
+ */
+CrudCore.normalizeConf = (conf) => {
+
+    if (typeof conf === 'string' || conf instanceof String) {
+        return {
+            type : conf
+        }
+    }
+    return conf;
+}
 export default CrudCore;

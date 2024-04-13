@@ -268,22 +268,6 @@ export default {
                 that.recordActionsConf.actions[aName] = aConf;
             }
             console.log('recordActionsConf', that.recordActionsConf)
-
-            // vecchio modo
-            // console.log('actionsConfig', that.actionsConfig)
-            // for (let k in rActions) {
-            //     let aName = rActions[k];
-            //     let aConf = Object.assign({}, actionConfs['default']);
-            //     aConf = Object.assign(aConf, (actionConfs[aName] || {}));
-            //     if (that.actionsConfig[aName]) {
-            //         aConf = Object.assign(aConf, that.actionsConfig[aName]);
-            //     }
-            //     //aConf = Object.assign(actionConfs[aName],vConf);
-            //     aConf.modelData = that.value;
-            //     aConf.view = that;
-            //     that.recordActionsConf.actions[aName] = aConf;
-            // }
-            // console.log('recordActionsConf', that.recordActionsConf)
         },
         getWidgegConf(index, field, data) {
             let that = this;
@@ -306,7 +290,7 @@ export default {
                 };
 
                 if (fieldsConfig[key]) {
-                    fConf[key] = Object.assign(fConf[key], fieldsConfig[key]);
+                    fConf[key] = Object.assign(fConf[key], CrudCore.normalizeConf(fieldsConfig[key]) );
                 }
                 that.setFieldLabel(key, fConf[key]);
             }

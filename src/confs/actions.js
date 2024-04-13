@@ -278,6 +278,7 @@ const actionConfs = {
                 tA._saveRow(function (esito) {
                     console.log('save back Event',event,esito);
                     if (esito) {
+                        tA.view.reload();  // TODO sarebbe meglio fare l'aggiornamento di un riga via script senza reload vista
                         resolve();
                     } else {
                         reject();

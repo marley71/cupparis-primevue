@@ -78,7 +78,7 @@
 //import cWidget from "../widgets/cWidget.vue";
 import cAction from "../actions/cAction.vue";
 import Server from "../lib/Server";
-
+import CrudCore from "../lib/CrudCore";
 import vList from './vList.vue';
 
 export default {
@@ -112,7 +112,7 @@ export default {
                     type : 'w-input',
                 }
                 if (fieldsEditConfig[key]) {
-                    fConf[key] = Object.assign(fConf[key],fieldsEditConfig[key]);
+                    fConf[key] = Object.assign(fConf[key],CrudCore.normalizeConf(fieldsEditConfig[key]));
                 }
                 that.setFieldLabel(key,fConf[key]);
                 that.labelCols[key] = fConf[key].label;
@@ -179,27 +179,58 @@ export default {
         hideRA: function (index, name) {
             var that = this;
             var a = that.getRecordAction(index, name);
-            a.setVisible(false);
+            if (a) {
+                a.setVisible(false);
+            }
+
         },
         showRA (index, name) {
             var that = this;
             var a = that.getRecordAction(index, name);
-            a.setVisible(true);
+            if (a) {
+                a.setVisible(true);
+            }
+
         },
         getWidgetEdit (row, key) {
-            var wConf = this.widgetsEdit[row][key];
-            return this.store.cRefs[wConf.cRef];
+            let realKey = 'we'+(parseInt(row) % this.getPerPage()) +'_'+key
+            console.debug('vListEdit.getWidgetEdit',row,realKey,this.$refs[realKey],Array.isArray(this.$refs[realKey]))
+            return Array.isArray(this.$refs[realKey])?this.$refs[realKey][0]:this.$refs[realKey];
+            // var wConf = this.widgetsEditConfig[row][key];
+            // return this.store.cRefs[wConf.cRef];
+        },
+        getWidget (row, key) {
+            let realKey = 'w'+(parseInt(row) % this.getPerPage()) +'_'+key
+            console.debug('vListEdit.getWidget',row,realKey,this.$refs[realKey],Array.isArray(this.$refs[realKey]))
+            return Array.isArray(this.$refs[realKey])?this.$refs[realKey][0]:this.$refs[realKey];
+            // var wConf = this.widgetsEditConfig[row][key];
+            // return this.store.cRefs[wConf.cRef];
         },
         setRowData (index,values) {
             var that = this;
-            console.log('fields',that.fields,'values',values);
-            for (var i in that.fields) {
-                var key = that.fields[i];
-                var we = that.getWidgetEdit(index,key);
-                var w = that.getWidget(index,key);
-                if (we) we.setValue(values[key]);
-                if (w) w.setValue(values[key]);
+
+            //console.log('fields',that.fields,'values',values);
+            try {
+                for (var i in that.fields) {
+                    var key = that.fields[i];
+                    that.widgetsEditConfig[index][key].value = values[key];
+                    that.widgetsConfig[index][key].value = values[key];
+                    var we = that.getWidgetEdit(index,key);
+                    var w = that.getWidget(index,key);
+                    console.debug('setR',we,w,values[key])
+                    if (we) {
+                        console.debug('we instance',we.instance())
+                    }
+                    if (w) {
+                        console.debug('w instance',w.instance())
+                    }
+                    if (we) we.setValue(values[key]);
+                    if (w) w.setValue(values[key]);
+                }
+            } catch (e) {
+                console.error('vListEdit.setRowData',e);
             }
+
         },
         getRowEditData (index) {
             let that = this;
@@ -225,6 +256,7 @@ export default {
         save(index,callback) {
             let that = this;
             var values = that.getRowEditData(index);
+
             //var id = that.view.value[that.index][that.view.primaryKey];
             var r = that.createRoute('update');
             r.setValues({
@@ -243,9 +275,13 @@ export default {
                 var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
                 that.alertSuccess(msg,3000);
                 var values = json.result;
-                that.setRowData(that.index,values);
-                that.setViewMode(that.index);
-                callback(true)
+                that.setRowData(index,values);
+                that.setViewMode(index);
+                setTimeout(function () {
+                    that.setRowData(index,values);
+                    callback(true)
+                },20)
+
                 //that.view.reload();
             })
             //console.log('values', values);
