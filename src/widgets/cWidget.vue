@@ -251,8 +251,9 @@
             <div>Widget non riconosciuto {{ type }}</div>
         </template>
         <div class="overflow-hidden">
-            <span class="text-red-400" v-for="(error,index) in errors">{{ error }}<span
-                v-if="parseInt(index) < (Object.keys(errors).length-1)">,&nbsp;</span></span>
+            <span class="text-red-400" v-for="(error,index) in errors" :key="index">
+               {{ error }} <span v-if="parseInt(index) < (Object.keys(errors).length-1)">,&nbsp;</span>
+            </span>
         </div>
     </span>
 </template>
