@@ -1,7 +1,15 @@
 // import ProtocolList from "./ProtocolList.js";
+import CrudCore from "./CrudCore";
 
 class CrudHelpers {
 
+}
+
+CrudHelpers.addBearerTokenToUrl = (url, btKey) => {
+    btKey = btKey || 'bt';
+    url = url || '';
+    var prefix = (url.indexOf('?') >= 0) ? '&' : '?';
+    return url + prefix + btKey + '=' + CrudCore.getCache('token');
 }
 
 CrudHelpers.lining = (text, maxLength, char) => {
@@ -45,12 +53,20 @@ CrudHelpers.toBlob = (s) => {
 
 CrudHelpers.createRuntimeDownload = (content,mime,name) => {
     const pdfData = CrudHelpers.toBlob(content);
-
-
     const url = window.URL.createObjectURL(new Blob([pdfData], {type: mime}));
     const link = document.createElement('a');
     link.href = url;
     link.setAttribute('download', name);
+    document.body.appendChild(link);
+    link.click();
+}
+
+CrudHelpers.createRuntimeLink = (url,target) => {
+    const link = document.createElement('a');
+    link.href = url;
+    if (target) {
+        link.setAttribute('target',target);
+    }
     document.body.appendChild(link);
     link.click();
 }

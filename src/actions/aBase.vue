@@ -1,5 +1,7 @@
 <template>
-    <template v-if="controlType=='button' && _visible()">
+    <template v-if="(controlType=='button' || controlType=='link') && _visible()">
+        <span v-if="controlType=='link'"
+            class="hidden" :linkhref="href()"></span>
         <Button :title="translate(title)" :label="translate(text)"
                 :class=getActionClass()
                 :icon="icon"
@@ -7,28 +9,19 @@
                 @click="_execute($event)"
         />
     </template>
-    <template v-else-if="controlType=='link' && _visible()">
-        <a class="p-button p-button-outlined" :target="target" :href="_href()"
-            :title="translate(title)" :class="css + icon?'p-button-icon':''" :disabled="_disabled()">
-            <i class="m-1" v-show="icon" :class="icon"></i>
-            <span>{{ translate(text) }}</span>
-        </a>
-    </template>
-    <template v-else-if="controlType  && _visible()" >
+    <template v-else-if="controlType  && _visible()">
         <component :is="controlType" :conf="conf"></component>
     </template>
     <template v-else-if="_visible()">
         <b>controlType ({{ controlType }}) non riconosciuto</b>
     </template>
-    <!-- <div v-if="['button','link'].indexOf(controlType) < 0">
-        <b>controlType ({{ controlType }}) non riconosciuto</b>
-    </div> -->
 </template>
 
 <script>
 import CrudComponent from "../CrudComponent.vue";
 import Server from "../lib/Server";
 import WrapperConf from "./WrapperConf";
+import CrudHelpers from "../lib/CrudHelpers";
 
 export default {
     name: "aBase",
@@ -136,15 +129,15 @@ export default {
         },
         _beforeExecute() {
             let that = this;
-            return new Promise((resolve,reject) => {
-                console.debug('_beforeExecute',that.beforeExecute);
+            return new Promise((resolve, reject) => {
+                console.debug('_beforeExecute', that.beforeExecute);
                 if (!that.beforeExecute) {
                     console.debug('_beforeExecute2');
                     resolve(true);
                 } else {
                     console.debug('_beforeExecute1');
                     let result = that.beforeExecute();
-                    console.log('result',result);
+                    console.log('result', result);
                     if (result && result instanceof Promise) {
                         result.then(() => {
                             console.debug('1then')
@@ -153,7 +146,7 @@ export default {
                             console.debug('2rejedct')
                             reject();
                         })
-                        return ;
+                        return;
                     }
                     if (result) {
                         resolve(true);
@@ -167,33 +160,39 @@ export default {
         _execute(event) {
             let that = this;
             event.preventDefault();
+            if (that.controlType === 'link') {
+                that.execute = function () {
+                    CrudHelpers.createRuntimeLink(that.href(), that.target)
+                }
+            }
             if (that.execute) {
                 that._beforeExecute().then(() => {
                     try {
-                        let result =  that.execute(event);
-                        console.debug('execute after',result)
+                        let result = that.execute(event);
+                        console.debug('execute after', result)
                         if (result && result instanceof Promise) {
                             result.then(() => {
                                 that._afterExecute();
                             }).catch((error) => {
-                                console.error('execute fallita',error)
+                                console.error('execute fallita', error)
                             })
                         } else {
                             if (result) {
                                 that._afterExecute();
                             }
                         }
-                    } catch(e) {
+                    } catch (e) {
                         throw e
                     }
 
                 }).catch((error) => {
-                     console.error('beforeExecute failed',error);
-                     throw error;
+                    console.error('beforeExecute failed', error);
+                    throw error;
                 })
             } else {
                 alert('execute non definita')
             }
+
         },
 
         _afterExecute(params) {
