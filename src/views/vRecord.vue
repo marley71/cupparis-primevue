@@ -66,14 +66,14 @@
                                             </template>
                                             <template v-else>
 
-                                                <label class="labelTop" :for="field"
+                                                <label class="labelRecord labelTop" :for="field"
                                                     v-if="getWidgetLayout(field,'labelPosition')=='top'">
                                                     {{ translateUc(widgetsConfig[field].label) }}
                                                 </label>
                                                 <div class="">
                                                     <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
                                                 </div>
-                                                <label class="labelBottom" :for="field"
+                                                <label class="labelRecord labelBottom" :for="field"
                                                     v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
                                                     {{ translateUc(widgetsConfig[field].label) }}
                                                 </label>
@@ -113,6 +113,9 @@
                                                   :class="getDividerContentClass(field)">
                                             </span>
                                         </Divider>
+                                        <div class="col-12 dividerDescription" v-if="getDividerDescription(field)" v-html="getDividerDescription(field)">
+
+                                        </div>
                                     </template>
 
                                     <template v-if="!isRemovedWidget(field)" >
@@ -126,14 +129,14 @@
                                             </template>
                                             <template v-else>
 
-                                                <label class="labelTop" :for="field"
+                                                <label class="labelRecord labelTop" :for="field"
                                                     v-if="getWidgetLayout(field,'labelPosition')=='top'">
                                                     {{ translateUc(widgetsConfig[field].label) }}{{ isRequired(field) }}
                                                 </label>
                                                 <div class="">
                                                     <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
                                                 </div>
-                                                <label class="labelBottom" :for="field"
+                                                <label class="labelRecord labelBottom" :for="field"
                                                     v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
                                                     {{ translateUc(widgetsConfig[field].label) }}{{ isRequired(field) }}
                                                 </label>
@@ -146,6 +149,9 @@
                                                   :class="getDividerContentClass(field)">
                                             </span>
                                         </Divider>
+                                        <div class="col-12 dividerDescription" v-if="getDividerDescription(field)" v-html="getDividerDescription(field)">
+
+                                        </div>
 
                                     </template>
                                     <template v-else-if="getWidgetLayout(field,'lastInRow')">
@@ -517,6 +523,9 @@ export default {
         getDividerContentClass(field) {
             console.log("DCC::: ",this.widgetsConfig[field].dividerContentClass)
             return this.widgetsConfig[field].dividerContentClass || 'font-bold';
+        },
+        getDividerDescription(field) {
+            return this.widgetsConfig[field].dividerDescription || false;
         },
     }
 }
