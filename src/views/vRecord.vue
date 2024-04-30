@@ -107,6 +107,14 @@
                             </template>
                             <div class="grid">
                                 <template v-for="field in getVisibleFields()" :key="field">
+                                    <template v-if="hasDividerBefore(field)">
+                                        <Divider align="center" :class="getDividerClass(field)">
+                                            <span v-if="getDividerContent(field)" v-html="getDividerContent(field)"
+                                                  :class="getDividerContentClass(field)">
+                                            </span>
+                                        </Divider>
+                                    </template>
+
                                     <template v-if="!isRemovedWidget(field)" >
                                         <div class="py-3" :class="getWidgetLayout(field,'colClass')" v-show="!isHiddenWidget(field)">
                                             <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
@@ -132,10 +140,11 @@
                                             </template>
                                         </div>
                                     </template>
-                                    <template v-if="getWidgetLayout(field,'hasDivider')">
-                                        <Divider align="center" class="col-10 col-offset-1">
-                                            <span v-if="getWidgetLayout(field,'dividerLabel')"
-                                                class="p-tag text-white">{{ getWidgetLayout(field, 'dividerLabel') }}</span>
+                                    <template v-if="hasDividerAfter(field)">
+                                        <Divider align="center" :class="getDividerClass(field)">
+                                            <span v-if="getDividerContent(field)" v-html="getDividerContent(field)"
+                                                  :class="getDividerContentClass(field)">
+                                            </span>
                                         </Divider>
 
                                     </template>
@@ -269,7 +278,7 @@ export default {
             }
             console.log('recordActionsConf', that.recordActionsConf)
         },
-        getWidgegConf(index, field, data) {
+        getWidgetConf(index, field, data) {
             let that = this;
             that.widgetsConfig[index][field].value = data;
             return Object.assign({}, that.widgetsConfig[index][field]);
@@ -492,6 +501,22 @@ export default {
             } else {
                 console.warn('widget',field,'is not hidden');
             }
+        },
+        hasDividerBefore(field) {
+            return this.widgetsConfig[field].divider === 'before' ;
+        },
+        hasDividerAfter(field) {
+            return this.widgetsConfig[field].divider === 'after';
+        },
+        getDividerClass(field) {
+            return this.widgetsConfig[field].dividerClass || '';
+        },
+        getDividerContent(field) {
+            return this.widgetsConfig[field].dividerContent || false;
+        },
+        getDividerContentClass(field) {
+            console.log("DCC::: ",this.widgetsConfig[field].dividerContentClass)
+            return this.widgetsConfig[field].dividerContentClass || 'font-bold';
         },
     }
 }
