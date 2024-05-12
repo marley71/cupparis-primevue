@@ -1,5 +1,32 @@
 <template>
-    <Panel class="managePanel">
+    <div v-if="layout=='basic'">
+        <div >
+            <div v-show="mode=='list'">
+                <template v-if="!hideSearch">
+                    <c-view v-if="!searchComponentName" :conf="search" ref="vSearch" @search="searchList"></c-view>
+                    <component v-else :is="searchComponentName" :conf="search" ref="vSearch" @search="searchList"></component>
+                </template>
+
+                <!--                <Divider align="center" class="listDivider mt-5">-->
+                <!--                    <span class="p-tag bg-primary-700 text-white">-->
+                <!--                                    Elenco elementi-->
+                <!--                    </span>-->
+                <!--                </Divider>-->
+
+                <c-view v-if="!listComponentName"  :conf="list" ref="vList" @loaded="showListMia"></c-view>
+                <component v-else :is="listComponentName" :conf="list" ref="vList"></component>
+            </div>
+            <template v-if="mode=='edit'">
+                <c-view v-if="!editComponentName"  :conf="edit" ref="vRecord"></c-view>
+                <component v-else :is="editComponentName" :conf="edit" ref="vRecord"></component>
+            </template>
+            <template v-else-if="mode=='insert'">
+                <c-view v-if="!insertComponentName"  :conf="insert" ref="vRecord"></c-view>
+                <component v-else :is="insertComponentName" :conf="insert" ref="vRecord"></component>
+            </template>
+        </div>
+    </div>
+    <Panel v-else class="managePanel">
         <template #header>
             <h5 class="p-panel-title">
                 <span v-if="title" >
@@ -38,20 +65,20 @@
                 <component v-else :is="insertComponentName" :conf="insert" ref="vRecord"></component>
             </template>
         </div>
-        <Dialog class="p-dialog" v-model:visible="viewDisplay" :modal="true" :style="{width: '50vw'}">
-            <template #header>
-                <h3>{{ translate(viewTitle) }}</h3>
-            </template>
-
-            <template v-if="viewDisplay">
-                <c-view v-if="!viewComponentName" :conf="view" ref="vView"></c-view>
-                <component v-else :is="viewComponentName" :conf="view"></component>
-            </template>
-            <div class="modal-footer">
-                <Button :label="translate('app.ok')" icon="pi pi-check" autofocus @click="viewDisplay=false"/>
-            </div>
-        </Dialog>
     </Panel>
+    <Dialog class="p-dialog" v-model:visible="viewDisplay" :modal="true" :style="{width: '50vw'}">
+        <template #header>
+            <h3>{{ translate(viewTitle) }}</h3>
+        </template>
+
+        <template v-if="viewDisplay">
+            <c-view v-if="!viewComponentName" :conf="view" ref="vView"></c-view>
+            <component v-else :is="viewComponentName" :conf="view"></component>
+        </template>
+        <div class="modal-footer">
+            <Button :label="translate('app.ok')" icon="pi pi-check" autofocus @click="viewDisplay=false"/>
+        </div>
+    </Dialog>
 </template>
 
 <script>
@@ -90,6 +117,9 @@ export default {
         let that = this;
         if (!('title' in that.conf)) {
             that.conf.title = null;
+        }
+        if (!('layout' in that.conf)) {
+            that.conf.layout = null;
         }
         if (!('sectionTitle' in that.conf)) {
             that.conf.sectionTitle = null;

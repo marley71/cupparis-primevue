@@ -73,7 +73,17 @@
             </div>
         </template>
         <template v-else-if="type=='w-text'">
-            <span :class="textClass">{{ value }}</span>
+            <span :class="textClass">
+                <template v-if="iconPrefix || prefix">
+                    <i v-if="iconPrefix" :class="iconPrefix"></i>
+                    <span v-if="prefix">{{prefix}}</span>
+                </template>
+                {{ value }}
+                <template v-if="iconSuffix || suffix">
+                    <i v-if="iconSuffix" :class="iconSuffix"></i>
+                    <span v-if="suffix">{{suffix}}</span>
+                </template>
+            </span>
         </template>
         <template v-else-if="type=='w-textdiv'">
             <div :class="textClass">{{ value }}</div>
@@ -122,7 +132,15 @@
             </div>
         </template>
         <template v-else-if="type=='w-date-text'">
+            <template v-if="iconPrefix || prefix">
+                <i v-if="iconPrefix" :class="iconPrefix"></i>
+                <span v-if="prefix">{{prefix}}</span>
+            </template>
             <span>{{ getFormattedValue() }}</span>
+            <template v-if="iconSuffix || suffix">
+                <i v-if="iconSuffix" :class="iconSuffix"></i>
+                <span v-if="suffix">{{suffix}}</span>
+            </template>
         </template>
         <template v-else-if="type=='w-textarea'">
             <Textarea v-model="value" :name="name" @change="_change" class="w-full"
