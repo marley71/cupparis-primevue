@@ -327,6 +327,7 @@ export default class WrapperConf {
             conf.uploadFile = function(event) {
                 this.files = event.files;
                 console.log('uploadevent',event,this);
+                window.EE = event;
             }
             conf.getValue = function () {
                 return this.value;

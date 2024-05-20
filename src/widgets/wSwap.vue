@@ -84,8 +84,8 @@ export default {
             return keys[newIndex];
         },
 
-        getFieldName(key) {
-            return key;
+        getFieldName() {
+            return this.name;
         },
         getValue() {
             return this.value;

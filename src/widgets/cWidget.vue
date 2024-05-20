@@ -212,10 +212,10 @@
             </Editor>
         </template>
         <template v-else-if="type=='w-upload'">
-            <FileUpload mode="basic" :name="getFieldName()" :auto="true" :customUpload="true" @uploader="uploadFile"
-                        :multiple="false" v-bind="extraBind"/>
+            <FileUpload mode="basic" name="ciaoo" :auto="true" :customUpload="true" @uploader="uploadFile"
+                        :multiple="false" v-bind="extraBind" :pt="{file:{attrs:{name:'ciccio'}}}" />
         </template>
-        <template v-else-if="type=='w-upload-ajax'">
+        <template v-else-if="type== 'w-upload-ajax' ">
             <div>
                 <input type="hidden" v-model="value" :name="getFieldName()">
                 <Message v-if="error" severity="error" :closable="false">{{ errorMessage }}</Message>
@@ -543,9 +543,10 @@ export default {
                 default:
                     throw widgetType + "status widget non supportato funcName " + funcName
             }
-        }
+        },
         // uploadFile(event) {
-        //     console.log('uploadevent22',event,this);
+        //     console.log('uploadFile event ',event,this);
+        //     window.EE = event;
         // }
     }
 }

@@ -39,10 +39,31 @@
     </template>
     <template v-else-if="hasmanyType=='view-only'">
         <template v-for="(data,index) in hasmanyValue" :key="index">
-            <div v-for="field in getHasmanyConf(index).fields" :key="index">
+            <div v-for="field in getHasmanyConf(index).fields" :key="field">
                 <c-widget :conf="getHasmanyWidgetConf(index,field)"></c-widget>
             </div>
         </template>
+    </template>
+    <template v-else-if="hasmanyType=='panel'">
+        <Button class="p-button-outlined p-1" type="button" icon="fa-solid fa-circle-chevron-down" :label="label" @click="toggle" />
+        <OverlayPanel ref="op" >
+            <table class="w-full table p-1">
+                <thead>
+                    <tr>
+                        <td v-for="field in fields" :key="field">
+                            <b>{{translate("order.fields."+field+".label")}}</b>
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(data,index) in hasmanyValue" :key="index">
+                        <td v-for="field in fields" :key="field">
+                            {{data[field]}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </OverlayPanel>
     </template>
     <div v-else>
         <span>hasmanyType {{ hasmanyType }} non valido!</span>
@@ -92,6 +113,9 @@ export default {
     methods: {
         ready() {
 
+        },
+        toggle(event) {
+          this.$refs.op.toggle(event);
         },
         executeActionInlist(index, action) {
             //console.log('ACTIONINLIST::: ', index, action);
