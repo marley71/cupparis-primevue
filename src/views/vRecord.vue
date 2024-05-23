@@ -411,6 +411,10 @@ export default {
             let isValid = true;
             for (let i in that.fields) {
                 let name = that.fields[i];
+                // se e' nascoto o rimosso salto la validazione;
+                if (that.isHiddenWidget(name) || that.isRemovedWidget(name)) {
+                    continue;
+                }
                 let widget = this.getWidget(name);
 
                 if (widget && widget.rules) {
