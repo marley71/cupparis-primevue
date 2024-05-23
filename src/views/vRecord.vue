@@ -227,6 +227,7 @@ export default {
     },
     methods: {
         draw() {
+            let that = this;
             //console.debug('record widgetsConfig',this.widgetsConfig);
             for (let k in this.widgetsConfig) {
                 if (this.widgetsConfig[k].removeWidget) {
@@ -238,6 +239,12 @@ export default {
             }
             this.setActions();
             this.loaded = true;
+            setTimeout(function () {  // per permettere la renderizzazione html
+                that.afterDraw();
+            },100)
+        },
+        afterDraw() {
+
         },
         removeFromList() {
           this.isInlist = false;
