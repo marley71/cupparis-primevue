@@ -3,6 +3,10 @@
         <template v-if="type==='w-hidden'">
             <input type="hidden" :name="name" v-model="value" v-bind="extraBind" @change="_change"/>
         </template>
+        <template v-else-if="type==='w-image'">
+            <Avatar v-if="imageType == 'avatar'" :image="value" v-bind="extraBind" shape="circle" :class="imageClass"></Avatar>
+            <img v-else :src="value" v-bind="extraBind" :class="imageClass"/>
+        </template>
         <template v-else-if="type=='w-input'">
             <Password v-if="inputType == 'password'" :inputProps="{'name':name}" :name="name" v-model="value" toggleMask
                       v-bind="extraBind"

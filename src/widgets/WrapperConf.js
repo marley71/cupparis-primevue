@@ -57,6 +57,11 @@ export default class WrapperConf {
         return conf;
     }
 
+    wImage(conf) {
+        conf.imageType = conf.imageType?conf.imageType:'avatar';
+        conf.imageClass = conf.imageClass?conf.imageClass:'';
+        return conf;
+    }
     wSelect(conf) {
         conf.options = this.mapOptions(conf.domainValues,conf.domainValuesOrder);
         return conf;
