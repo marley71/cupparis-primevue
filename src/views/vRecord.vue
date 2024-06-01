@@ -227,6 +227,7 @@ export default {
     },
     methods: {
         draw() {
+            let that = this;
             //console.debug('record widgetsConfig',this.widgetsConfig);
             for (let k in this.widgetsConfig) {
                 if (this.widgetsConfig[k].removeWidget) {
@@ -238,6 +239,12 @@ export default {
             }
             this.setActions();
             this.loaded = true;
+            setTimeout(function () {  // per permettere la renderizzazione html
+                that.afterDraw();
+            },100)
+        },
+        afterDraw() {
+
         },
         removeFromList() {
           this.isInlist = false;
@@ -411,6 +418,10 @@ export default {
             let isValid = true;
             for (let i in that.fields) {
                 let name = that.fields[i];
+                // se e' nascoto o rimosso salto la validazione;
+                if (that.isHiddenWidget(name) || that.isRemovedWidget(name)) {
+                    continue;
+                }
                 let widget = this.getWidget(name);
 
                 if (widget && widget.rules) {

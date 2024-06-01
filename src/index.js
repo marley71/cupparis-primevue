@@ -19,6 +19,7 @@ import routeConfs from "./confs/routes";
 import cManage from './app/cManage.vue';
 import aBase from './actions/aBase.vue';
 import Server from './lib/Server.js';
+import Route from './lib/Route.js';
 import Wait from "./Wait.vue";
 import viewConfs from "./confs/views.js";
 import CrudHelpers from "./lib/CrudHelpers";
@@ -62,7 +63,7 @@ export default {
     routerConf,routeConfs,actionConfs,viewConfs,
     vRecord,vSearch,cManage,vList,vListEdit,cImport,vListHasmany,
     aBase,
-    Server,Wait,
+    Server,Wait,Route,
     CrudHelpers
 
 }

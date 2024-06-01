@@ -57,6 +57,11 @@ export default class WrapperConf {
         return conf;
     }
 
+    wImage(conf) {
+        conf.imageType = conf.imageType?conf.imageType:'avatar';
+        conf.imageClass = conf.imageClass?conf.imageClass:'';
+        return conf;
+    }
     wSelect(conf) {
         conf.options = this.mapOptions(conf.domainValues,conf.domainValuesOrder);
         return conf;
@@ -85,6 +90,10 @@ export default class WrapperConf {
 
     wText(conf) {
         conf.textClass = conf.textClass || '';
+        conf.prefix = conf.prefix || null;
+        conf.iconPrefix = conf.iconPrefix || null;
+        conf.suffix = conf.suffix || null;
+        conf.iconSuffix = conf.iconSuffix || null;
         return conf;
     }
 
@@ -195,11 +204,10 @@ export default class WrapperConf {
         return conf;
     }
     wDateText(conf) {
-        // if (!conf.displayFormat)
-        //     conf.displayFormat = 'DD/MM/YYYY';
-        // conf.dateFormat = 'yyyy-mm-dd';
-        // conf.formattedValue = null;
-        // conf.invalidDateString ='app.data-non-valida';
+        conf.prefix = conf.prefix || null;
+        conf.iconPrefix = conf.iconPrefix || null;
+        conf.suffix = conf.suffix || null;
+        conf.iconSuffix = conf.iconSuffix || null;
         return Object.assign({
             displayFormat : 'DD/MM/YYYY',
             dateFormat : 'yyyy-mm-dd',
@@ -330,6 +338,7 @@ export default class WrapperConf {
             conf.uploadFile = function(event) {
                 this.files = event.files;
                 console.log('uploadevent',event,this);
+                window.EE = event;
             }
             conf.getValue = function () {
                 return this.value;

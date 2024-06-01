@@ -3,6 +3,10 @@
         <template v-if="type==='w-hidden'">
             <input type="hidden" :name="name" v-model="value" v-bind="extraBind" @change="_change"/>
         </template>
+        <template v-else-if="type==='w-image'">
+            <Avatar v-if="imageType == 'avatar'" :image="value" v-bind="extraBind" shape="circle" :class="imageClass"></Avatar>
+            <img v-else :src="value" v-bind="extraBind" :class="imageClass"/>
+        </template>
         <template v-else-if="type=='w-input'">
             <Password v-if="inputType == 'password'" :inputProps="{'name':name}" :name="name" v-model="value" toggleMask
                       v-bind="extraBind"
@@ -73,7 +77,17 @@
             </div>
         </template>
         <template v-else-if="type=='w-text'">
-            <span :class="textClass">{{ value }}</span>
+            <span :class="textClass">
+                <template v-if="iconPrefix || prefix">
+                    <i v-if="iconPrefix" :class="iconPrefix"></i>
+                    <span v-if="prefix">{{prefix}}</span>
+                </template>
+                {{ value }}
+                <template v-if="iconSuffix || suffix">
+                    <i v-if="iconSuffix" :class="iconSuffix"></i>
+                    <span v-if="suffix">{{suffix}}</span>
+                </template>
+            </span>
         </template>
         <template v-else-if="type=='w-textdiv'">
             <div :class="textClass">{{ value }}</div>
@@ -129,7 +143,15 @@
             </div>
         </template>
         <template v-else-if="type=='w-date-text'">
+            <template v-if="iconPrefix || prefix">
+                <i v-if="iconPrefix" :class="iconPrefix"></i>
+                <span v-if="prefix">{{prefix}}</span>
+            </template>
             <span>{{ getFormattedValue() }}</span>
+            <template v-if="iconSuffix || suffix">
+                <i v-if="iconSuffix" :class="iconSuffix"></i>
+                <span v-if="suffix">{{suffix}}</span>
+            </template>
         </template>
         <template v-else-if="type=='w-textarea'">
             <Textarea v-model="value" :name="name" @change="_change" class="w-full"
@@ -201,10 +223,10 @@
             </Editor>
         </template>
         <template v-else-if="type=='w-upload'">
-            <FileUpload mode="basic" :name="getFieldName()" :auto="true" :customUpload="true" @uploader="uploadFile"
-                        :multiple="false" v-bind="extraBind"/>
+            <FileUpload mode="basic" name="ciaoo" :auto="true" :customUpload="true" @uploader="uploadFile"
+                        :multiple="false" v-bind="extraBind" :pt="{file:{attrs:{name:'ciccio'}}}" />
         </template>
-        <template v-else-if="type=='w-upload-ajax'">
+        <template v-else-if="type== 'w-upload-ajax' ">
             <div>
                 <input type="hidden" v-model="value" :name="getFieldName()">
                 <Message v-if="error" severity="error" :closable="false">{{ errorMessage }}</Message>
@@ -532,9 +554,10 @@ export default {
                 default:
                     throw widgetType + "status widget non supportato funcName " + funcName
             }
-        }
+        },
         // uploadFile(event) {
-        //     console.log('uploadevent22',event,this);
+        //     console.log('uploadFile event ',event,this);
+        //     window.EE = event;
         // }
     }
 }
