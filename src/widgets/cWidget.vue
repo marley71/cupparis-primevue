@@ -123,6 +123,13 @@
                 </span>
             </div>
         </template>
+        <template v-else-if="type=='w-belongsto-many'">
+            <div v-for="item in value">
+                <span v-for="(field,index) in labelFields" :key="index">
+                    <span v-if="(separator && (index !== 0))">{{ separator }}</span>{{ item[field] }}
+                </span>
+            </div>
+        </template>
         <template v-else-if="type=='w-custom'">
             <div v-html="value"></div>
         </template>
@@ -521,7 +528,7 @@ export default {
             }
         },
         getFieldName() {
-            if (this.type == 'w-checkbox') {
+            if (['w-checkbox','w-multi-select'].indexOf(this.type) >= 0) {
                 return this.name + '[]';
             }
             return this.name;

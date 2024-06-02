@@ -103,6 +103,12 @@ export default class WrapperConf {
         return conf;
     }
 
+    wBelongstoMany(conf) {
+        conf.labelFields = conf.labelFields || ['label'];
+        conf.separator =  conf.separator || ' ';
+        return conf;
+    }
+
     wAutocomplete(conf) {
         conf.route = null;
         conf.suggestions = [];
