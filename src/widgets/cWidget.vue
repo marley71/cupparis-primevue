@@ -7,6 +7,24 @@
             <Avatar v-if="imageType == 'avatar'" :image="value" v-bind="extraBind" shape="circle" :class="imageClass"></Avatar>
             <img v-else :src="value" v-bind="extraBind" :class="imageClass"/>
         </template>
+        <template v-else-if="type==='w-table'">
+<!--            <template v-if="value || value.length > 0">-->
+<!--                <div class="flex" v-for="(item,index) in value" :key="index">-->
+<!--                    <div class="flex" v-for="column in getKeys()" :field="column" :key="column">-->
+<!--                        {{item[column]}}-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--            </template>-->
+
+            <DataTable v-if="value || value.length > 0" :value="value">
+                <Column v-for="column in getKeys()" :field="column" :key="column" :header="column">
+                    <template #body="slotProps">
+                        {{slotProps.data[column]}}
+                    </template>
+                </Column>
+            </DataTable>
+        </template>
         <template v-else-if="type=='w-input'">
             <Password v-if="inputType == 'password'" :inputProps="{'name':name}" :name="name" v-model="value" toggleMask
                       v-bind="extraBind"
@@ -548,10 +566,6 @@ export default {
                     throw widgetType + "status widget non supportato funcName " + funcName
             }
         },
-        // uploadFile(event) {
-        //     console.log('uploadFile event ',event,this);
-        //     window.EE = event;
-        // }
     }
 }
 </script>

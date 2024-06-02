@@ -450,4 +450,16 @@ export default class WrapperConf {
         console.debug('wPreview',conf);
         return conf;
     }
+    wTable(conf) {
+        conf.getKeys = function () {
+            if (this.value && this.value.length > 0) {
+                return Object.keys(this.value[0]);
+            }
+            return [];
+        }
+        if (!conf.layout) {
+            conf.layout = 'grid';
+        }
+        return conf;
+    }
 }
