@@ -112,6 +112,7 @@ export default class WrapperConf {
     wAutocomplete(conf) {
         conf.route = null;
         conf.suggestions = [];
+        conf.autocompleteValue = conf.autocompleteValue || null;
         //console.log('referredData',conf.referredData);
         let __initialValue = function () {
             //console.log('extra bind ',conf.extraBind['option-label'],conf);

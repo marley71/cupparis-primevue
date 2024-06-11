@@ -72,7 +72,7 @@
 
                     <Button icon="fa fa-times" @click="_change($event,'clear')"/>
                     <AutoComplete class="w-full" :name="name" v-model="autocompleteValue" :suggestions="suggestions"
-                                  @complete="search" :option-label="getAutocompleteLabel" option-value="id"
+                                  @complete="search" :option-label="_getAutocompleteLabel" option-value="id"
                                   v-bind="extraBind" @change="_change" @item-select="itemSelect"/>
                 </div>
             </div>
@@ -404,6 +404,7 @@ export default {
                         this.autocompleteValue = null;
                     } else {
                         this.value = event.id;
+                        this.referredData = event;
                     }
                     break;
                 case 'w-date-picker':
@@ -573,6 +574,14 @@ export default {
                     throw widgetType + "status widget non supportato funcName " + funcName
             }
         },
+        /**
+         * ritorna il valore dell'autocomplete in base alla configurazione di labelFields
+         * @param event
+         * @private
+         */
+        _getAutocompleteLabel(event) {
+            return this.instance().getAutocompleteLabel.apply(this,[event]);
+        }
     }
 }
 </script>

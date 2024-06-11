@@ -1,7 +1,8 @@
 <template>
     <template v-if="hasmanyType=='list'">
         <div>
-            <v-list-hasmany ref="listView" :conf="getHasmanyList()"></v-list-hasmany>
+<!--            <v-list-hasmany ref="listView" :conf="getHasmanyList()"></v-list-hasmany>-->
+            <c-view ref="listView" :conf="getHasmanyList()"></c-view>
         </div>
     </template>
     <template v-else-if="hasmanyType=='record'">
@@ -88,6 +89,7 @@ export default {
     mounted() {
         // evento da emettere durante le modifiche
         //this.$emit('update:modelValue', this.selectedCategory.id);
+        window.HS = this;
         setTimeout(this.ready, 10);
     },
     data() {
@@ -130,7 +132,7 @@ export default {
         getValue() {
             //window.WH = this;
             if (this.hasmanyType == 'list') {
-                return this.$refs.listView.getValue();
+                return this.$refs.listView.instance().getValue();
             }
             let val = [];
             if (this.$refs.recordView) {
@@ -153,8 +155,8 @@ export default {
                 if (that.hasmanyType == 'list') {
                     //console.log("HS",that.value)
                     that.value = that.addDataKeyField(that.value);
-                    that.$refs.listView.value = that.value;
-                    that.$refs.listView.reload();
+                    that.$refs.listView.instance().value = that.value;
+                    that.$refs.listView.instance().reload();
                 } else {
                     that.hasmanyValue = that.trasformValue(that.value);
                 }
@@ -174,29 +176,111 @@ export default {
             let that = this;
 
             let fields = that.hasmanyConf.fields;
+            //let fieldsConfig = CrudCore.clone(that.hasmanyConf.fieldsConfig);
             let v = {};
+            let fieldsConfig = {};
             for (let f in fields) {
                 let field = fields[f];
                 let fieldConfig = that.hasmanyConf.fieldsConfig[field];
                 let defVal = (fieldConfig && (fieldConfig.default || fieldConfig.default === 0)) ? fieldConfig.default : '';
                 v[fields[f]] = defVal;
+                v.dataKey = window.performance.now() + '_' + (Math.random() * 1000);
+                let md = that.hasmanyConf.modelData || {};
+                fieldsConfig[field] = this.$refs.listView.instance().getWidgetConfig(field,defVal,(md[field] || {}))
             }
             v.status = 'created';
 
             if (this.hasmanyType=='list') {
-                console.debug('vHasmany.addItem',this.$refs.listView.value);
-                v.dataKey = window.performance.now() + '_' + (Math.random() * 1000);
-                let value = this.getValue();
-                value.push(v);
-                //this.value.push(v);
-                this.setValue(value);
+                // in caso di widget complessi e' importante salvaguardare i widgets gia' esistenti.
+                this.widgetToConf();
+                //console.debug('fieldsConfig',fieldsConfig)
+                //console.debug('vHasmany.addItem',JSON.parse(JSON.stringify(this.$refs.listView.widgetsConfig) ));
+                this.$refs.listView.instance().value.push(v);
+                this.$refs.listView.instance().widgetsConfig.push(fieldsConfig);
+                //console.debug('vHasmany.addItem dopo',JSON.parse(JSON.stringify(this.$refs.listView.widgetsConfig) ));
+                // v.dataKey = window.performance.now() + '_' + (Math.random() * 1000);
+                // let value = this.getValue();
+                // value.push(v);
+                // this.setValue(value);
             } else {
                 this.value.push(v);
-                this.hasmanyValue[window.performance.now()] = v;
+                this.hasmanyValue[window.performance.now() + '_' + (Math.random() * 1000)] = v;
             }
 
 
 
+        },
+        removeItem(index) {
+            let that = this;
+            console.debug('wHasmany.removeItem',index);
+            if (this.hasmanyType == 'list') {
+                // prendiamo i valori aggiornati il lista insieme alle configurazioni;
+                //let fieldsConfig = CrudCore.clone(that.hasmanyConf.fieldsConfig);
+                //let values = that.$refs.listView.getValue();
+                that.widgetToConf();
+                //console.debug('wHasmany.removeItem current values',values);
+                if (Array.isArray(index)) {
+                    let arr = index.sort((a,b) => {return a-b});
+                    arr.reverse();
+                    for (let i in arr) {
+                        that.$refs.listView.instance().widgetsConfig.splice(arr[i],1);
+                        that.$refs.listView.instance().value.splice(arr[i],1);
+
+                        //console.debug('LIST VALUES',arr[i],JSON.parse(JSON.stringify(v)));
+                    }
+                } else {
+                    that.$refs.listView.instance().widgetsConfig.splice(index,1);
+                    that.$refs.listView.instance().value.splice(index,1);
+
+                }
+                //console.debug('removeItem result wconfig',that.$refs.listView.widgetsConfig)
+                //console.debug('removeItem result wvalue',that.$refs.listView.value)
+
+                // let v = this.$refs.listView.getValue();
+                // //console.debug('LIST VALUES',JSON.parse(JSON.stringify(v)),index);
+                // if (Array.isArray(index)) {
+                //     let arr = index.sort((a,b) => {return a-b});
+                //     arr.reverse();
+                //     for (let i in arr) {
+                //         v.splice(arr[i],1);
+                //         //console.debug('LIST VALUES',arr[i],JSON.parse(JSON.stringify(v)));
+                //     }
+                // } else {
+                //     v.splice(index,1);
+                // }
+                // that.value = that.addDataKeyField(v);
+                // //console.debug('LIST VALUES  2',JSON.parse(JSON.stringify(that.value)));
+                // this.$refs.listView.value = that.value;
+                // this.$refs.listView.reload();
+            } else {
+                let rIndex = Object.keys(this.hasmanyValue).indexOf(index);
+                //console.log('remove index', index, this.value);
+                if (rIndex < this.value.length) {
+                    this.value.splice(parseInt(rIndex), 1);
+                }
+                //console.log('removed index', rIndex, this.value);
+                delete this.hasmanyValue[index];
+                //this.hasmanyValue = this.trasformValue(this.value);
+            }
+
+        },
+        /**
+         * trasferisce i dati dall'istanza del widget alla configurazione, in modo da poter ricostruire i widgets attuali quando
+         * vengono ridisegnati
+         */
+        widgetToConf() {
+            for (let i=0;i<this.$refs.listView.instance().value.length;i++) {
+                let ws = this.$refs.listView.instance().getRowWidgets(i);
+                for (let k in ws) {
+                    switch (ws[k].type) {
+                        case 'w-autocomplete':
+                            console.debug('autocompleteValue',ws[k].autocompleteValue);
+                            this.$refs.listView.instance().widgetsConfig[i][k].autocompleteValue = ws[k].autocompleteValue;
+                            break;
+                    }
+                    this.$refs.listView.instance().value[i][k] = ws[k].getValue()
+                }
+            }
         },
         getHasmanyConf(i) {
             let that = this;
@@ -224,13 +308,13 @@ export default {
                 },
                 'action-delete-selected':{
                     execute() {
-                        //console.debug('selected',that.$refs.listView.selected,that.$refs.listView.value);
+                        //console.debug('selected',that.$refs.listView.instance().selected,that.$refs.listView.instance().value);
                         let indexs = [];
-                        let dataKeys = that.$refs.listView.value.map(a => a.dataKey);
-                        for (let i in that.$refs.listView.selected) {
-                            let index = dataKeys.indexOf(that.$refs.listView.selected[i].dataKey);
+                        let dataKeys = that.$refs.listView.instance().value.map(a => a.dataKey);
+                        for (let i in that.$refs.listView.instance().selected) {
+                            let index = dataKeys.indexOf(that.$refs.listView.instance().selected[i].dataKey);
                             if (index < 0) {
-                                console.warn('index non trovato per dataKey',that.$refs.listView.selected[i].dataKey,'datakeys',dataKeys);
+                                console.warn('index non trovato per dataKey',that.$refs.listView.instance().selected[i].dataKey,'datakeys',dataKeys);
                             } else {
                                 indexs.push(index);
                             }
@@ -276,37 +360,7 @@ export default {
             return labels;
 
         },
-        removeItem(index) {
-            let that = this;
-            if (this.hasmanyType == 'list') {
-                let v = this.$refs.listView.getValue();
-                //console.debug('LIST VALUES',JSON.parse(JSON.stringify(v)),index);
-                if (Array.isArray(index)) {
-                    let arr = index.sort((a,b) => {return a-b});
-                    arr.reverse();
-                    for (let i in arr) {
-                        v.splice(arr[i],1);
-                        //console.debug('LIST VALUES',arr[i],JSON.parse(JSON.stringify(v)));
-                    }
-                } else {
-                    v.splice(index,1);
-                }
-                that.value = that.addDataKeyField(v);
-                //console.debug('LIST VALUES  2',JSON.parse(JSON.stringify(that.value)));
-                this.$refs.listView.value = that.value;
-                this.$refs.listView.reload();
-            } else {
-                let rIndex = Object.keys(this.hasmanyValue).indexOf(index);
-                //console.log('remove index', index, this.value);
-                if (rIndex < this.value.length) {
-                    this.value.splice(parseInt(rIndex), 1);
-                }
-                //console.log('removed index', rIndex, this.value);
-                delete this.hasmanyValue[index];
-                //this.hasmanyValue = this.trasformValue(this.value);
-            }
 
-        },
         trasformValue(value) {
             let hasmanyValue = {};
             let items = value || [];

@@ -342,6 +342,26 @@ export default {
             if (!that.fields && that.value.length) {
                 that.fields = Object.keys(that.value[0]);
             }
+            // configurazione finale dei widgets
+            let widgetsConfig = [];
+            for (let i in that.value) {
+                widgetsConfig.push({});
+                for (let f in that.fields) {
+                    let key = that.fields[f];
+                    let val = that.value[i][key];
+                    widgetsConfig[i][key] = that.getWidgetConfig(key,val,that.value[i]);
+                    widgetsConfig[i][key].index = i;
+                }
+            }
+            that.widgetsConfig = widgetsConfig;
+        },
+
+        _setWidgetsConfigOld() {
+            let that = this;
+            // configurazioni widgets
+            if (!that.fields && that.value.length) {
+                that.fields = Object.keys(that.value[0]);
+            }
             let fConf = {};
             let fieldsConfig = that.fieldsConfig || {};
             //console.log('FIEDLS CONFIG',fieldsConfig,that.defaultWidgetType);
@@ -374,11 +394,33 @@ export default {
                     //widgetsConfig[i][key].label = that.getFieldLabel(key);
                 }
             }
-            //that.fields = Object.assign([],that.fields);
-            //console.log('vList value',that.value)
-            //console.log('vList _setWidgetsConfig',widgetsConfig,fieldsConfig)
             that.widgetsConfig = widgetsConfig;
         },
+        /**
+         * ritorna la configurazione di un widget per poter instanziare widgets dinamici
+         * @param key
+         */
+        getWidgetConfig(key,value,modelData) {
+            let that = this;
+            let md = Object.assign({}, (that.metadata[key] || {}));
+            let fieldsConfig = that.fieldsConfig || {};
+            let wc = {
+                type: that.defaultWidgetType,
+            };
+            if (fieldsConfig[key]) {
+                wc = Object.assign(wc, CrudCore.normalizeConf(fieldsConfig[key]) );
+            }
+            //console.log('field',key,'value',val);
+            wc = Object.assign(md, wc);
+            wc.value = value;
+            wc.name = that.getFieldName(key);
+            wc.modelData = modelData;
+            wc.view = that;
+            that.setFieldLabel(key,wc);
+            that.labelCols[key] = wc.label;
+            return wc;
+        },
+
         columnLabel(col) {
           return this.labelCols[col];
         },
@@ -529,6 +571,26 @@ export default {
             //console.log('rowData values',values);
             return values;
         },
+        /**
+         * ritorna i widgets di una riga
+         * @param index
+         * @returns {{}}
+         */
+        getRowWidgets (index) {
+            var that = this;
+            var widgets = {};
+            for (var k in that.fields) {
+                let field = that.fields[k];
+                //console.log('w ref','w'+index+'_'+field)
+                let w = that.$refs['w'+index+'_'+field];
+                if (w) {
+                    widgets[field] = w[0].instance();
+                }
+            }
+            //console.log('rowData values',values);
+            return widgets;
+        },
+
         getVisibleFields() {
             var that = this;
             var visible = [];

@@ -115,6 +115,11 @@ export default class WrapperConf {
 
     vListHasmany(conf) {
         conf.type = 'v-list-hasmany';
+        conf.getFieldName = conf.getFieldName || function (field) {
+            let that = this;
+            return (that.modelName?that.modelName + '-':'') + field + '[]';
+        }
+        //conf.widgetsConfig = [];
         return conf;
     }
     vRecord(conf) {
