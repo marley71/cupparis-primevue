@@ -403,7 +403,7 @@ export default {
                     if (type == 'clear') {
                         this.value = null;
                         this.autocompleteValue = null;
-                    } else {
+                    } else if (event) {
                         this.value = event.id;
                         this.referredData = event;
                     }
@@ -412,7 +412,7 @@ export default {
                     if (type == 'clear') {
                         this.value = null;
                         this.dateValue = null;
-                    } else {
+                    } else if (event) {
                         let inputDateFormat = evt.widget.inputDateFormat || 'YYYY-MM-DD';
                         var date = event ? moment(event).format(inputDateFormat) : null;
                         //console.log("DATE",date, inputDateFormat)
@@ -424,7 +424,7 @@ export default {
                     if (type == 'clear') {
                         this.value = null;
                         this.dateValue = null;
-                    } else {
+                    } else if (event) {
                         let inputDateFormat = evt.widget.inputDateFormat || 'YYYY-MM-DD';
                         var date = event ? moment(event).format(inputDateFormat) : null;
                         //console.log("DATE",date, inputDateFormat)
@@ -506,7 +506,7 @@ export default {
                     that.value = val;
                     break;
             }
-
+            this._change();
         },
         getValue() {
             let that = this;
@@ -552,8 +552,14 @@ export default {
             this.value.splice(id,1);
         },
         itemSelect() {
-            this.value = this.autocompleteValue.id;
-            this._change();
+            this.instance().setValue(this.autocompleteValue.id)
+            //let that = this;
+
+            // that.value = that.autocompleteValue.id;
+            // setTimeout(function () {
+            //     that._change();
+            // },100)
+
         },
         instance() {
             if (this.$refs.wRef) {
