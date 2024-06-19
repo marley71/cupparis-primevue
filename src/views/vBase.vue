@@ -2,6 +2,7 @@
 import CrudComponent from "../CrudComponent.vue";
 import Server from "../lib/Server";
 import WrapperConf from "../views/WrapperConf";
+import CrudCore from "../lib/CrudCore";
 
 export default {
     name: "vBase",
@@ -79,7 +80,7 @@ export default {
             that.setRouteValues();
             that.beforeLoadData();
             that.loadData(function (json) {
-                that.json = json;
+                that.json = CrudCore.clone(json);
                 that.fillData(json);
                 that.afterLoadData(json);
                 that.setWidgetsConfig();

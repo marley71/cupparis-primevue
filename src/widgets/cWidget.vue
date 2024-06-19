@@ -73,7 +73,7 @@
                     <Button icon="fa fa-times" @click="_change($event,'clear')"/>
                     <AutoComplete class="w-full" :name="name" v-model="autocompleteValue" :suggestions="suggestions"
                                   @complete="search" :option-label="_getAutocompleteLabel" option-value="id"
-                                  v-bind="extraBind" @change="_change" @item-select="itemSelect"/>
+                                  v-bind="extraBind" @item-select="itemSelect"/>
                 </div>
             </div>
         </template>
@@ -394,6 +394,7 @@ export default {
         //
         // },
         _change(event, type) {
+            let that = this;
             let evt = event || {};
             evt.widget = this;
             //console.log('EVENTSSS', evt);
@@ -436,7 +437,10 @@ export default {
             }
             this.$emit('change', evt);
             if (this.change) {
-                this.change(evt);
+                setTimeout(function () {
+                    that.change(evt);
+                },10)
+
             }
 
         },
@@ -549,6 +553,7 @@ export default {
         },
         itemSelect() {
             this.value = this.autocompleteValue.id;
+            this._change();
         },
         instance() {
             if (this.$refs.wRef) {
