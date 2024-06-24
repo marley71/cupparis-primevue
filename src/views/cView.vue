@@ -27,8 +27,11 @@
         <v-record :conf="conf" ref="vRef"></v-record>
     </template>
     <template v-else>
-        <div>Views non riconosciuta {{conf.type}}</div>
+        <component :is="conf.type" ref="vRef"></component>
     </template>
+<!--    <template v-else>-->
+<!--        <div>Views non riconosciuta {{conf.type}}</div>-->
+<!--    </template>-->
 </template>
 
 <script>

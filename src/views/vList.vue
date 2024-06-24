@@ -66,12 +66,6 @@
                                 <!--                    <c-widget :conf="widgetsConfig[parseInt(slotProps.index)][col]"></c-widget>-->
                             </template>
                         </Column>
-                        <!--                    <template #footer>-->
-                        <!--&lt;!&ndash;                        {{&ndash;&gt;-->
-                    <!--&lt;!&ndash;                            translate('app.numero-records-lista', null, 0, [(value ? value.length : 0), getFirst() + 1, getFirst() + (value ? value.length : 0), getTotal()])&ndash;&gt;-->
-                    <!--&lt;!&ndash;                        }}&ndash;&gt;-->
-                        <!--                        &lt;!&ndash;                        Ci sono {{value ? value.length : 0 }} record, da {{getFirst()+1}} a {{getFirst() + (value ? value.length : 0) }} su {{getTotal()}}&ndash;&gt;-->
-                        <!--                    </template>-->
                         <Column v-if="getRecordActionsPosition() == 'end' && hasRecordActions()" :exportable="false" :header="translate('app.actions')">
                             <template #body="slotProps">
                                 <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
@@ -91,7 +85,7 @@
             </template>
             <template v-if="layout=='simple'">
                 <template v-for="(v,row) in value">
-                    <template v-for="(col) in getHiddenFields()" :key="col">
+                    <template v-for="(col) in getHiddenFields()">
                         <c-widget :ref="'w'+row+'_'+col" :conf="getWidgetConf(row,col,v[col])"></c-widget>
                     </template>
                 </template>
@@ -150,16 +144,8 @@
                                 <!--                    {{slotProps.data[col]}} {{ slotProps.index}}-->
                                 <c-widget :ref="'w'+slotProps.index+'_'+col"
                                           :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></c-widget>
-                                <!--                    {{getW(slotProps.index,col,slotProps.data[col])}}-->
-                                <!--                    <c-widget :conf="widgetsConfig[parseInt(slotProps.index)][col]"></c-widget>-->
                             </template>
                         </Column>
-                        <!--                    <template #footer>-->
-                        <!--&lt;!&ndash;                        {{&ndash;&gt;-->
-                    <!--&lt;!&ndash;                            translate('app.numero-records-lista', null, 0, [(value ? value.length : 0), getFirst() + 1, getFirst() + (value ? value.length : 0), getTotal()])&ndash;&gt;-->
-                    <!--&lt;!&ndash;                        }}&ndash;&gt;-->
-                        <!--                        &lt;!&ndash;                        Ci sono {{value ? value.length : 0 }} record, da {{getFirst()+1}} a {{getFirst() + (value ? value.length : 0) }} su {{getTotal()}}&ndash;&gt;-->
-                        <!--                    </template>-->
                         <Column v-if="getRecordActionsPosition() == 'end' && hasRecordActions()" :exportable="false" :header="translate('app.actions')">
                             <template #body="slotProps">
                                 <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
@@ -311,8 +297,8 @@ export default {
                 that.collectionActions.actions[aName] = aConf;
             }
             this.selectionMode = needSelection?'multiple':null;
-            console.debug('RECORDACTIONS', that.recordActionsConf)
-            console.debug('GLOBAL ACTIONS', that.collectionActions);
+            //console.debug('RECORDACTIONS', that.recordActionsConf)
+            //console.debug('GLOBAL ACTIONS', that.collectionActions);
             this._setMenuCollection();
         },
 
@@ -321,7 +307,7 @@ export default {
             index = index % that.getPerPage();
             //console.log('GETWIDGETCONF',index,field,data);
             if (!that.widgetsConfig || !that.widgetsConfig[index] || !that.widgetsConfig[index][field]) {
-                console.log('conf non trovata',field,index);
+                console.warn('conf non trovata',field,index);
                 return {};
             }
 
@@ -330,7 +316,9 @@ export default {
                     type : that.widgetsConfig[index][field]
                 }
             }
-            that.widgetsConfig[index][field].value = data;
+            if ( (""+data) != 'undefined') {
+                that.widgetsConfig[index][field].value = data;
+            }
             return that.widgetsConfig[index][field];
         },
         setWidgetsConfig() {
@@ -338,7 +326,7 @@ export default {
         },
         _setWidgetsConfig() {
             let that = this;
-            // configurazioni widgets
+            // configurazioni widgets se non ci sono fields configurati prendo le keys dei valori
             if (!that.fields && that.value.length) {
                 that.fields = Object.keys(that.value[0]);
             }
@@ -412,7 +400,11 @@ export default {
             }
             //console.log('field',key,'value',val);
             wc = Object.assign(md, wc);
-            wc.value = value;
+            // se il value e' undefined allora e' un campo custom della view non ci metto niente
+            if ((""+value) != 'undefined') {
+                wc.value = value;
+            }
+
             wc.name = that.getFieldName(key);
             wc.modelData = modelData;
             wc.view = that;

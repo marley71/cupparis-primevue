@@ -6,6 +6,7 @@ import ViewWrapperConf from "../views/WrapperConf";
 import WidgetWrapperConf from "../widgets/WrapperConf";
 import {EventBus} from 'primevue/utils';
 import actions from "../confs/actions";
+import Server from "./Server";
 
 const Ev = EventBus();
 const euroFormatter = new Intl.NumberFormat('it-IT', {
@@ -339,10 +340,11 @@ CrudCore.componentDialog = function(compName,componentConf,title,dialogConf) {
     let  comp = defineAsyncComponent(() => import('../dialogs/dCustom.vue'))
     console.debug('componentDialog',compName,componentConf)
     dialogConf = dialogConf || {
-        title : title,
+        //title : title,
         display : true,
         callbacks : {},
     };
+    dialogConf.title = title;
     let cc = {
         componentName : compName,
         componentConf : componentConf,
@@ -438,5 +440,61 @@ CrudCore.normalizeConf = (conf) => {
 CrudCore.euroFormat = (value) => {
     let v = value?value:0;
     return euroFormatter.format(v);
+}
+
+/**
+ * prepara il componente view per ereditare i metodi trovati nella conf, da usare dentro il create del componente
+ * view, si puo' utilizzare per le view custom create in un progetto.
+ * @param vueObject
+ */
+CrudCore.viewComponentCreate = function (vueObject) {
+
+    var __call = function (lk) {
+        vueObject[lk] = function () {
+            var localk = new String(lk);
+            return vueObject.__methods[localk].apply(vueObject, arguments);
+        }
+    }
+    for (let k in vueObject.__methods) {
+        __call(k);
+    }
+    vueObject.Server = Server;
+}
+/**
+ * prepara la sezione data per ereditare tutte le proprietà nelle conf come data dell'oggetto view,
+ * si puo' utilizzare per le view custom create in un progetto
+ * @param vueObject
+ */
+CrudCore.viewComponentData = (vueObject) => {
+
+    let dt = {
+        __methods:{}
+    };
+    let wc = new ViewWrapperConf(vueObject);
+    let ext = wc.loadConf(vueObject.conf);
+    for (let k in ext) {
+        if (!(ext[k] instanceof Function) ) {
+            dt[k] = ext[k];
+        } else {
+            dt.__methods[k] = ext[k];
+        }
+    }
+    if (!dt.langContext && dt.langContext !== null) {
+        dt.langContext = dt.modelName ? dt.modelName : ''
+        dt.langContext += '.fields';
+    }
+    // normalizzo i type dei fieldsConfig in quanto si accettano anche stringhe che rappresentano il type 'w-hidden'
+    for (let key in dt.fieldsConfig) {
+        //console.debug('--- key',key,dt.fieldsConfig[key])
+        if (dt.fieldsConfig[key] && ( (dt.fieldsConfig[key] instanceof String) || (typeof dt.fieldsConfig[key] === 'string')) ) {
+
+            dt.fieldsConfig[key] = {
+                type : dt.fieldsConfig[key]
+            }
+        }
+    }
+
+    //console.log('view Props',dt);
+    return dt;
 }
 export default CrudCore;

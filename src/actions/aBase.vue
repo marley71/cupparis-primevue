@@ -4,7 +4,7 @@
             class="hidden" :linkhref="href()"></span>
         <Button :title="translate(title)" :label="translate(text)"
                 :class=getActionClass()
-                :icon="icon"
+                :icon="_icon()"
                 :disabled="_disabled()"
                 @click="_execute($event)"
         />
@@ -206,6 +206,13 @@ export default {
         },
         setVisible(value) {
             this.visible = value;
+        },
+
+        _icon() {
+            if (this.icon instanceof Function) {
+                return this.icon.apply(this);
+            }
+            return this.icon;
         }
     }
 }

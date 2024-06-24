@@ -88,7 +88,7 @@
         <template v-else-if="type=='w-radio'">
             <div class="w-full flex border-1 border-round-sm surface-border p-2"
                  :class="direction=='row'?'flex-row':'flex-column'">
-                <div class="field-radiobutton mr-2" v-for="(label,key) in domainValues" :key="key">
+                <div class="field-radiobutton mr-2 mb-1" v-for="(label,key) in domainValues" :key="key">
                     <RadioButton :name="name" v-model="value" :value="key" v-bind="extraBind" @change="_change"/>
                     <label :for="key" v-html="label"></label>
                 </div>
@@ -117,17 +117,23 @@
             <w-hasmany ref="wRef" :conf="conf" @change="_change"></w-hasmany>
         </template>
         <template v-else-if="type=='w-belongsto'">
-            <div>
+            <div v-if="value">
                 <span v-for="(field,index) in labelFields" :key="index">
                     <span v-if="(separator && (index !== 0))">{{ separator }}</span>{{ value[field] }}
                 </span>
             </div>
+            <div v-else><!-- oggetto belongsto null --></div>
         </template>
         <template v-else-if="type=='w-belongsto-many'">
-            <div v-for="item in value">
-                <span v-for="(field,index) in labelFields" :key="index">
-                    <span v-if="(separator && (index !== 0))">{{ separator }}</span>{{ item[field] }}
-                </span>
+            <template v-if="value">
+                <div v-for="(item,key) in value" :key="key">
+                    <span v-for="(field,index) in labelFields" :key="index">
+                        <span v-if="(separator && (index !== 0))">{{ separator }}</span>{{ item[field] }}
+                    </span>
+                </div>
+            </template>
+            <div v-else>
+                <!-- oggetto belongsto-mangy null -->
             </div>
         </template>
         <template v-else-if="type=='w-custom'">
@@ -293,9 +299,12 @@
                 </div>
             </div>
         </template>
+        <template v-else-if="type=='w-button'">
+            <Button :class="cssClass" @click="_click" :icon="icon">{{value}}</Button>
+        </template>
         <template v-else>
             <component :is="type" :conf="wConf"></component>
-            <div>Widget non riconosciuto {{ type }}</div>
+<!--            <div>Widget non riconosciuto {{ type }}</div>-->
         </template>
         <div class="overflow-hidden">
             <span class="text-red-400" v-for="(error,index) in errors" :key="index">
@@ -390,9 +399,11 @@ export default {
                 this.ready();
             }
         },
-        // change() {
-        //
-        // },
+        _click(event) {
+            if (this.click) {
+                this.click.apply(this,[event]);
+            }
+        },
         _change(event, type) {
             let that = this;
             let evt = event || {};
@@ -529,7 +540,7 @@ export default {
             if (md.isValid()) {
                 return md.format(that.displayFormat)
             } else {
-                return that.translate(that.invalidDateString);
+                return that.translate(that.invalidDateString)+ '*' ;
             }
         },
         getFieldName() {

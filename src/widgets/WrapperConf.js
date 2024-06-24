@@ -113,8 +113,27 @@ export default class WrapperConf {
         conf.route = null;
         conf.suggestions = [];
         conf.autocompleteValue = conf.autocompleteValue || null;
+        conf.extraBind = conf.extraBind || {};
+        conf.getAutocompleteLabel = conf.getAutocompleteLabel || function(event) {
+            let that = this;
+
+            if (that.labelFields && that.labelFields.length > 0) {
+                let label = '';
+                for (let i in that.labelFields) {
+                    label += event[that.labelFields[i]] + ' ';
+                }
+                return label;
+            }
+            if (event.label)
+                return event.label;
+            return '';
+            //console.log(that,'label',event);
+        }
+
+
         //console.log('referredData',conf.referredData);
         let __initialValue = function () {
+            let that = this;
             //console.log('extra bind ',conf.extraBind['option-label'],conf);
             if (conf.extraBind['option-label']) {
                 if (conf.extraBind['option-label'] instanceof  Function) {
@@ -122,7 +141,11 @@ export default class WrapperConf {
                 }
                 return conf.referredData[conf.extraBind['option-label']];
             }
-            return conf.referredData['label'];
+
+            return conf.getAutocompleteLabel(conf.referredData);
+
+
+            //return conf.referredData['label'];
         }
         if (conf.referredData) {
             // let label = 'label'
@@ -152,23 +175,16 @@ export default class WrapperConf {
             console.log('search',conf,event);
         }
 
-        conf.getAutocompleteLabel = conf.getAutocompleteLabel || function(event) {
-            let that = this;
 
-            if (that.labelFields && that.labelFields.length > 0) {
-                let label = '';
-                for (let i in that.labelFields) {
-                    label += event[that.labelFields[i]] + ' ';
-                }
-                return label;
-            }
-            return event.label;
-            //console.log(that,'label',event);
-        }
 
         return conf;
     }
 
+    wButton(conf) {
+        conf.icon = conf.icon || null;
+        conf.cssClass = conf.cssClass || '';
+        return conf;
+    }
     wCheckbox(conf) {
         if (!conf.direction) {
             conf.direction = 'row';

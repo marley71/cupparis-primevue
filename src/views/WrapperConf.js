@@ -10,7 +10,7 @@ export default class WrapperConf {
     loadConf(conf) {
         let that = this;
         //console.log('VIEW CONF',conf);
-        console.log('View.WrapperConf type',conf.type);
+        //console.log('View.WrapperConf type',conf.type);
         if (!conf.type)
             throw "confurazione non trovata per la view definire il type della vista";
         var defConf = null;
@@ -22,7 +22,7 @@ export default class WrapperConf {
             defConf = CrudCore.clone(viewConfs.defaultView);
         }
         let wName = CrudCore.camelCase(conf.type || viewConfs.defaultView.type);
-        console.log('wname',that[wName])
+        //console.log('wname',that[wName])
         if (that[wName]) {
             conf = that[wName](conf);
         }
@@ -31,7 +31,7 @@ export default class WrapperConf {
     }
 
     vList(conf) {
-        console.log('wList conf',conf);
+        //console.log('wList conf',conf);
         //conf.selectionMode = 'multiple';
         conf.selected = null;
         if (!conf.type) {
@@ -41,7 +41,7 @@ export default class WrapperConf {
             conf.routeName = 'list';
         }
         if (!conf.fields && conf.value) {
-            console.log('keys',Object.keys(conf.value[0]))
+            //console.log('keys',Object.keys(conf.value[0]))
             conf.fields = Object.keys(conf.value[0]);
         }
         if (! ('actions' in conf) ){
