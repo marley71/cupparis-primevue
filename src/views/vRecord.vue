@@ -11,6 +11,7 @@
                             @click="removeFromList()">
                     </Button>
                     <template v-for="field in getHiddenFields()">
+
                         <template v-if="!isRemovedWidget(field)">
                             <c-widget :ref="field" :conf="widgetsConfig[field]" v-show="!isHiddenWidget(field)"></c-widget>
                         </template>
@@ -100,8 +101,10 @@
                     <template v-else>
 
                     <form ref="form" enctype="multipart/form-data" @submit="handleSubmit" class="p-fluid">
+
                             <template v-for="field in getHiddenFields()">
-                                <template v-if="isRemovedWidget(field)">
+
+                                <template v-if="!isRemovedWidget(field)">
                                     <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
                                 </template>
                             </template>
@@ -240,11 +243,13 @@ export default {
             this.setActions();
             this.loaded = true;
             setTimeout(function () {  // per permettere la renderizzazione html
-                that.afterDraw();
+                that._afterDraw();
             },100)
         },
-        afterDraw() {
-
+        _afterDraw() {
+            if (this.afterDraw) {
+                this.afterDraw.apply(this);
+            }
         },
         removeFromList() {
           this.isInlist = false;
@@ -485,7 +490,7 @@ export default {
             }
         },
         isRemovedWidget(field) {
-            console.debug('isRemovedWidget',field,(this.removedWidgets.indexOf(field) >= 0))
+            //console.debug('isRemovedWidget',field,(this.removedWidgets.indexOf(field) >= 0))
             return (this.removedWidgets.indexOf(field) >= 0);
         },
         removeWidget(field) {
@@ -502,14 +507,14 @@ export default {
             }
         },
         isHiddenWidget(field) {
-            console.debug('isHiddenWidget',field,(this.hiddenWidgets.indexOf(field) >= 0))
+            //console.debug('isHiddenWidget',field,(this.hiddenWidgets.indexOf(field) >= 0))
             return (this.hiddenWidgets.indexOf(field) >= 0);
         },
         hideWidget(field) {
             if (this.hiddenWidgets.indexOf(field) < 0) {
                 this.hiddenWidgets.push(field);
             }
-            console.debug('hideWidget',field,this.hiddenWidgets)
+            //console.debug('hideWidget',field,this.hiddenWidgets)
         },
         showWidget(field) {
             let idx = this.hiddenWidgets.indexOf(field);

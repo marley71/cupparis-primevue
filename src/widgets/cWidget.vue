@@ -396,7 +396,7 @@ export default {
     methods: {
         _ready() {
             if (this.ready) {
-                this.ready();
+                this.ready.apply(this);
             }
         },
         _click(event) {
