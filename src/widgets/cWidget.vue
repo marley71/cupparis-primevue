@@ -100,7 +100,12 @@
                     <i v-if="iconPrefix" :class="iconPrefix"></i>
                     <span v-if="prefix">{{prefix}}</span>
                 </template>
-                {{ value }}
+                <template v-if="numberFormat">
+                    {{new Intl.NumberFormat((numberFormat.language?numberFormat.language:'it-IT'), (numberFormat.options?numberFormat.options:{})).format(value)}}
+                </template>
+                <template v-else>
+                    {{ value }}
+                </template>
                 <template v-if="iconSuffix || suffix">
                     <i v-if="iconSuffix" :class="iconSuffix"></i>
                     <span v-if="suffix">{{suffix}}</span>
@@ -117,12 +122,15 @@
             <w-hasmany ref="wRef" :conf="conf" @change="_change"></w-hasmany>
         </template>
         <template v-else-if="type=='w-belongsto'">
-            <div v-if="value">
+            <div v-if="value && Object.keys(value) > 0">
                 <span v-for="(field,index) in labelFields" :key="index">
                     <span v-if="(separator && (index !== 0))">{{ separator }}</span>{{ value[field] }}
                 </span>
             </div>
-            <div v-else><!-- oggetto belongsto null --></div>
+            <div v-else>
+                <template v-if="noDataLabel">{{translate(noDataLabel)}}</template>
+                <!-- oggetto belongsto null -->
+            </div>
         </template>
         <template v-else-if="type=='w-belongsto-many'">
             <template v-if="value">
@@ -143,9 +151,9 @@
             <ColorPicker v-model="value" @change="_change" v-bind="extraBind"/>
         </template>
         <template v-else-if="type=='w-date-picker'">
-            <div>
+            <div class="crud-datepicker">
                 <input type="hidden" :name="name" v-model="value">
-                <div class="p-inputgroup">
+                <div class="p-inputgroup ">
                     <Button icon="fa fa-times" @click="_change($event,'clear')" v-if="buttonClear"/>
                     <Calendar class="w-full" :showButtonBar="true" v-model="dateValue" @date-select="_change"
                               inputDateFormat="YYYY-MM-DD" date-format="dd/mm/yy"
@@ -155,7 +163,7 @@
             </div>
         </template>
         <template v-else-if="type=='w-date-range-picker'">
-            <div>
+            <div class="crud-datepicker">
                 <input type="hidden" :name="name" v-model="value">
                 <div class="p-inputgroup">
                     <Button icon="fa fa-times" @click="_change($event,'clear')" v-if="buttonClear"/>
@@ -603,7 +611,8 @@ export default {
          */
         _getAutocompleteLabel(event) {
             return this.instance().getAutocompleteLabel.apply(this,[event]);
-        }
+        },
+
     }
 }
 </script>
@@ -614,4 +623,5 @@ label {
     font-size: 12px;
 
 }
+
 </style>

@@ -58,8 +58,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="(data,index) in hasmanyValue" :key="index">
-                        <td v-for="field in fields" :key="field">
-                            {{data[field]}}
+                        <td v-for="field in fields" :key="field" v-html="_getColumnValue(index,field)">
                         </td>
                     </tr>
                 </tbody>
@@ -388,6 +387,18 @@ export default {
                 values[i].dataKey = window.performance.now() + '_' + Math.floor(Math.random() * 100000);
             }
             return values;
+        },
+        /**
+         * metoto utilizzato da w-hasmany con modalità panel dove non abbiamo il concetto di widget
+         * per permettere di fare colonne custom
+         * @param column
+         * @private
+         */
+        _getColumnValue(index,field) {
+            if (this.getColumnValue) {
+                return this.getColumnValue.apply(this,[index,field]);
+            }
+           return this.hasmanyValue[index][field];
         }
     }
 }

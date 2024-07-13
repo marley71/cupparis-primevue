@@ -94,6 +94,7 @@ export default class WrapperConf {
         conf.iconPrefix = conf.iconPrefix || null;
         conf.suffix = conf.suffix || null;
         conf.iconSuffix = conf.iconSuffix || null;
+        conf.numberFormat = conf.numberFormat || null;
         return conf;
     }
 
@@ -120,7 +121,7 @@ export default class WrapperConf {
             if (that.labelFields && that.labelFields.length > 0) {
                 let label = '';
                 for (let i in that.labelFields) {
-                    label += event[that.labelFields[i]] + ' ';
+                    label += (event[that.labelFields[i]] || '') + ' ';
                 }
                 return label;
             }
@@ -309,7 +310,7 @@ export default class WrapperConf {
         },conf);
         conf.change = conf.change || function() {};
         conf.options = this.mapOptions(conf.domainValues,conf.domainValuesOrder);
-        console.log('SWAP-SELECT',conf);
+        //console.log('SWAP-SELECT',conf);
         return conf;
     }
 

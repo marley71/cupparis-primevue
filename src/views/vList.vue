@@ -114,7 +114,7 @@
 <!--                        </div>-->
 <!--                    </div>-->
 
-                    <div>records : {{getTotal()}}</div>
+                    <div>{{translate('app.records')}} : {{getTotal()}}</div>
 
                 </slot>
                 <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig">
@@ -235,7 +235,12 @@ export default {
             let that = this;
             console.log('sort event', event)
             if (that.routeName) {
-                that.route.setParam('order_field', event.sortField);
+                let sortField = event.sortField;
+                // se nella config e' definito il sort del field lo prendo da li
+                if (that.orderFields[sortField]) {
+                    sortField = that.orderFields[sortField];
+                }
+                that.route.setParam('order_field', sortField);
                 that.route.setParam('order_direction', event.sortOrder > 0 ? 'ASC' : 'DESC');
                 that.reload();
             }

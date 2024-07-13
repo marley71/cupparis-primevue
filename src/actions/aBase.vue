@@ -2,7 +2,7 @@
     <template v-if="(controlType=='button' || controlType=='link') && _visible()">
         <span v-if="controlType=='link'"
             class="hidden" :linkhref="href()"></span>
-        <Button :title="translate(title)" :label="translate(text)"
+        <Button :title="translate(title)" :label="_text()"
                 :class=getActionClass()
                 :icon="_icon()"
                 :disabled="_disabled()"
@@ -213,7 +213,14 @@ export default {
                 return this.icon.apply(this);
             }
             return this.icon;
+        },
+        _text() {
+            if (this.text instanceof Function) {
+                return this.translate(this.text.apply(this));
+            }
+            return this.translate(this.text);
         }
+
     }
 }
 </script>

@@ -7,6 +7,8 @@ import WidgetWrapperConf from "../widgets/WrapperConf";
 import {EventBus} from 'primevue/utils';
 import actions from "../confs/actions";
 import Server from "./Server";
+import routeConfs from "../confs/routes";
+import Route from "./Route";
 
 const Ev = EventBus();
 const euroFormatter = new Intl.NumberFormat('it-IT', {
@@ -496,5 +498,12 @@ CrudCore.viewComponentData = (vueObject) => {
 
     //console.log('view Props',dt);
     return dt;
+}
+CrudCore.createRoute = (routeName) => {
+    let routeConf =  JSON.parse(JSON.stringify(routeConfs[routeName]))  //Object.assign({},routeConfs[routeName]);
+    console.log('routeName',routeName,routeConf);
+    if (!routeConf)
+        throw "Impossibile trovare la route " + routeName;
+    return new Route(routeConf);
 }
 export default CrudCore;
