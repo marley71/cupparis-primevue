@@ -4,7 +4,7 @@
             <h3>{{ translate(title) }}</h3>
         </template>
         <template v-if="componentName">
-            <component :is="componentName" :conf="componentConf"></component>
+            <component ref="compRef" :is="componentName" :conf="componentConf"></component>
 <!--            <c-view :conf="componentConf"></c-view>-->
 <!--            <v-list :conf="componentConf"></v-list>-->
         </template>
@@ -58,6 +58,7 @@ export default {
       return {
           componentName : componentName,
           componentConf : componentConf,
+          compRef : 'c-instance'
       }
     },
     methods: {

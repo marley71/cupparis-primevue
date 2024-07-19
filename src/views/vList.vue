@@ -66,12 +66,6 @@
                                 <!--                    <c-widget :conf="widgetsConfig[parseInt(slotProps.index)][col]"></c-widget>-->
                             </template>
                         </Column>
-                        <!--                    <template #footer>-->
-                        <!--&lt;!&ndash;                        {{&ndash;&gt;-->
-                    <!--&lt;!&ndash;                            translate('app.numero-records-lista', null, 0, [(value ? value.length : 0), getFirst() + 1, getFirst() + (value ? value.length : 0), getTotal()])&ndash;&gt;-->
-                    <!--&lt;!&ndash;                        }}&ndash;&gt;-->
-                        <!--                        &lt;!&ndash;                        Ci sono {{value ? value.length : 0 }} record, da {{getFirst()+1}} a {{getFirst() + (value ? value.length : 0) }} su {{getTotal()}}&ndash;&gt;-->
-                        <!--                    </template>-->
                         <Column v-if="getRecordActionsPosition() == 'end' && hasRecordActions()" :exportable="false" :header="translate('app.actions')">
                             <template #body="slotProps">
                                 <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
@@ -154,12 +148,6 @@
                                 <!--                    <c-widget :conf="widgetsConfig[parseInt(slotProps.index)][col]"></c-widget>-->
                             </template>
                         </Column>
-                        <!--                    <template #footer>-->
-                        <!--&lt;!&ndash;                        {{&ndash;&gt;-->
-                    <!--&lt;!&ndash;                            translate('app.numero-records-lista', null, 0, [(value ? value.length : 0), getFirst() + 1, getFirst() + (value ? value.length : 0), getTotal()])&ndash;&gt;-->
-                    <!--&lt;!&ndash;                        }}&ndash;&gt;-->
-                        <!--                        &lt;!&ndash;                        Ci sono {{value ? value.length : 0 }} record, da {{getFirst()+1}} a {{getFirst() + (value ? value.length : 0) }} su {{getTotal()}}&ndash;&gt;-->
-                        <!--                    </template>-->
                         <Column v-if="getRecordActionsPosition() == 'end' && hasRecordActions()" :exportable="false" :header="translate('app.actions')">
                             <template #body="slotProps">
                                 <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
@@ -330,7 +318,11 @@ export default {
                     type : that.widgetsConfig[index][field]
                 }
             }
-            that.widgetsConfig[index][field].value = data;
+            // ATTENZIONE perche faccio questo? il valore e' gia' settato.. se necessario devo fare il ceck dove si trovano i valori
+            if (field in this.value[index]) {
+                that.widgetsConfig[index][field].value = data;
+            }
+
             return that.widgetsConfig[index][field];
         },
         setWidgetsConfig() {
@@ -367,16 +359,17 @@ export default {
                     let md = Object.assign({}, (that.metadata[key] || {}));
                     //console.log('field',key,'value',val);
                     widgetsConfig[i][key] = Object.assign(md, fConf[key]);
-                    widgetsConfig[i][key].value = val;
+                    // se il campo non e' nei valori potrebbe essere un custom
+                    // if (key in that.value[i]) {
+                    //     widgetsConfig[i][key].value = val;
+                    // }
+
                     widgetsConfig[i][key].name = that.getFieldName(key);
                     widgetsConfig[i][key].modelData = that.value[i];
                     widgetsConfig[i][key].view = that;
                     //widgetsConfig[i][key].label = that.getFieldLabel(key);
                 }
             }
-            //that.fields = Object.assign([],that.fields);
-            //console.log('vList value',that.value)
-            //console.log('vList _setWidgetsConfig',widgetsConfig,fieldsConfig)
             that.widgetsConfig = widgetsConfig;
         },
         columnLabel(col) {
@@ -442,6 +435,10 @@ export default {
             }
             return null;
         },
+        /**
+         * ritorna un vettore di primaryKey
+         * @returns {*[]}
+         */
         selectedRows() {
             let that = this;
             let ids = [];
@@ -450,6 +447,19 @@ export default {
                 ids.push(that.selected[i][that.primaryKey])
             }
             return ids;
+        },
+        /**
+         * ritorna tutti i dati delle righe selezionate
+         * @returns {*}
+         */
+        selectedRowsData() {
+            let that = this;
+            let rows = [];
+            for (let i in that.selected) {
+                console.log('selected rows data', that.selected[i], that.selected)
+                rows.push(that.selected[i])
+            }
+            return rows;
         },
         hasCollectionActions() {
             let that = this;
@@ -526,8 +536,19 @@ export default {
                     values[field] = w[0].instance().getValue()
                 }
             }
-            //console.log('rowData values',values);
+            //console.warn('rowData values',values);
             return values;
+        },
+        /**
+         * ritorna la riga che ha come primarykey uguale a key
+         * @param key
+         */
+        getRowDataByKey(key) {
+            let idx = this.value.map(a => a[this.primaryKey]).indexOf(key);
+            if (idx < 0) {
+                throw "getRowDataByKey invalid idx " + idx
+            }
+            return this.getRowData(idx);
         },
         getVisibleFields() {
             var that = this;

@@ -6,6 +6,7 @@ import ViewWrapperConf from "../views/WrapperConf";
 import WidgetWrapperConf from "../widgets/WrapperConf";
 import {EventBus} from 'primevue/utils';
 import actions from "../confs/actions";
+import cs from "../index";
 
 const Ev = EventBus();
 class CrudCore {
@@ -425,5 +426,33 @@ CrudCore.normalizeConf = (conf) => {
         }
     }
     return conf;
+}
+
+
+CrudCore.formInput = (conf,title) => {
+    let t = title?title:CrudCore.translate('app.inserimento-dati');
+    return new Promise((resolve,reject) => {
+        CrudCore.componentDialog('c-view',{
+            type : 'v-insert',
+            actions : [],
+            routeName:null,
+            value : conf.value,
+            fields : Object.keys(conf.value),
+            fieldsConfig : conf.fieldsConfig,
+        },t,{
+            callbacks : {
+                ok(dialog) {
+                    let dd = this;
+                    resolve(dd.$refs.compRef.instance().getValue(),dialog);
+                    dd.hide();
+                },
+                cancel(dialog) {
+                    reject(dialog);
+                    dd.hide();
+                }
+            }
+
+        })
+    })
 }
 export default CrudCore;
