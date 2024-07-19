@@ -15,6 +15,7 @@ export default {
           message: '',
           title: '',
           width: '50vw',
+          height : 'auto',
           callbacks: {},
           customClass:'',
           buttons: [],

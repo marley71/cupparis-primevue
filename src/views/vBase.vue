@@ -2,6 +2,7 @@
 import CrudComponent from "../CrudComponent.vue";
 import Server from "../lib/Server";
 import WrapperConf from "../views/WrapperConf";
+import CrudCore from "../lib/CrudCore";
 
 export default {
     name: "vBase",
@@ -9,52 +10,55 @@ export default {
     // props: ['conf'],
     emits : ['loaded'],
     created() {
-        let that = this;
-        var __call = function (lk) {
-            that[lk] = function () {
-                var localk = new String(lk);
-                return that.__methods[localk].apply(that, arguments);
-            }
-        }
-        for (let k in that.__methods) {
-            __call(k);
-        }
-        that.Server = Server;
+
+        CrudCore.viewComponentCreate(this);
+        // let that = this;
+        // var __call = function (lk) {
+        //     that[lk] = function () {
+        //         var localk = new String(lk);
+        //         return that.__methods[localk].apply(that, arguments);
+        //     }
+        // }
+        // for (let k in that.__methods) {
+        //     __call(k);
+        // }
+        // that.Server = Server;
     },
     mounted() {
         this.createViewRoute();
     },
     data() {
-        let that = this;
-        let dt = {
-            __methods:{}
-        };
-        let wc = new WrapperConf(that);
-        let ext = wc.loadConf(that.conf);
-        for (let k in ext) {
-            if (!(ext[k] instanceof Function) ) {
-                dt[k] = ext[k];
-            } else {
-                dt.__methods[k] = ext[k];
-            }
-        }
-        if (!dt.langContext && dt.langContext !== null) {
-            dt.langContext = dt.modelName ? dt.modelName : ''
-            dt.langContext += '.fields';
-        }
-        // normalizzo i type dei fieldsConfig in quanto si accettano anche stringhe che rappresentano il type 'w-hidden'
-        for (let key in dt.fieldsConfig) {
-            //console.debug('--- key',key,dt.fieldsConfig[key])
-            if (dt.fieldsConfig[key] && ( (dt.fieldsConfig[key] instanceof String) || (typeof dt.fieldsConfig[key] === 'string')) ) {
-
-                dt.fieldsConfig[key] = {
-                    type : dt.fieldsConfig[key]
-                }
-            }
-        }
-
-        //console.log('view Props',dt);
-        return dt;
+        return CrudCore.viewComponentData(this);
+        // let that = this;
+        // let dt = {
+        //     __methods:{}
+        // };
+        // let wc = new WrapperConf(that);
+        // let ext = wc.loadConf(that.conf);
+        // for (let k in ext) {
+        //     if (!(ext[k] instanceof Function) ) {
+        //         dt[k] = ext[k];
+        //     } else {
+        //         dt.__methods[k] = ext[k];
+        //     }
+        // }
+        // if (!dt.langContext && dt.langContext !== null) {
+        //     dt.langContext = dt.modelName ? dt.modelName : ''
+        //     dt.langContext += '.fields';
+        // }
+        // // normalizzo i type dei fieldsConfig in quanto si accettano anche stringhe che rappresentano il type 'w-hidden'
+        // for (let key in dt.fieldsConfig) {
+        //     //console.debug('--- key',key,dt.fieldsConfig[key])
+        //     if (dt.fieldsConfig[key] && ( (dt.fieldsConfig[key] instanceof String) || (typeof dt.fieldsConfig[key] === 'string')) ) {
+        //
+        //         dt.fieldsConfig[key] = {
+        //             type : dt.fieldsConfig[key]
+        //         }
+        //     }
+        // }
+        //
+        // //console.log('view Props',dt);
+        // return dt;
     },
     watch : {
         loaded() {
@@ -77,11 +81,11 @@ export default {
         load() {
             let that = this;
             that.setRouteValues();
-            that.beforeLoadData();
+            that._beforeLoadData();
             that.loadData(function (json) {
-                that.json = json;
+                that.json = CrudCore.clone(json);
                 that.fillData(json);
-                that.afterLoadData(json);
+                that._afterLoadData(json);
                 that.setWidgetsConfig();
                 that.draw();
             });
@@ -111,8 +115,10 @@ export default {
             // }
             that.route.setValuesFromObj(that);
         },
-        beforeLoadData() {
-
+        _beforeLoadData() {
+            if (this.conf.beforeLoadData) {
+                this.conf.beforeLoadData.apply(this);
+            }
         },
 
         loadData(callback) {
@@ -133,8 +139,10 @@ export default {
                 callback(json);
             })
         },
-        afterLoadData() {
-
+        _afterLoadData() {
+            if (this.conf.afterLoadData) {
+                this.conf.afterLoadData.apply(this);
+            }
         },
 
         /**

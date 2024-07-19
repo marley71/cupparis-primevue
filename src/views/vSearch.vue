@@ -190,6 +190,24 @@ export default {
     },
     methods: {
 
+        _beforeLoadData() {
+            let that =this;
+            let context = that.$route.params.context;
+            let listParams = ( context && context.filter( a => a.indexOf('s_') == 0) ) || [];
+            for (let i in listParams) {
+                let tmp = listParams[i].split(':');
+                if (tmp.length != 2) {
+                    console.warn('non riesco a definire il valore da filtrare per il parmetro',listParams[i],tmp);
+                    continue;
+                }
+                that.route.setParam(tmp[0],tmp[1]);
+            }
+            //console.debug('SEARCH context',context);
+            if (that.conf.beforeLoadData) {
+                that.conf.beforeLoadData.apply(this);
+            }
+        },
+
         search(type, event) {
             console.debug('type', type, event);
             // gestione evento change e submit della form

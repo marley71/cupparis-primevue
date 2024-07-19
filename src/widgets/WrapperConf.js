@@ -94,6 +94,7 @@ export default class WrapperConf {
         conf.iconPrefix = conf.iconPrefix || null;
         conf.suffix = conf.suffix || null;
         conf.iconSuffix = conf.iconSuffix || null;
+        conf.numberFormat = conf.numberFormat || null;
         return conf;
     }
 
@@ -112,8 +113,28 @@ export default class WrapperConf {
     wAutocomplete(conf) {
         conf.route = null;
         conf.suggestions = [];
+        conf.autocompleteValue = conf.autocompleteValue || null;
+        conf.extraBind = conf.extraBind || {};
+        conf.getAutocompleteLabel = conf.getAutocompleteLabel || function(event) {
+            let that = this;
+
+            if (that.labelFields && that.labelFields.length > 0) {
+                let label = '';
+                for (let i in that.labelFields) {
+                    label += (event[that.labelFields[i]] || '') + ' ';
+                }
+                return label;
+            }
+            if (event.label)
+                return event.label;
+            return '';
+            //console.log(that,'label',event);
+        }
+
+
         //console.log('referredData',conf.referredData);
         let __initialValue = function () {
+            let that = this;
             //console.log('extra bind ',conf.extraBind['option-label'],conf);
             if (conf.extraBind['option-label']) {
                 if (conf.extraBind['option-label'] instanceof  Function) {
@@ -121,7 +142,11 @@ export default class WrapperConf {
                 }
                 return conf.referredData[conf.extraBind['option-label']];
             }
-            return conf.referredData['label'];
+
+            return conf.getAutocompleteLabel(conf.referredData);
+
+
+            //return conf.referredData['label'];
         }
         if (conf.referredData) {
             // let label = 'label'
@@ -151,23 +176,16 @@ export default class WrapperConf {
             console.log('search',conf,event);
         }
 
-        conf.getAutocompleteLabel = conf.getAutocompleteLabel || function(event) {
-            let that = this;
 
-            if (that.labelFields && that.labelFields.length > 0) {
-                let label = '';
-                for (let i in that.labelFields) {
-                    label += event[that.labelFields[i]] + ' ';
-                }
-                return label;
-            }
-            return event.label;
-            //console.log(that,'label',event);
-        }
 
         return conf;
     }
 
+    wButton(conf) {
+        conf.icon = conf.icon || null;
+        conf.cssClass = conf.cssClass || '';
+        return conf;
+    }
     wCheckbox(conf) {
         if (!conf.direction) {
             conf.direction = 'row';
@@ -292,7 +310,7 @@ export default class WrapperConf {
         },conf);
         conf.change = conf.change || function() {};
         conf.options = this.mapOptions(conf.domainValues,conf.domainValuesOrder);
-        console.log('SWAP-SELECT',conf);
+        //console.log('SWAP-SELECT',conf);
         return conf;
     }
 
@@ -454,6 +472,18 @@ export default class WrapperConf {
             conf.height = '30';
         }
         console.debug('wPreview',conf);
+        return conf;
+    }
+    wTable(conf) {
+        conf.getKeys = function () {
+            if (this.value && this.value.length > 0) {
+                return Object.keys(this.value[0]);
+            }
+            return [];
+        }
+        if (!conf.layout) {
+            conf.layout = 'grid';
+        }
         return conf;
     }
 }

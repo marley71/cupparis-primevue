@@ -7,6 +7,24 @@
             <Avatar v-if="imageType == 'avatar'" :image="value" v-bind="extraBind" shape="circle" :class="imageClass"></Avatar>
             <img v-else :src="value" v-bind="extraBind" :class="imageClass"/>
         </template>
+        <template v-else-if="type==='w-table'">
+<!--            <template v-if="value || value.length > 0">-->
+<!--                <div class="flex" v-for="(item,index) in value" :key="index">-->
+<!--                    <div class="flex" v-for="column in getKeys()" :field="column" :key="column">-->
+<!--                        {{item[column]}}-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--            </template>-->
+
+            <DataTable v-if="value || value.length > 0" :value="value">
+                <Column v-for="column in getKeys()" :field="column" :key="column" :header="column">
+                    <template #body="slotProps">
+                        {{slotProps.data[column]}}
+                    </template>
+                </Column>
+            </DataTable>
+        </template>
         <template v-else-if="type=='w-input'">
             <Password v-if="inputType == 'password'" :inputProps="{'name':name}" :name="name" v-model="value" toggleMask
                       v-bind="extraBind"
@@ -54,8 +72,8 @@
 
                     <Button icon="fa fa-times" @click="_change($event,'clear')"/>
                     <AutoComplete class="w-full" :name="name" v-model="autocompleteValue" :suggestions="suggestions"
-                                  @complete="search" :option-label="getAutocompleteLabel" option-value="id"
-                                  v-bind="extraBind" @change="_change" @item-select="itemSelect"/>
+                                  @complete="search" :option-label="_getAutocompleteLabel" option-value="id"
+                                  v-bind="extraBind" @item-select="itemSelect"/>
                 </div>
             </div>
         </template>
@@ -70,7 +88,7 @@
         <template v-else-if="type=='w-radio'">
             <div class="w-full flex border-1 border-round-sm surface-border p-2"
                  :class="direction=='row'?'flex-row':'flex-column'">
-                <div class="field-radiobutton mr-2" v-for="(label,key) in domainValues" :key="key">
+                <div class="field-radiobutton mr-2 mb-1" v-for="(label,key) in domainValues" :key="key">
                     <RadioButton :name="name" v-model="value" :value="key" v-bind="extraBind" @change="_change"/>
                     <label :for="key" v-html="label"></label>
                 </div>
@@ -82,7 +100,12 @@
                     <i v-if="iconPrefix" :class="iconPrefix"></i>
                     <span v-if="prefix">{{prefix}}</span>
                 </template>
-                {{ value }}
+                <template v-if="numberFormat">
+                    {{new Intl.NumberFormat((numberFormat.language?numberFormat.language:'it-IT'), (numberFormat.options?numberFormat.options:{})).format(value)}}
+                </template>
+                <template v-else>
+                    {{ value }}
+                </template>
                 <template v-if="iconSuffix || suffix">
                     <i v-if="iconSuffix" :class="iconSuffix"></i>
                     <span v-if="suffix">{{suffix}}</span>
@@ -99,17 +122,26 @@
             <w-hasmany ref="wRef" :conf="conf" @change="_change"></w-hasmany>
         </template>
         <template v-else-if="type=='w-belongsto'">
-            <div>
+            <div v-if="value && Object.keys(value) > 0">
                 <span v-for="(field,index) in labelFields" :key="index">
                     <span v-if="(separator && (index !== 0))">{{ separator }}</span>{{ value[field] }}
                 </span>
             </div>
+            <div v-else>
+                <template v-if="noDataLabel">{{translate(noDataLabel)}}</template>
+                <!-- oggetto belongsto null -->
+            </div>
         </template>
         <template v-else-if="type=='w-belongsto-many'">
-            <div v-for="item in value">
-                <span v-for="(field,index) in labelFields" :key="index">
-                    <span v-if="(separator && (index !== 0))">{{ separator }}</span>{{ item[field] }}
-                </span>
+            <template v-if="value">
+                <div v-for="(item,key) in value" :key="key">
+                    <span v-for="(field,index) in labelFields" :key="index">
+                        <span v-if="(separator && (index !== 0))">{{ separator }}</span>{{ item[field] }}
+                    </span>
+                </div>
+            </template>
+            <div v-else>
+                <!-- oggetto belongsto-mangy null -->
             </div>
         </template>
         <template v-else-if="type=='w-custom'">
@@ -119,9 +151,9 @@
             <ColorPicker v-model="value" @change="_change" v-bind="extraBind"/>
         </template>
         <template v-else-if="type=='w-date-picker'">
-            <div>
+            <div class="crud-datepicker">
                 <input type="hidden" :name="name" v-model="value">
-                <div class="p-inputgroup">
+                <div class="p-inputgroup ">
                     <Button icon="fa fa-times" @click="_change($event,'clear')" v-if="buttonClear"/>
                     <Calendar class="w-full" :showButtonBar="true" v-model="dateValue" @date-select="_change"
                               inputDateFormat="YYYY-MM-DD" date-format="dd/mm/yy"
@@ -131,7 +163,7 @@
             </div>
         </template>
         <template v-else-if="type=='w-date-range-picker'">
-            <div>
+            <div class="crud-datepicker">
                 <input type="hidden" :name="name" v-model="value">
                 <div class="p-inputgroup">
                     <Button icon="fa fa-times" @click="_change($event,'clear')" v-if="buttonClear"/>
@@ -275,9 +307,12 @@
                 </div>
             </div>
         </template>
+        <template v-else-if="type=='w-button'">
+            <Button :class="cssClass" @click="_click" :icon="icon">{{value}}</Button>
+        </template>
         <template v-else>
             <component :is="type" :conf="wConf"></component>
-            <div>Widget non riconosciuto {{ type }}</div>
+<!--            <div>Widget non riconosciuto {{ type }}</div>-->
         </template>
         <div class="overflow-hidden">
             <span class="text-red-400" v-for="(error,index) in errors" :key="index">
@@ -369,13 +404,16 @@ export default {
     methods: {
         _ready() {
             if (this.ready) {
-                this.ready();
+                this.ready.apply(this);
             }
         },
-        // change() {
-        //
-        // },
+        _click(event) {
+            if (this.click) {
+                this.click.apply(this,[event]);
+            }
+        },
         _change(event, type) {
+            let that = this;
             let evt = event || {};
             evt.widget = this;
             //console.log('EVENTSSS', evt);
@@ -384,15 +422,16 @@ export default {
                     if (type == 'clear') {
                         this.value = null;
                         this.autocompleteValue = null;
-                    } else {
+                    } else if (event) {
                         this.value = event.id;
+                        this.referredData = event;
                     }
                     break;
                 case 'w-date-picker':
                     if (type == 'clear') {
                         this.value = null;
                         this.dateValue = null;
-                    } else {
+                    } else if (event) {
                         let inputDateFormat = evt.widget.inputDateFormat || 'YYYY-MM-DD';
                         var date = event ? moment(event).format(inputDateFormat) : null;
                         //console.log("DATE",date, inputDateFormat)
@@ -404,7 +443,7 @@ export default {
                     if (type == 'clear') {
                         this.value = null;
                         this.dateValue = null;
-                    } else {
+                    } else if (event) {
                         let inputDateFormat = evt.widget.inputDateFormat || 'YYYY-MM-DD';
                         var date = event ? moment(event).format(inputDateFormat) : null;
                         //console.log("DATE",date, inputDateFormat)
@@ -417,7 +456,10 @@ export default {
             }
             this.$emit('change', evt);
             if (this.change) {
-                this.change(evt);
+                setTimeout(function () {
+                    that.change(evt);
+                },10)
+
             }
 
         },
@@ -483,7 +525,7 @@ export default {
                     that.value = val;
                     break;
             }
-
+            this._change();
         },
         getValue() {
             let that = this;
@@ -506,7 +548,7 @@ export default {
             if (md.isValid()) {
                 return md.format(that.displayFormat)
             } else {
-                return that.translate(that.invalidDateString);
+                return that.translate(that.invalidDateString)+ '*' ;
             }
         },
         getFieldName() {
@@ -529,7 +571,14 @@ export default {
             this.value.splice(id,1);
         },
         itemSelect() {
-            this.value = this.autocompleteValue.id;
+            this.instance().setValue(this.autocompleteValue.id)
+            //let that = this;
+
+            // that.value = that.autocompleteValue.id;
+            // setTimeout(function () {
+            //     that._change();
+            // },100)
+
         },
         instance() {
             if (this.$refs.wRef) {
@@ -555,10 +604,15 @@ export default {
                     throw widgetType + "status widget non supportato funcName " + funcName
             }
         },
-        // uploadFile(event) {
-        //     console.log('uploadFile event ',event,this);
-        //     window.EE = event;
-        // }
+        /**
+         * ritorna il valore dell'autocomplete in base alla configurazione di labelFields
+         * @param event
+         * @private
+         */
+        _getAutocompleteLabel(event) {
+            return this.instance().getAutocompleteLabel.apply(this,[event]);
+        },
+
     }
 }
 </script>
@@ -569,4 +623,5 @@ label {
     font-size: 12px;
 
 }
+
 </style>

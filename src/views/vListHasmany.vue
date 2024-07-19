@@ -51,12 +51,6 @@
                             <!--                    <c-widget :conf="widgetsConfig[parseInt(slotProps.index)][col]"></c-widget>-->
                         </template>
                     </Column>
-<!--                    <template #footer>-->
-<!--&lt;!&ndash;                        {{&ndash;&gt;-->
-<!--&lt;!&ndash;                            translate('app.numero-records-lista', null, 0, [(value ? value.length : 0), getFirst() + 1, getFirst() + (value ? value.length : 0), getTotal()])&ndash;&gt;-->
-<!--&lt;!&ndash;                        }}&ndash;&gt;-->
-<!--                        &lt;!&ndash;                        Ci sono {{value ? value.length : 0 }} record, da {{getFirst()+1}} a {{getFirst() + (value ? value.length : 0) }} su {{getTotal()}}&ndash;&gt;-->
-<!--                    </template>-->
                     <template #empty>
                         {{ translate('app.no_records_found') }}
                     </template>
@@ -79,7 +73,6 @@
 <script>
 //import cWidget from "../widgets/cWidget.vue";
 import cAction from "../actions/cAction.vue";
-import actionConfs from "../confs/actions";
 import vList from './vList.vue';
 
 export default {
@@ -105,6 +98,12 @@ export default {
             labelCols : {}
         }
     },
+    methods: {
+        getFieldName(field) {
+            console.debug('v-list-hasmany getFieldName',field);
+            return field + 'ppop[]';
+        }
+    }
 }
 </script>
 

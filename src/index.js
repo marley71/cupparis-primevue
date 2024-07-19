@@ -23,7 +23,7 @@ import Route from './lib/Route.js';
 import Wait from "./Wait.vue";
 import viewConfs from "./confs/views.js";
 import CrudHelpers from "./lib/CrudHelpers";
-
+import cWidget from "./widgets/cWidget.vue";
 import actionConfs from "./confs/actions";
 
 import { configure } from 'vee-validate';
@@ -57,8 +57,9 @@ export default {
         CrudCore.componentItems['c-import'] = cImport;
         CrudCore.componentItems['v-list-hasmany'] = vListHasmany;
         CrudCore.componentItems['a-base'] = aBase;
+        CrudCore.componentItems['c-widget'] =  cWidget;
     },
-    CrudComponent,cAction,CrudCore,CrudVars,
+    CrudComponent,cAction,CrudCore,CrudVars,cWidget,
     cView,
     routerConf,routeConfs,actionConfs,viewConfs,
     vRecord,vSearch,cManage,vList,vListEdit,cImport,vListHasmany,

@@ -114,7 +114,7 @@
 <!--                        </div>-->
 <!--                    </div>-->
 
-                    <div>records : {{getTotal()}}</div>
+                    <div>{{translate('app.records')}} : {{getTotal()}}</div>
 
                 </slot>
                 <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig">
@@ -144,8 +144,6 @@
                                 <!--                    {{slotProps.data[col]}} {{ slotProps.index}}-->
                                 <c-widget :ref="'w'+slotProps.index+'_'+col"
                                           :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></c-widget>
-                                <!--                    {{getW(slotProps.index,col,slotProps.data[col])}}-->
-                                <!--                    <c-widget :conf="widgetsConfig[parseInt(slotProps.index)][col]"></c-widget>-->
                             </template>
                         </Column>
                         <Column v-if="getRecordActionsPosition() == 'end' && hasRecordActions()" :exportable="false" :header="translate('app.actions')">
@@ -237,7 +235,12 @@ export default {
             let that = this;
             console.log('sort event', event)
             if (that.routeName) {
-                that.route.setParam('order_field', event.sortField);
+                let sortField = event.sortField;
+                // se nella config e' definito il sort del field lo prendo da li
+                if (that.orderFields[sortField]) {
+                    sortField = that.orderFields[sortField];
+                }
+                that.route.setParam('order_field', sortField);
                 that.route.setParam('order_direction', event.sortOrder > 0 ? 'ASC' : 'DESC');
                 that.reload();
             }
@@ -299,8 +302,8 @@ export default {
                 that.collectionActions.actions[aName] = aConf;
             }
             this.selectionMode = needSelection?'multiple':null;
-            console.debug('RECORDACTIONS', that.recordActionsConf)
-            console.debug('GLOBAL ACTIONS', that.collectionActions);
+            //console.debug('RECORDACTIONS', that.recordActionsConf)
+            //console.debug('GLOBAL ACTIONS', that.collectionActions);
             this._setMenuCollection();
         },
 
@@ -309,7 +312,7 @@ export default {
             index = index % that.getPerPage();
             //console.log('GETWIDGETCONF',index,field,data);
             if (!that.widgetsConfig || !that.widgetsConfig[index] || !that.widgetsConfig[index][field]) {
-                console.log('conf non trovata',field,index);
+                console.warn('conf non trovata',field,index);
                 return {};
             }
 
@@ -318,17 +321,40 @@ export default {
                     type : that.widgetsConfig[index][field]
                 }
             }
-            // ATTENZIONE perche faccio questo? il valore e' gia' settato.. se necessario devo fare il ceck dove si trovano i valori
-            if (field in this.value[index]) {
+            // TODO perche faccio questo? il valore e' gia' settato.. se necessario devo fare il ceck dove si trovano i valori
+            // if (field in this.value[index]) {
+            //     that.widgetsConfig[index][field].value = data;
+            // }
+
+            if ( (""+data) != 'undefined') {
                 that.widgetsConfig[index][field].value = data;
             }
-
             return that.widgetsConfig[index][field];
         },
         setWidgetsConfig() {
             this._setWidgetsConfig();
         },
         _setWidgetsConfig() {
+            let that = this;
+            // configurazioni widgets se non ci sono fields configurati prendo le keys dei valori
+            if (!that.fields && that.value.length) {
+                that.fields = Object.keys(that.value[0]);
+            }
+            // configurazione finale dei widgets
+            let widgetsConfig = [];
+            for (let i in that.value) {
+                widgetsConfig.push({});
+                for (let f in that.fields) {
+                    let key = that.fields[f];
+                    let val = that.value[i][key];
+                    widgetsConfig[i][key] = that.getWidgetConfig(key,val,that.value[i]);
+                    widgetsConfig[i][key].index = i;
+                }
+            }
+            that.widgetsConfig = widgetsConfig;
+        },
+
+        _setWidgetsConfigOld() {
             let that = this;
             // configurazioni widgets
             if (!that.fields && that.value.length) {
@@ -359,11 +385,7 @@ export default {
                     let md = Object.assign({}, (that.metadata[key] || {}));
                     //console.log('field',key,'value',val);
                     widgetsConfig[i][key] = Object.assign(md, fConf[key]);
-                    // se il campo non e' nei valori potrebbe essere un custom
-                    // if (key in that.value[i]) {
-                    //     widgetsConfig[i][key].value = val;
-                    // }
-
+                    widgetsConfig[i][key].value = val;
                     widgetsConfig[i][key].name = that.getFieldName(key);
                     widgetsConfig[i][key].modelData = that.value[i];
                     widgetsConfig[i][key].view = that;
@@ -372,6 +394,35 @@ export default {
             }
             that.widgetsConfig = widgetsConfig;
         },
+        /**
+         * ritorna la configurazione di un widget per poter instanziare widgets dinamici
+         * @param key
+         */
+        getWidgetConfig(key,value,modelData) {
+            let that = this;
+            let md = Object.assign({}, (that.metadata[key] || {}));
+            let fieldsConfig = that.fieldsConfig || {};
+            let wc = {
+                type: that.defaultWidgetType,
+            };
+            if (fieldsConfig[key]) {
+                wc = Object.assign(wc, CrudCore.normalizeConf(fieldsConfig[key]) );
+            }
+            //console.log('field',key,'value',val);
+            wc = Object.assign(md, wc);
+            // se il value e' undefined allora e' un campo custom della view non ci metto niente
+            if ((""+value) != 'undefined') {
+                wc.value = value;
+            }
+
+            wc.name = that.getFieldName(key);
+            wc.modelData = modelData;
+            wc.view = that;
+            that.setFieldLabel(key,wc);
+            that.labelCols[key] = wc.label;
+            return wc;
+        },
+
         columnLabel(col) {
           return this.labelCols[col];
         },
@@ -536,9 +587,29 @@ export default {
                     values[field] = w[0].instance().getValue()
                 }
             }
-            //console.warn('rowData values',values);
+            //console.log('rowData values',values);
             return values;
         },
+        /**
+         * ritorna i widgets di una riga
+         * @param index
+         * @returns {{}}
+         */
+        getRowWidgets (index) {
+            var that = this;
+            var widgets = {};
+            for (var k in that.fields) {
+                let field = that.fields[k];
+                //console.log('w ref','w'+index+'_'+field)
+                let w = that.$refs['w'+index+'_'+field];
+                if (w) {
+                    widgets[field] = w[0].instance();
+                }
+            }
+            //console.log('rowData values',values);
+            return widgets;
+        },
+
         /**
          * ritorna la riga che ha come primarykey uguale a key
          * @param key
