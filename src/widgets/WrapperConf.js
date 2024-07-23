@@ -115,6 +115,7 @@ export default class WrapperConf {
         conf.suggestions = [];
         conf.autocompleteValue = conf.autocompleteValue || null;
         conf.extraBind = conf.extraBind || {};
+        conf.autocompleteParams = conf.autocompleteParams || null;
         conf.getAutocompleteLabel = conf.getAutocompleteLabel || function(event) {
             let that = this;
 
@@ -166,6 +167,8 @@ export default class WrapperConf {
             that.route.setParams({
                 field : field,
                 value : event.query,
+                params : that.autocompleteParams,
+
             });
 
             console.log('route',that.route,that);
