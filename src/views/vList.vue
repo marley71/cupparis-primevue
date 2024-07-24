@@ -85,7 +85,7 @@
             </template>
             <template v-if="layout=='simple'">
                 <template v-for="(v,row) in value">
-                    <template v-for="(col) in getHiddenFields()">
+                    <template v-for="(col) in getHiddenFields()" :key="col">
                         <c-widget :ref="'w'+row+'_'+col" :conf="getWidgetConf(row,col,v[col])"></c-widget>
                     </template>
                 </template>
@@ -321,6 +321,11 @@ export default {
                     type : that.widgetsConfig[index][field]
                 }
             }
+            // TODO perche faccio questo? il valore e' gia' settato.. se necessario devo fare il ceck dove si trovano i valori
+            // if (field in this.value[index]) {
+            //     that.widgetsConfig[index][field].value = data;
+            // }
+
             if ( (""+data) != 'undefined') {
                 that.widgetsConfig[index][field].value = data;
             }
@@ -481,6 +486,10 @@ export default {
             }
             return null;
         },
+        /**
+         * ritorna un vettore di primaryKey
+         * @returns {*[]}
+         */
         selectedRows() {
             let that = this;
             let ids = [];
@@ -489,6 +498,19 @@ export default {
                 ids.push(that.selected[i][that.primaryKey])
             }
             return ids;
+        },
+        /**
+         * ritorna tutti i dati delle righe selezionate
+         * @returns {*}
+         */
+        selectedRowsData() {
+            let that = this;
+            let rows = [];
+            for (let i in that.selected) {
+                console.log('selected rows data', that.selected[i], that.selected)
+                rows.push(that.selected[i])
+            }
+            return rows;
         },
         hasCollectionActions() {
             let that = this;
@@ -588,6 +610,17 @@ export default {
             return widgets;
         },
 
+        /**
+         * ritorna la riga che ha come primarykey uguale a key
+         * @param key
+         */
+        getRowDataByKey(key) {
+            let idx = this.value.map(a => a[this.primaryKey]).indexOf(key);
+            if (idx < 0) {
+                throw "getRowDataByKey invalid idx " + idx
+            }
+            return this.getRowData(idx);
+        },
         getVisibleFields() {
             var that = this;
             var visible = [];

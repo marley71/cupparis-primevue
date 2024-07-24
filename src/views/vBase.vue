@@ -164,6 +164,12 @@ export default {
             }
             that.json = json;
         },
+        /**
+         * inserisce nei value anche i fields definiti custom dall'utente con valori statici
+         */
+        fillCustomFields() {
+
+        },
 
         setParams(params) {
             console.log('route set params',params);
