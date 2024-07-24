@@ -41,7 +41,19 @@
                 <Dropdown class="w-full" :name="name" v-model="value" :options="options"
                           option-label="label" option-value="id"
                           :placeholder="placeholder || translate('app.seleziona')"
-                          v-bind="extraBind" @change="_change">
+                          v-bind="extraBind" @change="_change" :disabled="_disabled()">
+                        <template #value="slotProps">
+                            <div v-if="slotProps.value"
+                                 :class="'select-button-option select-button-option-'+name+ ' select-button-option-'+name+'-'+slotProps.value"
+                            >
+                                {{ domainValues[slotProps.value]?domainValues[slotProps.value]:slotProps.value }}
+
+                                <!--                    v-html="slotProps.value.label"-->
+                            </div>
+                            <span v-else>
+                                {{ slotProps.placeholder }}
+                            </span>
+                        </template>
                         <template #option="slotProps">
                             <div
                                 :class="'select-button-option select-button-option-'+name+ ' select-button-option-'+name+'-'+slotProps.option.id"
@@ -122,10 +134,25 @@
             <w-hasmany ref="wRef" :conf="conf" @change="_change"></w-hasmany>
         </template>
         <template v-else-if="type=='w-belongsto'">
-            <div v-if="value && Object.keys(value) > 0">
-                <span v-for="(field,index) in labelFields" :key="index">
-                    <span v-if="(separator && (index !== 0))">{{ separator }}</span>{{ value[field] }}
-                </span>
+            <div v-if="value && Object.keys(value).length > 0">
+                <a v-if="_hasHref()" :href="_href()">
+                    <span v-for="(field,index) in labelFields" :key="index">
+                        <span v-if="(separator && (index !== 0))">{{ separator }}</span>{{ value[field] }}
+                    </span>
+                </a>
+                <template v-else-if="_hasClick">
+                    <div  @click="_click">
+                        <span v-for="(field,index) in labelFields" :key="index">
+                            <span v-if="(separator && (index !== 0))">{{ separator }}</span>{{ value[field] }}
+                        </span>
+                    </div>
+                </template>
+                <template>
+                    <span v-for="(field,index) in labelFields" :key="index">
+                        <span v-if="(separator && (index !== 0))">{{ separator }}</span>{{ value[field] }}
+                    </span>
+                </template>
+
             </div>
             <div v-else>
                 <template v-if="noDataLabel">{{translate(noDataLabel)}}</template>
@@ -308,7 +335,8 @@
             </div>
         </template>
         <template v-else-if="type=='w-button'">
-            <Button :class="cssClass" @click="_click" :icon="icon">{{value}}</Button>
+            <Button :class="cssClass" @click="_click" :icon="_icon()"
+                    :disabled="_disabled()" :title="_title()">{{value}}</Button>
         </template>
         <template v-else>
             <component :is="type" :conf="wConf"></component>
@@ -407,6 +435,12 @@ export default {
                 this.ready.apply(this);
             }
         },
+        _hasClick() {
+            if (this.click && (this.click instanceof Function) ) {
+                return true;
+            }
+            return false;
+        },
         _click(event) {
             if (this.click) {
                 this.click.apply(this,[event]);
@@ -462,6 +496,38 @@ export default {
 
             }
 
+        },
+        _hasHref() {
+            if (this.href) {
+                return true;
+            }
+            return false;
+        },
+        _href(event) {
+            if (this.href instanceof Function) {
+                return this.href.apply(this);
+            }
+            return this.href;
+        },
+        _title(event) {
+            if (this.title instanceof Function) {
+                return this.title.apply(this);
+            }
+            return this.title;
+        },
+
+        _icon(event) {
+            if (this.icon instanceof Function) {
+                return this.icon.apply(this);
+            }
+            return this.icon;
+        },
+
+        _disabled(event) {
+            if (this.disabled instanceof Function) {
+                return this.disabled.apply(this);
+            }
+            return this.disabled;
         },
         add(event) {
             console.log('add event', event)

@@ -94,22 +94,17 @@ export default {
     extends : CrudComponent,
     components: {cView},
     //props : ['conf'],
-    watch : {
-        // '$route' (to, from) {
-        //     console.log('TOOOOO',to,from);
-        // },
-        '$route.params.context': {
-            handler: function(context) {
-                //console.log('context watch');
-                if (this.getViewList()) {
-                    this.showContext();
-                }
-
-            },
-            deep: true,
-            //immediate: true
-        }
-    },
+    // watch : {
+    //     '$route.params.context': {
+    //         handler: function(context) {
+    //             if (this.getViewList()) {
+    //                 this.showContext();
+    //             }
+    //
+    //         },
+    //         deep: true,
+    //     }
+    // },
     mounted() {
         this.showContext();
     },
@@ -290,28 +285,28 @@ export default {
                                 }
 
                             //})
-                            that.waitViewLoaded('search',function() {
-                                let vSearch = that.getViewSearch();
-                                //window.VSS = vSearch;
-                                for (let i in listParams) {
-                                    let tmp = listParams[i].split(':');
-                                    if (tmp.length != 2) {
-                                        continue;
-                                    }
-                                    let fieldName = tmp[0];
-                                    if (vSearch.isSpecialField(fieldName)) {
-                                        vSearch.setSpecialField(fieldName,tmp[1]);
-                                        continue;
-                                    }
-                                    fieldName = fieldName.substring(2);
-                                    if (!vSearch.getWidget(fieldName)) {
-                                        console.warn('getWidget ha ritornato null per ', fieldName);
-                                        continue;
-                                    }
-                                    vSearch.getWidget(fieldName).setValue(tmp[1]);
-                                }
-
-                            })
+                            // that.waitViewLoaded('search',function() {
+                            //     let vSearch = that.getViewSearch();
+                            //     //window.VSS = vSearch;
+                            //     for (let i in listParams) {
+                            //         let tmp = listParams[i].split(':');
+                            //         if (tmp.length != 2) {
+                            //             continue;
+                            //         }
+                            //         let fieldName = tmp[0];
+                            //         if (vSearch.isSpecialField(fieldName)) {
+                            //             vSearch.setSpecialField(fieldName,tmp[1]);
+                            //             continue;
+                            //         }
+                            //         fieldName = fieldName.substring(2);
+                            //         if (!vSearch.getWidget(fieldName)) {
+                            //             console.warn('getWidget ha ritornato null per ', fieldName);
+                            //             continue;
+                            //         }
+                            //         vSearch.getWidget(fieldName).setValue(tmp[1]);
+                            //     }
+                            //
+                            // })
                         }
                         vList.load();
 

@@ -11,6 +11,7 @@ export default class WrapperConf {
         type : 'w-input',
         label : '',
         rules:'',
+        disabled : null,
     }
 
     loadConf(conf) {
@@ -101,6 +102,8 @@ export default class WrapperConf {
     wBelongsto(conf) {
         conf.labelFields = conf.labelFields || ['label'];
         conf.separator =  conf.separator || ' ';
+        conf.noDataLabel = conf.noDataLabel || null;
+        conf.href = conf.href || null;
         return conf;
     }
 
@@ -184,6 +187,8 @@ export default class WrapperConf {
     wButton(conf) {
         conf.icon = conf.icon || null;
         conf.cssClass = conf.cssClass || '';
+        conf.disabled = conf.disabled || false;
+        conf.title = conf.title || null;
         return conf;
     }
     wCheckbox(conf) {

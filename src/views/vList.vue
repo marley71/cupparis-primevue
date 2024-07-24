@@ -17,7 +17,7 @@
                                         <div class="mr-5 flex align-items-center mt-3">
                                             <!--                                    <i class="pi pi-users mr-2"></i>-->
                                             <span>{{
-                                                    translate('app.numero-records-lista', null, 0, [(value ? value.length : 0), getFirst() + 1, getFirst() + (value ? value.length : 0), getTotal()])
+                                                    translate('app.numero-records-lista', null, 0, [(value ? value.length : 0), getFirst() + 1, getFirst() + (value ? value.length : 0), getTotal(),translateUc(modelName + '.label', null,1)])
                                                 }}</span>
                                         </div>
                                     </div>

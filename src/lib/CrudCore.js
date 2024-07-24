@@ -191,7 +191,7 @@ CrudCore.clone = function (obj) {
 
 CrudCore.translate = function (key,plural,params) {
     let lang = CrudVars.lang;
-    //console.log('_translate store',key,lang[key]);
+    //console.log('_translate ',key,lang[key],params);
     var testi = lang[key];
     if (!testi)
         return key;

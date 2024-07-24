@@ -4,7 +4,7 @@
 
         <div class="preSearch" v-if="hasSearchLabel()">
                                 <span class="p-tag">
-                                    {{ searchLabel() }}
+                                    {{ _searchLabel() }}
                                 </span>
         </div>
         <!--        <div>-->
@@ -188,6 +188,14 @@ export default {
             s_basic_query: '',
         }
     },
+    mounted() {
+        let context = this.$route.params.context;
+        if (!context || context.length > 0) {
+            console.debug('vSearch mounted',context);
+            return;
+        }
+        //console.debug('vSearch mounted',context);
+    },
     methods: {
 
         _beforeLoadData() {
@@ -284,12 +292,19 @@ export default {
             return "col-12";
         },
         hasSearchLabel() {
-            if (this.conf.searchLabel === false) {
+            if (this.conf.searchLabel === false  || this.conf.searchLabel === null) {
                 return false;
             }
             return true;
         },
-        searchLabel() {
+        _searchLabel() {
+            console.debug('vSearch _searchLabel',this.conf.searchLabel)
+            if (this.conf.searchLabel) {
+                if (this.conf.searchLabel instanceof Function) {
+                    return this.searchLabel.apply(this);
+                }
+                return this.translate(this.conf.searchLabel);
+            }
             return this.translate("app.search_label");
         },
         isAdvancedSearchOpen() {

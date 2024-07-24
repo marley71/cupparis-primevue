@@ -67,6 +67,7 @@ const viewConfs = {
         blocked : false,
         modelName : null,
         hiddenColumns : [],
+        //numeroRecordsLabel : null, // label del numero dei records
     },
     recordView : {
         name : '',
