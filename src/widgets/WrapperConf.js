@@ -209,7 +209,7 @@ export default class WrapperConf {
         return conf;
     }
     wDatePicker(conf) {
-        console.log("DATEEEE",conf.value);
+        //console.log("DATEEEE",conf.value);
         let _conf = {
             buttonClear : false,
             dateValue : null,
@@ -217,15 +217,15 @@ export default class WrapperConf {
         conf = Object.assign(_conf,conf);
         if (conf.value) {
             conf.dateValue = new Date(conf.value);
-            console.log("DATEEEE",conf.dateValue);
+            //console.log("DATEEEE",conf.dateValue);
         }
         return conf;
     }
     wDateRangePicker(conf) {
-        console.log("DATEEEE",conf.value);
+        //console.log("DATEEEE",conf.value);
         if (conf.value) {
             conf.dateValue = new Date(conf.value);
-            console.log("DATEEEE",conf.dateValue);
+            //console.log("DATEEEE",conf.dateValue);
         }
         return conf;
     }

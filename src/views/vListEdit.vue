@@ -52,12 +52,12 @@
                                     :layout="actionsLayout" :menubar-title="actionsLayoutTitle"></c-action>
                     </template>
                 </Column> -->
-                <Column :exportable="false" header="Actions">
+                <Column :exportable="false" :header="translate('app.actions')">
                     <template #body="slotProps">
                         <c-action :ref="'r'+slotProps.index % getPerPage()" :conf="recordActionsConf[slotProps.index % getPerPage()]" :layout="actionRecordLayout"></c-action>
                     </template>
                 </Column>
-                <Column v-for="(col) in fields" :field="col" :header="col" :key="col" :sortable="isSortable(col)" :dir="sortDirection(col)">
+                <Column v-for="(col) in fields" :field="col" :header="columnLabel(col)" :key="col" :sortable="isSortable(col)" :dir="sortDirection(col)">
                     <template #body="slotProps">
     <!--                    {{getWidgetConf(slotProps.index,col,slotProps.data[col])}}-->
                         <c-widget v-if="!editMode[slotProps.index % getPerPage()]" :ref="'w'+slotProps.index % getPerPage()+'_'+col"

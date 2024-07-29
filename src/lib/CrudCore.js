@@ -340,13 +340,13 @@ CrudCore.componentDialog = function(compName,componentConf,title,dialogConf) {
     const div = document.createElement('div');
     document.body.appendChild(div);
     let  comp = defineAsyncComponent(() => import('../dialogs/dCustom.vue'))
-    console.debug('componentDialog',compName,componentConf)
     dialogConf = dialogConf || {
         //title : title,
         display : true,
         callbacks : {},
     };
     dialogConf.title = title;
+    console.debug('componentDialog','compName',compName,'compConf',componentConf,'dialogConf',dialogConf)
     let cc = {
         componentName : compName,
         componentConf : componentConf,
