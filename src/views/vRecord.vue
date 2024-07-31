@@ -111,14 +111,21 @@
                             <div class="grid">
                                 <template v-for="field in getVisibleFields()" :key="field">
                                     <template v-if="hasDividerBefore(field)">
-                                        <Divider align="center" :class="getDividerClass(field)">
+
+
+
+
+                                        <Divider align="center" :class="getDividerClass(field)" v-show="!isHiddenWidget(field)">
                                             <span v-if="getDividerContent(field)" v-html="getDividerContent(field)"
                                                   :class="getDividerContentClass(field)">
                                             </span>
                                         </Divider>
-                                        <div class="col-12 dividerDescription" v-if="getDividerDescription(field)" v-html="getDividerDescription(field)">
+                                        <div class="col-12 dividerDescription" v-if="getDividerDescription(field)"
+                                             v-show="!isHiddenWidget(field)"
+                                             v-html="getDividerDescription(field)">
 
                                         </div>
+
                                     </template>
 
                                     <template v-if="!isRemovedWidget(field)" >
@@ -147,12 +154,14 @@
                                         </div>
                                     </template>
                                     <template v-if="hasDividerAfter(field)">
-                                        <Divider align="center" :class="getDividerClass(field)">
+                                        <Divider align="center" :class="getDividerClass(field)" v-show="!isHiddenWidget(field)">
                                             <span v-if="getDividerContent(field)" v-html="getDividerContent(field)"
                                                   :class="getDividerContentClass(field)">
                                             </span>
                                         </Divider>
-                                        <div class="col-12 dividerDescription" v-if="getDividerDescription(field)" v-html="getDividerDescription(field)">
+                                        <div class="col-12 dividerDescription" v-if="getDividerDescription(field)"
+                                             v-show="!isHiddenWidget(field)"
+                                             v-html="getDividerDescription(field)">
 
                                         </div>
 
