@@ -185,7 +185,11 @@ export default {
                 v[fields[f]] = defVal;
                 v.dataKey = window.performance.now() + '_' + (Math.random() * 1000);
                 let md = that.hasmanyConf.modelData || {};
-                fieldsConfig[field] = this.$refs.listView.instance().getWidgetConfig(field,defVal,(md[field] || {}))
+                if (this.hasmanyType=='list') {
+                    fieldsConfig[field] = this.$refs.listView.instance().getWidgetConfig(field, defVal, (md[field] || {}))
+                } else {
+                    fieldsConfig[field] = CrudCore.clone(fieldConfig);
+                }
             }
             v.status = 'created';
 
