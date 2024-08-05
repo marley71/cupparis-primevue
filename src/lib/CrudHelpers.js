@@ -91,7 +91,7 @@ CrudHelpers.getHashParams = (key,onlyValue) => {
         params[tmp[0]] = tmp[1];
     }
 
-    if (onlyValue === true) {
+    if (key && onlyValue === true) {
         return params[key];
     }
     return params;
