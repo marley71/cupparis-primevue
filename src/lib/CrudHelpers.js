@@ -71,7 +71,7 @@ CrudHelpers.createRuntimeLink = (url,target) => {
     link.click();
 }
 
-CrudHelpers.getHashParams = (key) => {
+CrudHelpers.getHashParams = (key,onlyValue) => {
 
     let hash = document.location.hash.split('?');
 
@@ -91,6 +91,9 @@ CrudHelpers.getHashParams = (key) => {
         params[tmp[0]] = tmp[1];
     }
 
+    if (onlyValue === true) {
+        return params[key];
+    }
     return params;
 }
 
