@@ -6,10 +6,15 @@ class CrudHelpers {
 }
 
 CrudHelpers.addBearerTokenToUrl = (url, btKey) => {
+
+    //;
     btKey = btKey || 'bt';
     url = url || '';
     var prefix = (url.indexOf('?') >= 0) ? '&' : '?';
-    return url + prefix + btKey + '=' + CrudCore.getCache('token');
+    var btValue = import.meta.env.PROD
+        ? document.querySelector('meta[name="bearer-token"]')
+        : CrudCore.getCache('token');
+    return url + prefix + btKey + '=' + btValue;
 }
 
 CrudHelpers.lining = (text, maxLength, char) => {
