@@ -11,9 +11,14 @@ CrudHelpers.addBearerTokenToUrl = (url, btKey) => {
     btKey = btKey || 'bt';
     url = url || '';
     var prefix = (url.indexOf('?') >= 0) ? '&' : '?';
-    var btValue = import.meta.env.PROD
-        ? document.querySelector('meta[name="bearer-token"]')
-        : CrudCore.getCache('token');
+
+    var btValue = '';
+    if (import.meta.env.PROD) {
+        var selector = document.querySelector('meta[name="bearer-token"]');
+        btValue = selector ? selector.content : ''
+    } else {
+        btValue =  CrudCore.getCache('token');
+    }
     return url + prefix + btKey + '=' + btValue;
 }
 
