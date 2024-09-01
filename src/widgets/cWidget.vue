@@ -451,6 +451,12 @@ export default {
             let evt = event || {};
             evt.widget = this;
             //console.log('EVENTSSS', evt);
+            // if (evt && (type != 'clear')) {
+            //     // valore invariato, non emetto il change
+            //     if (evt.value == this.value) {
+            //         return ;
+            //     }
+            // }
             switch (this.type) {
                 case 'w-autocomplete':
                     if (type == 'clear') {
@@ -467,7 +473,7 @@ export default {
                         this.dateValue = null;
                     } else if (event) {
                         let inputDateFormat = evt.widget.inputDateFormat || 'YYYY-MM-DD';
-                        var date = event ? moment(event).format(inputDateFormat) : null;
+                        let date = event ? moment(event).format(inputDateFormat) : null;
                         //console.log("DATE",date, inputDateFormat)
                         //var date = new Date();
                         this.value = date;
@@ -479,7 +485,7 @@ export default {
                         this.dateValue = null;
                     } else if (event) {
                         let inputDateFormat = evt.widget.inputDateFormat || 'YYYY-MM-DD';
-                        var date = event ? moment(event).format(inputDateFormat) : null;
+                        let date = event ? moment(event).format(inputDateFormat) : null;
                         //console.log("DATE",date, inputDateFormat)
                         //var date = new Date();
                         this.value = [date,date];
@@ -505,27 +511,27 @@ export default {
         },
         _href(event) {
             if (this.href instanceof Function) {
-                return this.href.apply(this);
+                return this.href.apply(this,[event]);
             }
             return this.href;
         },
         _title(event) {
             if (this.title instanceof Function) {
-                return this.title.apply(this);
+                return this.title.apply(this,[event]);
             }
             return this.title;
         },
 
         _icon(event) {
             if (this.icon instanceof Function) {
-                return this.icon.apply(this);
+                return this.icon.apply(this,[event]);
             }
             return this.icon;
         },
 
         _disabled(event) {
             if (this.disabled instanceof Function) {
-                return this.disabled.apply(this);
+                return this.disabled.apply(this,[event]);
             }
             return this.disabled;
         },

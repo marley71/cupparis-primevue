@@ -6,6 +6,7 @@ export default class WrapperConf {
     defaultConf =  {
         name : '',
         value: null,
+        defaultValue : null,
         placeholder : '',
         extraBind: {},
         type : 'w-input',

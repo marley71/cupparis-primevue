@@ -167,7 +167,12 @@ export default {
             console.debug('searchList',event);
             if (this.getViewList()) {
                 this.getViewList().setParams(event);
-                this.getViewList().load();
+                // se c'e' autoupdateHash non chiamo la load della lista perche' verrà chiamata
+                // dall'evento autoupdateHash, in questo caso mi limito solo ad aggiornare i parametri di ricerca
+                if (! this.autoUpdateHash) {
+                    this.getViewList().load();
+
+                }
             }
             //this.$refs.vList.instance().setParams(event);
         },
