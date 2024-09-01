@@ -6,10 +6,20 @@ class CrudHelpers {
 }
 
 CrudHelpers.addBearerTokenToUrl = (url, btKey) => {
+
+    //;
     btKey = btKey || 'bt';
     url = url || '';
     var prefix = (url.indexOf('?') >= 0) ? '&' : '?';
-    return url + prefix + btKey + '=' + CrudCore.getCache('token');
+
+    var btValue = '';
+    if (import.meta.env.PROD) {
+        var selector = document.querySelector('meta[name="bearer-token"]');
+        btValue = selector ? selector.content : ''
+    } else {
+        btValue =  CrudCore.getCache('token');
+    }
+    return url + prefix + btKey + '=' + btValue;
 }
 
 CrudHelpers.lining = (text, maxLength, char) => {
@@ -71,7 +81,7 @@ CrudHelpers.createRuntimeLink = (url,target) => {
     link.click();
 }
 
-CrudHelpers.getHashParams = (key) => {
+CrudHelpers.getHashParams = (key,onlyValue) => {
 
     let hash = document.location.hash.split('?');
 
@@ -91,6 +101,9 @@ CrudHelpers.getHashParams = (key) => {
         params[tmp[0]] = tmp[1];
     }
 
+    if (key && onlyValue === true) {
+        return params[key];
+    }
     return params;
 }
 
