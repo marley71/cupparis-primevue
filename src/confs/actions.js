@@ -455,6 +455,7 @@ const actionConfs = {
                 'foorm': that.view.modelName,
                 'foormtype': 'list'
             })
+            r.setParams(that.view.getParams());
             r.setParam('csvType', that.csvType)
             that.view.waitStart(that.startMessage)
             Server.route(r, function (json) {
@@ -518,6 +519,7 @@ const actionConfs = {
                 'foormtype': 'list',
                 'foormpk' : foormPk
             })
+            r.setParams(that.view.getParams());
             r.setParam('pdfType', that.pdfType)
             that.view.waitStart(that.startMessage)
             Server.route(r, function (json) {

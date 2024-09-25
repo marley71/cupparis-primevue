@@ -290,6 +290,7 @@ export default {
             userConf.jobId = that.jobId;
             userConf.modelName = that.providerName;
             userConf.actions = [];
+            userConf.constraintValue = that.jobId;
             console.debug('import list conf',userConf);
             return userConf;
         },
