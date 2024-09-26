@@ -198,12 +198,16 @@ const actionConfs = {
         icon : 'fa fa-eye',
         text : '',
         viewType : 'v-view',
+        dialogTitle : 'app.vista',
+        dialogConf : null,
         execute () {
             let ta = this;
             let defaultConf = ta.getDefaultViewConf(ta.view.modelName,ta.viewType);
             defaultConf.pk = ta.modelData.id;
+
             console.log('ta',ta.viewType,defaultConf);
-            CrudCore.componentDialog('c-view',defaultConf);
+
+            CrudCore.componentDialog('c-view',defaultConf,this.dialogTitle);
             return true;
             //ta.componentDialog(ta.viewType,defaultConf)
         }
