@@ -1,5 +1,5 @@
 <template>
-    <template v-if="(controlType=='button' || controlType=='link') && _visible()">
+    <template v-if="(controlType=='button' || controlType=='link-download') && _visible()">
         <span v-if="controlType=='link'"
             class="hidden" :linkhref="href()"></span>
         <Button :title="translate(title)" :label="_text()"
@@ -8,6 +8,12 @@
                 :disabled="_disabled()"
                 @click="_execute($event)"
         />
+    </template>
+    <template v-else-if="controlType =='link' && _visible()">
+        <router-link :class=getActionClass() :to="href()" :conf="conf" :_target="conf.target" :title="translate(title)" >
+            <i v-if="_icon()" :class="_icon()"></i>
+            {{_text()}}
+        </router-link>
     </template>
     <template v-else-if="controlType  && _visible()">
         <component :is="controlType" :conf="conf"></component>

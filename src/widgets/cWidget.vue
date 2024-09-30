@@ -620,7 +620,7 @@ export default {
             if (md.isValid()) {
                 return md.format(that.displayFormat)
             } else {
-                return that.translate(that.invalidDateString)+ '*' ;
+                return that.translate(that.invalidDateString); // + '*' ;
             }
         },
         getFieldName() {
