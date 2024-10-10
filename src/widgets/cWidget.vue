@@ -90,17 +90,21 @@
             </div>
         </template>
         <template v-else-if="type=='w-checkbox'">
-            <div class="w-full flex" :class="direction=='row'?'flex-row':'flex-column'">
-                <div class="field-checkbox mr-2" v-for="(label,key) in domainValues" :key="key">
+            <div class="w-full flex flex-wrap border-1 border-round-sm surface-border p-2"
+                 :class="direction=='row'?'flex-row':'flex-column'">
+                <div class="field-checkbox mb-1"
+                     :class="rowType=='grid'?'w-12 md:w-6 xl:w-3':'mr-2 '"v-for="(label,key) in domainValues" :key="key">
                     <Checkbox :name="getFieldName()" v-model="value" :value="key" v-bind="extraBind" @change="_change"/>
                     <label :for="key" v-html="label"></label>
                 </div>
             </div>
         </template>
         <template v-else-if="type=='w-radio'">
-            <div class="w-full flex border-1 border-round-sm surface-border p-2"
+            <div class="w-full flex flex-wrap border-1 border-round-sm surface-border p-2"
                  :class="direction=='row'?'flex-row':'flex-column'">
-                <div class="field-radiobutton mr-2 mb-1" v-for="(label,key) in domainValues" :key="key">
+                <div class="field-radiobutton mb-1"
+                     :class="rowType=='grid'?'w-12 md:w-6 xl:w-3':'mr-2 '"
+                     v-for="(label,key) in domainValues" :key="key">
                     <RadioButton :name="name" v-model="value" :value="key" v-bind="extraBind" @change="_change"/>
                     <label :for="key" v-html="label"></label>
                 </div>
