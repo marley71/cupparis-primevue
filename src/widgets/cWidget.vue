@@ -535,6 +535,11 @@ export default {
             }
             return this.disabled;
         },
+        _reset() {
+            if (this.reset) {
+                this.reset.apply(this);
+            }
+        },
         add(event) {
             console.log('add event', event)
             this.change(event);

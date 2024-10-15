@@ -10,7 +10,11 @@
         />
     </template>
     <template v-else-if="controlType =='link' && _visible()">
-        <router-link :class=getActionClass() :to="href()" :conf="conf" :_target="conf.target" :title="translate(title)" >
+        <a v-if="externalLink" :class="getActionClass()" :href="_href()" :target="conf.target" :title="translate(title)">
+            <i v-if="_icon()" :class="_icon()"></i>
+            {{_text()}}
+        </a>
+        <router-link v-else :class="getActionClass()" :to="_href()" :conf="conf" :target="conf.target" :title="translate(title)" >
             <i v-if="_icon()" :class="_icon()"></i>
             {{_text()}}
         </router-link>

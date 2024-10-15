@@ -56,6 +56,10 @@ export default class WrapperConf {
         if ( !('inputType' in conf) ) {
             conf.inputType = 'text';
         }
+        conf.reset = conf.reset || function() {
+            let that = this;
+            that.value = null;
+        };
         return conf;
     }
 
@@ -66,6 +70,10 @@ export default class WrapperConf {
     }
     wSelect(conf) {
         conf.options = this.mapOptions(conf.domainValues,conf.domainValuesOrder);
+        conf.reset = conf.reset || function() {
+            let that = this;
+            that.value = null;
+        };
         return conf;
     }
 
@@ -87,6 +95,10 @@ export default class WrapperConf {
     }
     wSelectButton(conf) {
         conf.options = this.mapOptions(conf.domainValues,conf.domainValuesOrder);
+        conf.reset = conf.reset || function() {
+            let that = this;
+            that.value = null;
+        };
         return conf;
     }
 
@@ -136,6 +148,13 @@ export default class WrapperConf {
             //console.log(that,'label',event);
         }
 
+        conf.reset = conf.reset || function() {
+            console.debug('reset w-autocomplete');
+            let that = this;
+            console.debug('reset w-autocomplete',that.value,that.autocompleteValue,that);
+            that.value = null;
+            that.autocompleteValue = null;
+        };
 
         //console.log('referredData',conf.referredData);
         let __initialValue = function () {
@@ -199,7 +218,10 @@ export default class WrapperConf {
         if (!conf.direction) {
             conf.direction = 'row';
         }
-
+        conf.reset = conf.reset || function() {
+            let that = this;
+            that.value = null;
+        };
         return conf;
     }
 
@@ -207,6 +229,10 @@ export default class WrapperConf {
         if (!conf.direction) {
             conf.direction = 'row';
         }
+        conf.reset = conf.reset || function() {
+            let that = this;
+            that.value = null;
+        };
         return conf;
     }
     wDatePicker(conf) {

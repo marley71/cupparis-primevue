@@ -552,6 +552,15 @@ export default {
         getDividerDescription(field) {
             return this.widgetsConfig[field].dividerDescription || false;
         },
+        reset() {
+            let fields = this.fields || [];
+            for  (let i in fields) {
+                let w = this.getWidget(fields[i]);
+                if (w) {
+                    w._reset();
+                }
+            }
+        }
     }
 }
 </script>

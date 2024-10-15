@@ -268,6 +268,7 @@ export default {
         isBlocked() {
             return this.blocked;
         }
+
     }
 }
 </script>

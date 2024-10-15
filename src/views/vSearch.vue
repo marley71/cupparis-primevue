@@ -328,6 +328,19 @@ export default {
                 return true;
             }
             return false;
+        },
+        reset() {
+            let that = this;
+            let fields = this.fields || [];
+            for  (let i in fields) {
+                let w = that.getWidget(fields[i]);
+                if (w) {
+                    w._reset();
+                }
+            }
+            setTimeout(function () {
+                that.search();
+            },10)
         }
 
     }
