@@ -18,6 +18,10 @@ const lang = {
     'app.gestione' : 'Gestione',
     'app.action-delete-selected' : 'Cancella Selezionati',
     'app.import-titolo' : 'Importazione Dati',
+    'app.import-loading' : 'Lettura file e check degli errori ...',
+    'app.import-saving' : 'Salvataggio del file importato ...',
+    'app.import-loading-success':'File caricato e controllato',
+    'app.import-link-desc' : 'Qui puoi trovare un esempio del file excel accettato',
     'app.import-desc' : '\
         <p>L\'importazione avverrà in due fasi:</p>\
         <ul>\
