@@ -305,8 +305,11 @@
                             <template v-else-if="['application/pdf'].indexOf(fileInfo.mimetype) >= 0">
                                 <i class="fa fa-file-pdf fa-2xl"></i>
                             </template>
-                            <template v-else-if="['image/jpeg'].indexOf(fileInfo.mimetype) >= 0">
-                                <img :src="fileInfo.url"/>
+                            <template v-else-if="['image/png','image/jpeg'].indexOf(fileInfo.mimetype) >= 0">
+
+                              <div class='w-5rem h-4rem m-auto bg-contain bg-no-repeat' :style="bgUrl(fileInfo.url)"></div>
+
+<!--                                <img :src="fileInfo.url"/>-->
                             </template>
                             <template v-else>
                                 <i class="fa fa-file fa-2xl"></i>
@@ -694,6 +697,9 @@ export default {
             return this.instance().getAutocompleteLabel.apply(this,[event]);
         },
 
+      bgUrl(url) {
+        return 'background-image: url(\"' + url + '\") !important;"';
+      },
     }
 }
 </script>
