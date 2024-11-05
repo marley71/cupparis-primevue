@@ -1,8 +1,8 @@
 <template>
     <template v-if="hasmanyType=='list'">
         <div>
-<!--            <v-list-hasmany ref="listView" :conf="getHasmanyList()"></v-list-hasmany>-->
-            <c-view ref="listView" :conf="getHasmanyList()"></c-view>
+<!--            <v-list-hasmany ref="listViewHasmany" :conf="getHasmanyList()"></v-list-hasmany>-->
+            <c-view ref="listViewHasmany" :conf="getHasmanyList()"></c-view>
         </div>
     </template>
     <template v-else-if="hasmanyType=='record'">
@@ -131,7 +131,7 @@ export default {
         getValue() {
             //window.WH = this;
             if (this.hasmanyType == 'list') {
-                return this.$refs.listView.instance().getValue();
+                return this.$refs.listViewHasmany.instance().getValue();
             }
             let val = [];
             if (this.$refs.recordView) {
@@ -154,8 +154,8 @@ export default {
                 if (that.hasmanyType == 'list') {
                     //console.log("HS",that.value)
                     that.value = that.addDataKeyField(that.value);
-                    that.$refs.listView.instance().value = that.value;
-                    that.$refs.listView.instance().reload();
+                    that.$refs.listViewHasmany.instance().value = that.value;
+                    that.$refs.listViewHasmany.instance().reload();
                 } else {
                     that.hasmanyValue = that.trasformValue(that.value);
                 }
@@ -178,6 +178,7 @@ export default {
             //let fieldsConfig = CrudCore.clone(that.hasmanyConf.fieldsConfig);
             let v = {};
             let fieldsConfig = {};
+            console.debug('hasmany fields',fields);
             for (let f in fields) {
                 let field = fields[f];
                 let fieldConfig = that.hasmanyConf.fieldsConfig[field];
@@ -185,29 +186,40 @@ export default {
                 v[fields[f]] = defVal;
                 v.dataKey = window.performance.now() + '_' + (Math.random() * 1000);
                 let md = that.hasmanyConf.modelData || {};
-                if (this.hasmanyType=='list') {
-                    fieldsConfig[field] = this.$refs.listView.instance().getWidgetConfig(field, defVal, (md[field] || {}))
+                if (that.hasmanyType=='list') {
+                    fieldsConfig[field] = this.$refs.listViewHasmany.instance().getWidgetConfig(field, defVal, (md[field] || {}))
                 } else {
                     fieldsConfig[field] = CrudCore.clone(fieldConfig);
                 }
             }
             v.status = 'created';
 
-            if (this.hasmanyType=='list') {
+            if (that.hasmanyType=='list') {
                 // in caso di widget complessi e' importante salvaguardare i widgets gia' esistenti.
-                this.widgetToConf();
-                //console.debug('fieldsConfig',fieldsConfig)
-                //console.debug('vHasmany.addItem',JSON.parse(JSON.stringify(this.$refs.listView.widgetsConfig) ));
-                this.$refs.listView.instance().value.push(v);
-                this.$refs.listView.instance().widgetsConfig.push(fieldsConfig);
-                //console.debug('vHasmany.addItem dopo',JSON.parse(JSON.stringify(this.$refs.listView.widgetsConfig) ));
-                // v.dataKey = window.performance.now() + '_' + (Math.random() * 1000);
-                // let value = this.getValue();
-                // value.push(v);
-                // this.setValue(value);
+                that.widgetToConf();
+                let val = that.getValue();
+                val.push(v);
+                that.setValue(val);
+                that.$refs.listViewHasmany.instance().widgetsConfig.push(fieldsConfig);
+
+
+
+                // console.debug('hasmany $refs',that.$refs.listViewHasmany);
+                // console.debug('hasmany $refs instance',that.$refs.listViewHasmany.instance());
+                // let val = JSON.parse(JSON.stringify(that.$refs.listViewHasmany.instance().value || []));
+                // let fC = JSON.parse(JSON.stringify(that.$refs.listViewHasmany.instance().widgetsConfig || []));
+                // val.push(v);
+                // fC.push(fieldsConfig);
+                // that.$refs.listViewHasmany.instance().value = val;
+                // that.$refs.listViewHasmany.instance().widgetsConfig = fC;
+
             } else {
-                this.value.push(v);
-                this.hasmanyValue[window.performance.now() + '_' + (Math.random() * 1000)] = v;
+                let val = that.getValue();
+                val.push(v);
+                that.setValue(val);
+
+                //that.value.push(v);
+                that.hasmanyValue[window.performance.now() + '_' + (Math.random() * 1000)] = v;
             }
 
 
@@ -219,27 +231,27 @@ export default {
             if (this.hasmanyType == 'list') {
                 // prendiamo i valori aggiornati il lista insieme alle configurazioni;
                 //let fieldsConfig = CrudCore.clone(that.hasmanyConf.fieldsConfig);
-                //let values = that.$refs.listView.getValue();
+                //let values = that.$refs.listViewHasmany.getValue();
                 that.widgetToConf();
                 //console.debug('wHasmany.removeItem current values',values);
                 if (Array.isArray(index)) {
                     let arr = index.sort((a,b) => {return a-b});
                     arr.reverse();
                     for (let i in arr) {
-                        that.$refs.listView.instance().widgetsConfig.splice(arr[i],1);
-                        that.$refs.listView.instance().value.splice(arr[i],1);
+                        that.$refs.listViewHasmany.instance().widgetsConfig.splice(arr[i],1);
+                        that.$refs.listViewHasmany.instance().value.splice(arr[i],1);
 
                         //console.debug('LIST VALUES',arr[i],JSON.parse(JSON.stringify(v)));
                     }
                 } else {
-                    that.$refs.listView.instance().widgetsConfig.splice(index,1);
-                    that.$refs.listView.instance().value.splice(index,1);
+                    that.$refs.listViewHasmany.instance().widgetsConfig.splice(index,1);
+                    that.$refs.listViewHasmany.instance().value.splice(index,1);
 
                 }
-                //console.debug('removeItem result wconfig',that.$refs.listView.widgetsConfig)
-                //console.debug('removeItem result wvalue',that.$refs.listView.value)
+                //console.debug('removeItem result wconfig',that.$refs.listViewHasmany.widgetsConfig)
+                //console.debug('removeItem result wvalue',that.$refs.listViewHasmany.value)
 
-                // let v = this.$refs.listView.getValue();
+                // let v = this.$refs.listViewHasmany.getValue();
                 // //console.debug('LIST VALUES',JSON.parse(JSON.stringify(v)),index);
                 // if (Array.isArray(index)) {
                 //     let arr = index.sort((a,b) => {return a-b});
@@ -253,8 +265,8 @@ export default {
                 // }
                 // that.value = that.addDataKeyField(v);
                 // //console.debug('LIST VALUES  2',JSON.parse(JSON.stringify(that.value)));
-                // this.$refs.listView.value = that.value;
-                // this.$refs.listView.reload();
+                // this.$refs.listViewHasmany.value = that.value;
+                // this.$refs.listViewHasmany.reload();
             } else {
                 let rIndex = Object.keys(this.hasmanyValue).indexOf(index);
                 //console.log('remove index', index, this.value);
@@ -272,16 +284,16 @@ export default {
          * vengono ridisegnati
          */
         widgetToConf() {
-            for (let i=0;i<this.$refs.listView.instance().value.length;i++) {
-                let ws = this.$refs.listView.instance().getRowWidgets(i);
+            for (let i=0;i<this.$refs.listViewHasmany.instance().value.length;i++) {
+                let ws = this.$refs.listViewHasmany.instance().getRowWidgets(i);
                 for (let k in ws) {
                     switch (ws[k].type) {
                         case 'w-autocomplete':
                             console.debug('autocompleteValue',ws[k].autocompleteValue);
-                            this.$refs.listView.instance().widgetsConfig[i][k].autocompleteValue = ws[k].autocompleteValue;
+                            this.$refs.listViewHasmany.instance().widgetsConfig[i][k].autocompleteValue = ws[k].autocompleteValue;
                             break;
                     }
-                    this.$refs.listView.instance().value[i][k] = ws[k].getValue()
+                    this.$refs.listViewHasmany.instance().value[i][k] = ws[k].getValue()
                 }
             }
         },
@@ -298,6 +310,7 @@ export default {
         getHasmanyList() {
             let that = this;
             let hs = CrudCore.clone(that.hasmanyConf);
+            console.debug('hasmany conf ',hs);
             hs.type = 'v-list-hasmany'
             hs.routeName = null;
             hs.actions = hs.actions || ['action-delete','action-insert'];
@@ -311,13 +324,13 @@ export default {
                 },
                 'action-delete-selected':{
                     execute() {
-                        //console.debug('selected',that.$refs.listView.instance().selected,that.$refs.listView.instance().value);
+                        //console.debug('selected',that.$refs.listViewHasmany.instance().selected,that.$refs.listViewHasmany.instance().value);
                         let indexs = [];
-                        let dataKeys = that.$refs.listView.instance().value.map(a => a.dataKey);
-                        for (let i in that.$refs.listView.instance().selected) {
-                            let index = dataKeys.indexOf(that.$refs.listView.instance().selected[i].dataKey);
+                        let dataKeys = that.$refs.listViewHasmany.instance().value.map(a => a.dataKey);
+                        for (let i in that.$refs.listViewHasmany.instance().selected) {
+                            let index = dataKeys.indexOf(that.$refs.listViewHasmany.instance().selected[i].dataKey);
                             if (index < 0) {
-                                console.warn('index non trovato per dataKey',that.$refs.listView.instance().selected[i].dataKey,'datakeys',dataKeys);
+                                console.warn('index non trovato per dataKey',that.$refs.listViewHasmany.instance().selected[i].dataKey,'datakeys',dataKeys);
                             } else {
                                 indexs.push(index);
                             }
