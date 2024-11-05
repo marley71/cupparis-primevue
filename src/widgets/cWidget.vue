@@ -342,6 +342,13 @@
             <Button :class="cssClass" @click="_click" :icon="_icon()"
                     :disabled="_disabled()" :title="_title()">{{value}}</Button>
         </template>
+        <template v-else-if="type=='w-icons'">
+            <div class="flex">
+                <template v-for="(item,k) in domainValues">
+                    <i :class="item + value===k?' text-primary':''"></i>
+                </template>
+            </div>
+        </template>
         <template v-else>
             <component :is="type" :conf="wConf"></component>
 <!--            <div>Widget non riconosciuto {{ type }}</div>-->
