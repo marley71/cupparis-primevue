@@ -305,8 +305,11 @@
                             <template v-else-if="['application/pdf'].indexOf(fileInfo.mimetype) >= 0">
                                 <i class="fa fa-file-pdf fa-2xl"></i>
                             </template>
-                            <template v-else-if="['image/jpeg'].indexOf(fileInfo.mimetype) >= 0">
-                                <img :src="fileInfo.url"/>
+                            <template v-else-if="['image/png','image/jpeg'].indexOf(fileInfo.mimetype) >= 0">
+
+                              <div class='w-5rem h-4rem m-auto bg-contain bg-no-repeat' :style="bgUrl(fileInfo.url)"></div>
+
+<!--                                <img :src="fileInfo.url"/>-->
                             </template>
                             <template v-else>
                                 <i class="fa fa-file fa-2xl"></i>
@@ -341,6 +344,13 @@
         <template v-else-if="type=='w-button'">
             <Button :class="cssClass" @click="_click" :icon="_icon()"
                     :disabled="_disabled()" :title="_title()">{{value}}</Button>
+        </template>
+        <template v-else-if="type=='w-icons'">
+            <div class="flex">
+                <template v-for="(item,k) in domainValues">
+                    <i :class="item + value===k?' text-primary':''"></i>
+                </template>
+            </div>
         </template>
         <template v-else>
             <component :is="type" :conf="wConf"></component>
@@ -694,6 +704,9 @@ export default {
             return this.instance().getAutocompleteLabel.apply(this,[event]);
         },
 
+      bgUrl(url) {
+        return 'background-image: url(\"' + url + '\") !important;"';
+      },
     }
 }
 </script>

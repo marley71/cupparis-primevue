@@ -1,4 +1,5 @@
 import lang from "../confs/lang";
+import icons from '../confs/icons';
 import ActionConfs from "../confs/actions";
 import ViewConfs from '../confs/views';
 
@@ -16,6 +17,7 @@ const CrudVars = {
       'v-list-edit' : 'listEdit',
     },
     lang : lang,
+    icons: icons,
     env : {},
     useApi : 0,
     validationMessages : {

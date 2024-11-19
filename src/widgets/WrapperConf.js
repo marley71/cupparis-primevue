@@ -521,4 +521,8 @@ export default class WrapperConf {
         }
         return conf;
     }
+
+    wIcons(conf) {
+        return conf;
+    }
 }

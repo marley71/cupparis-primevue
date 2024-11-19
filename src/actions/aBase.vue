@@ -1,6 +1,6 @@
 <template>
     <template v-if="(controlType=='button' || controlType=='link-download') && _visible()">
-        <span v-if="controlType=='link'"
+        <span v-if="controlType=='link-download'"
             class="hidden" :linkhref="href()"></span>
         <Button :title="translate(title)" :label="_text()"
                 :class=getActionClass()
@@ -170,7 +170,7 @@ export default {
         _execute(event) {
             let that = this;
             event.preventDefault();
-            if (that.controlType === 'link') {
+            if (that.controlType === 'link' || that.controlType === 'link-download') {
                 that.execute = function () {
                     CrudHelpers.createRuntimeLink(that.href(), that.target)
                 }
