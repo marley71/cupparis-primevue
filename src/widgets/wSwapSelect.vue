@@ -3,7 +3,7 @@
         <input type="hidden" :name=getFieldName() :value="value">
         <Dropdown class="w-full" :name=getFieldName() v-model="value" :options="options"
                   option-label="label" option-value="id" :placeholder="placeholder || translate('app.seleziona')"
-                   @change="swap()" v-bind="extraBind">
+                   @change="swap()" v-bind="extraBind" :disabled="_disabled()">
             <template #value="slotProps">
                 <div v-if="slotProps.value"
                     :class="'select-button-option select-button-option-'+name+ ' select-button-option-'+name+'-'+slotProps.value"
@@ -115,6 +115,12 @@ export default {
                 that.value = that.options[index].id
             }
 
+        },
+        _disabled(event) {
+            if (this.disabled instanceof Function) {
+                return this.disabled.apply(this,[event]);
+            }
+            return this.disabled;
         },
     }
 }

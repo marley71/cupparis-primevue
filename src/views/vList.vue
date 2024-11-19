@@ -215,14 +215,11 @@ export default {
     }
   },
   methods: {
-    draw() {
-      this.setActions();
-      if (this.getPerPage() >= this.getTotal()) {
-        this.paginator = false;
-      }
-      this.loaded = true;
-
-    },
+      draw() {
+          this.setActions();
+          this.paginator = (this.getPerPage() < this.getTotal());
+          this.loaded = true;
+      },
 
     _afterLoadData() {
       if (this.conf.afterLoadData) {
