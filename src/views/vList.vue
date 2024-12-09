@@ -60,11 +60,8 @@
             <Column v-for="(col) in getVisibleFields()" :field="col" :header="columnLabel(col)" :key="col"
                     :sortable="isSortable(col)" :dir="sortDirection(col)">
               <template #body="slotProps">
-                <!--                    {{slotProps.data[col]}} {{ slotProps.index}}-->
-                <c-widget :ref="'w'+slotProps.index+'_'+col"
+                  <c-widget :ref="'w'+slotProps.index+'_'+col"
                           :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></c-widget>
-                <!--                    {{getW(slotProps.index,col,slotProps.data[col])}}-->
-                <!--                    <c-widget :conf="widgetsConfig[parseInt(slotProps.index)][col]"></c-widget>-->
               </template>
             </Column>
             <Column v-if="getRecordActionsPosition() == 'end' && hasRecordActions()" :exportable="false"

@@ -9,6 +9,7 @@ import actions from "../confs/actions";
 import Server from "./Server";
 import routeConfs from "../confs/routes";
 import Route from "./Route";
+import axios from "axios";
 
 const Ev = EventBus();
 const euroFormatter = new Intl.NumberFormat('it-IT', {
@@ -253,15 +254,42 @@ function __dialog(type,msg,props,callbacks) {
     d.mount(div);
 }
 
+function _sanitizeMessage(str) {
+    try {
+        if (axios.isAxiosError(str)) {
+            if (str.response) {
+                let ss = str.response.status;
+                ss +=  ' ' + (str.response.data.message?str.response.data.message:'');
+                return ss;
+            } else if (str.request) {
+                return 'Nessuna risposta ricevuta';
+                //console.error('Request was made but no response received:', str.request);
+            } else {
+                return str.message;
+                //console.error('Errore', str.message);
+            }
+        } else {
+            let ss = str || "";
+            ss = ss.replace(/<br\s*\/?>/gi, '\n');
+            ss = ss.replace('&egrave;','è');
+            return ss;
+        }
+    } catch (e) {
+        return e;
+    }
+
+}
+
 CrudCore.alertError = function(msg,cTime) {
     let severity = 'error';
     let severitySummary = 'Error Message';
-    console.error(msg);
+    let message = _sanitizeMessage(msg);
+    console.error(message);
     if (cTime || cTime !== 0) {
         let life = cTime?cTime:CrudCore.defaultAlertTime;
-        this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:msg, life: life,group:'tr'});
+        this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:message, life: life,group:'tr'});
     } else {
-        this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:msg, group:'tr'});
+        this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:message, group:'tr'});
 
     }
 }
@@ -269,11 +297,12 @@ CrudCore.alertError = function(msg,cTime) {
 CrudCore.alertInfo = function(msg,cTime) {
     let severity = 'info';
     let severitySummary = 'Info Message'
+    let message = _sanitizeMessage(msg);
     if (cTime || cTime !== 0) {
         let life = cTime?cTime:CrudCore.defaultAlertTime;
-        this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:msg, life: life,group:'tr'});
+        this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:message, life: life,group:'tr'});
     } else {
-        this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:msg, group:'tr'});
+        this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:message, group:'tr'});
 
     }
 }
@@ -281,11 +310,12 @@ CrudCore.alertInfo = function(msg,cTime) {
 CrudCore.alertWarning = function(msg,cTime) {
     let severity = 'warn';
     let severitySummary = 'Warning Message'
+    let message = _sanitizeMessage(msg);
     if (cTime || cTime !== 0) {
         let life = cTime?cTime:CrudCore.defaultAlertTime;
-        this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:msg, life: life,group:'tr'});
+        this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:message, life: life,group:'tr'});
     } else {
-        this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:msg, group:'tr'});
+        this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:message, group:'tr'});
 
     }
 }
@@ -293,12 +323,13 @@ CrudCore.alertWarning = function(msg,cTime) {
 CrudCore.alertSuccess = function(msg,cTime) {
     let severity = 'success';
     let severitySummary = 'Success Message';
+    let message = _sanitizeMessage(msg);
     if (cTime || cTime !== 0) {
         let life = cTime?cTime:CrudCore.defaultAlertTime;
         //console.debug('life',life,cTime)
-        this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:msg, life: life,group:'tr'});
+        this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:message, life: life,group:'tr'});
     } else {
-        this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:msg, group:'tr'});
+        this.globalProperties.$toast.add({severity:severity, summary: severitySummary, detail:message, group:'tr'});
 
     }
 }

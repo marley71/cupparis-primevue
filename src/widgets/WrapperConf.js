@@ -13,6 +13,7 @@ export default class WrapperConf {
         label : '',
         rules:'',
         disabled : null,
+        rowType : '',
     }
 
     loadConf(conf) {
@@ -109,6 +110,9 @@ export default class WrapperConf {
         conf.suffix = conf.suffix || null;
         conf.iconSuffix = conf.iconSuffix || null;
         conf.numberFormat = conf.numberFormat || null;
+        if (conf.numberFormat && !conf.textClass) {
+            conf.textClass = 'text-right';
+        }
         return conf;
     }
 
@@ -342,6 +346,8 @@ export default class WrapperConf {
             json : null, // ultimo json caricato dalla chiamata ajax,
             currentIndex : 0,  // indice corrente delle chiavi di domainValues
             reload: false,
+            labelTop : null,
+            labelBottom : null,
         },conf);
         conf.change = conf.change || function() {};
         conf.options = this.mapOptions(conf.domainValues,conf.domainValuesOrder);

@@ -1,5 +1,6 @@
 <template>
     <div>
+        <span v-html="_labelTop()"></span>
         <input type="hidden" :name=getFieldName() :value="value">
         <Dropdown class="w-full" :name=getFieldName() v-model="value" :options="options"
                   option-label="label" option-value="id" :placeholder="placeholder || translate('app.seleziona')"
@@ -23,6 +24,7 @@
                 </div>
             </template>
         </Dropdown>
+        <span v-html="_labelBottom()"></span>
     </div>
 </template>
 
@@ -122,6 +124,24 @@ export default {
             }
             return this.disabled;
         },
+        _labelTop() {
+            if (!this.labelTop) {
+                return '';
+            }
+            if (this.labelTop instanceof Function) {
+                return this.labelTop.apply(this,[event]);
+            }
+            return this.labelTop;
+        },
+        _labelBottom() {
+            if (!this.labelBottom) {
+                return '';
+            }
+            if (this.labelBottom instanceof Function) {
+                return this.labelBottom.apply(this,[event]);
+            }
+            return this.labelBottom;
+        }
     }
 }
 </script>
