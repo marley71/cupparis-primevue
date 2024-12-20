@@ -99,6 +99,7 @@ export default {
     // },
     mounted() {
         this.showContext();
+        this.setManageReference();
     },
     data() {
         let that = this;
@@ -125,7 +126,7 @@ export default {
         that.conf.edit = that.conf.edit?wc.loadConf(that.conf.edit):{};
         // that.conf.insert = that.conf.insert?wc.loadConf(that.conf.insert):null;
 
-        this.setManageActions();
+        that.setManageActions();
         that.conf.mode = 'list';
         that.conf.viewDisplay = false;
         if (!('insert' in that.conf)) {
@@ -232,7 +233,37 @@ export default {
                 }
                 that.conf.edit.actionsConfig['action-back'] = actionBack;
             }
+
+
+
         },
+        /**
+         * assegno a tutte le azioni il riferimento alla manage
+         */
+        setManageReference() {
+            let manage = this;
+            let viewConfs = ['list','edit','insert','view','custom'];
+            for (let i in viewConfs) {
+                let v = viewConfs[i];
+                console.debug('setto view ',v,manage.conf[v])
+                if (manage.conf[v]) {
+                    for (let a in manage.conf[v].actionsConfig) {
+                        console.debug('setto manage a ',v,a, manage.conf[v].actionsConfig[a]);
+                        manage.conf[v].actionsConfig[a].manage = manage;
+                    }
+                }
+            }
+        },
+        showList() {
+            let that = this;
+            that.mode = 'list';
+            if (that.autoUpdateHash) {
+                window.history.back();
+            } else {
+                that.getViewList().reload();
+            }
+        },
+
         getViewList() {
             return this.$refs.vList?this.$refs.vList.instance():null;
         },
