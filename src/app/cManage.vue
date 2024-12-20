@@ -6,13 +6,6 @@
                     <c-view v-if="!searchComponentName" :conf="search" ref="vSearch" @search="searchList"></c-view>
                     <component v-else :is="searchComponentName" :conf="search" ref="vSearch" @search="searchList"></component>
                 </template>
-
-                <!--                <Divider align="center" class="listDivider mt-5">-->
-                <!--                    <span class="p-tag bg-primary-700 text-white">-->
-                <!--                                    Elenco elementi-->
-                <!--                    </span>-->
-                <!--                </Divider>-->
-
                 <c-view v-if="!listComponentName"  :conf="list" ref="vList" @loaded="showListMia"></c-view>
                 <component v-else :is="listComponentName" :conf="list" ref="vList"></component>
             </div>
@@ -23,6 +16,9 @@
             <template v-else-if="mode=='insert'">
                 <c-view v-if="!insertComponentName"  :conf="insert" ref="vRecord"></c-view>
                 <component v-else :is="insertComponentName" :conf="insert" ref="vRecord"></component>
+            </template>
+            <template v-else-if="mode=='custom'">
+                <component :is="customComponentName" :conf="custom" ref="vRecord"></component>
             </template>
         </div>
     </div>
@@ -46,13 +42,6 @@
                     <c-view v-if="!searchComponentName" :conf="search" ref="vSearch" @search="searchList"></c-view>
                     <component v-else :is="searchComponentName" :conf="search" ref="vSearch" @search="searchList"></component>
                 </template>
-
-<!--                <Divider align="center" class="listDivider mt-5">-->
-<!--                    <span class="p-tag bg-primary-700 text-white">-->
-<!--                                    Elenco elementi-->
-<!--                    </span>-->
-<!--                </Divider>-->
-
                 <c-view v-if="!listComponentName"  :conf="list" ref="vList" @loaded="showListMia"></c-view>
                 <component v-else :is="listComponentName" :conf="list" ref="vList"></component>
             </div>
@@ -63,6 +52,9 @@
             <template v-else-if="mode=='insert'">
                 <c-view v-if="!insertComponentName"  :conf="insert" ref="vRecord"></c-view>
                 <component v-else :is="insertComponentName" :conf="insert" ref="vRecord"></component>
+            </template>
+            <template v-else-if="mode=='custom'">
+                <component :is="customComponentName" :conf="custom" ref="vRecord"></component>
             </template>
         </div>
     </Panel>
@@ -151,11 +143,15 @@ export default {
         if (!that.conf.baseRouteName) {  // indica il nome del path per la manage, di default e' manage ma in caso di oggetti estesi potrebbe essere diverso
             that.conf.baseRouteName = 'manage';
         }
+        that.conf.custom = that.conf.custom || {};
+
         that.conf.editComponentName = that.conf.editComponentName || null;
         that.conf.listComponentName = that.conf.listComponentName || null;
         that.conf.searchComponentName = that.conf.searchComponentName || null;
         that.conf.insertComponentName = that.conf.insertComponentName || null;
         that.conf.viewComponentName = that.conf.viewComponentName || null;
+        that.conf.customComponentName = that.conf.customComponentName || null;
+
         that.conf.viewTitle = '';
         if (this.conf.list) {
             this.conf.list.autoload = false;
