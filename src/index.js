@@ -29,6 +29,8 @@ import actionConfs from "./confs/actions";
 import { configure } from 'vee-validate';
 import { localize,setLocale } from '@vee-validate/i18n';
 
+import WidgetsPage from "./help/WidgetsPage.vue";
+
 export default {
     install(app) {
         app.component('crud-component', CrudComponent);
@@ -65,6 +67,7 @@ export default {
     vRecord,vSearch,cManage,vList,vListEdit,cImport,vListHasmany,
     aBase,
     Server,Wait,Route,
-    CrudHelpers
+    CrudHelpers,
+    WidgetsPage
 
 }

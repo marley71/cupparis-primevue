@@ -40,7 +40,8 @@
         "primevue": "^3.50",
         "vee-validate": "^4.9.2",
         "vue": "^3.3.0",
-        "vue-axios": "^3.4.1"
+        "vue-axios": "^3.4.1",
+        "pretty-js": "^0.2.2"
     },
     "devDependencies": {
         "eslint": "^7.5.0",

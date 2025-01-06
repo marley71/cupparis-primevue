@@ -100,6 +100,7 @@ export default class WrapperConf {
             let that = this;
             that.value = null;
         };
+        conf.value = ""+conf.value;  // trasformo in stringa altrimenti non viene selezionato
         return conf;
     }
 

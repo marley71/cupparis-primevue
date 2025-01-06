@@ -8,15 +8,6 @@
             <img v-else :src="value" v-bind="extraBind" :class="imageClass"/>
         </template>
         <template v-else-if="type==='w-table'">
-<!--            <template v-if="value || value.length > 0">-->
-<!--                <div class="flex" v-for="(item,index) in value" :key="index">-->
-<!--                    <div class="flex" v-for="column in getKeys()" :field="column" :key="column">-->
-<!--                        {{item[column]}}-->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--            </template>-->
-
             <DataTable v-if="value || value.length > 0" :value="value">
                 <Column v-for="column in getKeys()" :field="column" :key="column" :header="column">
                     <template #body="slotProps">
@@ -24,6 +15,30 @@
                     </template>
                 </Column>
             </DataTable>
+        </template>
+        <template v-else-if="type=='w-text'">
+            <span :class="textClass">
+                <template v-if="iconPrefix || prefix">
+                    <i v-if="iconPrefix" :class="iconPrefix"></i>
+                    <span v-if="prefix">{{prefix}}</span>
+                </template>
+                <template v-if="numberFormat">
+                    {{new Intl.NumberFormat((numberFormat.language?numberFormat.language:'it-IT'), (numberFormat.options?numberFormat.options:{})).format(value)}}
+                </template>
+                <template v-else>
+                    {{ value }}
+                </template>
+                <template v-if="iconSuffix || suffix">
+                    <i v-if="iconSuffix" :class="iconSuffix"></i>
+                    <span v-if="suffix">{{suffix}}</span>
+                </template>
+            </span>
+        </template>
+        <template v-else-if="type=='w-textdiv'">
+            <div :class="textClass">{{ value }}</div>
+        </template>
+        <template v-else-if="type=='w-textp'">
+            <p :class="textClass">{{ value }}</p>
         </template>
         <template v-else-if="type=='w-input'">
             <Password v-if="inputType == 'password'" :inputProps="{'name':name}" :name="name" v-model="value" toggleMask
@@ -109,30 +124,6 @@
                     <label :for="key" v-html="label"></label>
                 </div>
             </div>
-        </template>
-        <template v-else-if="type=='w-text'">
-            <span :class="textClass">
-                <template v-if="iconPrefix || prefix">
-                    <i v-if="iconPrefix" :class="iconPrefix"></i>
-                    <span v-if="prefix">{{prefix}}</span>
-                </template>
-                <template v-if="numberFormat">
-                    {{new Intl.NumberFormat((numberFormat.language?numberFormat.language:'it-IT'), (numberFormat.options?numberFormat.options:{})).format(value)}}
-                </template>
-                <template v-else>
-                    {{ value }}
-                </template>
-                <template v-if="iconSuffix || suffix">
-                    <i v-if="iconSuffix" :class="iconSuffix"></i>
-                    <span v-if="suffix">{{suffix}}</span>
-                </template>
-            </span>
-        </template>
-        <template v-else-if="type=='w-textdiv'">
-            <div :class="textClass">{{ value }}</div>
-        </template>
-        <template v-else-if="type=='w-textp'">
-            <p :class="textClass">{{ value }}</p>
         </template>
         <template v-else-if="type=='w-hasmany'">
             <w-hasmany ref="wRef" :conf="conf" @change="_change"></w-hasmany>
