@@ -22,11 +22,6 @@ export default {
          */
         createRoute : function(routeName) {
             return CrudCore.createRoute(routeName);
-            // let routeConf =  JSON.parse(JSON.stringify(routeConfs[routeName]))  //Object.assign({},routeConfs[routeName]);
-            // console.log('routeName',routeName,routeConf);
-            // if (!routeConf)
-            //     throw "Impossibile trovare la route " + routeName;
-            // return new Route(routeConf);
         },
 
         /**

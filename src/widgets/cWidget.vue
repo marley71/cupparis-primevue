@@ -50,6 +50,9 @@
             <InputText v-else class="w-full" :name="name" :type="inputType" v-model="value" v-bind="extraBind"
                        @change="_change" :class="errors.length?'p-invalid':''"></InputText>
         </template>
+        <template v-else-if="type=='w-input-set'">
+            <w-input-set ref="wRef" :conf="conf" @change="_change"></w-input-set>
+        </template>
         <template v-else-if="type=='w-select'">
             <div>
                 <input type="hidden" :name="name" :value="value">
@@ -358,17 +361,20 @@
 <script>
 import WrapperConf from "../widgets/WrapperConf";
 import Server from "../lib/Server";
-import CrudComponent from "../CrudComponent.vue";
+//import CrudComponent from "../CrudComponent.vue";
+import wBase from './wBase.vue';
 import wHasmany from "../widgets/wHasmany.vue";
 import moment from "moment";
 import wSwap from "../widgets/wSwap.vue";
 import wSwapSelect from "../widgets/wSwapSelect.vue";
+import wInputSet from './wInputSet.vue';
 import CrudVars from "../lib/CrudVars";
 
 export default {
     name: "c-widget",
-    components: {wSwap, wSwapSelect, wHasmany},
-    extends: CrudComponent,
+    components: {wSwap, wSwapSelect, wHasmany,wInputSet},
+    //extends: CrudComponent,
+    extends: wBase,
     emits: ['change'],
     filters: {
         decodeEntities: function (value) {
@@ -417,8 +423,7 @@ export default {
     },
     data() {
         let that = this;
-        window.WW = this;
-        let wc = new WrapperConf();
+        let wc = new WrapperConf()
         let ext = wc.loadConf(that.conf);
         let dt = {};
         for (let k in ext) {
@@ -428,18 +433,18 @@ export default {
         }
         dt.wConf = ext;
         dt.errors = [];
-        //console.debug('widget conf',dt);
         return dt;
     },
     mounted() {
         setTimeout(this._ready, 10);
     },
     methods: {
-        _ready() {
-            if (this.ready) {
-                this.ready.apply(this);
-            }
-        },
+        // _ready() {
+        //     this.confLoaded = true;
+        //     if (this.ready) {
+        //         this.ready.apply(this);
+        //     }
+        // },
         _hasClick() {
             if (this.click && (this.click instanceof Function) ) {
                 return true;
@@ -451,63 +456,61 @@ export default {
                 this.click.apply(this,[event]);
             }
         },
-        _change(event, type) {
-            let that = this;
-            let evt = event || {};
-            evt.widget = this;
-            //console.log('EVENTSSS', evt);
-            // if (evt && (type != 'clear')) {
-            //     // valore invariato, non emetto il change
-            //     if (evt.value == this.value) {
-            //         return ;
-            //     }
-            // }
-            switch (this.type) {
-                case 'w-autocomplete':
-                    if (type == 'clear') {
-                        this.value = null;
-                        this.autocompleteValue = null;
-                    } else if (event) {
-                        this.value = event.id;
-                        this.referredData = event;
-                    }
-                    break;
-                case 'w-date-picker':
-                    if (type == 'clear') {
-                        this.value = null;
-                        this.dateValue = null;
-                    } else if (event) {
-                        let inputDateFormat = evt.widget.inputDateFormat || 'YYYY-MM-DD';
-                        let date = event ? moment(event).format(inputDateFormat) : null;
-                        //console.log("DATE",date, inputDateFormat)
-                        //var date = new Date();
-                        this.value = date;
-                    }
-                    break;
-                case 'w-date-range-picker':
-                    if (type == 'clear') {
-                        this.value = null;
-                        this.dateValue = null;
-                    } else if (event) {
-                        let inputDateFormat = evt.widget.inputDateFormat || 'YYYY-MM-DD';
-                        let date = event ? moment(event).format(inputDateFormat) : null;
-                        //console.log("DATE",date, inputDateFormat)
-                        //var date = new Date();
-                        this.value = [date,date];
-                    }
-                    break;
-                default:
-                    break;
-            }
-            this.$emit('change', evt);
-            if (this.change) {
-                setTimeout(function () {
-                    that.change(evt);
-                },10)
-
-            }
-
-        },
+        // _change(event, type) {
+        //     let that = this;
+        //     let evt = event || {};
+        //     evt.widget = this;
+        //     switch (this.type) {
+        //         case 'w-autocomplete':
+        //             if (type == 'clear') {
+        //                 this.value = null;
+        //                 this.autocompleteValue = null;
+        //             } else if (event) {
+        //                 this.value = event.id;
+        //                 this.referredData = event;
+        //             }
+        //             break;
+        //         case 'w-date-picker':
+        //             if (type == 'clear') {
+        //                 this.value = null;
+        //                 this.dateValue = null;
+        //             } else if (event) {
+        //                 let inputDateFormat = evt.widget.inputDateFormat || 'YYYY-MM-DD';
+        //                 let date = event ? moment(event).format(inputDateFormat) : null;
+        //                 //console.log("DATE",date, inputDateFormat)
+        //                 //var date = new Date();
+        //                 this.value = date;
+        //             }
+        //             break;
+        //         case 'w-date-range-picker':
+        //             if (type == 'clear') {
+        //                 this.value = null;
+        //                 this.dateValue = null;
+        //             } else if (event) {
+        //                 let inputDateFormat = evt.widget.inputDateFormat || 'YYYY-MM-DD';
+        //                 if (this.dateValue) {
+        //                     let d1 = this.dateValue[0]?moment(this.dateValue[0]).format(inputDateFormat) : null;
+        //                     let d2 = this.dateValue[1]?moment(this.dateValue[1]).format(inputDateFormat) : null;
+        //                     this.value = [d1,d2];
+        //                 }
+        //
+        //                 // let date = event ? moment(event).format(inputDateFormat) : null;
+        //                 // console.log("DATE",date, inputDateFormat,this.dateValue);
+        //                 // //var date = new Date();
+        //                 // this.value = [date,date];
+        //             }
+        //             break;
+        //         default:
+        //             break;
+        //     }
+        //     this.$emit('change', evt);
+        //     if (this.change) {
+        //         setTimeout(function () {
+        //             that.change(evt);
+        //         },10)
+        //     }
+        //
+        // },
         _hasHref() {
             if (this.href) {
                 return true;

@@ -71,13 +71,14 @@
 </template>
 
 <script>
-import CrudComponent from "../CrudComponent.vue";
+//import CrudComponent from "../CrudComponent.vue";
+import wBase from './wBase.vue';
 import CrudCore from "../lib/CrudCore";
 //import cView from '../views/cView.vue'
 
 export default {
     name: "wHasmany",
-    extends: CrudComponent,
+    extends: wBase,
     //components : {cView},
     emits: ['change'],
     //emits: ['update:modelValue'],
@@ -112,9 +113,6 @@ export default {
         return that.conf;
     },
     methods: {
-        ready() {
-
-        },
         toggle(event) {
           this.$refs.op.toggle(event);
         },

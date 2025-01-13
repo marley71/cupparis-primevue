@@ -63,6 +63,21 @@ export default {
             }
         }
     },
+    wInputSetConf() {
+        return {
+            type : 'w-input-set',
+            value: 0,
+            name: 'banned',
+            modelName: 'user',
+            routeName : 'set',
+            modelData : {
+                id : 3,
+            },
+            change () {
+                console.log('change ',this.getValue())
+            }
+        }
+    },
     wSelectConf() {
         return {
             value: 20,
@@ -274,6 +289,19 @@ export default {
             // buttonClear: false,
         };
     },
+    wDateRangePickerConf() {
+        return {
+            value : [
+                '2020-12-20','2020-12-25'
+            ],
+            buttonClear : true,
+            type : 'w-date-range-picker',
+            change() {
+                console.log('date-range-picker',this.value)
+            }
+            // buttonClear: false,
+        };
+    },
     wDateTextConf() {
         return {
             type : 'w-date-text',
@@ -316,6 +344,22 @@ export default {
     wSwapConf() {
         return {
             type : 'w-swap',
+            value: 0,
+            name: 'banned',
+            onIcon : 'fa fa-circle',
+            modelData: {
+                id: 4
+            },
+            modelName: 'user',
+            routeName : 'set',
+            change () {
+                console.log('change ',this.getValue())
+            }
+        }
+    },
+    wSwapSelectConf() {
+        return {
+            type : 'w-swap-select',
             value: 0,
             name: 'banned',
             onIcon : 'fa fa-circle',

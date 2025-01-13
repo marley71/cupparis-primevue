@@ -30,6 +30,11 @@ import { configure } from 'vee-validate';
 import { localize,setLocale } from '@vee-validate/i18n';
 
 import WidgetsPage from "./help/WidgetsPage.vue";
+import ViewsPage from "./help/ViewsPage.vue";
+import ManagePage from "./help/ManagePage.vue";
+import ImportPage from "./help/ImportPage.vue";
+import ActionsPage from "./help/ActionsPage.vue";
+import DialogsPage from "./help/DialogsPage.vue";
 
 export default {
     install(app) {
@@ -68,6 +73,7 @@ export default {
     aBase,
     Server,Wait,Route,
     CrudHelpers,
-    WidgetsPage
+    // --- help pages
+    WidgetsPage,ViewsPage,ManagePage,ImportPage,ActionsPage,DialogsPage
 
 }

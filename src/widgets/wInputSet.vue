@@ -1,36 +1,50 @@
 <template>
-    <div>
-        <input :name="getFieldName()" type="hidden" :value="toggleValue?1:0">
-        <InputSwitch v-model="toggleValue" @change="swap()" :disabled="extraBind.disabled?true:false"/>
+    <div class="flex">
+<!--        <InputText class="w-full" :name="name" :type="inputType" v-model="value" v-bind="extraBind"-->
+<!--                   @change="_change" :class="errors.length?'p-invalid':''"></InputText>-->
+        <span>{{value}}</span>
+        <Button icon="fa fa-edit" class="p-button-sm ml-1 p-1" outlined :disabled="!canUpdate"
+                @click="toggle"></Button>
+        <OverlayPanel ref="panel" @hide="cancel()">
+            <h6>Modifica</h6>
+            <div class="my-1 grid w-24rem">
+                <span class="mt-1">{{ label }}:</span>
+                <InputText v-model="value"/>
+                <Button label="Salva" @click="set()"></Button>
+            </div>
+        </OverlayPanel>
     </div>
 </template>
 
 <script>
 import Server from "../lib/Server";
-//import CrudComponent from "../CrudComponent.vue";
-import wBase from './wBase.vue';
+import wBase from "./wBase.vue";
+
 export default {
-    name: "wSwap",
+    name: "wInputSet",
     extends: wBase,
     props: {
-        //modelValue: String,
         conf : Object,
     },
     data () {
-        //console.log('VALUE',this.conf.value);
         return Object.assign({
-            toggleValue : this.conf.value?true:false,
+            oldValue : this.conf.value,
         },this.conf);
     },
     methods: {
+
+        cancel() {
+            this.$refs.panel.hide();
+            this.value = this.oldValue;
+        },
+        toggle(event) {
+            this.$refs.panel.toggle(event);
+        },
         _ready() {
             var that = this;
             var keys = Object.keys(that.domainValues);
             that.currentIndex = keys.indexOf(''+that.value);
             that.toggleActive = that.currentIndex?true:false;
-            if (this.ready) {
-                this.ready.apply(this);
-            }
             //console.log('index e toggle ',that.currentIndex,that.toggleActive,keys,that.value,that.domainValues);
         },
         setRouteValues: function (route) {
@@ -41,31 +55,26 @@ export default {
             route.setParams({
                 id: that.modelData.id,
                 field: that.name,
-                value: that.toggleValue?1:0,
+                value: that.value
             });
             return route;
         },
-        _swap: function () {
+        set: function () {
             var that = this;
-            if (that.isAjax) {
-                var r = that.createRoute(that.routeName);
-                that.setRouteValues(r);
-                that.waitStart()
-                Server.route(r, function (json) {
-                    that.waitEnd();
-                    that.json = json;
-                    if (json.error) {
-                        that.errorDialog(json.msg);
-                        return;
-                    }
-                    that.value = that.toggleValue?1:0;
-                    that.change();
-                })
-            } else {
-                that.value = that.toggleValue?1:0;
-                that.change();
-            }
-
+            var r = that.createRoute(that.routeName);
+            that.setRouteValues(r);
+            that.waitStart()
+            Server.route(r, function (json) {
+                that.waitEnd();
+                that.json = json;
+                if (json.error) {
+                    that.errorDialog(json.msg);
+                    return;
+                }
+                that.oldValue = that.value;
+                //that.value = that.toggleValue?1:0;
+                that._change();
+            })
         },
         swap(event) {
             var that = this;

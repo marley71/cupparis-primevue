@@ -13,7 +13,9 @@
               <div
                   class="flex align-items-start flex-column lg:justify-content-start lg:align-items-center lg:flex-row">
                 <div class="mr-5 pr-3 border-right-none lg:border-right-1">
-                  <div class="font-medium text-3xl text-900">{{ translateUc(modelName + '.label', null, 1) }}</div>
+                  <div class="font-medium text-3xl text-900">
+                      {{ title?translateUc(title):translateUc(modelName + '.label', null, 1) }}
+                  </div>
                   <div class="flex align-items-center text-700 flex-wrap">
                     <div class="mr-5 flex align-items-center mt-3">
                       <!--                                    <i class="pi pi-users mr-2"></i>-->

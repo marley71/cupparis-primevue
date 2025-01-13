@@ -64,6 +64,20 @@ export default class WrapperConf {
         return conf;
     }
 
+    wInputSet(conf) {
+        if ( !('inputType' in conf) ) {
+            conf.inputType = 'text';
+        }
+        conf.reset = conf.reset || function() {
+            let that = this;
+            that.value = null;
+        };
+        if ( !('canUpdate' in conf) ) {
+            conf.canUpdate = true;
+        }
+        conf.routeName = conf.routeName || 'set';
+        return conf;
+    }
     wImage(conf) {
         conf.imageType = conf.imageType?conf.imageType:'avatar';
         conf.imageClass = conf.imageClass?conf.imageClass:'';
@@ -256,7 +270,10 @@ export default class WrapperConf {
     wDateRangePicker(conf) {
         //console.log("DATEEEE",conf.value);
         if (conf.value) {
-            conf.dateValue = new Date(conf.value);
+            if (Array.isArray(conf.value)) {
+                conf.dateValue = [new Date(conf.value[0]),new Date(conf.value[1])];
+            }
+
             //console.log("DATEEEE",conf.dateValue);
         }
         return conf;

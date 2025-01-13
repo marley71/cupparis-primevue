@@ -30,11 +30,12 @@
 
 <script>
 import Server from "../lib/Server";
-import CrudComponent from "../CrudComponent.vue";
+//import CrudComponent from "../CrudComponent.vue";
+import wBase from './wBase.vue';
 
 export default {
     name: "wSwapSelect",
-    extends: CrudComponent,
+    extends: wBase,
 
     props: {
         //modelValue: String,
@@ -51,9 +52,6 @@ export default {
 
     },
     methods: {
-        _ready() {
-
-        },
         setRouteValues: function (route) {
             var that = this;
             route.setValues({
