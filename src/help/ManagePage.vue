@@ -1,8 +1,6 @@
 <script>
-
 import manageConfs from "./manageConfs";
 import JsToCode from "./JsToCode";
-
 const jsc = new JsToCode();
 
 export default {
@@ -13,33 +11,24 @@ export default {
             wSel = decodeURI(wSel)
         }
         return {
-            selectedManage: {
-                name: 'Semplice', code: 'simple'
-            },
-
             manageSelected : wSel,
-            manageConf : {
-                'm1' :            manageConfs.m1(),
-                'm2' :            manageConfs.m2(),
-                'm3' :             manageConfs.m3(),
-                'm4' :            manageConfs.m4(),
+            mConf : {
+                'm1' :  manageConfs.m1(),
+                'm2' :  manageConfs.m2(),
+                'm3' :  manageConfs.m3(),
+                'm4' :  manageConfs.m4(),
             },
+            dynamicCode : '',
+            defaultCode : '',
+            reload : false,
             editor : null,
             editorDefault : null,
-            manages: [
-                {
-                    name: 'Semplice', code: 'simple'
-                },
-                {
-                    name: 'Edit Insert Custom', code: 'edit_insert'
-                },
-                {
-                    name: 'List Custom', code: 'list'
-                },
-                {
-                    name: 'Custom componente e azione', code: 'custom'
-                }
-            ]
+            manageLabels : {
+                'm1' : 'Semplice',
+                'm2' : 'Edit Insert Custom',
+                'm3' : 'List Custom',
+                'm4' : 'Custom Componente e azione'
+            },
         }
     },
     mounted() {
@@ -57,7 +46,7 @@ export default {
                     mode: "ace/mode/javascript",
                     value: 'var conf = {}',
                 });
-                if (that.widgetSelected) {
+                if (that.manageSelected) {
                     that.setCode();
                 }
             })
@@ -66,21 +55,20 @@ export default {
 
     },
     watch: {
-        widgetSelected() {
+        manageSelected() {
             this.setCode();
         }
     },
     methods: {
         setCode() {
             let that = this;
-            let conf = this.widgetsConf[this.widgetSelected];
-            this.dynamicCode = jsc.getSourceCode(conf); //this.widgetsConf[this.widgetSelected];
+            let conf = this.mConf[this.manageSelected];
+            this.dynamicCode = jsc.getSourceCode(conf); //this.manageConf[this.manageSelected];
             if (this.editor) {
                 this.editor.setValue('var conf = ' + this.dynamicCode);
             }
 
-            this.widgetType = that.widgetsConf[that.widgetSelected].type;
-            let defaultConf = jsc.getWidgetDefaultConf(this.widgetType);
+            let defaultConf = jsc.getManageDefaultConf();
             that.defaultCode = jsc.getSourceCode(defaultConf);
             if (this.editorDefault) {
                 that.editorDefault.setValue('var conf = ' + that.defaultCode)
@@ -93,7 +81,9 @@ export default {
             that.reload = true;
             setTimeout(function () {
                 try {
-                    that.widgetsConf[that.widgetSelected] = window[fName]();
+
+                    console.debug('chiamo',fName);
+                    that.mConf[that.manageSelected] = window[fName]();
                     that.reload = false;
                 } catch (e) {
                     console.debug('funzione chiamata', fName, window[fName]);
@@ -116,18 +106,19 @@ export default {
         </template>
         <template #content>
             <div>
-                <template v-for="(conf,wName) in manageConf" :key="wName">
-                    <!--                        <a class="p-button m-1 p-1 p-button-outlined" href="javascript:void(0)" @click="wSelected=wName">{{ wName }}</a>-->
-                    <a class="p-button m-1 p-2" :class="manageSelected===wName?'':'p-button-outlined'" :href="'#/test2-manage/'+wName" >{{ wName }}</a>
+                <template v-for="(conf,wName) in mConf" :key="wName">
+                    <router-link class="p-button m-1 p-2" :class="manageSelected===wName?'':'p-button-outlined'" :to="'/test2-manage/'+wName" >
+                        {{ manageLabels[wName] }}
+                    </router-link>
                 </template>
             </div>
             <hr />
 
             <div >
 
-                <Fieldset legend="Area Widget">
-                    <template v-for="(conf,wName) in widgetsConf" :key="wName">
-                        <c-widget class="w-full" :ref="wName" v-if="widgetSelected==wName && !reload" :conf="conf"></c-widget>
+                <Fieldset legend="Area Manage">
+                    <template v-for="(conf,wName) in mConf" :key="wName">
+                        <c-manage v-if="manageSelected==wName && !reload" :conf="conf" ></c-manage>
                     </template>
                 </Fieldset>
                 <Button class="p-button w-4 mt-1" label="Run" @click="updateCode"></Button>

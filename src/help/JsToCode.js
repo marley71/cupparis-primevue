@@ -131,4 +131,12 @@ export default class JsToCode {
     getViewDefaultConf(type) {
         return CrudCore.defaultViewConf(type);
     }
+
+    getManageDefaultConf() {
+        return {
+            search : null,
+            edit : null,
+            list : null,
+        }
+    }
 }
