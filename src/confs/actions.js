@@ -140,10 +140,10 @@ const actionConfs = {
     },
     'action-save-back' : {
         type : 'collection',
-        title : 'app.salva.torna-indietro',
+        title : 'app.salva-torna-indietro',
         buttonClass: 'p-button-outlined p-button-success',
         icon : 'fa fa-save',
-        text : 'app.salva',
+        text : 'app.salva-torna-indietro',
         json : null,
         execute (event) {
             let tA = this;
