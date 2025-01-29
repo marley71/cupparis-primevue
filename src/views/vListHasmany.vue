@@ -101,7 +101,14 @@ export default {
     methods: {
         getFieldName(field) {
             console.debug('v-list-hasmany getFieldName',field);
-            return field + 'ppop[]';
+            return field + '[]';
+        },
+        /**
+         * deseleziona le righe selezionate , importante dopo una cancellazione multipla per evitare che rimanagno
+         * selezionati alcune rows
+         */
+        deselectAll() {
+            this.selected = null;
         }
     }
 }

@@ -15,12 +15,15 @@
             </template>
             <template #content>
                 <div class="flex flex-column">
-                    <template v-for="(data,index) in hasmanyValue" :key="index">
-                        <div class="flex align-self-end">
-                            <Button class="p-button-outlined p-button-danger" icon="fa fa-times" @click="removeItem(index)"></Button>
-                        </div>
+                    <div v-for="(dataKey,index) in vForKeys" :key="dataKey">
+                        <Divider align="right">
+                            <Button class="p-button-outlined p-button-danger" icon="fa fa-times" @click="removeItem(dataKey)"></Button>
+                        </Divider>
+<!--                        <div class="flex align-self-end">-->
+<!--                            <Button class="p-button-outlined p-button-danger" icon="fa fa-times" @click="removeItem(index)"></Button>-->
+<!--                        </div>-->
                         <v-record ref="recordView" :conf="getHasmanyConf(index)"></v-record>
-                    </template>
+                    </div>
                 </div>
             </template>
             <template #footer>
@@ -39,7 +42,8 @@
         </Card>
     </template>
     <template v-else-if="hasmanyType=='view-only'">
-        <template v-for="(data,index) in hasmanyValue" :key="index">
+<!--        <template v-for="(data,index) in hasmanyValue" :key="index">-->
+        <template v-for="(data,index) in value" :key="index">
             <div v-for="field in getHasmanyConf(index).fields" :key="field">
                 <c-widget :conf="getHasmanyWidgetConf(index,field)"></c-widget>
             </div>
@@ -51,14 +55,14 @@
             <table class="w-full table p-1">
                 <thead>
                     <tr>
-                        <td v-for="field in fields" :key="field">
-                            <b>{{translate("order.fields."+field+".label")}}</b>
+                        <td v-for="field in _getPanelFields()" :key="field">
+                            <b>{{_getFieldLabel(field)}}</b>
                         </td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(data,index) in hasmanyValue" :key="index">
-                        <td v-for="field in fields" :key="field" v-html="_getColumnValue(index,field)">
+                    <tr v-for="(data,index) in value" :key="index">
+                        <td v-for="field in _getPanelFields()" :key="field" v-html="_getColumnValue(index,field)">
                         </td>
                     </tr>
                 </tbody>
@@ -76,7 +80,7 @@ import wBase from './wBase.vue';
 import CrudCore from "../lib/CrudCore";
 //import cView from '../views/cView.vue'
 
-var keyHasmany = 0; // chiave per la generazione univoca di view hasmany in modalita' record
+
 export default {
     name: "wHasmany",
     extends: wBase,
@@ -102,15 +106,20 @@ export default {
                 return baseName + '-' + name + '[]';
             }
         }
-        if (that.conf.hasmanyType == 'list') {
-            that.conf.value = that.addDataKeyField(that.conf.value);  // serve per rendere univoco il record della lista per la multiselezione
-        }
 
-        that.conf.hasmanyValue = that.trasformValue(that.conf.value);
+        let keys = that._generateArrayKeys();
+
+        //if (that.conf.hasmanyType == 'list') {
+            that.conf.value = that.addDataKeyField(that.conf.value);  // serve per rendere univoco il record della lista per la multiselezione
+        //}
+
+        //that.conf.hasmanyValue = that.trasformValue(that.conf.value);
         if (!this.conf.limit) {
             that.conf.limit = null;
         }
         that.conf.hasmanyConf.metadata = that.conf.relationConf || {};
+        that.conf.vForKeys = keys;
+        ///console.debug('hasmany_log',keys);
         return that.conf;
     },
     methods: {
@@ -135,6 +144,7 @@ export default {
             let val = [];
             if (this.$refs.recordView) {
                 for (let i=0;i<this.$refs.recordView.length;i++) {
+                    let v = this.$refs.recordView[i].getValue();
                     val.push(this.$refs.recordView[i].getValue());
                 }
             }
@@ -156,7 +166,11 @@ export default {
                     that.$refs.listViewHasmany.instance().value = that.value;
                     that.$refs.listViewHasmany.instance().reload();
                 } else {
-                    that.hasmanyValue = that.trasformValue(that.value);
+                    let keys = that._generateArrayKeys(val);
+                    that.vForKeys = keys;
+                    that.value = that.addDataKeyField(that.value);
+                    //that.hasmanyValue = that.value;
+                    //that.hasmanyValue = that.trasformValue(that.value);
                 }
 
             }, 1)
@@ -183,7 +197,7 @@ export default {
                 let fieldConfig = that.hasmanyConf.fieldsConfig[field];
                 let defVal = (fieldConfig && (fieldConfig.default || fieldConfig.default === 0)) ? fieldConfig.default : '';
                 v[fields[f]] = defVal;
-                v.dataKey = window.performance.now() + '_' + (Math.random() * 1000);
+                v.dataKey = that._getRandomKey()
                 let md = that.hasmanyConf.modelData || {};
                 if (that.hasmanyType=='list') {
                     fieldsConfig[field] = this.$refs.listViewHasmany.instance().getWidgetConfig(field, defVal, (md[field] || {}))
@@ -201,25 +215,13 @@ export default {
                 that.setValue(val);
                 that.$refs.listViewHasmany.instance().widgetsConfig.push(fieldsConfig);
 
-
-
-                // console.debug('hasmany $refs',that.$refs.listViewHasmany);
-                // console.debug('hasmany $refs instance',that.$refs.listViewHasmany.instance());
-                // let val = JSON.parse(JSON.stringify(that.$refs.listViewHasmany.instance().value || []));
-                // let fC = JSON.parse(JSON.stringify(that.$refs.listViewHasmany.instance().widgetsConfig || []));
-                // val.push(v);
-                // fC.push(fieldsConfig);
-                // that.$refs.listViewHasmany.instance().value = val;
-                // that.$refs.listViewHasmany.instance().widgetsConfig = fC;
-
             } else {
                 let val = that.getValue();
                 val.push(v);
-                that.setValue(val);
-                keyHasmany++;
-                console.debug('wHasmany key',keyHasmany);
-                //that.value.push(v);
-                that.hasmanyValue[window.performance.now() + '_' + keyHasmany] = v;
+                that.vForKeys.push(that._getRandomKey());
+                console.debug('hasmany_log ',val);
+                that.value = val;
+                //that.setValue(val);
             }
 
 
@@ -248,6 +250,7 @@ export default {
                     that.$refs.listViewHasmany.instance().value.splice(index,1);
 
                 }
+                that.$refs.listViewHasmany.instance().deselectAll();
                 //console.debug('removeItem result wconfig',that.$refs.listViewHasmany.widgetsConfig)
                 //console.debug('removeItem result wvalue',that.$refs.listViewHasmany.value)
 
@@ -268,14 +271,46 @@ export default {
                 // this.$refs.listViewHasmany.value = that.value;
                 // this.$refs.listViewHasmany.reload();
             } else {
-                let rIndex = Object.keys(this.hasmanyValue).indexOf(index);
-                //console.log('remove index', index, this.value);
-                if (rIndex < this.value.length) {
-                    this.value.splice(parseInt(rIndex), 1);
+                console.debug('hasmany_log remove',index)
+                let viewVal = that.getValue();  // prendo i valori aggiornati delle views
+                let val = [];
+                let keys = [];
+                for (let i in that.vForKeys) {
+                    if (that.vForKeys[i] != index) {
+                        val.push(viewVal[i]);
+                        keys.push(that.vForKeys[i]);
+                    }
                 }
-                //console.log('removed index', rIndex, this.value);
-                delete this.hasmanyValue[index];
-                //this.hasmanyValue = this.trasformValue(this.value);
+                // for (let i in this.value) {
+                //     if (this.value[i].dataKey != index) {
+                //         val.push(viewVal[i]);
+                //         keys.push(that.vForKeys[i]);
+                //     }
+                // }
+                // setTimeout(function() {
+                    //that.setValue(val);
+                that.value = val;
+                    that.vForKeys = keys;
+                    //console.debug('hasmany_log keys',keys,'values',val);
+                //},20)
+
+                //this.$forceUpdate();
+                    // console.debug('rimuove valore ',index, this.value[index]);
+                    // this.value.splice(parseInt(index), 1);
+                    // console.debug('nuovo vettore',JSON.parse(JSON.stringify(this.value)));
+                    // this.setValue(this.value);
+
+
+
+
+                // let rIndex = Object.keys(this.hasmanyValue).indexOf(index);
+                // //console.log('remove index', index, this.value);
+                // if (rIndex < this.value.length) {
+                //     this.value.splice(parseInt(rIndex), 1);
+                // }
+                // //console.log('removed index', rIndex, this.value);
+                // delete this.hasmanyValue[index];
+                // //this.hasmanyValue = this.trasformValue(this.value);
             }
 
         },
@@ -302,7 +337,8 @@ export default {
             let hs = CrudCore.clone(that.hasmanyConf);
             hs.routeName = null;
             hs.actions = [];
-            hs.value = that.hasmanyValue[i];
+            //hs.value = that.hasmanyValue[i];
+            hs.value = that.value[i];
             hs.type = 'v-view';
             //console.log('HS', hs);
             return hs;
@@ -377,14 +413,15 @@ export default {
 
         },
 
-        trasformValue(value) {
-            let hasmanyValue = {};
-            let items = value || [];
-            for(let i in items) {
-                hasmanyValue[ window.performance.now() + "--" + i] = items[i];
-            }
-            return hasmanyValue;//Object.values(hasmanyValue);
-        },
+        // trasformValue(value) {
+        //     let hasmanyValue = [];
+        //     let items = value || [];
+        //     for(let i in items) {
+        //         //hasmanyValue[ window.performance.now() + "--" + i] = items[i];
+        //         hasmanyValue.push(items[i])
+        //     }
+        //     return hasmanyValue;//Object.values(hasmanyValue);
+        // },
         hasDisplayTitle() {
             return this.displayTitle !== false;
         },
@@ -392,7 +429,7 @@ export default {
             let that = this;
             let fieldsConfig = that.hasmanyConf.fieldsConfig || {};
             let conf = fieldsConfig[field] || { type : 'w-text'};
-            conf.value = that.hasmanyValue[index][field];
+            conf.value = that.value[index][field]; // that.hasmanyValue[index][field];
             if (!conf.height) {
                 conf.height = '30';
             }
@@ -401,10 +438,14 @@ export default {
         },
         addDataKeyField(values) {
             for (let i in values) {
-                values[i].dataKey = window.performance.now() + '_' + Math.floor(Math.random() * 100000);
+                if (!values[i].dataKey) {
+                    values[i].dataKey = this._getRandomKey()
+                }
+
             }
             return values;
         },
+
         /**
          * metoto utilizzato da w-hasmany con modalità panel dove non abbiamo il concetto di widget
          * per permettere di fare colonne custom
@@ -415,8 +456,77 @@ export default {
             if (this.getColumnValue) {
                 return this.getColumnValue.apply(this,[index,field]);
             }
-           return this.hasmanyValue[index][field];
-        }
+           return this.value[index][field];  // this.hasmanyValue[index][field];
+        },
+        /**
+         * ritorna una key random per il ciclo for sui valori dei hasmany record per poter far funzionare la delete
+         * @returns {string}
+         * @private
+         */
+        _getRandomKey() {
+            return parseInt(window.performance.now()) + '_' + Math.floor(Math.random() * 100000);
+        },
+        /**
+         * genera il vettore delle keys per la gestione del ciclo v-for in modalita' record
+         * @private
+         */
+        _generateArrayKeys(val) {
+            let keys = [];
+            let values = this.conf.value || [];
+            if (val) {
+                values = val;
+            }
+
+            for (let i in values) {
+                keys.push(this._getRandomKey());
+            }
+            return keys;
+        },
+        /**
+         * ritorna i fields visibili in modalita' panel
+         * @private
+         */
+        _getPanelFields() {
+            let that = this;
+            let hs = that.hasmanyConf;
+            let fields = [];
+            for (let i in hs.fields) {
+                let field = hs.fields[i];
+                let fieldConfig = hs.fieldsConfig[field];
+                if (fieldConfig && fieldConfig.type === 'w-hidden') {
+                    continue;
+                }
+                fields.push(field);
+            }
+            return fields;
+        },
+        _getFieldLabel(field) {
+
+            let that = this;
+            let hs = that.hasmanyConf;
+            for (let i in hs.fields) {
+                let f = hs.fields[i];
+                if (f != field) {
+                    continue;
+                }
+                let fieldConfig = hs.fieldsConfig[f];
+                if (fieldConfig && fieldConfig.type === 'w-hidden') {
+                    continue;
+                }
+                let label = hs.fields[i];
+                if (fieldConfig && fieldConfig.label) {
+                    label = fieldConfig.label;
+                    return label;
+                }
+                let mN = hs.modelName?hs.modelName+'.':'';
+                label = CrudCore.translate(mN + "fields."+field+".label")
+                return  label;
+
+            }
+            return 'not found';
+
+        },
+
     }
 }
 </script>
@@ -436,3 +546,5 @@ export default {
 
 }
 </style>
+<script setup>
+</script>
