@@ -76,6 +76,7 @@ import wBase from './wBase.vue';
 import CrudCore from "../lib/CrudCore";
 //import cView from '../views/cView.vue'
 
+var keyHasmany = 0; // chiave per la generazione univoca di view hasmany in modalita' record
 export default {
     name: "wHasmany",
     extends: wBase,
@@ -215,9 +216,10 @@ export default {
                 let val = that.getValue();
                 val.push(v);
                 that.setValue(val);
-
+                keyHasmany++;
+                console.debug('wHasmany key',keyHasmany);
                 //that.value.push(v);
-                that.hasmanyValue[window.performance.now() + '_' + (Math.random() * 1000)] = v;
+                that.hasmanyValue[window.performance.now() + '_' + keyHasmany] = v;
             }
 
 

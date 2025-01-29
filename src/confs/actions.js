@@ -1,8 +1,8 @@
 import Server from "../lib/Server";
 import CrudCore from "../lib/CrudCore";
 import CrudVars from "../lib/CrudVars";
-import { reject } from "lodash";
 import CrudHelpers from "../lib/CrudHelpers";
+
 
 const actionConfs = {
     'default': {
@@ -177,7 +177,7 @@ const actionConfs = {
             })
         },
         afterExecute () {
-            window.history.back();
+            this.$router.back();
         }
     },
     'action-edit' : {
@@ -344,7 +344,8 @@ const actionConfs = {
         icon : 'fa fa-backward',
         text : 'app.indietro',
         execute : function () {
-            window.history.back();
+            this.$router.back();
+            //window.history.back();
         }
     },
     'action-delete-selected' : {

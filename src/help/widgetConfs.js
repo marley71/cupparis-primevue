@@ -207,7 +207,7 @@ export default {
                     resource : 'de ma de'
                 }
             ],
-            limit: 3,
+            limit: 10,
 
             change() {
                 console.log('change ' , this.getValue())

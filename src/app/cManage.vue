@@ -86,17 +86,15 @@ export default {
     extends : CrudComponent,
     components: {cView},
     //props : ['conf'],
-    // watch : {
-    //     '$route.params.context': {
-    //         handler: function(context) {
-    //             if (this.getViewList()) {
-    //                 this.showContext();
-    //             }
-    //
-    //         },
-    //         deep: true,
-    //     }
-    // },
+    watch : {
+        '$route.params.context': {
+            handler: function(context) {
+                console.debug('showContext ',context);
+                this.showContext();
+            },
+            deep: true,
+        }
+    },
     mounted() {
         this.showContext();
         this.setManageReference();
@@ -257,6 +255,7 @@ export default {
         showList() {
             let that = this;
             that.mode = 'list';
+            console.debug('showContext showList')
             if (that.autoUpdateHash) {
                 window.history.back();
             } else {
@@ -298,9 +297,11 @@ export default {
                     break;
                 case 'list':
                     var vList = that.getViewList();
+                    console.debug('showContext list',vList);
                     if (vList) {
                         let listParams = context.filter( a => a.indexOf('s_') == 0) || [];
                         listParams = listParams.concat( context.filter( a => a.indexOf('page') == 0));
+                        listParams = listParams.concat( context.filter( a => a.indexOf('order_') == 0));
                         console.log('LISTPARAMS',listParams,JSON.stringify(vList.value),context.filter( a => a.indexOf('page') == 0));
                         if (listParams.length > 0) {
                             vList.autoload = false;
