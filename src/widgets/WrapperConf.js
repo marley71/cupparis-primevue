@@ -64,6 +64,12 @@ export default class WrapperConf {
         return conf;
     }
 
+    wObject(conf) {
+        if ( !('title' in conf) ) {
+            conf.title = null;
+        }
+        return conf;
+    }
     wInputSet(conf) {
         if ( !('inputType' in conf) ) {
             conf.inputType = 'text';

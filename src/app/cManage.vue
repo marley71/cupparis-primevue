@@ -150,8 +150,9 @@ export default {
         that.conf.insertComponentName = that.conf.insertComponentName || null;
         that.conf.viewComponentName = that.conf.viewComponentName || null;
         that.conf.customComponentName = that.conf.customComponentName || null;
-
-        that.conf.viewTitle = '';
+        if (!('viewTitle' in that.conf)) {
+            that.conf.viewTitle = null;
+        }
         if (this.conf.list) {
             this.conf.list.autoload = false;
         }
@@ -184,7 +185,7 @@ export default {
                         let thatAction = this;
                         that.view.pk = thatAction.modelData[that.$refs.vList.instance().primaryKey];
                         that.viewDisplay = true;
-                        that.viewTitle = that.translate('app.dettagli',0,null,[that.view.pk]);
+                        that.viewTitle = that.viewTitle==null?that.translate('app.dettagli',0,null,[that.view.pk]):that.viewTitle;
                     }
                 }
                 that.conf.list.actionsConfig['action-view'] = actionView;

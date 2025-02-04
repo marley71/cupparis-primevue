@@ -16,6 +16,18 @@
                 </Column>
             </DataTable>
         </template>
+        <template v-else-if="type==='w-object'">
+            <div class="card  w-full">
+                <h2 v-if="title">{{title}}</h2>
+                <table class="card-body w-full">
+                    <tr class="" v-for="(item,key) in value" :key="key">
+                        <td>{{key}}</td>
+                        <td>{{ item }}</td>
+                    </tr>
+                </table>
+            </div>
+
+        </template>
         <template v-else-if="type=='w-text'">
             <span :class="textClass">
                 <template v-if="iconPrefix || prefix">
