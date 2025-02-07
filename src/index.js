@@ -35,6 +35,7 @@ import ManagePage from "./help/ManagePage.vue";
 import ImportPage from "./help/ImportPage.vue";
 import ActionsPage from "./help/ActionsPage.vue";
 import DialogsPage from "./help/DialogsPage.vue";
+import EsperimentiPage from "./help/EsperimentiPage.vue";
 
 export default {
     install(app) {
@@ -74,6 +75,6 @@ export default {
     Server,Wait,Route,
     CrudHelpers,
     // --- help pages
-    WidgetsPage,ViewsPage,ManagePage,ImportPage,ActionsPage,DialogsPage
+    WidgetsPage,ViewsPage,ManagePage,ImportPage,ActionsPage,DialogsPage,EsperimentiPage
 
 }

@@ -13,7 +13,7 @@ export default {
         return {
             manageSelected : wSel,
             mConf : {
-                'm1' :  manageConfs.m1(),
+                'semplice' :  manageConfs.semplice(),
                 'm2' :  manageConfs.m2(),
                 'm3' :  manageConfs.m3(),
                 'm4' :  manageConfs.m4(),
@@ -24,7 +24,7 @@ export default {
             editor : null,
             editorDefault : null,
             manageLabels : {
-                'm1' : 'Semplice',
+                'semplice' : 'Semplice',
                 'm2' : 'Edit Insert Custom',
                 'm3' : 'List Custom',
                 'm4' : 'Custom Componente e azione'
@@ -33,30 +33,30 @@ export default {
     },
     mounted() {
         let that = this;
-        setTimeout(function() {
-            jsc.loadVisLib(function () {
-                console.debug('OK',document.getElementById('example'));
-                that.editor = ace.edit("example", {
-                    theme: "ace/theme/textmate",
-                    mode: "ace/mode/javascript",
-                    value: 'var conf = {}',
-                });
-                that.editorDefault = ace.edit("defaultCode", {
-                    theme: "ace/theme/textmate",
-                    mode: "ace/mode/javascript",
-                    value: 'var conf = {}',
-                });
-                if (that.manageSelected) {
-                    that.setCode();
-                }
-            })
-
-        },200)
+        // setTimeout(function() {
+        //     jsc.loadVisLib(function () {
+        //         console.debug('OK',document.getElementById('example'));
+        //         that.editor = ace.edit("example", {
+        //             theme: "ace/theme/textmate",
+        //             mode: "ace/mode/javascript",
+        //             value: 'var conf = {}',
+        //         });
+        //         that.editorDefault = ace.edit("defaultCode", {
+        //             theme: "ace/theme/textmate",
+        //             mode: "ace/mode/javascript",
+        //             value: 'var conf = {}',
+        //         });
+        //         if (that.manageSelected) {
+        //             that.setCode();
+        //         }
+        //     })
+        //
+        // },200)
 
     },
     watch: {
         manageSelected() {
-            this.setCode();
+            //this.setCode();
         }
     },
     methods: {
@@ -74,6 +74,10 @@ export default {
                 that.editorDefault.setValue('var conf = ' + that.defaultCode)
             }
         },
+        getCodeJs() {
+            let code = this.mConf[this.manageSelected];
+            return jsc.getSourceCode(code);
+        },
         updateCode() {
             let that = this;
             let s = that.editor.getValue();
@@ -81,9 +85,8 @@ export default {
             that.reload = true;
             setTimeout(function () {
                 try {
-
                     console.debug('chiamo',fName);
-                    that.mConf[that.manageSelected] = window[fName]();
+                    //that.mConf[that.manageSelected] = window[fName]();
                     that.reload = false;
                 } catch (e) {
                     console.debug('funzione chiamata', fName, window[fName]);

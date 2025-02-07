@@ -467,4 +467,16 @@ export default {
             }
         }
     },
+    wObject() {
+        return {
+            type : 'w-object',
+            name : 'oggetto',
+            value: {
+                titolo : 'oggetto generico',
+                nome : 'proprietà nome',
+                anni : 20,
+                soldi : 0
+            },
+        }
+    }
 }

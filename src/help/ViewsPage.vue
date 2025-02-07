@@ -60,20 +60,6 @@ export default {
     },
     watch: {
         vSelected() {
-            // let that = this;
-            // let conf = this.viewsConf[this.vSelected];
-            // this.dynamicCode =  jsc.getSourceCode(conf); //this.viewsConf[this.vSelected];
-            // if (this.editor) {
-            //     this.editor.setValue('var conf = ' + this.dynamicCode);
-            // }
-            //
-            // this.viewType = that.viewsConf[that.vSelected].type;
-            // let defaultConf = jsc.getViewDefaultConf(this.viewType);
-            // that.defaultCode = jsc.getSourceCode(defaultConf);
-            // if (this.editorDefault) {
-            //     that.editorDefault.setValue('var conf = ' + that.defaultCode)
-            // }
-
             this.setCode();
         }
     },
@@ -82,7 +68,7 @@ export default {
             let that = this;
             let conf = this.viewsConf[this.vSelected];
             this.dynamicCode =  jsc.getSourceCode(conf); //this.viewsConf[this.widgetSelected];
-            console.debug('connnnfff',this.editor,this.editorDefault,this.dynamicCode);
+            //console.debug('connnnfff',this.editor,this.editorDefault,this.dynamicCode);
             if (this.editor) {
                 this.editor.setValue('var conf = ' + this.dynamicCode);
             }

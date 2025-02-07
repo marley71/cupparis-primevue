@@ -46,6 +46,7 @@ export default {
                 'w-upload' :            widgetConfs.wUploadConf(),
                 'w-upload-ajax' :       widgetConfs.wUploadAjaxConf(),
                 'w-chip' :              widgetConfs.wChipConf(),
+                'w-object' :            widgetConfs.wObject(),
             },
             fIndex : 0,
             dynamicCode : '',

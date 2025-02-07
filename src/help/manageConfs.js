@@ -2,7 +2,7 @@ import CrudCore from "../lib/CrudCore";
 import ModelUser from "./ModelUser";
 
 export default {
-    m1() {
+    semplice() {
         let m = JSON.parse(JSON.stringify(ModelUser));
         m.autoUpdateHash = false;
         return m;
