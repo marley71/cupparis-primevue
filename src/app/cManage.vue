@@ -244,10 +244,10 @@ export default {
             let viewConfs = ['list','edit','insert','view','custom'];
             for (let i in viewConfs) {
                 let v = viewConfs[i];
-                console.debug('setto view ',v,manage.conf[v])
+                //console.debug('setto view ',v,manage.conf[v])
                 if (manage.conf[v]) {
                     for (let a in manage.conf[v].actionsConfig) {
-                        console.debug('setto manage a ',v,a, manage.conf[v].actionsConfig[a]);
+                        //console.debug('setto manage a ',v,a, manage.conf[v].actionsConfig[a]);
                         manage.conf[v].actionsConfig[a].manage = manage;
                     }
                 }
@@ -256,7 +256,7 @@ export default {
         showList() {
             let that = this;
             that.mode = 'list';
-            console.debug('showContext showList')
+            //console.debug('showContext showList')
             if (that.autoUpdateHash) {
                 window.history.back();
             } else {
@@ -298,17 +298,17 @@ export default {
                     break;
                 case 'list':
                     var vList = that.getViewList();
-                    console.debug('showContext list',vList);
+                    //console.debug('showContext list',vList);
                     if (vList) {
                         let listParams = context.filter( a => a.indexOf('s_') == 0) || [];
                         listParams = listParams.concat( context.filter( a => a.indexOf('page') == 0));
                         listParams = listParams.concat( context.filter( a => a.indexOf('order_') == 0));
-                        console.log('LISTPARAMS',listParams,JSON.stringify(vList.value),context.filter( a => a.indexOf('page') == 0));
+                        //console.log('LISTPARAMS',listParams,JSON.stringify(vList.value),context.filter( a => a.indexOf('page') == 0));
                         if (listParams.length > 0) {
                             vList.autoload = false;
                             //that.waitViewLoaded('list',function() {
 
-                                console.debug('view loaded');
+                                //console.debug('view loaded');
                                 for (let i in listParams) {
                                     let tmp = listParams[i].split(':');
                                     if (tmp.length != 2) {

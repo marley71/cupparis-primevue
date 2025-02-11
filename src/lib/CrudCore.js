@@ -268,6 +268,11 @@ function _sanitizeMessage(str) {
                 return str.message;
                 //console.error('Errore', str.message);
             }
+        } else if (str instanceof TypeError) {
+            let ss = str.toString();
+            ss = ss.replace(/<br\s*\/?>/gi, '\n');
+            ss = ss.replace('&egrave;','è');
+            return ss;
         } else {
             let ss = str || "";
             ss = ss.replace(/<br\s*\/?>/gi, '\n');
