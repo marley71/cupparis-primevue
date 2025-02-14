@@ -28,7 +28,7 @@ export default {
     },
     mounted() {
         let that =this;
-        console.debug('wPrimeEditor',this.value);
+        // console.debug('wPrimeEditor',this.value);
         setTimeout(function () {
             that.addCustomButton();
         },1000)
@@ -48,19 +48,27 @@ export default {
             // }
         },
         saveHtml(event) {
-            console.debug('saveHtml',event);
+            // console.debug('saveHtml',event);
             this.value = event;
             this.showHtml = false;
         },
         addHtmlButton() {
             let that = this;
             const customButton = document.querySelector('.ql-' + that.keyClass);
-            console.debug('custom button',customButton);
+            // console.debug('custom button',customButton);
+            const saveButton = document.querySelectorAll('.ssh-pre__copy');
+
+            saveButton.forEach(function (node) {
+                node.setAttribute('type','button');
+            });
+
+                // setAttribute('type','button');
+            // console.debug('save button',saveButton);
             if (customButton) {
                 customButton.innerHTML = '<i class="fa-brands fa-html5"></i>'
                 customButton.addEventListener('click', () => {
                     // Inserisci qui la logica del tuo bottone
-                    console.log('Il tuo bottone personalizzato è stato cliccato!');
+                    // console.log('Il tuo bottone personalizzato è stato cliccato!');
                     that.showHtml = !that.showHtml;
                 });
             }
