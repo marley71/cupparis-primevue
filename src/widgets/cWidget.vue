@@ -3,6 +3,12 @@
         <template v-if="type==='w-hidden'">
             <input type="hidden" :name="name" v-model="value" v-bind="extraBind" @change="_change"/>
         </template>
+        <template v-else-if="type==='w-editor'">
+            <w-editor ref="wRef" :conf="conf"></w-editor>
+        </template>
+        <template v-else-if="type==='w-leaf-let'">
+            <w-leaf-let ref="wRef" :conf="conf" @change="_change"></w-leaf-let>
+        </template>
         <template v-else-if="type==='w-image'">
             <Avatar v-if="imageType == 'avatar'" :image="value" v-bind="extraBind" shape="circle" :class="imageClass"></Avatar>
             <img v-else :src="value" v-bind="extraBind" :class="imageClass"/>
@@ -285,9 +291,9 @@
             <input type="hidden" :name="name" v-model="value"/>
             <Editor v-model="value" editorStyle="height: 320px" @text-change="_change">
                 <template v-if="toolbar" #toolbar>
-                    <span class="ql-formats">
-                        <button v-for="(cssClass,index) in toolbar" :key="index" :class="cssClass"></button>
-                    </span>
+<!--                    <span class="ql-formats">-->
+<!--                        <button v-for="(cssClass,index) in toolbar" :key="index" :class="cssClass"></button>-->
+<!--                    </span>-->
                 </template>
             </Editor>
         </template>
@@ -373,18 +379,19 @@
 <script>
 import WrapperConf from "../widgets/WrapperConf";
 import Server from "../lib/Server";
-//import CrudComponent from "../CrudComponent.vue";
 import wBase from './wBase.vue';
 import wHasmany from "../widgets/wHasmany.vue";
 import moment from "moment";
 import wSwap from "../widgets/wSwap.vue";
 import wSwapSelect from "../widgets/wSwapSelect.vue";
 import wInputSet from './wInputSet.vue';
+import wLeafLet from './wLeafLet.vue';
+import wEditor from './wEditor.vue';
 import CrudVars from "../lib/CrudVars";
 
 export default {
     name: "c-widget",
-    components: {wSwap, wSwapSelect, wHasmany,wInputSet},
+    components: {wSwap, wSwapSelect, wHasmany,wInputSet,wLeafLet,wEditor},
     //extends: CrudComponent,
     extends: wBase,
     emits: ['change'],
@@ -624,16 +631,16 @@ export default {
             }
             this._change();
         },
-        getValue() {
-            let that = this;
-            switch (that.conf.type) {
-                case 'w-hasmany':
-                    return that.$refs.wRef.getValue();
-                default:
-                    return that.value;
-            }
-
-        },
+        // getValue() {
+        //     let that = this;
+        //     switch (that.conf.type) {
+        //         case 'w-hasmany':
+        //             return that.$refs.wRef.getValue();
+        //         default:
+        //             return that.value;
+        //     }
+        //
+        // },
         setErrors(errors) {
             this.errors = errors;
         },
@@ -711,7 +718,7 @@ export default {
         },
 
       bgUrl(url) {
-        return 'background-image: url(\"' + url + '\") !important;"';
+        return 'background-image: url("' + url + '") !important;"';
       },
     }
 }

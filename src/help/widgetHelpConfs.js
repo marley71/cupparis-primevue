@@ -1,3 +1,5 @@
+import WrapperConf from "../widgets/WrapperConf";
+
 export default {
     wHiddenConf() {
         return {
@@ -400,12 +402,25 @@ export default {
     wTexthtmlConf() {
         return {
             value : 'text area prvoa',
+            name : 'field1',
             type : 'w-texthtml',
             change() {
                 let that = this;
                 console.log('change',that.getValue())
             }
         };
+    },
+    wEditor() {
+        let wc = new WrapperConf();
+        return wc.loadConf({
+            value : 'text area prvoa',
+            name : 'field1',
+            type : 'w-editor',
+            change() {
+                let that = this;
+                console.log('change',that.getValue())
+            }
+        });
     },
     wUploadConf() {
         return {
@@ -477,6 +492,15 @@ export default {
                 anni : 20,
                 soldi : 0
             },
+        }
+    },
+    wLeafLeft() {
+        return {
+            type : 'w-leaf-let',
+            name : 'mappa',
+            value: [
+                [43.3,11.7]
+            ],
         }
     }
 }
