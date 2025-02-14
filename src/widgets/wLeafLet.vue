@@ -2,6 +2,7 @@
 import "leaflet/dist/leaflet.css";
 import { LMap, LTileLayer,LIcon,LMarker } from "@vue-leaflet/vue-leaflet";
 import wBase from './wBase.vue'
+//import defaultIcon from
 export default {
     name: "wLeafLet",
   extends : wBase,
@@ -29,14 +30,14 @@ export default {
     this.mapIsReady = true;
   },
   methods:{
-    iconUrl() {
-      return `https://placekitten.com/${this.iconWidth}/${this.iconHeight}`;
-    },
   },
   computed: {
-    iconSize() {
-      return [this.iconWidth, this.iconHeight];
-    },
+      iconUrl() {
+          return `https://placekitten.com/${this.iconWidth}/${this.iconHeight}`;
+      },
+        iconSize() {
+          return [this.iconWidth, this.iconHeight];
+        },
   }
 }
 </script>
@@ -50,7 +51,7 @@ export default {
                 name="OpenStreetMap"
             ></l-tile-layer>
           <l-marker v-for="(item,index) in value" :lat-lng="item" :key="index">
-            <l-icon :icon-size="iconSize" />
+           <l-icon :icon-url="iconUrl"  :icon-size="iconSize" />
           </l-marker>
         </l-map>
     </div>
