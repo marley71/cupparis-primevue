@@ -67,7 +67,9 @@ export default {
 
 <template>
     <input type="hidden" :name="name" v-model="value"/>
-    <Editor v-show="!showHtml" v-model="value" :modules="modules" @text-change="_change" editorStyle="height: 320px" @load="addHtmlButton">
+    <Editor v-show="!showHtml" v-model="value" :modules="modules"
+            :placeholder="placeholder"
+            @text-change="_change" editorStyle="height: 320px" @load="addHtmlButton">
         <template #toolbar>
             <div></div> <!-- mi serve per nascondere la toolbar di default -->
         </template>
