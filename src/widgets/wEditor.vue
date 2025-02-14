@@ -11,14 +11,18 @@ export default {
     extends : wBase,
     components : {Editor,SshPre},
     data() {
-        console.debug('wBase',this.conf);
-
+        let toolbar = this.conf.toolbar;
+        let keyClass = 'bt_' + Date.now();
+        let bt = {};
+        bt[keyClass] = 'Custom';
+        toolbar.push([bt]);
         let editorConf = {
             showHtml: false,
             headerOptions: [],
             modules : {
                 toolbar : this.conf.toolbar
-            }
+            },
+            keyClass : keyClass
         };
         return Object.assign(editorConf,this.conf);
     },
@@ -50,7 +54,7 @@ export default {
         },
         addHtmlButton() {
             let that = this;
-            const customButton = document.querySelector('.ql-your-custom-button');
+            const customButton = document.querySelector('.ql-' + that.keyClass);
             console.debug('custom button',customButton);
             if (customButton) {
                 customButton.innerHTML = '<i class="fa-brands fa-html5"></i>'

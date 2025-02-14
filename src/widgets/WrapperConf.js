@@ -437,7 +437,6 @@ export default class WrapperConf {
 
                 ['clean'],
             ];
-            conf.toolbar.push([{ 'your-custom-button': 'Custom' }]);
         }
         return conf;
     }

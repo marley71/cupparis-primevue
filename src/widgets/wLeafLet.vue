@@ -50,7 +50,7 @@ export default {
                 name="OpenStreetMap"
             ></l-tile-layer>
           <l-marker v-for="(item,index) in value" :lat-lng="item" :key="index">
-<!--            <l-icon :icon-size="iconSize" />-->
+            <l-icon :icon-size="iconSize" />
           </l-marker>
         </l-map>
     </div>

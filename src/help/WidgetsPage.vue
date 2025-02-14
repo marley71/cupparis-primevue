@@ -197,6 +197,8 @@ export default {
                 <Fieldset legend="Area Widget">
                     <template v-for="(conf,wName) in widgetsConf" :key="wName">
                         <c-widget class="w-full" :ref="wName" v-if="widgetSelected==wName && !reload" :conf="conf"></c-widget>
+                        <c-widget class="w-full" :ref="wName" v-if="widgetSelected==wName && !reload" :conf="conf"></c-widget>
+
                     </template>
                 </Fieldset>
                 <Button class="p-button w-4 mt-1" label="Run" @click="updateCode"></Button>
