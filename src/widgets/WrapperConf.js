@@ -64,6 +64,15 @@ export default class WrapperConf {
         return conf;
     }
 
+    wLeafLet(conf) {
+        if ( !('markerIcon' in conf) ) {
+            conf.markerIcon = null;
+        }
+        conf.with = conf.width?conf.width:25;
+        conf.height = conf.height?conf.height:25;
+        return conf;
+    }
+
     wObject(conf) {
         if ( !('title' in conf) ) {
             conf.title = null;

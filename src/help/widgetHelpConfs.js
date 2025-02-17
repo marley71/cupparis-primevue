@@ -499,8 +499,23 @@ export default {
             type : 'w-leaf-let',
             name : 'mappa',
             value: [
-                [43.3,11.7]
+                [43.3,11.7],
+                [40.3,10.5]
+            ],
+        }
+    },
+    wLeafLeftIcon() {
+        return {
+            type : 'w-leaf-let',
+            name : 'mappa',
+            "markerIcon":"http://www.repstatic.it/cless/main/common/component/header-footer/2020-v1/img/logo-repubblica.svg",
+            value: [
+                [43.3,11.7],
+                [40.3,10.5]
             ],
         }
     }
 }
+
+
+

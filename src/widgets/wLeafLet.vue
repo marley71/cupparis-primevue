@@ -2,7 +2,8 @@
 import "leaflet/dist/leaflet.css";
 import { LMap, LTileLayer,LIcon,LMarker } from "@vue-leaflet/vue-leaflet";
 import wBase from './wBase.vue'
-//import defaultIcon from
+import defaultIcon from '../assets/icons8-marker-50.png'
+
 export default {
     name: "wLeafLet",
   extends : wBase,
@@ -11,13 +12,15 @@ export default {
     },
     data() {
       console.debug('w-leaf-let',this.conf)
+      let markers = this.valueToMarkers();
         return {
+          markers : markers,
             zoom: 2,
             geojsonOptions: {
               // Options that don't rely on Leaflet methods.
             },
           iconWidth: 25,
-          iconHeight: 40,
+          iconHeight: 25,
         };
     },
   async beforeMount() {
@@ -30,15 +33,30 @@ export default {
     this.mapIsReady = true;
   },
   methods:{
-  },
-  computed: {
-      iconUrl() {
-          return `https://placekitten.com/${this.iconWidth}/${this.iconHeight}`;
+      valueToMarkers() {
+        let markers = [];
+        for (let i in this.conf.value) {
+          if (Array.isArray(this.conf.value[i])) {
+            markers.push({
+              icon : this.conf.markerIcon || defaultIcon,
+              latlng : this.conf.value[i],
+              size : [this.conf.width,this.conf.height],
+            })
+          }
+        }
+        console.debug('markers',markers);
+        return markers;
       },
-        iconSize() {
-          return [this.iconWidth, this.iconHeight];
-        },
-  }
+    iconUrl(index) {
+      if (this.markerIcon) {
+        return this.markerIcon;
+      }
+      return defaultIcon; //`https://placekitten.com/${this.iconWidth}/${this.iconHeight}`;
+    },
+    iconSize(index) {
+      return [this.iconWidth, this.iconHeight];
+    },
+  },
 }
 </script>
 
@@ -50,8 +68,8 @@ export default {
                 layer-type="base"
                 name="OpenStreetMap"
             ></l-tile-layer>
-          <l-marker v-for="(item,index) in value" :lat-lng="item" :key="index">
-           <l-icon :icon-url="iconUrl"  :icon-size="iconSize" />
+          <l-marker v-for="(item,index) in markers" :lat-lng="item.latlng" :key="index">
+           <l-icon :icon-url="item.icon"  :icon-size="item.size" />
           </l-marker>
         </l-map>
     </div>

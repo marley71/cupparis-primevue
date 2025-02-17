@@ -49,6 +49,7 @@ export default {
                 'w-chip' :              widgetHelpConfs.wChipConf(),
                 'w-object' :            widgetHelpConfs.wObject(),
                 'w-leaf-let' :            widgetHelpConfs.wLeafLeft(),
+              'w-leaf-let con icona' :            widgetHelpConfs.wLeafLeftIcon(),
             },
             fIndex : 0,
             dynamicCode : '',
