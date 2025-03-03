@@ -38,6 +38,7 @@ import ActionsPage from "./help/ActionsPage.vue";
 import DialogsPage from "./help/DialogsPage.vue";
 import EsperimentiPage from "./help/EsperimentiPage.vue";
 
+import JsToCode from "./help/JsToCode";
 export default {
     install(app) {
         app.component('crud-component', CrudComponent);
@@ -77,6 +78,7 @@ export default {
     Server,Wait,Route,
     CrudHelpers,
     // --- help pages
-    WidgetsPage,ViewsPage,ManagePage,ImportPage,ActionsPage,DialogsPage,EsperimentiPage
+    WidgetsPage,ViewsPage,ManagePage,ImportPage,ActionsPage,DialogsPage,EsperimentiPage,
+    JsToCode
 
 }

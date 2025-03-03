@@ -178,7 +178,8 @@
 
 <script>
 import vRecord from './vRecord.vue';
-
+import CrudCore from "../lib/CrudCore";
+import CrudHelpers from "../lib/CrudHelpers";
 export default {
     name: "vSearch",
     extends: vRecord,
@@ -189,14 +190,21 @@ export default {
         }
     },
     mounted() {
-        let context = this.$route.params.context;
-        if (!context || context.length > 0) {
-            console.debug('vSearch mounted',context);
-            return;
-        }
-        //console.debug('vSearch mounted',context);
+        // let that = this;
+        // setTimeout(function () {
+        //     that.setSearchParamsValue();
+        // },1000)
+
     },
     methods: {
+
+        _afterDraw() {
+            let that = this;
+            that.setSearchParamsValue();
+            if (that.conf.afterDraw) {
+                that.conf.afterDraw.apply(that);
+            }
+        },
 
         _beforeLoadData() {
             let that =this;
@@ -341,6 +349,24 @@ export default {
             setTimeout(function () {
                 that.search();
             },10)
+        },
+        /**
+         * setta i valori del widget ad eventuali valori presenti nell'url come s_{nome_campo}
+         */
+        setSearchParamsValue() {
+            let params = CrudHelpers.getContextParams(this);
+            console.debug('vSearch context params',params);
+            for (let param of params) {
+                let tmp = param.split(':');
+                console.debug('vSearch param',tmp);
+                let field = tmp[0].substring(2);
+                console.debug('vSearch field',field);
+                let w = this.getWidget(field);
+                if (w) {
+                    w.setValue(tmp[1]);
+                }
+
+            }
         }
 
     }

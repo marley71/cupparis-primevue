@@ -59,7 +59,9 @@ export default {
           componentConf.dialog = this;   // passo il riferimento alla dialog
       }
       // @TODO in caso di manage si dovrebbe settare alcune configurazioni per evitare funzionamenti inattesi. updateHash,disabilitarla, togliere la view in popup,ecc
-
+        if (componentName == 'c-manage') {
+            componentConf.autoUpdateHash = false;
+        }
       console.log('custom',componentName,componentConf);
       return {
           componentName : componentName,
