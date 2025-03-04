@@ -1,5 +1,5 @@
 <script>
-import widgetConfs from "./widgetConfs";
+import widgetHelpConfs from "./widgetHelpConfs";
 import JsToCode from "./JsToCode";
 const jsc = new JsToCode();
 
@@ -13,40 +13,43 @@ export default {
         return {
             widgetSelected : wSel,
             widgetsConf : {
-                'w-hidden' :            widgetConfs.wHiddenConf(),
-                'w-himage' :            widgetConfs.wImage(),
-                'w-table' :             widgetConfs.wTable(),
-                'w-text' :              widgetConfs.wTextConf(),
-                'w-input' :             widgetConfs.wInputConf(),
-                'w-input-set' :         widgetConfs.wInputSetConf(),
-                'w-select' :            widgetConfs.wSelectConf(),
-                'w-select-button' :     widgetConfs.wSelectButtonConf(),
-                'w-autocomplete' :      widgetConfs.wAutocompleteConf(),
-                'w-checkbox' :          widgetConfs.wCheckboxConf(),
-                'w-radio' :             widgetConfs.wRadioConf(),
-                'w-hasmany' :           widgetConfs.wHasmany('record'),
-                'w-hasmany type list' :      widgetConfs.wHasmany('list'),
-                'w-hasmany type view-only' :      widgetConfs.wHasmany('view-only'),
-                'w-hasmany type panel' :      widgetConfs.wHasmany('panel'),
-                'w-belongsto':          widgetConfs.wBelongstoConf(),
-                'w-belongsto-many':     widgetConfs.wBelongstoManyConf(),
-                'w-custom':             widgetConfs.wCustomConf(),
-                'w-color-picker':       widgetConfs.wColorPickerConf(),
-                'w-date-picker':        widgetConfs.wDatePickerConf(),
-                'w-date-range-picker':  widgetConfs.wDateRangePickerConf(),
-                'w-date-text':          widgetConfs.wDateTextConf(),
-                'w-date-text2':         widgetConfs.wDateTextConf2(),
-                'w-textarea':           widgetConfs.wTextareaConf(),
-                'w-multi-select':       widgetConfs.wMultiSelectConf(),
-                'w-swap':               widgetConfs.wSwapConf(),
-                'w-swap-select':        widgetConfs.wSwapSelectConf(),
-                'w-status con icon':    widgetConfs.wStatusConf(),
-                'w-status con testo':   widgetConfs.wStatusTextConf(),
-                'w-texthtml':           widgetConfs.wTexthtmlConf(),
-                'w-upload' :            widgetConfs.wUploadConf(),
-                'w-upload-ajax' :       widgetConfs.wUploadAjaxConf(),
-                'w-chip' :              widgetConfs.wChipConf(),
-                'w-object' :            widgetConfs.wObject(),
+                'w-hidden' :            widgetHelpConfs.wHiddenConf(),
+                'w-himage' :            widgetHelpConfs.wImage(),
+                'w-table' :             widgetHelpConfs.wTable(),
+                'w-text' :              widgetHelpConfs.wTextConf(),
+                'w-input' :             widgetHelpConfs.wInputConf(),
+                'w-input-set' :         widgetHelpConfs.wInputSetConf(),
+                'w-select' :            widgetHelpConfs.wSelectConf(),
+                'w-select-button' :     widgetHelpConfs.wSelectButtonConf(),
+                'w-autocomplete' :      widgetHelpConfs.wAutocompleteConf(),
+                'w-checkbox' :          widgetHelpConfs.wCheckboxConf(),
+                'w-radio' :             widgetHelpConfs.wRadioConf(),
+                'w-hasmany' :           widgetHelpConfs.wHasmany('record'),
+                'w-hasmany type list' :      widgetHelpConfs.wHasmany('list'),
+                'w-hasmany type view-only' :      widgetHelpConfs.wHasmany('view-only'),
+                'w-hasmany type panel' :      widgetHelpConfs.wHasmany('panel'),
+                'w-belongsto':          widgetHelpConfs.wBelongstoConf(),
+                'w-belongsto-many':     widgetHelpConfs.wBelongstoManyConf(),
+                'w-custom':             widgetHelpConfs.wCustomConf(),
+                'w-color-picker':       widgetHelpConfs.wColorPickerConf(),
+                'w-date-picker':        widgetHelpConfs.wDatePickerConf(),
+                'w-date-range-picker':  widgetHelpConfs.wDateRangePickerConf(),
+                'w-date-text':          widgetHelpConfs.wDateTextConf(),
+                'w-date-text2':         widgetHelpConfs.wDateTextConf2(),
+                'w-textarea':           widgetHelpConfs.wTextareaConf(),
+                'w-multi-select':       widgetHelpConfs.wMultiSelectConf(),
+                'w-swap':               widgetHelpConfs.wSwapConf(),
+                'w-swap-select':        widgetHelpConfs.wSwapSelectConf(),
+                'w-status con icon':    widgetHelpConfs.wStatusConf(),
+                'w-status con testo':   widgetHelpConfs.wStatusTextConf(),
+                'w-texthtml':           widgetHelpConfs.wTexthtmlConf(),
+                'w-editor':             widgetHelpConfs.wEditor(),
+                'w-upload' :            widgetHelpConfs.wUploadConf(),
+                'w-upload-ajax' :       widgetHelpConfs.wUploadAjaxConf(),
+                'w-chip' :              widgetHelpConfs.wChipConf(),
+                'w-object' :            widgetHelpConfs.wObject(),
+                'w-leaf-let' :            widgetHelpConfs.wLeafLeft(),
+              'w-leaf-let con icona' :            widgetHelpConfs.wLeafLeftIcon(),
             },
             fIndex : 0,
             dynamicCode : '',
@@ -195,6 +198,8 @@ export default {
                 <Fieldset legend="Area Widget">
                     <template v-for="(conf,wName) in widgetsConf" :key="wName">
                         <c-widget class="w-full" :ref="wName" v-if="widgetSelected==wName && !reload" :conf="conf"></c-widget>
+<!--                        <c-widget class="w-full" :ref="wName" v-if="widgetSelected==wName && !reload" :conf="conf"></c-widget>-->
+
                     </template>
                 </Fieldset>
                 <Button class="p-button w-4 mt-1" label="Run" @click="updateCode"></Button>

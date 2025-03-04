@@ -22,7 +22,7 @@
             </template>
         </div>
     </div>
-    <Panel v-else class="managePanel">
+    <Panel v-else class="managePanel" ref="manage">
         <template #header>
             <h5 class="p-panel-title">
                 <span v-if="title" >
@@ -96,8 +96,13 @@ export default {
         }
     },
     mounted() {
+        let that = this;
         this.showContext();
         this.setManageReference();
+        setTimeout(function () {
+            that._setCss();
+        },100)
+
     },
     data() {
         let that = this;
@@ -408,6 +413,10 @@ export default {
                 }
                 window.history.pushState({},'',hash);
             }
+        },
+        _setCss() {
+            console.debug('manage csss',this.$refs.manage.$el.offsetHeight, 'px')
+            //this.$refs.manage.$el.style.minHeight = '200px';// this.$refs.manage.offsetHeight + 'px';
         }
     }
 }

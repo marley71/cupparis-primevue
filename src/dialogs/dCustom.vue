@@ -38,14 +38,13 @@
 import dBase from './dBase.vue'
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
-
-// import VList from "../views/vList.vue";
 import CView from "../views/cView.vue";
+import cManage from "../app/cManage.vue";
 
 export default {
   name: 'd-custom',
   extends: dBase,
-    components: {CView, Button,Dialog},
+    components: {CView, Button,Dialog,cManage},
     props : ['confComponent'],
     mounted () {
       if (!this.title) {
@@ -59,6 +58,10 @@ export default {
       if (componentConf) {
           componentConf.dialog = this;   // passo il riferimento alla dialog
       }
+      // @TODO in caso di manage si dovrebbe settare alcune configurazioni per evitare funzionamenti inattesi. updateHash,disabilitarla, togliere la view in popup,ecc
+        if (componentName == 'c-manage') {
+            componentConf.autoUpdateHash = false;
+        }
       console.log('custom',componentName,componentConf);
       return {
           componentName : componentName,

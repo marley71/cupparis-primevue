@@ -1,3 +1,5 @@
+import WrapperConf from "../widgets/WrapperConf";
+
 export default {
     wHiddenConf() {
         return {
@@ -400,12 +402,25 @@ export default {
     wTexthtmlConf() {
         return {
             value : 'text area prvoa',
+            name : 'field1',
             type : 'w-texthtml',
             change() {
                 let that = this;
                 console.log('change',that.getValue())
             }
         };
+    },
+    wEditor() {
+        let wc = new WrapperConf();
+        return wc.loadConf({
+            value : 'text area prvoa',
+            name : 'field1',
+            type : 'w-editor',
+            change() {
+                let that = this;
+                console.log('change',that.getValue())
+            }
+        });
     },
     wUploadConf() {
         return {
@@ -478,5 +493,29 @@ export default {
                 soldi : 0
             },
         }
+    },
+    wLeafLeft() {
+        return {
+            type : 'w-leaf-let',
+            name : 'mappa',
+            value: [
+                [43.3,11.7],
+                [40.3,10.5]
+            ],
+        }
+    },
+    wLeafLeftIcon() {
+        return {
+            type : 'w-leaf-let',
+            name : 'mappa',
+            "markerIcon":"http://www.repstatic.it/cless/main/common/component/header-footer/2020-v1/img/logo-repubblica.svg",
+            value: [
+                [43.3,11.7],
+                [40.3,10.5]
+            ],
+        }
     }
 }
+
+
+

@@ -66,6 +66,16 @@ export default {
             }
 
         },
+        getValue() {
+            let that = this;
+            switch (that.conf.type) {
+                case 'w-hasmany':
+                    return that.$refs.wRef.getValue();
+                default:
+                    return that.value;
+            }
+
+        },
     }
 }
 </script>
