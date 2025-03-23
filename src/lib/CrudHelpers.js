@@ -113,6 +113,9 @@ CrudHelpers.getHashParams = (key,onlyValue) => {
  */
 CrudHelpers.getContextParams = (vueObject,key)  => {
     let context = vueObject.$route.params.context;
+    if (!context) {
+        return [];
+    }
     let listParams = context.filter( a => a.indexOf('s_') == 0) || [];
     if (key) {
         let idx = listParams.indexOf('s_'+key);
