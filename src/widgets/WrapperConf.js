@@ -120,6 +120,9 @@ export default class WrapperConf {
         if (!conf.displayTitle && conf.displayTitle !== false) {
             conf.displayTitle = false;
         }
+        if (!conf.getColumnValue) {
+            conf.getColumnValue = null;
+        }
         conf.hasmanyConf.defaultWidgetType = 'w-input';
         return conf;
     }
