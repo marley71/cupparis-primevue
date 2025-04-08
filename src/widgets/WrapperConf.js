@@ -73,6 +73,10 @@ export default class WrapperConf {
         return conf;
     }
 
+    wJson(conf) {
+        conf.jsonClass = 'maximizable-div';
+        return conf;
+    }
     wObject(conf) {
         if ( !('title' in conf) ) {
             conf.title = null;

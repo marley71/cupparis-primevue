@@ -142,7 +142,7 @@
                      :class="rowType=='grid'?'w-12 md:w-6 xl:w-3':'mr-2 '"
                      v-for="(label,key) in domainValues" :key="key">
                     <RadioButton :name="name" v-model="value" :value="key" v-bind="extraBind" @change="_change"/>
-                    <label :for="key" v-html="label"></label>
+                    <label :for="key" v-html="label" :class="value==key?'font-bold':''"></label>
                 </div>
             </div>
         </template>
@@ -362,6 +362,13 @@
                 <template v-for="(item,k) in domainValues">
                     <i :class="item + value===k?' text-primary':''"></i>
                 </template>
+            </div>
+        </template>
+        <template v-else-if="type=='w-json'">
+            <div :class="jsonClass" >
+                <div><a title="Espandi" @click="jsonClass=(jsonClass=='maximizable-div'?'maximizable-div-fullscreen':'maximizable-div')"><i class="fa fa-window-maximize"></i></a></div>
+                <pre v-html="JSON.stringify(value, null, 2)" ></pre>
+
             </div>
         </template>
         <template v-else>
@@ -731,5 +738,24 @@ label {
 }
 .text-right {
     text-align:right;
+}
+.maximizable-div {
+    width: 100%;
+    height: 200px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow:auto;
+}
+
+/* Stile per il div quando è massimizzato */
+.maximizable-div-fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    overflow:auto;
+    background-color: white; /* Imposta un colore di sfondo per il div massimizzato */
 }
 </style>
