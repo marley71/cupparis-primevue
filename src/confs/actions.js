@@ -100,6 +100,7 @@ const actionConfs = {
         icon : 'fa fa-save',
         text : 'app.salva',
         json : null,
+        autoreloadView : true,
         execute (event) {
             let tA = this;
             return new Promise(function (resolve,reject) {
@@ -133,6 +134,9 @@ const actionConfs = {
                 that.json = json;
                 var msg = json.msg?json.msg:that.view.translate('app.salvataggio-ok');
                 that.view.alertSuccess(msg,3000);
+                if (that.autoreloadView) {
+                    that.view.reload();
+                }
                 callback(true);
             })
         }
