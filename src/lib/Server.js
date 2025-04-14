@@ -6,6 +6,9 @@
 import CrudVars from "./CrudVars";
 import axios from 'axios';
 
+axios.defaults.withCredentials = true;
+//axios.defaults.baseURL = 'http://cupparis10.dev.it:8001';
+
 const Server = {};
 
 
@@ -29,47 +32,52 @@ Server.getHearders = function () {
         auth = "Basic " + btoa(import.meta.env.VITE_HTTP_BASIC_AUTH) + ', ';
     }
     var bearer = '';
-    if (import.meta.env.VITE_TOKEN && !import.meta.env.PROD) {
-
-        bearer = 'Bearer ' + import.meta.env.VITE_TOKEN;
-        auth += bearer;
-
-        headers = {
-            'Authorization': auth,
-            'AuthBT': bearer,
-            'Accept': 'application/json'
-        }
-        return headers;
+    headers = {
+        'Authorization': auth,
+        'Accept': 'application/json'
     }
-    if (!import.meta.env.VITE_TOKEN && !import.meta.env.PROD) {
-        bearer = 'Bearer ' +  window.localStorage.getItem('token');
-        auth += bearer;
-        headers = {
-            'Authorization': auth,
-            'AuthBT': bearer,
-            'Accept': 'application/json'
-        }
-        return headers;
-    }
-    if (CrudVars.useApi) {
-
-        let selector = document.querySelector('meta[name="bearer-token"]');
-        bearer = 'Bearer ' + (selector ? selector.content : '');
-        auth += bearer;
-        headers = {
-            'Authorization': auth,
-            'AuthBT': bearer,
-            // jQuery('meta[name="bearer-token"]').attr('content')
-            'Accept': 'application/json'
-        }
-    } else {
-        let selector = document.querySelector('meta[name="csrf-token"]');
-        headers = {
-            'X-CSRF-TOKEN': (selector ? selector.content : '') //jQuery('meta[name="csrf-token"]').attr('content')
-        }
-    }
-    //console.log('HEADERS',headers);
     return headers;
+    // if (import.meta.env.VITE_TOKEN && !import.meta.env.PROD) {
+    //
+    //     bearer = 'Bearer ' + import.meta.env.VITE_TOKEN;
+    //     auth += bearer;
+    //
+    //     headers = {
+    //         'Authorization': auth,
+    //         'AuthBT': bearer,
+    //         'Accept': 'application/json'
+    //     }
+    //     return headers;
+    // }
+    // if (!import.meta.env.VITE_TOKEN && !import.meta.env.PROD) {
+    //     bearer = 'Bearer ' +  window.localStorage.getItem('token');
+    //     auth += bearer;
+    //     headers = {
+    //         'Authorization': auth,
+    //         'AuthBT': bearer,
+    //         'Accept': 'application/json'
+    //     }
+    //     return headers;
+    // }
+    // if (CrudVars.useApi) {
+    //
+    //     let selector = document.querySelector('meta[name="bearer-token"]');
+    //     bearer = 'Bearer ' + (selector ? selector.content : '');
+    //     auth += bearer;
+    //     headers = {
+    //         'Authorization': auth,
+    //         'AuthBT': bearer,
+    //         // jQuery('meta[name="bearer-token"]').attr('content')
+    //         'Accept': 'application/json'
+    //     }
+    // } else {
+    //     let selector = document.querySelector('meta[name="csrf-token"]');
+    //     headers = {
+    //         'X-CSRF-TOKEN': (selector ? selector.content : '') //jQuery('meta[name="csrf-token"]').attr('content')
+    //     }
+    // }
+    // //console.log('HEADERS',headers);
+    // return headers;
 }
 
 Server.post = function (url, params, callback) {
