@@ -495,6 +495,7 @@ CrudCore.formInput = (conf,title) => {
                     dd.hide();
                 },
                 cancel(dialog) {
+                    let dd = this;
                     reject(dialog);
                     dd.hide();
                 }
@@ -563,6 +564,11 @@ CrudCore.viewComponentData = (vueObject) => {
     //console.log('view Props',dt);
     return dt;
 }
+/**
+ * crea una route prendendo come configurazione base la routeName dentro il vettore routeConfs
+ * @param routeName : nome della configurazione base
+ * @returns {Route} : oggetto Route
+ */
 CrudCore.createRoute = (routeName) => {
     let routeConf =  JSON.parse(JSON.stringify(routeConfs[routeName]))  //Object.assign({},routeConfs[routeName]);
     console.log('routeName',routeName,routeConf);
@@ -570,4 +576,24 @@ CrudCore.createRoute = (routeName) => {
         throw "Impossibile trovare la route " + routeName;
     return new Route(routeConf);
 }
+/**
+ * esegue il fetch di un file html nella cartella definita nell'env VITE_PUBLISH_DIR
+ * @param htmlFile : stringa, nome file html
+ * @param callback : funzione di ritorno a cui viene passato il contenuto html.
+ */
+CrudCore.fetchHtml = function (htmlFile,callback) {
+    fetch(import.meta.env['VITE_PUBLISH_DIR'] + htmlFile)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            response.text().then(htmlText => {
+                callback(htmlText)
+            });
+        })
+        .catch(error => {
+            console.error('C\'è stato un problema con il caricamento:', error);
+        });
+}
+
 export default CrudCore;

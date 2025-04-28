@@ -7,7 +7,7 @@
         </template>
         <template #content>
             <slot name="description">
-                <div class="mb-0" v-html="conf.importDesc?translate(conf.importDesc):translate('app.import-desc')"></div>
+                <div class="mb-0" v-html="importDesc?translate(importDesc):translate('app.import-desc')"></div>
             </slot>
 
             <div v-if="step == 'upload'" class="panel panel-default">
@@ -54,6 +54,12 @@ export default {
     components: {vRecord, cView},
     extends : CrudComponent,
     //props : ['conf'],
+    mounted() {
+        let that = this;
+        setTimeout(function () {
+            that._ready();
+        },20)
+    },
     data() {
         let that = this;
         window.IMPORT = this;
@@ -78,9 +84,17 @@ export default {
                 case 'load':
                     this.checkStatus();
             }
+        },
+        importDesc(val) {
+            this.importDesc = val;
         }
     },
     methods: {
+        _ready() {
+            if (this.conf.ready && typeof this.conf.ready==='function') {
+                this.ready.apply(this);
+            }
+        },
         _uploadConf() {
             let that = this;
             //let userConf = that.viewUpload; //that.merge({},that.viewUpload);
