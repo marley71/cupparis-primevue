@@ -580,15 +580,24 @@ CrudCore.createRoute = (routeName) => {
  * esegue il fetch di un file html nella cartella definita nell'env VITE_PUBLISH_DIR
  * @param htmlFile : stringa, nome file html
  * @param callback : funzione di ritorno a cui viene passato il contenuto html.
+ * @param data : array associativo per sostituire evetuali pezzi variabili all'interno dell'html utilizzando la sintassi di vue {{valore1}}
+ *
  */
-CrudCore.fetchHtml = function (htmlFile,callback) {
+CrudCore.fetchHtml = function (htmlFile,callback,data) {
     fetch(import.meta.env['VITE_PUBLISH_DIR'] + htmlFile)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
             response.text().then(htmlText => {
-                callback(htmlText)
+                let tmp = htmlText;
+                if (data) {
+                    for (let k in data) {
+                        let r = new RegExp(`{{\\s*${k}\\s*}}`, 'g');
+                        tmp = tmp.replace(r, data[k])
+                    }
+                }
+                callback(tmp)
             });
         })
         .catch(error => {
