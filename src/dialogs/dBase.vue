@@ -5,7 +5,6 @@ import CrudComponent from "../CrudComponent.vue";
 export default {
     name: 'd-base',
     extends : CrudComponent,
-    //props:['conf'],
     data() {
       let d = Object.assign({
           cBig : false,

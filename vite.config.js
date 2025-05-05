@@ -1,6 +1,8 @@
 const path = require("path");
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const {fileURLToPath, URL} = require("node:url");
 const buildPath = process.env.BUILDPATH || 'dist';
+const templatePath = 'src/templates/'
 
 module.exports = {
     //publicPath : '/my-app/',
@@ -21,5 +23,10 @@ module.exports = {
 
             })
         ]
-    }
+    },
+    resolve: {
+        alias: {
+            '@templates': path.resolve(__dirname, './src/templates'),
+        },
+    },
 }

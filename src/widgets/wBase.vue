@@ -2,13 +2,118 @@
 
 import CrudComponent from "../CrudComponent.vue";
 import moment from "moment/moment";
+import Server from "../lib/Server";
+import WrapperConf from "./WrapperConf";
+
 export default {
     name: "wBase",
     extends : CrudComponent,
+    emits: ['change'],
+    // props: {
+    //     conf: Object,
+    // },
+    watch: {
+        conf: {
+            handler() {
+                //console.log('watch', oldValue,newValue);
+                for (let k in this.conf) {
+                    this[k] = this.conf[k];
+                }
+            },
+            deep: true,
+        },
+    },
+    created() {
+        let that = this;
+        //console.log('CREATEDDD',that)
+        that.overwriteMethods = {};
+        var __call = function (lk) {
+            that[lk] = function () {
+                var localk = new String(lk);
+                //console.debug('c-widget chiamo localK',localk);
+                return that.overwriteMethods[localk].apply(that, arguments);
+            }
+        }
+
+        for (let k in that.wConf) {
+            //console.log('c-widget k',k,that.wConf[k]);
+
+            if (that.wConf[k] instanceof Function) {
+                //console.log('c-widget found method',k);
+                that.overwriteMethods[k] = that.wConf[k];
+                __call(k);
+            }
+        }
+        this.Server = Server;
+    },
+    data() {
+        let that = this;
+        let wc = new WrapperConf()
+        let ext = wc.loadConf(that.conf);
+        let dt = {};
+        for (let k in ext) {
+            if (!(ext[k] instanceof Function)) {
+                dt[k] = ext[k];
+            }
+        }
+        dt.wConf = ext;
+        dt.errors = [];
+        return dt;
+    },
+    mounted() {
+        setTimeout(this._ready, 10);
+    },
     methods : {
         _ready() {
             if (this.ready) {
                 this.ready.apply(this);
+            }
+        },
+        _disabled(event) {
+            if (this.disabled instanceof Function) {
+                return this.disabled.apply(this,[event]);
+            }
+            return this.disabled;
+        },
+        _hasClick() {
+            if (this.click && (this.click instanceof Function) ) {
+                return true;
+            }
+            return false;
+        },
+        _click(event) {
+            if (this.click) {
+                this.click.apply(this,[event]);
+            }
+        },
+        _hasHref() {
+            if (this.href) {
+                return true;
+            }
+            return false;
+        },
+        _href(event) {
+            if (this.href instanceof Function) {
+                return this.href.apply(this,[event]);
+            }
+            return this.href;
+        },
+        _title(event) {
+            if (this.title instanceof Function) {
+                return this.title.apply(this,[event]);
+            }
+            return this.title;
+        },
+
+        _icon(event) {
+            if (this.icon instanceof Function) {
+                return this.icon.apply(this,[event]);
+            }
+            return this.icon;
+        },
+        _reset() {
+            if (this.reset) {
+                this.reset.apply(this);
             }
         },
         _change(event, type) {
@@ -66,6 +171,12 @@ export default {
             }
 
         },
+        getFieldName() {
+            if (['w-checkbox','w-multi-select'].indexOf(this.type) >= 0) {
+                return this.name + '[]';
+            }
+            return this.name;
+        },
         getValue() {
             let that = this;
             switch (that.conf.type) {
@@ -75,6 +186,21 @@ export default {
                     return that.value;
             }
 
+        },
+        setValue(val) {
+            let that = this;
+            that.value = val;
+            this._change();
+        },
+        executeFunc(widgetType,funcName) {
+            switch (widgetType) {
+                case 'w-status':
+                    console.debug('funcName',funcName);
+                    this.domainValues[funcName].apply(this);
+                    break;
+                default:
+                    throw widgetType + "status widget non supportato funcName " + funcName
+            }
         },
     }
 }

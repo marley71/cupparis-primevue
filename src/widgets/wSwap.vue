@@ -1,8 +1,4 @@
-<template>
-    <div>
-        <input :name="getFieldName()" type="hidden" :value="toggleValue?1:0">
-        <InputSwitch v-model="toggleValue" @change="swap()" :disabled="extraBind.disabled?true:false"/>
-    </div>
+<template src="@templates/widgets/wSwap.html">
 </template>
 
 <script>

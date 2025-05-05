@@ -147,6 +147,7 @@ export default class WrapperConf {
         conf.suffix = conf.suffix || null;
         conf.iconSuffix = conf.iconSuffix || null;
         conf.numberFormat = conf.numberFormat || null;
+        conf.tagType = conf.tagType || 'div';
         if (conf.numberFormat && !conf.textClass) {
             conf.textClass = 'text-right';
         }
@@ -222,7 +223,7 @@ export default class WrapperConf {
 
         conf.search = conf.search || function (event) {
             let that = this;
-
+            console.debug('searrchhh',that);
             if (!that.route) {
                 that.route = that.createRoute('autocomplete');
                 that.route.setValuesFromObj(that);

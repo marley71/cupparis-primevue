@@ -1,0 +1,7 @@
+<DataTable v-if="value || value.length > 0" :value="value">
+    <Column v-for="column in getKeys()" :field="column" :key="column" :header="column">
+        <template #body="slotProps">
+            {{slotProps.data[column]}}
+        </template>
+    </Column>
+</DataTable>
