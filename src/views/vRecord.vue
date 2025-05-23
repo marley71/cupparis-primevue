@@ -6,7 +6,6 @@
 import cWidget from "../widgets/cWidget.vue";
 import vBase from './vBase.vue';
 import cAction from "../actions/cAction.vue";
-import actionConfs from "../confs/actions";
 import Server from "../lib/Server";
 import viewConfs from "../confs/views";
 import { defineRule,validate } from 'vee-validate';
@@ -38,14 +37,15 @@ export default {
     data() {
         //console.log('vRecord', this.conf);
         let ly = this.conf.layout || {};
+        //console.debug('layout conf',JSON.stringify(this.conf))
         if (ly instanceof String) {
-            ly = viewConfs.recordLayouts[ly] || viewConfs.recordLayouts.default;
+            ly = viewConfs.recordLayouts[ly] || viewConfs.recordLayouts.record;
         } else {
-            let tmp = Object.assign({}, viewConfs.recordLayouts.default);
+            let tmp = Object.assign({}, viewConfs.recordLayouts.record);
             ly = Object.assign(tmp, ly);
         }
         ly.colClass = this.getColClass(ly.cols);
-        //console.log('layout',ly);
+        console.log('layout',ly,viewConfs);
         // const { handleSubmit, resetForm } = useForm();
         // const { value, errorMessage } = useField('value', this.validateField);
         return {
@@ -366,7 +366,7 @@ export default {
             return this.widgetsConfig[field].dividerContent || false;
         },
         getDividerContentClass(field) {
-            console.log("DCC::: ",this.widgetsConfig[field].dividerContentClass)
+            //console.log("DCC::: ",this.widgetsConfig[field].dividerContentClass)
             return this.widgetsConfig[field].dividerContentClass || 'font-bold';
         },
         getDividerDescription(field) {

@@ -578,6 +578,8 @@ CrudCore.createRoute = (routeName) => {
 }
 /**
  * esegue il fetch di un file html nella cartella definita nell'env VITE_PUBLISH_DIR
+ * permette anche di sostituire variabili con sitassi {{var1}} con valori passati nel data.
+ * non permette i costrutti v-if v-for,ecc.
  * @param htmlFile : stringa, nome file html
  * @param callback : funzione di ritorno a cui viene passato il contenuto html.
  * @param data : array associativo per sostituire evetuali pezzi variabili all'interno dell'html utilizzando la sintassi di vue {{valore1}}

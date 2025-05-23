@@ -1,10 +1,14 @@
 <script>
 import widgetHelpConfs from "./widgetHelpConfs";
 import JsToCode from "./JsToCode";
+import cWidget from '../widgets/cWidget.vue';
+import cView from '../views/cView.vue';
+
 const jsc = new JsToCode();
 
 export default {
     name: "WidgetsPage",
+    components : {cWidget,cView},
     data() {
         let wSel = this.$route.params?(this.$route.params.case || null):null;
         if (wSel) {

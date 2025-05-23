@@ -1,10 +1,12 @@
 <script>
 import manageConfs from "./manageConfs";
 import JsToCode from "./JsToCode";
+import cManage from '../app/cManage.vue';
 const jsc = new JsToCode();
 
 export default {
     name: "ManagePage",
+    components : {cManage},
     data() {
         let wSel = this.$route.params?(this.$route.params.case || null):null;
         if (wSel) {

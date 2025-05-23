@@ -1,7 +1,7 @@
 <template>
     <span>
         <template v-if="type==='w-hidden'">
-            <input type="hidden" :name="name" v-model="value" v-bind="extraBind" @change="_change"/>
+            <w-hidden ref="wRef" :conf="conf"></w-hidden>
         </template>
         <template v-else-if="type==='w-editor'">
             <w-editor ref="wRef" :conf="conf"></w-editor>
@@ -117,12 +117,12 @@
 </template>
 
 <script>
-import WrapperConf from "../widgets/WrapperConf";
+import WrapperConf from "./WrapperConf";
 import Server from "../lib/Server";
 import wBase from './wBase.vue';
-import moment from "moment";
-import wSwap from "../widgets/wSwap.vue";
-import wSwapSelect from "../widgets/wSwapSelect.vue";
+import wHidden from './wHidden.vue'
+import wSwap from "./wSwap.vue";
+import wSwapSelect from "./wSwapSelect.vue";
 import wInput from './wInput.vue';
 import wInputSet from './wInputSet.vue';
 import wSelect from './wSelect.vue'
@@ -130,9 +130,9 @@ import wSelectButton from './wSelectButton.vue'
 import wAutocomplete from './wAutocomplete.vue'
 import wCheckbox from './wCheckbox.vue';
 import wRadio from './wRadio.vue';
-import wHasmany from "../widgets/wHasmany.vue";
-import wBelongsto from "../widgets/wBelongsto.vue";
-import wBelongstoMany from "../widgets/wBelongstoMany.vue";
+import wHasmany from "./wHasmany.vue";
+import wBelongsto from "./wBelongsto.vue";
+import wBelongstoMany from "./wBelongstoMany.vue";
 import wCustom from './wCustom.vue';
 import wColorPicker from './wColorPicker.vue';
 import wDatePicker from './wDatePicker.vue';
@@ -162,7 +162,7 @@ import CrudVars from "../lib/CrudVars";
 export default {
     name: "c-widget",
     components: {
-        wSwap, wSwapSelect, wHasmany,wInputSet,wLeafLet,wEditor,wTable,wImage,wObject,wText,
+        wHidden,wSwap, wSwapSelect, wHasmany,wInputSet,wLeafLet,wEditor,wTable,wImage,wObject,wText,
         wInput, wSelect,wSelectButton,wAutocomplete,wCheckbox,wRadio,wBelongsto,wBelongstoMany,
         wCustom,wColorPicker,wDatePicker,wDateRangePicker,wDateText,wTextarea,
         wMultiSelect,wStatus,wTexthtml,wUpload,wUploadAjax,wChip,wPreview,

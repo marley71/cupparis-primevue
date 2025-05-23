@@ -28,7 +28,7 @@ export default {
         },
         _ready() {
             var that = this;
-            var keys = Object.keys(that.domainValues);
+            var keys = Object.keys((that.domainValues || {}));
             that.currentIndex = keys.indexOf(''+that.value);
             that.toggleActive = that.currentIndex?true:false;
             //console.log('index e toggle ',that.currentIndex,that.toggleActive,keys,that.value,that.domainValues);

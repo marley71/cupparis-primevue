@@ -1,4 +1,76 @@
-<template src="@templates/widgets/wHasmany.html">
+<template >
+    <div>aaaa {{hasmanyType}}</div>
+<!--    <c-view ref="listViewHasmany" :conf="getHasmanyList()"></c-view> src="@templates/widgets/wHasmany.html"-->
+    <template v-if="hasmanyType=='list'">
+        <div>
+<!--            <c-view ref="listViewHasmany" :conf="getHasmanyList()"></c-view>-->
+            <component is="v-list" :conf="getHasmanyList()"></component>
+        </div>
+    </template>
+    <template v-else-if="hasmanyType=='record'">
+        <Card ref="el" class="mb-3">
+            <template #header>
+
+            </template>
+            <template #title v-if="hasDisplayTitle()">
+                {{ translate(label) }}
+            </template>
+            <template #content>
+                <div class="flex flex-column">
+                    <div v-for="(dataKey,index) in vForKeys" :key="dataKey">
+                        <Divider align="right" >
+                            <Button class="p-button-outlined p-button-danger" icon="fa fa-times" @click="removeItem(dataKey)"></Button>
+                        </Divider>
+                        <v-record ref="recordView" :conf="getHasmanyConf(index)"></v-record>
+                    </div>
+                </div>
+            </template>
+            <template #footer>
+                <template v-if="outOfLimit()">
+
+                <span class="d-block text-primary text-truncate font-weight-medium" v-if="outOfLimitMessage()">
+                        <!-- Limite massimo raggiunto -->
+                        {{ outOfLimitMessage() }}
+                    </span>
+                </template>
+                <button v-else @click="addItem" type="button"
+                        class="p-button p-button-sm p-component p-button-outlined justify-content-center">
+                    <span>{{ translate('app.aggiungi') }}</span>&nbsp;
+                </button>
+            </template>
+        </Card>
+    </template>
+    <template v-else-if="hasmanyType=='view-only'">
+        <!--        <template v-for="(data,index) in hasmanyValue" :key="index">-->
+        <template v-for="(data,index) in value" :key="index">
+            <div v-for="field in getHasmanyConf(index).fields" :key="field">
+                <c-widget :conf="getHasmanyWidgetConf(index,field)"></c-widget>
+            </div>
+        </template>
+    </template>
+    <template v-else-if="hasmanyType=='panel'">
+        <Button class="p-button-outlined p-1" type="button" icon="fa-solid fa-circle-chevron-down" :label="label" @click="toggle" />
+        <OverlayPanel ref="op" >
+            <table class="w-full table p-1">
+                <thead>
+                <tr>
+                    <td v-for="field in _getPanelFields()" :key="field">
+                        <b>{{_getFieldLabel(field)}}</b>
+                    </td>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="(data,index) in value" :key="index">
+                    <td v-for="field in _getPanelFields()" :key="field" v-html="_getColumnValue(index,field)">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </OverlayPanel>
+    </template>
+    <div v-else>
+        <span>hasmanyType {{ hasmanyType }} non valido!</span>
+    </div>
 
 </template>
 
@@ -6,10 +78,10 @@
 
 import wBase from './wBase.vue';
 import CrudCore from "../lib/CrudCore";
+
 export default {
     name: "wHasmany",
     extends: wBase,
-    //components : {cView},
     emits: ['change'],
     //emits: ['update:modelValue'],
     props: {
@@ -262,8 +334,7 @@ export default {
             let hs = CrudCore.clone(that.hasmanyConf);
             hs.routeName = null;
             hs.actions = [];
-            //hs.value = that.hasmanyValue[i];
-            hs.value = that.value[i];
+            hs.value = that.value?that.value[i]:{};
             hs.type = 'v-view';
             //console.log('HS', hs);
             return hs;

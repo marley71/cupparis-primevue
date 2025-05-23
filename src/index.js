@@ -47,28 +47,24 @@ export default {
         views.install(app);
         apps.install(app);
         dialogs.install(app);
-        let prefix = CrudVars.useApi?'/api':'';
-        for (let k in routeConfs) {
-            routeConfs[k].url = prefix + routeConfs[k].url;
-        }
         configure({
             // Generates an English message locale generator
             generateMessage: localize('appLang', CrudVars.validationMessages),
         });
         setLocale('appLang');
-        CrudCore.componentItems['CrudComponent'] = CrudComponent;
-        CrudCore.componentItems['c-action'] = cAction;
-        CrudCore.componentItems['c-view'] = cView;
-        CrudCore.componentItems['v-record'] = vRecord;
-        CrudCore.componentItems['v-search'] = vSearch;
-        CrudCore.componentItems['c-Manage'] = cManage;
-        CrudCore.componentItems['v-list'] = vList;
-        CrudCore.componentItems['v-list-edit'] = vListEdit;
-        CrudCore.componentItems['c-import'] = cImport;
-        CrudCore.componentItems['v-list-hasmany'] = vListHasmany;
-        CrudCore.componentItems['a-base'] = aBase;
-        CrudCore.componentItems['c-widget'] =  cWidget;
-        CrudCore.componentItems['w-base'] =  wBase;
+        // CrudCore.componentItems['CrudComponent'] = CrudComponent;
+        // CrudCore.componentItems['c-action'] = cAction;
+        // CrudCore.componentItems['c-view'] = cView;
+        // CrudCore.componentItems['v-record'] = vRecord;
+        // CrudCore.componentItems['v-search'] = vSearch;
+        // CrudCore.componentItems['c-Manage'] = cManage;
+        // CrudCore.componentItems['v-list'] = vList;
+        // CrudCore.componentItems['v-list-edit'] = vListEdit;
+        // CrudCore.componentItems['c-import'] = cImport;
+        // CrudCore.componentItems['v-list-hasmany'] = vListHasmany;
+        // CrudCore.componentItems['a-base'] = aBase;
+        // CrudCore.componentItems['c-widget'] =  cWidget;
+        // CrudCore.componentItems['w-base'] =  wBase;
     },
     CrudComponent,cAction,CrudCore,CrudVars,cWidget,wBase,
     cView,

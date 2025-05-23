@@ -18,9 +18,6 @@
                     <Divider align="right" >
                         <Button class="p-button-outlined p-button-danger" icon="fa fa-times" @click="removeItem(dataKey)"></Button>
                     </Divider>
-                    <!--                        <div class="flex align-self-end">-->
-                    <!--                            <Button class="p-button-outlined p-button-danger" icon="fa fa-times" @click="removeItem(index)"></Button>-->
-                    <!--                        </div>-->
                     <v-record ref="recordView" :conf="getHasmanyConf(index)"></v-record>
                 </div>
             </div>

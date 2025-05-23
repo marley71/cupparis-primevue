@@ -40,6 +40,7 @@ function _getManageConf(key,route) {
         //document.location.href='/#' + btoa('notfound') // per sollevvare l'eccezione di pagina non trovata
         //throw 'Not found'
     }
+    console.debug('get Manage conf',key,CrudVars.modelConfs[key])
     return  CrudCore.clone(CrudVars.modelConfs[key]);
 }
 var routerConf = null;

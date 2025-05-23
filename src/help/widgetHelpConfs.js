@@ -368,6 +368,10 @@ export default {
             modelData: {
                 id: 4
             },
+            domainValues : {
+                0 : 'No',
+                1 : 'Si',
+            },
             modelName: 'user',
             routeName : 'set',
             change () {

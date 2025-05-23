@@ -1,5 +1,6 @@
 import CrudCore from "../lib/CrudCore";
 import viewConfs from "../confs/views";
+import CrudVars from "../lib/CrudVars";
 
 export default class WrapperConf {
 
@@ -19,9 +20,9 @@ export default class WrapperConf {
         } else if (['v-list','v-list-edit','v-list-hasmany'].indexOf(conf.type) >= 0) {
             defConf = CrudCore.clone(viewConfs.listView);
         } else {
-            defConf = CrudCore.clone(viewConfs.defaultView);
+            defConf = CrudCore.clone(viewConfs.baseView);
         }
-        let wName = CrudCore.camelCase(conf.type || viewConfs.defaultView.type);
+        let wName = CrudCore.camelCase(conf.type || viewConfs.baseView.type);
         //console.log('wname',that[wName])
         if (that[wName]) {
             conf = that[wName](conf);
@@ -79,38 +80,6 @@ export default class WrapperConf {
         conf.collectionActions = {};
         conf = this.vList(conf);
         return conf;
-
-        /**
-         * confParent: 'v-list',
-         *             widgetsEdit: {}, // configurazioni widgets in modalità edit
-         *             editMode: [],
-         *             routeName: 'list',
-         *             primaryKey: 'id',
-         *             actionsConfig: {},
-         *             fieldsConfig: {
-         *                 id : {
-         *                     type : 'w-input',
-         *                     inputType : 'hidden'
-         *                 }
-         *             },
-         *             fieldsConfigEditMode:{
-         *                 id : {
-         *                     type : 'w-input',
-         *                     inputType : 'hidden'
-         *                 }
-         *             }, // configurazione campi in modalità edit
-         *             orderFields: {},
-         *             widgetTemplate: 'tpl-list',
-         *             actions: [
-         *                 'action-insert',
-         *                 'action-delete-selected',
-         *                 'action-view',
-         *                 'action-edit-mode',
-         *                 'action-delete',
-         *                 'action-save-row',
-         *                 'action-view-mode'
-         *             ]
-         */
     }
 
     vListHasmany(conf) {
@@ -203,7 +172,7 @@ export default class WrapperConf {
     }
 
     vBase(conf) {
-        conf = Object.assign(viewConfs.defaultView,conf);
+        conf = Object.assign(viewConfs.baseView,conf);
         return conf;
     }
 }
