@@ -522,6 +522,7 @@ export default class WrapperConf {
             console.log('ajaxFields', that.ajaxFields)
             for (var k in that.ajaxFields)
                 fdata.append(k, that.ajaxFields[k])
+            that.waitStart("Caricamento file...");
             Server.post(realUrl,fdata,function(data) {
                 that.json = data;
                 if (!data.error) {
@@ -543,6 +544,7 @@ export default class WrapperConf {
                         window.jQuery(that.$el).find('[crud-button="ok"]').addClass("disabled");
                         that.value =  JSON.stringify({});
                         that.fileInfo = null;
+                        that.waitEnd();
                         return;
                     }
                     that.$emit('success', that);
@@ -556,6 +558,7 @@ export default class WrapperConf {
                     that.value = JSON.stringify(data.result); //.replace(/\\"/g, '"');
                     //that.$refs.preview.setValue(data.result);
                     that.onSuccess();
+                    that.waitEnd();
                 } else {
                     console.log("An error occurred, the files couldn't be sent!");
                     that.fileInfo = null;
@@ -563,6 +566,7 @@ export default class WrapperConf {
                     that.errorMessage = Server.getErrorMessage(data.msg);
                     that.value = JSON.stringify({});
                     that.onError();
+                    that.waitEnd();
                 }
 
             });
