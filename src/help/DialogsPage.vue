@@ -28,7 +28,7 @@
 
 import CrudCore from "../lib/CrudCore";
 import CrudComponent from "../CrudComponent.vue";
-import JsToCode from "@/service/JsToCode";
+import JsToCode from "@/rome-vue-v4.0.0/services/JsToCode";
 const jsc = new JsToCode();
 
 

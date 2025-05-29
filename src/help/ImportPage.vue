@@ -35,7 +35,7 @@
 <script>
 import DCupGeoComune from './DCupGeoComune.js';
 import cImport from '../app/cImport.vue';
-import JsToCode from "@/service/JsToCode";
+import JsToCode from "@/rome-vue-v4.0.0/services/JsToCode";
 const jsc = new JsToCode();
 
 export default {
