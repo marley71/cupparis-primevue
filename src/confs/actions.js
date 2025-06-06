@@ -3,7 +3,6 @@ import CrudCore from "../lib/CrudCore";
 import CrudVars from "../lib/CrudVars";
 import CrudHelpers from "../lib/CrudHelpers";
 
-
 const actionConfs = {
     'default': {
         modelData:{},
@@ -191,8 +190,9 @@ const actionConfs = {
         text : '',
         icon : 'fa fa-edit',
         execute () {
-            let url = '#/edit/' + CrudCore.pascalCase('model_'+this.view.modelName) + '.edit/' + this.modelData[this.view.primaryKey]
-            document.location.href=url
+            this.view.$router.go('/edit/' + CrudCore.pascalCase('model_'+this.view.modelName) + '.edit/' + this.modelData[this.view.primaryKey])
+            //let url = '#/edit/' + CrudCore.pascalCase('model_'+this.view.modelName) + '.edit/' + this.modelData[this.view.primaryKey]
+            //document.location.href=url
         }
     },
     'action-view' : {

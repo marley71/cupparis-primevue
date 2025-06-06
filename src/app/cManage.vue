@@ -1,7 +1,7 @@
 <template>
-    <div v-if="layout=='basic'">
+    <div v-if="layout==='basic'">
         <div >
-            <div v-show="mode=='list'">
+            <div v-show="mode==='list'">
                 <template v-if="!hideSearch">
                     <c-view v-if="!searchComponentName" :conf="search" ref="vSearch" @search="searchList"></c-view>
                     <component v-else :is="searchComponentName" :conf="search" ref="vSearch" @search="searchList"></component>
@@ -9,15 +9,15 @@
                 <c-view v-if="!listComponentName"  :conf="list" ref="vList" @loaded="showListMia"></c-view>
                 <component v-else :is="listComponentName" :conf="list" ref="vList"></component>
             </div>
-            <template v-if="mode=='edit'">
+            <template v-if="mode==='edit'">
                 <c-view v-if="!editComponentName"  :conf="edit" ref="vRecord"></c-view>
                 <component v-else :is="editComponentName" :conf="edit" ref="vRecord"></component>
             </template>
-            <template v-else-if="mode=='insert'">
+            <template v-else-if="mode==='insert'">
                 <c-view v-if="!insertComponentName"  :conf="insert" ref="vRecord"></c-view>
                 <component v-else :is="insertComponentName" :conf="insert" ref="vRecord"></component>
             </template>
-            <template v-else-if="mode=='custom'">
+            <template v-else-if="mode==='custom'">
                 <component :is="customComponentName" :conf="custom" ref="vRecord"></component>
             </template>
         </div>
@@ -37,7 +37,7 @@
             {{sectionTitle}}
         </div>
         <div >
-            <div v-show="mode=='list'">
+            <div v-show="mode==='list'">
                 <template v-if="!hideSearch">
                     <c-view v-if="!searchComponentName" :conf="search" ref="vSearch" @search="searchList"></c-view>
                     <component v-else :is="searchComponentName" :conf="search" ref="vSearch" @search="searchList"></component>
@@ -45,15 +45,15 @@
                 <c-view v-if="!listComponentName"  :conf="list" ref="vList" @loaded="showListMia"></c-view>
                 <component v-else :is="listComponentName" :conf="list" ref="vList"></component>
             </div>
-            <template v-if="mode=='edit'">
+            <template v-if="mode==='edit'">
                 <c-view v-if="!editComponentName"  :conf="edit" ref="vRecord"></c-view>
                 <component v-else :is="editComponentName" :conf="edit" ref="vRecord"></component>
             </template>
-            <template v-else-if="mode=='insert'">
+            <template v-else-if="mode==='insert'">
                 <c-view v-if="!insertComponentName"  :conf="insert" ref="vRecord"></c-view>
                 <component v-else :is="insertComponentName" :conf="insert" ref="vRecord"></component>
             </template>
-            <template v-else-if="mode=='custom'">
+            <template v-else-if="mode==='custom'">
                 <component :is="customComponentName" :conf="custom" ref="vRecord"></component>
             </template>
         </div>
@@ -123,8 +123,6 @@ export default {
         }
         let wc = new viewWrapperConf();
         console.log('wc',wc);
-        //that.conf.list = that.conf.list?wc.loadConf(that.conf.list):{};
-        // that.conf.view = that.conf.view?wc.loadConf(that.conf.view):{};
         that.conf.list = wc.loadConf(that.conf.list);
         that.conf.edit = that.conf.edit?wc.loadConf(that.conf.edit):{};
         // that.conf.insert = that.conf.insert?wc.loadConf(that.conf.insert):null;
@@ -158,23 +156,19 @@ export default {
         if (!('viewTitle' in that.conf)) {
             that.conf.viewTitle = null;
         }
-        if (this.conf.list) {
-            this.conf.list.autoload = false;
-        }
         return that.conf;
     },
     methods : {
         searchList(event) {
-            console.debug('searchList',event);
-            if (this.getViewList()) {
-                this.getViewList().setParams(event);
-                // se c'e' autoupdateHash non chiamo la load della lista perche' verrà chiamata
-                // dall'evento autoupdateHash, in questo caso mi limito solo ad aggiornare i parametri di ricerca
-                if (! this.autoUpdateHash) {
-                    this.getViewList().load();
-
-                }
-            }
+            // console.debug('searchList',this.autoUpdateHash,event,this.getViewList());
+            // if (this.getViewList()) {
+            //     this.getViewList().setParams(event);
+            //     // se c'e' autoupdateHash non chiamo la load della lista perche' verrà chiamata
+            //     // dall'evento autoupdateHash, in questo caso mi limito solo ad aggiornare i parametri di ricerca
+            //     if (! this.autoUpdateHash) {
+            //         this.getViewList().load();
+            //     }
+            // }
             //this.$refs.vList.instance().setParams(event);
         },
         setManageActions() {
@@ -282,76 +276,48 @@ export default {
          * gestione del back mostra la vista giusta in baso allo stato della cmanage
          */
         showContext() {
-            let that = this;
-            console.debug('showContext',that.$route.params.context)
-            let context = that.$route.params.context;
-            if (!context || context.length == 0) {
-                if (that.getViewList()) {
-                    that.mode = 'list';
-                    that.searchList();
-                }
+          let that = this;
+          console.debug('showContext params',that.$route.params);
 
-                return ;
+          if (that.$route.params.viewType) {
+            let context = that.$route.params.context || [];
+            that.mode = that.$route.params.viewType;
+            console.debug('mode',that.mode,context)
+            switch(that.mode) {
+              case 'edit':
+                that.edit.pk = context[0];
+                break;
+              case 'insert':
+                break;
+              case 'list':
+                break;
             }
-            let mode = context[0];
-            that.mode = mode;
-            switch(mode) {
-                case 'edit':
-                    that.edit.pk = context[1];
-                    break;
-                case 'insert':
-                    break;
-                case 'list':
-                    var vList = that.getViewList();
-                    //console.debug('showContext list',vList);
-                    if (vList) {
-                        let listParams = context.filter( a => a.indexOf('s_') == 0) || [];
-                        listParams = listParams.concat( context.filter( a => a.indexOf('page') == 0));
-                        listParams = listParams.concat( context.filter( a => a.indexOf('order_') == 0));
-                        //console.log('LISTPARAMS',listParams,JSON.stringify(vList.value),context.filter( a => a.indexOf('page') == 0));
-                        if (listParams.length > 0) {
-                            vList.autoload = false;
-                            //that.waitViewLoaded('list',function() {
+          }
 
-                                //console.debug('view loaded');
-                                for (let i in listParams) {
-                                    let tmp = listParams[i].split(':');
-                                    if (tmp.length != 2) {
-                                        console.warn('non riesco a definire il valore da filtrare per il parmetro',listParams[i],tmp);
-                                        continue;
-                                    }
-                                    vList.route.setParam(tmp[0],tmp[1]);
-                                }
+          return ;
 
-                            //})
-                            // that.waitViewLoaded('search',function() {
-                            //     let vSearch = that.getViewSearch();
-                            //     //window.VSS = vSearch;
-                            //     for (let i in listParams) {
-                            //         let tmp = listParams[i].split(':');
-                            //         if (tmp.length != 2) {
-                            //             continue;
-                            //         }
-                            //         let fieldName = tmp[0];
-                            //         if (vSearch.isSpecialField(fieldName)) {
-                            //             vSearch.setSpecialField(fieldName,tmp[1]);
-                            //             continue;
-                            //         }
-                            //         fieldName = fieldName.substring(2);
-                            //         if (!vSearch.getWidget(fieldName)) {
-                            //             console.warn('getWidget ha ritornato null per ', fieldName);
-                            //             continue;
-                            //         }
-                            //         vSearch.getWidget(fieldName).setValue(tmp[1]);
-                            //     }
-                            //
-                            // })
-                        }
-                        vList.load();
-
-                    }
-                    break;
-            }
+          //   console.debug('showContext',that.$route.params.context)
+          // alert('aa');
+          //   let context = that.$route.params.context;
+          //   if (!context || context.length == 0) {
+          //       if (that.getViewList()) {
+          //           that.mode = 'list';
+          //           that.searchList();
+          //       }
+          //
+          //       return ;
+          //   }
+          //   let mode = context[0];
+          //   that.mode = mode;
+          //   switch(mode) {
+          //       case 'edit':
+          //           that.edit.pk = context[1];
+          //           break;
+          //       case 'insert':
+          //           break;
+          //       case 'list':
+          //           break;
+          //   }
         },
         waitViewLoaded(type,callback) {
             let that = this;
@@ -400,18 +366,37 @@ export default {
             }
             //console.debug('listmia',params,context,window.location.pathname);192
             //window.history.pushState({},'',window.location.pathname + '#/' + that.baseRouteName + '/'+ confName +'/list/' + context.join('/'));
-            that.updateHash(confName,'list',context);
+            //that.updateHash(confName,'list',context);
 
         },
+
+
+
+
         updateHash(confName,type,context) {
+
+
+
             let that = this;
-            let hash = '';
+            //let hash = '';
             if (this.autoUpdateHash) {
-                hash = window.location.pathname + '#/' + that.baseRouteName + '/'+ confName +'/' + type;
-                if (context && context.length > 0) {
-                    hash += '/' + context.join('/');
-                }
-                window.history.pushState({},'',hash);
+                let params = that.$route.params;
+                params.viewType = type;
+                params.context = context;
+                that.$router.push({name:'c-manage-view',params : params})
+
+
+
+
+
+
+                //
+                // hash = '/' + that.baseRouteName + '/'+ confName +'/' + type;
+                // if (context && context.length > 0) {
+                //     hash += '/' + context.join('/');
+                // }
+                // that.$router.replace(hash);
+                //window.history.pushState({},'',hash);
             }
         },
         _setCss() {

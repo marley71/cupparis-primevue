@@ -247,6 +247,17 @@ export default {
 
     },
 
+    _manageHashParams() {
+        let that = this;
+        let searchParams = that.getSearchParams();
+
+      console.debug('searchParams',searchParams)
+        for (let field in searchParams) {
+          that.route.setParam(field,searchParams[field]);
+        }
+    },
+
+
     onRowContextMenu(event) {
       this.$refs.cm.show(event.originalEvent);
     },
@@ -327,7 +338,7 @@ export default {
         let aConf = Object.assign({}, gActions[aName]);
         aConf.modelData = that.value;
         aConf.view = that;
-        needSelection |= aConf.needSelection;
+        needSelection |= that._needSelection(aConf); // aConf.needSelection;
         that.collectionActions.actions[aName] = aConf;
       }
       this.selectionMode = needSelection ? 'multiple' : null;
@@ -336,6 +347,12 @@ export default {
       this._setMenuCollection();
     },
 
+      _needSelection(actionConf) {
+          if (typeof actionConf.needSelection === 'function') {
+              return actionConf.needSelection.apply(this);
+          }
+          return actionConf.needSelection
+      },
     getWidgetConf(index, field, data) {
       let that = this;
       index = index % that.getPerPage();

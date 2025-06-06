@@ -14,13 +14,34 @@ export default class WrapperConf {
         if (!conf.type)
             throw "confurazione non trovata per la view definire il type della vista";
         var defConf = null;
-        if (['v-edit','v-view','v-insert','v-record','v-search'].indexOf(conf.type) >= 0) {
-            defConf = CrudCore.clone(viewConfs.recordView);
-        } else if (['v-list','v-list-edit','v-list-hasmany'].indexOf(conf.type) >= 0) {
-            defConf = CrudCore.clone(viewConfs.listView);
-        } else {
-            defConf = CrudCore.clone(viewConfs.defaultView);
+        switch (conf.type) {
+            case 'v-edit':
+            case 'v-view':
+            case 'v-insert':
+            case 'v-record':
+                defConf = CrudCore.clone(viewConfs.recordView);
+                break;
+            case 'v-search':
+                defConf = CrudCore.clone(viewConfs.searchView);
+                break;
+            case 'v-list':
+            case 'v-list-edit':
+            case 'v-list-hasmany':
+                defConf = CrudCore.clone(viewConfs.listView);
+                break;
+            default:
+                defConf = CrudCore.clone(viewConfs.defaultView);
+                break;
         }
+
+        //
+        // if (['v-edit','v-view','v-insert','v-record','v-search'].indexOf(conf.type) >= 0) {
+        //     defConf = CrudCore.clone(viewConfs.recordView);
+        // } else if (['v-list','v-list-edit','v-list-hasmany'].indexOf(conf.type) >= 0) {
+        //     defConf = CrudCore.clone(viewConfs.listView);
+        // } else {
+        //     defConf = CrudCore.clone(viewConfs.defaultView);
+        // }
         let wName = CrudCore.camelCase(conf.type || viewConfs.defaultView.type);
         //console.log('wname',that[wName])
         if (that[wName]) {

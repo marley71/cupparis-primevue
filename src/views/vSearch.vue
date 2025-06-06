@@ -178,8 +178,8 @@
 
 <script>
 import vRecord from './vRecord.vue';
-import CrudCore from "../lib/CrudCore";
 import CrudHelpers from "../lib/CrudHelpers";
+
 export default {
     name: "vSearch",
     extends: vRecord,
@@ -208,20 +208,25 @@ export default {
 
         _beforeLoadData() {
             let that =this;
-            let context = that.$route.params.context;
-            let listParams = ( context && context.filter( a => a.indexOf('s_') == 0) ) || [];
-            for (let i in listParams) {
-                let tmp = listParams[i].split(':');
-                if (tmp.length != 2) {
-                    console.warn('non riesco a definire il valore da filtrare per il parmetro',listParams[i],tmp);
-                    continue;
-                }
-                that.route.setParam(tmp[0],tmp[1]);
-            }
             //console.debug('SEARCH context',context);
             if (that.conf.beforeLoadData) {
                 that.conf.beforeLoadData.apply(this);
             }
+        },
+
+        _manageHashParams() {
+          let that = this;
+          let searchParams = that.getSearchParams();
+          for (let key in searchParams) {
+            let fieldName = key.substring(2); // tolgo il prefisso s_{fieldName}
+            if (that.fields.indexOf(fieldName) >=0 )  {
+              let config = that.fieldsConfig[fieldName] || {};
+              config.value = searchParams[key];
+              that.fieldsConfig[fieldName] = config;
+              console.debug('has fieldName',fieldName,config)
+            }
+          }
+          console.debug(that.fields,'search manageHashParams',JSON.parse(JSON.stringify(that.fieldsConfig)));
         },
 
         search(type, event) {
@@ -248,9 +253,55 @@ export default {
             }
             let form = type === 'basic' ? 'formBasic' : 'form';
             var formData = that.getViewData(form);
-            this.$emit('search', formData);
+            if (this.updateHash) {
+              this.setHash(formData)
+            } else {
+              this.$emit('search', formData);
+            }
             return true;
         },
+        setHash(formData) {
+          let that = this;
+          // let path = that.$route.path.split('?');
+          // let params = Object.fromEntries(formData.entries());
+          console.debug('setHash',that.$route,formData);
+          let currentParams = { ...this.$route.params };
+          let routeName = this.$route.name;
+          //
+          // let confName = this.$route.params.cConf;
+          // let params = that.getViewList().route.getParams();
+          let context = [];
+          if (formData && formData instanceof FormData) {
+            for (let key of formData.keys()) {
+              let values = formData.getAll(key);
+              context.push(key+':'+values.join('&'));
+            }
+          } else if (formData  && formData instanceof Object) {
+            for (let key in formData) {
+              let values = formData[key];
+              if (Array.isArray(values)) {
+                context.push(key+':'+values.join('&'));
+              } else {
+                context.push(key+':'+values);
+              }
+
+            }
+          }
+          currentParams.context = context;
+          that.$router.push({name:routeName,params : currentParams});
+
+          //
+          //
+          //
+          //
+          // let url = '';
+          // for (let key in params) {
+          //     url += url?('&'+url):url;
+          //     url += key + '=' + params[key];
+          // }
+          // that.$router.push(path[0] + '?' + url);
+        },
+
         getFieldName(field) {
             return 's_' + field;
         },
@@ -354,19 +405,37 @@ export default {
          * setta i valori del widget ad eventuali valori presenti nell'url come s_{nome_campo}
          */
         setSearchParamsValue() {
-            let params = CrudHelpers.getContextParams(this);
-            console.debug('vSearch context params',params);
-            for (let param of params) {
-                let tmp = param.split(':');
-                console.debug('vSearch param',tmp);
-                let field = tmp[0].substring(2);
-                console.debug('vSearch field',field);
-                let w = this.getWidget(field);
+          let that = this;
+          let searchParams = that.getSearchParams();
+          for (let key in searchParams) {
+            let fieldName = key.substring(2); // tolgo il prefisso s_{fieldName}
+            if (that.fields.indexOf(fieldName) >=0 )  {
+                let w = this.getWidget(fieldName);
                 if (w) {
-                    w.setValue(tmp[1]);
+                    w.setValue(searchParams[key]);
                 }
 
+              // let config = that.fieldsConfig[fieldName] || {};
+              // config.value = searchParams[key];
+              // that.fieldsConfig[fieldName] = config;
+              // console.debug('has fieldName',fieldName,config)
             }
+          }
+
+
+            // let params = CrudHelpers.getContextParams(this);
+            // console.debug('vSearch context params',params);
+            // for (let param of params) {
+            //     let tmp = param.split(':');
+            //     console.debug('vSearch param',tmp);
+            //     let field = tmp[0].substring(2);
+            //     console.debug('vSearch field',field);
+            //     let w = this.getWidget(field);
+            //     if (w) {
+            //         w.setValue(tmp[1]);
+            //     }
+            //
+            // }
         }
 
     }

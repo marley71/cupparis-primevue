@@ -81,23 +81,16 @@ try {
             component: vRecord,
             props: route => ({ conf: Object.assign(_getModelConf(CrudVars.modelConfs,route.params.cConf),{pk:route.params.pk} )})
         },
-        // {
-        //     path: '/page/:cPath',
-        //     name: 'c-page',
-        //     component: cPage,
-        //     props: true
-        // },
         {
             path: '/manage/:cConf/:context*',
             name: 'c-manage',
             component: cManage,
-            // redirect: to => {
-            //     console.log('to',to,CrudVars.modelConfs);
-            //     return {
-            //         path: '/manage/:cConf',
-            //         conf : _getManageConf(to.params.cConf,to)
-            //     }
-            // },
+            props: route => ({ conf: _getManageConf(route.params.cConf,route) })
+        },
+        {
+            path: '/manage/:viewType(list|edit|insert|view)/:cConf/:context*',
+            name: 'c-manage-view',
+            component: cManage,
             props: route => ({ conf: _getManageConf(route.params.cConf,route) })
         },
         {

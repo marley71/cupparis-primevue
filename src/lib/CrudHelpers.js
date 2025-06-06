@@ -1,5 +1,6 @@
 // import ProtocolList from "./ProtocolList.js";
 import CrudCore from "./CrudCore";
+import moment from "moment/moment";
 
 class CrudHelpers {
 
@@ -127,4 +128,13 @@ CrudHelpers.getContextParams = (vueObject,key)  => {
     return listParams;
 }
 
+CrudHelpers.dateFormat = (value,displayFormat) => {
+    var md = moment(value);
+    //console.log('displayFormat',that.displayFormat);
+    if (md.isValid()) {
+        return md.format(displayFormat?displayFormat:'DD/MM/YYYY')
+    } else {
+        return CrudCore.translate('app.invalidDateString'); // + '*' ;
+    }
+}
 export default CrudHelpers;

@@ -61,7 +61,7 @@ export default class Route {
         // var that = this;
         var finalUrl = this.routeConf.url;
         var v = values?values:this.routeConf.values;
-
+        console.debug('route values',v,'url',finalUrl);
         for (let key in v) {
             let find = '{'+key+'}';
             let re = new RegExp(find, 'g');

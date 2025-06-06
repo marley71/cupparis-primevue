@@ -1,3 +1,24 @@
+const baseView = {
+    name : '',
+    value: null,
+    fields: null,
+    type: 'v-base',
+    extraBind: {},
+    title:'',
+    headerHelp:'',
+    loaded : false,
+    route : null,
+    routeName : null,
+    defaultWidgetType : 'w-text',
+    fieldsConfig:{},
+    actionsConfig: {},
+    metadata:{},
+    autoload : true,
+    blocked : false,
+    modelName : null,
+}
+
+
 const viewConfs = {
     recordLayouts : {
         default : {
@@ -67,6 +88,8 @@ const viewConfs = {
         blocked : false,
         modelName : null,
         hiddenColumns : [],
+        autoSearch : true, // se e' true la view cerca dentro l'hash se ci sono parametri di ricerca (s_{fieldName}) e li applica alla chiamata
+        filterFields : {}, // se sono presenti dei fields nel formato s_{fieldName} li applica alla chiamata ajax
         //numeroRecordsLabel : null, // label del numero dei records
     },
     recordView : {
@@ -88,7 +111,10 @@ const viewConfs = {
         actionDivider: false,
         blocked : false,
         modelName : null,
-    }
+    },
+    searchView : Object.assign( baseView,{
+        updateHash : true,  // se true i parametri di ricerca li mette nell'url
+    })
 }
 
 export default viewConfs;
