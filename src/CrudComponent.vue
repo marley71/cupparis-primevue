@@ -115,7 +115,7 @@ export default {
         componentDialog(compName,componentConf,title,dialogConf) {
             const div = document.createElement('div');
             document.body.appendChild(div);
-            let  comp = defineAsyncComponent(() => import('./dialogs/dCustom.vue'))
+            let  comp = defineAsyncComponent(() => import('./dist/dialogs/dCustom.vue'))
             dialogConf = dialogConf || {
                 title : title,
                 display : true,

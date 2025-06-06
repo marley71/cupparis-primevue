@@ -1,5 +1,5 @@
 <script>
-import cView from "../views/cView.vue";
+import cView from "../dist/views/cView.vue";
 import JsToCode from "./JsToCode";
 import viewConfs from "./viewConfs";
 const jsc = new JsToCode();

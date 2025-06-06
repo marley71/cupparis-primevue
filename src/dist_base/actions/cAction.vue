@@ -1,0 +1,44 @@
+<template>
+    <template v-if="layout==='simple'">
+        <div class="flex p-buttonset border border-round">
+            <!-- :style="'width:'+(Object.keys(actions).length * 30)+ 'px'" -->
+            <a-base v-for="(action,key) in actions" :key="key" :ref="key" :conf="getConf(action,key)"></a-base>
+        </div>
+    </template>
+    <template v-else-if="layout==='buttons'">
+        <div class="flex">
+            <template v-for="(action,key) in getActions()" :key="key">
+                <a-base :ref="key" :conf="getConf(action,key)" v-if="inWhitelist(key)"></a-base>
+            </template>
+        </div>
+    </template>
+    <template v-else-if="layout==='menubar'">
+        <Menubar :model="menubarActions" class="w-full">
+            <template v-if="title" #start>
+                <span>{{ title }}</span>
+            </template>
+        </Menubar>
+    </template>
+    <template v-else>
+        <div>
+            {{layout}} : Layout non riconosciuto
+        </div>
+    </template>
+
+</template>
+
+<script>
+
+import ABase from "./aBase.vue";
+import _cAction from "../../actions/_cAction.vue";
+
+export default {
+    name: "c-action",
+    components: {ABase},
+    extends: _cAction,
+}
+</script>
+
+<style scoped>
+
+</style>
