@@ -110,15 +110,22 @@ export default {
             let that = this;
             if (!that.routeName)
                 return ;
-            // if (!that.route) {
-            //     that.route = that.createRoute(that.routeName);
-            // }
             that.route.setValuesFromObj(that);
+            that._manageHashParams();
+            that._addDefaultParams();
         },
+        _manageHashParams() {
+            // questa metodo permette di aggiungere eventuali parametri in hash
+        },
+
+        _addDefaultParams() {
+            // controlla che ci siano parametri di default in configurazione.
+        },
+
         _beforeLoadData() {
-            if (this.conf.beforeLoadData) {
-                this.conf.beforeLoadData.apply(this);
-            }
+          if (this.conf.beforeLoadData) {
+              this.conf.beforeLoadData.apply(this);
+          }
         },
 
         loadData(callback) {
@@ -267,8 +274,33 @@ export default {
         },
         isBlocked() {
             return this.blocked;
-        }
+        },
+      /**
+       * ritorna evenutali parametri di ricerca nel context della route
+       */
+      getSearchParams() {
+        let that = this;
+        let params = {};
+        let context = that.$route.params.context;
+        let listParams = (context && context.filter(a => a.indexOf('s_') == 0)) || [];
+        let pageParam = context && context.filter( a => a.indexOf('page') == 0);
+        let orderParam = context && context.filter( a => a.indexOf('order_') == 0);
 
+        listParams = pageParam?listParams.concat( pageParam) : listParams;
+        listParams = orderParam?listParams.concat( orderParam) : listParams;
+
+        // params = params.concat( context.filter( a => a.indexOf('order_') == 0));
+        for (let i in listParams) {
+          let tmp = listParams[i].split(':');
+          if (tmp.length != 2) {
+            console.warn('non riesco a definire il valore da filtrare per il parmetro', listParams[i], tmp);
+            continue;
+          }
+          params[tmp[0]] = tmp[1];
+        }
+        console.debug('page params',params,context)
+        return params;
+      }
     }
 }
 </script>
