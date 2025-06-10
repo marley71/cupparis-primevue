@@ -4,7 +4,7 @@
       <template v-if="layout=='default'">
         <template v-for="(v,row) in value">
           <template v-for="(col) in getHiddenFields()" :key="col">
-            <c-widget :ref="'w'+row+'_'+col" :conf="getWidgetConf(row,col,v[col])"></c-widget>
+            <component :is="getWidgetType(row,col)" :ref="'w'+row+'_'+col" :conf="getWidgetConf(row,col,v[col])"></component>
           </template>
         </template>
         <slot name="header" :collectionActions="collectionActions">
@@ -62,8 +62,8 @@
             <Column v-for="(col) in getVisibleFields()" :field="col" :header="columnLabel(col)" :key="col"
                     :sortable="isSortable(col)" :dir="sortDirection(col)">
               <template #body="slotProps">
-                  <c-widget :ref="'w'+slotProps.index+'_'+col"
-                          :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></c-widget>
+                  <component :is="getWidgetType(row,col)" :ref="'w'+slotProps.index+'_'+col"
+                          :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></component>
               </template>
             </Column>
             <Column v-if="getRecordActionsPosition() == 'end' && hasRecordActions()" :exportable="false"
@@ -87,7 +87,7 @@
       <template v-if="layout=='simple'">
         <template v-for="(v,row) in value">
           <template v-for="(col) in getHiddenFields()" :key="col">
-            <c-widget :ref="'w'+row+'_'+col" :conf="getWidgetConf(row,col,v[col])"></c-widget>
+            <component :is="getWidgetType(row,col)" :ref="'w'+row+'_'+col" :conf="getWidgetConf(row,col,v[col])"></component>
           </template>
         </template>
         <slot name="header" :collectionActions="collectionActions">
@@ -144,8 +144,8 @@
                     :sortable="isSortable(col)" :dir="sortDirection(col)">
               <template #body="slotProps">
                 <!--                    {{slotProps.data[col]}} {{ slotProps.index}}-->
-                <c-widget :ref="'w'+slotProps.index+'_'+col"
-                          :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></c-widget>
+                <component :is="getWidgetType(row,col)" :ref="'w'+slotProps.index+'_'+col"
+                          :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></component>
               </template>
             </Column>
             <Column v-if="getRecordActionsPosition() == 'end' && hasRecordActions()" :exportable="false"

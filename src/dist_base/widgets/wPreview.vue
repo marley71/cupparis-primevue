@@ -1,0 +1,31 @@
+<template>
+  <span>
+    <div class="mt-3" v-if="value">
+      <template
+          v-if="['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'].indexOf(value.mimetype) >= 0">
+        <i class="fa fa-file-excel fa-2xl"></i>
+      </template>
+      <template v-else-if="['application/pdf'].indexOf(value.mimetype) >= 0">
+        <i class="fa fa-file-pdf fa-2xl"></i>
+      </template>
+      <template v-else-if="['image/jpeg'].indexOf(value.mimetype) >= 0">
+        <img :src="getRealUrl(value.url)" :height="height"/>
+      </template>
+      <template v-else>
+        <i class="fa fa-file fa-2xl"></i>
+      </template>
+    </div>
+  </span>
+</template>
+
+<script>
+
+import _wPreview from '../../widgets/_wPreview.vue'
+import RulesErrors from "./RulesErrors.vue";
+export default {
+  name: "wPreview",
+  extends: _wPreview
+}
+
+</script>
+

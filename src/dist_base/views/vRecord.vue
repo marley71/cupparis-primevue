@@ -13,7 +13,7 @@
                     <template v-for="field in getHiddenFields()">
 
                         <template v-if="!isRemovedWidget(field)">
-                            <c-widget :ref="field" :conf="widgetsConfig[field]" v-show="!isHiddenWidget(field)"></c-widget>
+                            <component :is="widgetsConfig[field].type" :ref="field" :conf="widgetsConfig[field]" v-show="!isHiddenWidget(field)"></component>
                         </template>
 
                     </template>
@@ -24,7 +24,7 @@
 
                     <div class="">
                         <template v-if="!isRemovedWidget(field)">
-                            <c-widget :ref="field" :conf="widgetsConfig[field]" v-show="!isHiddenWidget(field)"></c-widget>
+                            <component :is="widgetsConfig[field].type" :ref="field" :conf="widgetsConfig[field]" v-show="!isHiddenWidget(field)"></component>
                         </template>
                     </div>
 
@@ -49,7 +49,7 @@
 
                         <template v-for="field in getHiddenFields()">
                             <template v-if="!isRemovedWidget(field)">
-                                <c-widget :ref="field" :conf="widgetsConfig[field]" v-show="!isHiddenWidget(field)"></c-widget>
+                                <component :is="widgetsConfig[field].type" :ref="field" :conf="widgetsConfig[field]" v-show="!isHiddenWidget(field)"></component>
                             </template>
 
                         </template>
@@ -61,7 +61,7 @@
                                             <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
 
                                                 <span class="p-float-label">
-                                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                                    <component :is="widgetsConfig[field].type" :ref="field" :conf="widgetsConfig[field]"></component>
                                                     <label :for="field">{{ widgetsConfig[field].label }}</label>
                                                 </span>
                                             </template>
@@ -72,7 +72,7 @@
                                                     {{ translateUc(widgetsConfig[field].label) }}
                                                 </label>
                                                 <div class="">
-                                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                                    <component :is="widgetsConfig[field].type" :ref="field" :conf="widgetsConfig[field]"></component>
                                                 </div>
                                                 <label class="labelRecord labelBottom" :for="field"
                                                     v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
@@ -105,7 +105,7 @@
                             <template v-for="field in getHiddenFields()">
 
                                 <template v-if="!isRemovedWidget(field)">
-                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                    <component :is="widgetsConfig[field].type" :ref="field" :conf="widgetsConfig[field]"></component>
                                 </template>
                             </template>
                             <div class="grid">
@@ -133,7 +133,7 @@
                                             <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
 
                                                 <span class="p-float-label">
-                                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                                    <component :is="widgetsConfig[field].type" :ref="field" :conf="widgetsConfig[field]"></component>
                                                     <label :for="field">{{ widgetsConfig[field].label }}{{ isRequired(field) }}</label>
                                                 </span>
                                             </template>
@@ -144,7 +144,7 @@
                                                     {{ translateUc(widgetsConfig[field].label) }}{{ isRequired(field) }}
                                                 </label>
                                                 <div class="">
-                                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                                    <component :is="widgetsConfig[field].type" :ref="field" :conf="widgetsConfig[field]"></component>
                                                 </div>
                                                 <label class="labelRecord labelBottom" :for="field"
                                                     v-if="getWidgetLayout(field,'labelPosition')=='bottom'">

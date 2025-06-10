@@ -6,9 +6,15 @@ export default {
     name: "_wLeafLet",
   extends : _wBase,
     data() {
+      let rData = this._loadReactiveData(this.conf);
+
+
+
       console.debug('w-leaf-let',this.conf)
       let markers = this.valueToMarkers();
-        return {
+
+
+      let leafData = {
           markers : markers,
             zoom: 2,
             geojsonOptions: {
@@ -17,6 +23,7 @@ export default {
           iconWidth: 25,
           iconHeight: 25,
         };
+        return Object.assign(leafData,rData);
     },
   async beforeMount() {
     // HERE is where to load Leaflet components!

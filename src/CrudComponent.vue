@@ -7,14 +7,15 @@ import PrimeVue from "primevue/config";
 import routeConfs from "./confs/routes";
 import CrudVars from "./lib/CrudVars";
 
+
 export default {
     name: "CrudComponent",
     props: {
         conf: Object,
     },
-    data() {
-        return Object.assign({},(this.conf || {}));
-    },
+    // data() {
+    //     return Object.assign({},(this.conf || {}));
+    // },
     methods: {
         /**
          * istanzia una nuova route a partire dalla configurazione trovata in store

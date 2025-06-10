@@ -1,7 +1,5 @@
 <template>
     <div class="flex">
-<!--        <InputText class="w-full" :name="name" :type="inputType" v-model="value" v-bind="extraBind"-->
-<!--                   @change="_change" :class="errors.length?'p-invalid':''"></InputText>-->
         <span>{{value}}</span>
         <Button icon="fa fa-edit" class="p-button-sm ml-1 p-1" outlined :disabled="!canUpdate"
                 @click="toggle"></Button>
@@ -19,6 +17,7 @@
 <script>
 
 import _wInputSet from '../../widgets/_wInputSet.vue'
+import RulesErrors from "./RulesErrors.vue";
 export default {
     name: "wInputSet",
     extends: _wInputSet,

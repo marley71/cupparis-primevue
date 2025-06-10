@@ -2,10 +2,107 @@
 
 import CrudComponent from "../CrudComponent.vue";
 import moment from "moment/moment";
+import Server from "../lib/Server";
+import WrapperConf from "./WrapperConf";
+import global from '../confs/global';
+
 export default {
     name: "_wBase",
     extends : CrudComponent,
+    beforeCreate() {
+      console.debug('wBase.beforeCreate ',this.conf);
+    },
+  created() {
+      let that = this;
+      console.debug('wBase.created ',that.conf);
+      //console.log('CREATEDDD',that)
+      that.overwriteMethods = {};
+      var __call = function (lk) {
+        that[lk] = function () {
+          var localk = new String(lk);
+          return that.overwriteMethods[localk].apply(that, arguments);
+        }
+      }
+
+      for (let k in that.conf) {
+        //console.log('k',k,ext[k]);
+        // se la funzione non e' tra i metodi sovrascribili allora la istanzio come una nuova funzione dell'oggetto
+        // altrimenti ci pensano i singoli metodi sovrascribili a fare la chiamata
+        if ( (global.overwriteableMethods.indexOf(k) < 0) && that.conf[k] instanceof Function) {
+          console.debug('wBase.created ',k,'metodo non fa parte dei sovrascribili')
+          that.overwriteMethods[k] = that.conf[k];
+          __call(k);
+        }
+      }
+      this.Server = Server;
+    },
+    data() {
+      // let that = this;
+      // let wc = new WrapperConf()
+      // let ext = wc.loadConf(that.conf);
+      // let dt = {};
+      // for (let k in ext) {
+      //   if (!(ext[k] instanceof Function)) {
+      //     dt[k] = ext[k];
+      //   }
+      // }
+      // dt.errors = [];
+      // console.debug('wBase.data ',dt)
+      // return dt;
+      return this._loadReactiveData(this.conf)
+    },
+
     methods : {
+      reset() {
+        let that = this;
+        if (this.conf.reset) {
+          this.conf.reset.apply(this);
+          return ;
+        }
+        that.value = null;
+      },
+      getFieldName() {
+        if (this.conf.getFieldName) {
+          return this.conf.getFieldName.apply(this)
+        }
+
+        if (['w-checkbox','w-multi-select'].indexOf(this.type) >= 0) {
+          return this.name + '[]';
+        }
+        return this.name;
+      },
+
+      change(event) {
+        if (this.conf.change) {
+          return this.conf.change.apply(this,[event])
+        }
+
+      },
+
+      _disabled(event) {
+        if (this.disabled instanceof Function) {
+          return this.disabled.apply(this,[event]);
+        }
+        return this.disabled;
+      },
+      _hasClick() {
+        if (this.click && (this.click instanceof Function) ) {
+          return true;
+        }
+        return false;
+      },
+      _hasHref() {
+        if (this.href) {
+          return true;
+        }
+        return false;
+      },
+      _href(event) {
+        if (this.href instanceof Function) {
+          return this.href.apply(this,[event]);
+        }
+        return this.href;
+      },
         _ready() {
             if (this.ready) {
                 this.ready.apply(this);
@@ -16,15 +113,15 @@ export default {
             let evt = event || {};
             evt.widget = this;
             switch (this.type) {
-                case 'w-autocomplete':
-                    if (type == 'clear') {
-                        this.value = null;
-                        this.autocompleteValue = null;
-                    } else if (event) {
-                        this.value = event.id;
-                        this.referredData = event;
-                    }
-                    break;
+                // case 'w-autocomplete':
+                //     if (type == 'clear') {
+                //         this.value = null;
+                //         this.autocompleteValue = null;
+                //     } else if (event) {
+                //         this.value = event.id;
+                //         this.referredData = event;
+                //     }
+                //     break;
                 case 'w-date-picker':
                     if (type == 'clear') {
                         this.value = null;
@@ -76,6 +173,30 @@ export default {
             }
 
         },
+        setValue(value) {
+          console.debug('_wBase.setValue',value);
+          this.value = value;
+        },
+      setErrors(errors) {
+        this.errors = errors;
+      },
+      /**
+       * questa funzione normalizza la configurazione che mi arriva e restituisco solo i dati che devono essere realmente reactive
+       */
+        _loadReactiveData(conf) {
+          let wc = new WrapperConf()
+          let ext = wc.loadConf(conf);
+          let dt = {};
+          for (let k in ext) {
+            if (!(ext[k] instanceof Function)) {
+              dt[k] = ext[k];
+            }
+          }
+          dt.errors = [];
+          console.debug('wBase.data ', dt)
+          return dt;
+        }
+
     }
 }
 </script>

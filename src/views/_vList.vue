@@ -196,6 +196,11 @@ export default {
       }
       return that.widgetsConfig[index][field];
     },
+    getWidgetType(index,field) {
+        let that = this;
+        let fieldsConfig = that.fieldsConfig || (that.fieldsConfig[field]?that.fieldsConfig[field]:{});
+        return (fieldsConfig.type?fieldsConfig.type:that.defaultWidgetType);
+    },
     setWidgetsConfig() {
       this._setWidgetsConfig();
     },
@@ -449,7 +454,7 @@ export default {
         if (w) {
           //WW = w;
           //console.log('w',w);
-          values[field] = w[0].instance().getValue()
+          values[field] = w[0].getValue()
         }
       }
       //console.log('rowData values',values);
@@ -468,7 +473,7 @@ export default {
         //console.log('w ref','w'+index+'_'+field)
         let w = that.$refs['w' + index + '_' + field];
         if (w) {
-          widgets[field] = w[0].instance();
+          widgets[field] = w[0];
         }
       }
       //console.log('rowData values',values);

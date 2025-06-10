@@ -7,7 +7,10 @@ export default {
     name: '_wEditor',
     extends : _wBase,
     data() {
-        let toolbar = this.conf.toolbar;
+        let rData = this._loadReactiveData(this.conf)
+
+
+        let toolbar = rData.toolbar;
         let keyClass = 'bt_' + Date.now();
         let bt = {};
         bt[keyClass] = 'Custom';
@@ -16,11 +19,11 @@ export default {
             showHtml: false,
             headerOptions: [],
             modules : {
-                toolbar : this.conf.toolbar
+                toolbar : toolbar
             },
             keyClass : keyClass
         };
-        return Object.assign(editorConf,this.conf);
+        return Object.assign(editorConf,rData);
     },
     mounted() {
         let that =this;
@@ -72,30 +75,3 @@ export default {
     }
 }
 </script>
-
-<template>
-    <input type="hidden" :name="name" v-model="value"/>
-    <Editor v-show="!showHtml" v-model="value" :modules="modules"
-            :placeholder="placeholder"
-            @text-change="_change" editorStyle="height: 320px" @load="addHtmlButton">
-        <template #toolbar>
-            <div></div> <!-- mi serve per nascondere la toolbar di default -->
-        </template>
-        {{value}}
-    </Editor>
-    <div v-show="showHtml">
-        <ssh-pre language="html" label="Sorgente Html" :editable="true" :copy-button="true" @copied="saveHtml" style="height: 320px">
-            <template #copy-button>
-                Salva
-            </template>
-            <div class="mt-5">
-                {{value}}
-            </div>
-        </ssh-pre>
-
-    </div>
-</template>
-
-<style scoped>
-
-</style>

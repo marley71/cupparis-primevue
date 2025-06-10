@@ -31,6 +31,7 @@
 <script>
 
 import _wSwapSelect from '../../widgets/_wSwapSelect.vue';
+import RulesErrors from "./RulesErrors.vue";
 export default {
     name: "wSwapSelect",
     extends: _wSwapSelect,

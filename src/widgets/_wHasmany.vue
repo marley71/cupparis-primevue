@@ -358,6 +358,13 @@ export default {
             console.debug('getHasmanyWidgetConf',conf);
             return conf;
         },
+      getWidgetType(index,field) {
+        let that = this;
+        let fieldsConfig = that.hasmanyConf.fieldsConfig || {};
+        let conf = fieldsConfig[field] || { type : 'w-text'};
+        conf.value = that.value[index][field]; // that.hasmanyValue[index][field];
+        return conf.type;
+      },
         addDataKeyField(values) {
             for (let i in values) {
                 if (!values[i].dataKey) {

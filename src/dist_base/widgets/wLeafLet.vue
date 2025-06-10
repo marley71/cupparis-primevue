@@ -18,6 +18,7 @@
 import "leaflet/dist/leaflet.css";
 import { LMap, LTileLayer,LIcon,LMarker } from "@vue-leaflet/vue-leaflet";
 import _wLeafLet from '../../widgets/_wLeafLet.vue'
+import RulesErrors from "./RulesErrors.vue";
 
 
 export default {

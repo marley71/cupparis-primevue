@@ -12,13 +12,15 @@ export default {
         conf: Object,
     },
     data() {
+      let rData = this._loadReactiveData(this.conf);
+      //rData.options
         return Object.assign({
-            options : this.conf.options,
-            placeholder : this.conf.placeholder,
-            extraBind : this.conf.extraBind,
-            reload: this.conf.reload,
+            options : rData.options,
+            placeholder : rData.placeholder,
+            extraBind : rData.extraBind,
+            reload: rData.reload,
 
-        },this.conf);
+        },rData);
 
     },
     methods: {

@@ -11,10 +11,9 @@ export default {
         conf : Object,
     },
     data () {
-        //console.log('VALUE',this.conf.value);
-        return Object.assign({
-            toggleValue : this.conf.value?true:false,
-        },this.conf);
+      let rData = this._loadReactiveData(this.conf);
+      rData.toggleValue = rData.value?true:false;
+      return rData;
     },
     methods: {
         _ready() {

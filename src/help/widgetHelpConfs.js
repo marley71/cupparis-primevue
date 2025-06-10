@@ -8,11 +8,43 @@ export default {
             value: "testone",
         }
     },
+    wAutocompleteConf() {
+        return {
+            type : 'w-autocomplete',
+            name: 'email',
+            labelFields: ['email'],
+            value: 2,
+            foormName: 'user',
+            viewType: 'edit',
+            referredData: {
+                id: 2,
+                email: 'ciullo@gmail.com',
+                name : 'Pier Paolo Ciullo',
+            },
+            clearButton : true,
+            extraBind : {
+                "option-label" : "name",
+            },
+            change(event) {
+                let that = this;
+                console.debug('evento change valore campo',that.getValue(),'valore record selezionate',that.autocompleteValue);
+            }
+        };
+    },
+
     wImage() {
         return {
             type : 'w-image',
             name : 'field1',
             imageType : 'normal',
+            value: 'http://www.repstatic.it/cless/main/common/component/header-footer/2020-v1/img/logo-repubblica.svg',
+        }
+    },
+    wImageAvatarConf() {
+        return {
+            type : 'w-image',
+            name : 'field1',
+            imageType : 'avatar',
             value: 'http://www.repstatic.it/cless/main/common/component/header-footer/2020-v1/img/logo-repubblica.svg',
         }
     },
@@ -57,6 +89,7 @@ export default {
     },
     wInputConf() {
         return {
+            type : 'w-input',
             inputType: 'text',
             value: "220",
             change(event) {
@@ -110,25 +143,7 @@ export default {
             }
         };
     },
-    wAutocompleteConf() {
-        return {
-            type : 'w-autocomplete',
-            name: 'email',
-            labelFields: ['email'],
-            value: 2,
-            foormName: 'user',
-            viewType: 'edit',
-            referredData: {
-                id: 2,
-                email: 'ciullo@gmail.com',
-                name : 'Pier Paolo Ciullo',
-            },
-            clearButton : true,
-            extraBind : {
-                "option-label" : "name",
-            },
-        };
-    },
+
     wCheckboxConf() {
         return {
             type : 'w-checkbox',
@@ -278,6 +293,9 @@ export default {
         return {
             type : 'w-color-picker',
             value : "#FF00FF",
+            change() {
+                console.debug('color picker value',this.getValue());
+            }
         }
     },
     wDatePickerConf() {
@@ -355,7 +373,7 @@ export default {
             modelName: 'user',
             routeName : 'set',
             change () {
-                console.log('change ',this.getValue())
+                console.log('change swap ',this.getValue())
             }
         }
     },
@@ -370,6 +388,11 @@ export default {
             },
             modelName: 'user',
             routeName : 'set',
+            domainValues : {
+                0 : 'No',
+                1 : 'Si',
+                2 : 'Si e No'
+            },
             change () {
                 console.log('change ',this.getValue())
             }

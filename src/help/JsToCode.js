@@ -10,12 +10,12 @@ export default class JsToCode {
         try {
             this.fIndex++;
             let fName = 'getNewCode' + this.fIndex;
-            console.debug('fName',fName)
+            //console.debug('fName',fName)
             let s = 'window.' + fName  +' = function() {\n' + code + '\n return conf\n}';
-            console.debug('sss',s);
+            //console.debug('sss',s);
             let script = document.createElement("script");
             script.innerHTML = s;
-            document.body.appendChild(script);
+            //document.body.appendChild(script);
             return fName;
         } catch (e) {
             throw e;
@@ -29,7 +29,7 @@ export default class JsToCode {
     _toJs(obj) {
         var properties = [];
         for( let k in obj) {
-            console.debug(k,typeof obj[k],obj[k]);
+            //console.debug(k,typeof obj[k],obj[k]);
             if (typeof obj[k] === 'object') {
                 //console.log('k',k,'object')
                 if (Array.isArray(obj[k])) {

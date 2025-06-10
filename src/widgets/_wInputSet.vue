@@ -10,9 +10,9 @@ export default {
         conf : Object,
     },
     data () {
-        return Object.assign({
-            oldValue : this.conf.value,
-        },this.conf);
+        let rData = this._loadReactiveData(this.conf)
+        rData.oldValue = rData.value;
+        return rData;
     },
     methods: {
 

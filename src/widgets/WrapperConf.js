@@ -14,6 +14,7 @@ export default class WrapperConf {
         rules:'',
         disabled : null,
         rowType : '',
+        errors : [],
     }
 
     loadConf(conf) {
@@ -53,14 +54,100 @@ export default class WrapperConf {
         //console.log('options',options);
         return options;
     }
+
+    // --- configurazioni widgets
+
+    wAutocomplete(conf) {
+        conf.route = null;
+        conf.suggestions = [];
+        conf.autocompleteValue = conf.autocompleteValue || null;
+        conf.extraBind = conf.extraBind || {};
+        conf.autocompleteParams = conf.autocompleteParams || null;
+        // conf.getAutocompleteLabel = conf.getAutocompleteLabel || function(event) {
+        //     let that = this;
+        //
+        //     if (that.labelFields && that.labelFields.length > 0) {
+        //         let label = '';
+        //         for (let i in that.labelFields) {
+        //             label += (event[that.labelFields[i]] || '') + ' ';
+        //         }
+        //         return label;
+        //     }
+        //     if (event.label)
+        //         return event.label;
+        //     return '';
+        //     //console.log(that,'label',event);
+        // }
+
+        // conf.reset = conf.reset || function() {
+        //     console.debug('reset w-autocomplete');
+        //     let that = this;
+        //     console.debug('reset w-autocomplete',that.value,that.autocompleteValue,that);
+        //     that.value = null;
+        //     that.autocompleteValue = null;
+        // };
+
+        //console.log('referredData',conf.referredData);
+        let __initialValue = function () {
+            let that = this;
+            //console.log('extra bind ',conf.extraBind['option-label'],conf);
+            if (conf.extraBind['option-label']) {
+                if (conf.extraBind['option-label'] instanceof  Function) {
+                    return conf.extraBind['option-label'](conf.referredData);
+                }
+                return conf.referredData[conf.extraBind['option-label']];
+            }
+
+            return conf.getAutocompleteLabel(conf.referredData);
+
+
+            //return conf.referredData['label'];
+        }
+        if (conf.referredData) {
+            // let label = 'label'
+            // conf.autocompleteValue  = conf.referredData[label]; //conf.referredData;
+            conf.autocompleteValue = __initialValue();
+            conf.suggestions = [conf.referredData];
+        }
+
+        // conf.search = conf.search || function (event) {
+        //     let that = this;
+        //
+        //     if (!that.route) {
+        //         that.route = that.createRoute('autocomplete');
+        //         that.route.setValuesFromObj(that);
+        //     }
+        //     let field = that.autocompleteField?that.autocompleteField:that.name;
+        //     that.route.setParams({
+        //         field : field,
+        //         value : event.query,
+        //         params : that.autocompleteParams,
+        //
+        //     });
+        //
+        //     console.log('route',that.route,that);
+        //     that.Server.route(that.route,function (json) {
+        //         console.log('json',json);
+        //         that.suggestions = json.result;
+        //     });
+        //     console.log('search',conf,event);
+        // }
+
+
+
+        return conf;
+    }
+
+
+
     wInput(conf) {
         if ( !('inputType' in conf) ) {
             conf.inputType = 'text';
         }
-        conf.reset = conf.reset || function() {
-            let that = this;
-            that.value = null;
-        };
+        // conf.reset = conf.reset || function() {
+        //     let that = this;
+        //     that.value = null;
+        // };
         return conf;
     }
 
@@ -104,10 +191,10 @@ export default class WrapperConf {
     }
     wSelect(conf) {
         conf.options = this.mapOptions(conf.domainValues,conf.domainValuesOrder);
-        conf.reset = conf.reset || function() {
-            let that = this;
-            that.value = null;
-        };
+        // conf.reset = conf.reset || function() {
+        //     let that = this;
+        //     that.value = null;
+        // };
         return conf;
     }
 
@@ -147,6 +234,7 @@ export default class WrapperConf {
         conf.suffix = conf.suffix || null;
         conf.iconSuffix = conf.iconSuffix || null;
         conf.numberFormat = conf.numberFormat || null;
+        conf.textTag = conf.textTag || 'span';
         if (conf.numberFormat && !conf.textClass) {
             conf.textClass = 'text-right';
         }
@@ -167,86 +255,7 @@ export default class WrapperConf {
         return conf;
     }
 
-    wAutocomplete(conf) {
-        conf.route = null;
-        conf.suggestions = [];
-        conf.autocompleteValue = conf.autocompleteValue || null;
-        conf.extraBind = conf.extraBind || {};
-        conf.autocompleteParams = conf.autocompleteParams || null;
-        conf.getAutocompleteLabel = conf.getAutocompleteLabel || function(event) {
-            let that = this;
 
-            if (that.labelFields && that.labelFields.length > 0) {
-                let label = '';
-                for (let i in that.labelFields) {
-                    label += (event[that.labelFields[i]] || '') + ' ';
-                }
-                return label;
-            }
-            if (event.label)
-                return event.label;
-            return '';
-            //console.log(that,'label',event);
-        }
-
-        conf.reset = conf.reset || function() {
-            console.debug('reset w-autocomplete');
-            let that = this;
-            console.debug('reset w-autocomplete',that.value,that.autocompleteValue,that);
-            that.value = null;
-            that.autocompleteValue = null;
-        };
-
-        //console.log('referredData',conf.referredData);
-        let __initialValue = function () {
-            let that = this;
-            //console.log('extra bind ',conf.extraBind['option-label'],conf);
-            if (conf.extraBind['option-label']) {
-                if (conf.extraBind['option-label'] instanceof  Function) {
-                    return conf.extraBind['option-label'](conf.referredData);
-                }
-                return conf.referredData[conf.extraBind['option-label']];
-            }
-
-            return conf.getAutocompleteLabel(conf.referredData);
-
-
-            //return conf.referredData['label'];
-        }
-        if (conf.referredData) {
-            // let label = 'label'
-            // conf.autocompleteValue  = conf.referredData[label]; //conf.referredData;
-            conf.autocompleteValue = __initialValue();
-            conf.suggestions = [conf.referredData];
-        }
-
-        conf.search = conf.search || function (event) {
-            let that = this;
-
-            if (!that.route) {
-                that.route = that.createRoute('autocomplete');
-                that.route.setValuesFromObj(that);
-            }
-            let field = that.autocompleteField?that.autocompleteField:that.name;
-            that.route.setParams({
-                field : field,
-                value : event.query,
-                params : that.autocompleteParams,
-
-            });
-
-            console.log('route',that.route,that);
-            that.Server.route(that.route,function (json) {
-                console.log('json',json);
-                that.suggestions = json.result;
-            });
-            console.log('search',conf,event);
-        }
-
-
-
-        return conf;
-    }
 
     wButton(conf) {
         conf.icon = conf.icon || null;
@@ -581,12 +590,13 @@ export default class WrapperConf {
         return conf;
     }
     wTable(conf) {
-        conf.getKeys = function () {
-            if (this.value && this.value.length > 0) {
-                return Object.keys(this.value[0]);
-            }
-            return [];
-        }
+        // metodo portato nell'oggetto
+        // conf.getKeys = function () {
+        //     if (this.value && this.value.length > 0) {
+        //         return Object.keys(this.value[0]);
+        //     }
+        //     return [];
+        // }
         if (!conf.layout) {
             conf.layout = 'grid';
         }

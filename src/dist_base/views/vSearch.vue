@@ -25,7 +25,7 @@
                       @submit.prevent="(event)=> search('basic',event)"
                       class="p-fluid mt-1">
                     <template v-for="field in getHiddenFields()" :key="field">
-                        <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                        <component :is="widgetsConfig[field].type" :ref="field" :conf="widgetsConfig[field]"></component>
                     </template>
 
                     <div class="p-inputgroup">
@@ -57,14 +57,14 @@
                                   class="p-fluid mt-5">
 
                                 <template v-for="field in getHiddenFields()">
-                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                    <component :is="widgetsConfig[field].type" :ref="field" :conf="widgetsConfig[field]"></component>
                                 </template>
                                 <div class="grid">
                                     <template v-for="field in getVisibleFields()" :key="field">
                                         <div class="py-3" :class="getWidgetLayout(field,'colClass')">
                                             <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
                                 <span class="p-float-label">
-                                <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                <component :is="widgetsConfig[field].type" :ref="field" :conf="widgetsConfig[field]"></component>
                                 <label :for="field">{{ widgetsConfig[field].label }}</label>
                                 </span>
                                             </template>
@@ -75,7 +75,7 @@
                                                     {{ translateUc(widgetsConfig[field].label) }}
                                                 </label>
                                                 <div class="">
-                                                    <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                                    <component :is="widgetsConfig[field].type" :ref="field" :conf="widgetsConfig[field]"></component>
                                                 </div>
                                                 <label class="labelBottom" :for="field"
                                                        v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
@@ -116,14 +116,14 @@
                       class="p-fluid mt-5">
 
                     <template v-for="field in getHiddenFields()">
-                        <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                        <component :is="widgetsConfig[field].type" :ref="field" :conf="widgetsConfig[field]"></component>
                     </template>
                     <div class="grid">
                         <template v-for="field in getVisibleFields()" :key="field">
                             <div class="py-3" :class="getWidgetLayout(field,'colClass')">
                                 <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
                                 <span class="p-float-label">
-                                <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                <component :is="widgetsConfig[field].type" :ref="field" :conf="widgetsConfig[field]"></component>
                                 <label :for="field">{{ widgetsConfig[field].label }}</label>
                                 </span>
                                 </template>
@@ -134,7 +134,7 @@
                                         {{ translateUc(widgetsConfig[field].label) }}
                                     </label>
                                     <div class="">
-                                        <c-widget :ref="field" :conf="widgetsConfig[field]"></c-widget>
+                                        <component :is="widgetsConfig[field].type" :ref="field" :conf="widgetsConfig[field]"></component>
                                     </div>
                                     <label class="labelBottom" :for="field"
                                            v-if="getWidgetLayout(field,'labelPosition')=='bottom'">

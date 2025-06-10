@@ -3,7 +3,7 @@
         <div v-if="loaded">
             <template v-for="(v,row) in value">
                 <template v-for="(col) in getHiddenFields()" :key="col">
-                    <c-widget :ref="'w'+row+'_'+col" :conf="getWidgetConf(row,col,v[col])"></c-widget>
+                    <component :is="getWidgetType(row,col)" :ref="'w'+row+'_'+col" :conf="getWidgetConf(row,col,v[col])"></component>
                 </template>
             </template>
             <slot name="header" :collectionActions="collectionActions">
@@ -45,10 +45,10 @@
                             :sortable="isSortable(col)" :dir="sortDirection(col)">
                         <template #body="slotProps">
                             <!--                    {{slotProps.data[col]}} {{ slotProps.index}}-->
-                            <c-widget :ref="'w'+slotProps.index+'_'+col"
-                                      :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></c-widget>
+                            <component :is="getWidgetType(row,col)" :ref="'w'+slotProps.index+'_'+col"
+                                      :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></component>
                             <!--                    {{getW(slotProps.index,col,slotProps.data[col])}}-->
-                            <!--                    <c-widget :conf="widgetsConfig[parseInt(slotProps.index)][col]"></c-widget>-->
+                            <!--                    <component :is="getWidgetType(row,col)" :conf="widgetsConfig[parseInt(slotProps.index)][col]"></c-widget>-->
                         </template>
                     </Column>
                     <template #empty>

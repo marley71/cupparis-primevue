@@ -45,7 +45,7 @@
 <!--        <template v-for="(data,index) in hasmanyValue" :key="index">-->
         <template v-for="(data,index) in value" :key="index">
             <div v-for="field in getHasmanyConf(index).fields" :key="field">
-                <c-widget :conf="getHasmanyWidgetConf(index,field)"></c-widget>
+                <component :is="getWidgetType(index,field)" :conf="getHasmanyWidgetConf(index,field)"></component>
             </div>
         </template>
     </template>
@@ -78,6 +78,7 @@
 
 <script>
 import _wHasmany from '../../widgets/_wHasmany.vue'
+import RulesErrors from "./RulesErrors.vue";
 
 export default {
   name: "wHasmany",

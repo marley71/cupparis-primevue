@@ -4,20 +4,11 @@ import Server from "../lib/Server";
 import CrudVars from "../lib/CrudVars";
 
 import WrapperConf from "./WrapperConf";
-import _wBase from './_wBase.vue';
-// import _wHasmany from "./_wHasmany.vue";
-// import _wSwap from "./_wSwap.vue";
-// import _wSwapSelect from "./_wSwapSelect.vue";
-// import _wInputSet from './_wInputSet.vue';
-// import _wLeafLet from './_wLeafLet.vue';
-// import _wEditor from './_wEditor.vue';
-
+import CrudComponent from '../CrudComponent.vue';
 
 export default {
     name: "_cWidget",
-    //extends: CrudComponent,
-    extends: _wBase,
-    emits: ['change'],
+    extends: CrudComponent,
     filters: {
         decodeEntities: function (value) {
             if (!value) return '';
@@ -41,41 +32,46 @@ export default {
         //   this.value = this.autocompleValue;
         // }
     },
-    created() {
-        let that = this;
-        //console.log('CREATEDDD',that)
-        that.overwriteMethods = {};
-        var __call = function (lk) {
-            that[lk] = function () {
-                var localk = new String(lk);
-                return that.overwriteMethods[localk].apply(that, arguments);
-            }
-        }
-
-        for (let k in that.wConf) {
-            //console.log('k',k,ext[k]);
-
-            if (that.wConf[k] instanceof Function) {
-                //console.log('found method',k);
-                that.overwriteMethods[k] = that.wConf[k];
-                __call(k);
-            }
-        }
-        this.Server = Server;
-    },
+    // created() {
+    //     let that = this;
+    //     //console.log('CREATEDDD',that)
+    //     that.overwriteMethods = {};
+    //     var __call = function (lk) {
+    //         that[lk] = function () {
+    //             var localk = new String(lk);
+    //             return that.overwriteMethods[localk].apply(that, arguments);
+    //         }
+    //     }
+    //
+    //     for (let k in that.wConf) {
+    //         //console.log('k',k,ext[k]);
+    //
+    //         if (that.wConf[k] instanceof Function) {
+    //             //console.log('found method',k);
+    //             that.overwriteMethods[k] = that.wConf[k];
+    //             __call(k);
+    //         }
+    //     }
+    //     this.Server = Server;
+    // },
+    // data() {
+    //     let that = this;
+    //     let wc = new WrapperConf()
+    //     let ext = wc.loadConf(that.conf);
+    //     let dt = {};
+    //     for (let k in ext) {
+    //         if (!(ext[k] instanceof Function)) {
+    //             dt[k] = ext[k];
+    //         }
+    //     }
+    //     dt.wConf = ext;
+    //     dt.errors = [];
+    //     return dt;
+    // },
     data() {
-        let that = this;
-        let wc = new WrapperConf()
-        let ext = wc.loadConf(that.conf);
-        let dt = {};
-        for (let k in ext) {
-            if (!(ext[k] instanceof Function)) {
-                dt[k] = ext[k];
-            }
+        return {
+          errors : [],
         }
-        dt.wConf = ext;
-        dt.errors = [];
-        return dt;
     },
     mounted() {
         setTimeout(this._ready, 10);
@@ -87,12 +83,7 @@ export default {
         //         this.ready.apply(this);
         //     }
         // },
-        _hasClick() {
-            if (this.click && (this.click instanceof Function) ) {
-                return true;
-            }
-            return false;
-        },
+
         _click(event) {
             if (this.click) {
                 this.click.apply(this,[event]);
@@ -153,18 +144,7 @@ export default {
         //     }
         //
         // },
-        _hasHref() {
-            if (this.href) {
-                return true;
-            }
-            return false;
-        },
-        _href(event) {
-            if (this.href instanceof Function) {
-                return this.href.apply(this,[event]);
-            }
-            return this.href;
-        },
+
         _title(event) {
             if (this.title instanceof Function) {
                 return this.title.apply(this,[event]);
@@ -179,25 +159,6 @@ export default {
             return this.icon;
         },
 
-        _disabled(event) {
-            if (this.disabled instanceof Function) {
-                return this.disabled.apply(this,[event]);
-            }
-            return this.disabled;
-        },
-        _reset() {
-            if (this.reset) {
-                this.reset.apply(this);
-            }
-        },
-        add(event) {
-            console.log('add event', event)
-            this.change(event);
-        },
-        remove(event) {
-            console.log('remove', event);
-            this.change(event);
-        },
         getParams(func) {
 
             // String representation of the function code
@@ -264,20 +225,8 @@ export default {
         //     }
         //
         // },
-        setErrors(errors) {
-            this.errors = errors;
-        },
-        getFormattedValue() {
-            let that = this;
-            //return that.translate(that.invalidDateString)
-            var md = moment(that.value);
-            //console.log('displayFormat',that.displayFormat);
-            if (md.isValid()) {
-                return md.format(that.displayFormat)
-            } else {
-                return that.translate(that.invalidDateString); // + '*' ;
-            }
-        },
+
+
         getFieldName() {
             if (['w-checkbox','w-multi-select'].indexOf(this.type) >= 0) {
                 return this.name + '[]';
@@ -289,24 +238,9 @@ export default {
             //console.log('options',options)
             return this.label;
         },
-        getMultiSelectLabel(option) {
-            // console.log('option', option, this.options, this.domainValues);
-            return this.domainValues[option];
-        },
-        removeMultiSelect(option) {
-            var id = this.value.indexOf(option);
-            this.value.splice(id,1);
-        },
-        itemSelect() {
-            this.instance().setValue(this.autocompleteValue.id)
-            //let that = this;
 
-            // that.value = that.autocompleteValue.id;
-            // setTimeout(function () {
-            //     that._change();
-            // },100)
 
-        },
+
         instance() {
             if (this.$refs.wRef) {
                 return this.$refs.wRef;
@@ -331,14 +265,7 @@ export default {
                     throw widgetType + "status widget non supportato funcName " + funcName
             }
         },
-        /**
-         * ritorna il valore dell'autocomplete in base alla configurazione di labelFields
-         * @param event
-         * @private
-         */
-        _getAutocompleteLabel(event) {
-            return this.instance().getAutocompleteLabel.apply(this,[event]);
-        },
+
 
       bgUrl(url) {
         return 'background-image: url("' + url + '") !important;"';
