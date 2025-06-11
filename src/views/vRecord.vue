@@ -381,6 +381,7 @@ export default {
         getViewData(ref) {
             let that = this;
             let form = ref || 'form';
+            console.debug('ref form',form,that.$refs);
             const formData = new FormData(that.$refs[form]);
             console.log('formData', formData);
             return formData;

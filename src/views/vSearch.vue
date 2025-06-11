@@ -225,8 +225,8 @@ export default {
               that.fieldsConfig[fieldName] = config;
               console.debug('has fieldName',fieldName,config)
             }
+              that.route.setParam(key,searchParams[key]);
           }
-          console.debug(that.fields,'search manageHashParams',JSON.parse(JSON.stringify(that.fieldsConfig)));
         },
 
         search(type, event) {
