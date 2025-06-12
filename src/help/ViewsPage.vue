@@ -1,12 +1,11 @@
 <script>
-import cView from "../dist/views/cView.vue";
 import JsToCode from "./JsToCode";
-import viewConfs from "./viewConfs";
+import viewHelpConfs from "./viewHelpConfs";
+import CrudCore from "../lib/CrudCore";
 const jsc = new JsToCode();
 
 export default {
     name: "ViewsPage",
-    components: {cView},
     inject: ['store'],
     data() {
         console.debug('route params',this.$route.params)
@@ -17,18 +16,18 @@ export default {
         return {
             vSelected:wSel,
             viewsConf : {
-                'lista statica' :           viewConfs.staticList(),
-                'record statico' :          viewConfs.staticRecord(),
-                'user list' :               viewConfs.userList(),
-                'list edit' :               viewConfs.listEdit(),
-                'user view' :               viewConfs.userView(),
-                'user edit' :               viewConfs.userEdit(),
-                'user edit validate js':    viewConfs.userEditValidate(),
-                'user search' :             viewConfs.userSearch(),
-                'lista con panel' :         viewConfs.userListPanel(),
-                'lista hide column' :       viewConfs.userListHideColumn(),
-                'lista action select' :     viewConfs.userListActionSelect(),
-                'lista con azione doppia' : viewConfs.userListTwoAction(),
+                'lista statica' :           viewHelpConfs.staticList(),
+                'record statico' :          viewHelpConfs.staticRecord(),
+                'user list' :               viewHelpConfs.userList(),
+                'list edit' :               viewHelpConfs.listEdit(),
+                'user view' :               viewHelpConfs.userView(),
+                'user edit' :               viewHelpConfs.userEdit(),
+                'user edit validate js':    viewHelpConfs.userEditValidate(),
+                'user search' :             viewHelpConfs.userSearch(),
+                'lista con panel' :         viewHelpConfs.userListPanel(),
+                'lista hide column' :       viewHelpConfs.userListHideColumn(),
+                'lista action select' :     viewHelpConfs.userListActionSelect(),
+                'lista con azione doppia' : viewHelpConfs.userListTwoAction(),
             },
             viewType : '',
             reload : false,
@@ -89,12 +88,13 @@ export default {
             let s = that.editor.getValue();
             let fName = jsc.updateCode(s);
             that.reload = true;
+            console.debug('fName',fName)
             setTimeout(function () {
                 try {
                     that.viewsConf[that.vSelected] = window[fName]();
                     that.reload = false;
                 } catch(e) {
-                    that.errorDialog(e);
+                    CrudCore.errorDialog(e);
                     throw e;
                 }
 
@@ -124,7 +124,7 @@ export default {
                         <div class="w-full">
                             <template v-for="(conf,wName) in viewsConf" :key="wName">
                                 <div class="">
-                                    <c-view class="w-full" v-if="vSelected==wName && !reload" :conf="conf"></c-view>
+                                    <component :is="conf.type" class="w-full" v-if="vSelected==wName && !reload" :conf="conf"></component>
                                 </div>
                             </template>
                         </div>

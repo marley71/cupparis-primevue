@@ -62,7 +62,7 @@
             <Column v-for="(col) in getVisibleFields()" :field="col" :header="columnLabel(col)" :key="col"
                     :sortable="isSortable(col)" :dir="sortDirection(col)">
               <template #body="slotProps">
-                  <component :is="getWidgetType(row,col)" :ref="'w'+slotProps.index+'_'+col"
+                  <component :is="getWidgetType(slotProps.index,col)" :ref="'w'+slotProps.index+'_'+col"
                           :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></component>
               </template>
             </Column>
@@ -122,13 +122,14 @@
           <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected"
                      :rows="getPerPage()"
                      :paginator="paginator" :paginatorPosition="paginatorPosition"
-                     :lazy="routeName==null?false:true"
+                     :lazy="routeName===null?false:true"
                      @page="onPage($event)" @sort="onSort($event)"
                      :total-records="getTotal()"
                      :first="getFirst()"
                      :sortField="getSortField()"
                      :sortOrder="getSortOrder()"
                      :loading="!loaded"
+                     :key="tableKey"
 
 
           >
@@ -142,9 +143,9 @@
             </Column>
             <Column v-for="(col) in getVisibleFields()" :field="col" :header="columnLabel(col)" :key="col"
                     :sortable="isSortable(col)" :dir="sortDirection(col)">
-              <template #body="slotProps">
+              <template #body="slotProps">ggg
                 <!--                    {{slotProps.data[col]}} {{ slotProps.index}}-->
-                <component :is="getWidgetType(row,col)" :ref="'w'+slotProps.index+'_'+col"
+                <component :is="getWidgetType(slotProps.index,col)" :ref="'w'+slotProps.index+'_'+col"
                           :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></component>
               </template>
             </Column>

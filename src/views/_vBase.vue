@@ -3,19 +3,43 @@ import CrudComponent from "../CrudComponent.vue";
 import Server from "../lib/Server";
 import WrapperConf from "./WrapperConf";
 import CrudCore from "../lib/CrudCore";
+import global from "../confs/global";
 
 export default {
     name: "_vBase",
     extends: CrudComponent,
     emits : ['loaded'],
-    created() {
-        CrudCore.viewComponentCreate(this);
+    beforeCreate() {
+        //CrudCore.viewComponentCreate(this);
+
+        let that = this;
+        ///console.debug('_vBase.beforeCreate ',that.conf);
+        //console.log('CREATEDDD',that)
+        that.overwriteMethods = {};
+        var __call = function (lk) {
+            that[lk] = function () {
+                var localk = new String(lk);
+                return that.overwriteMethods[localk].apply(that, arguments);
+            }
+        }
+
+        for (let k in that.conf) {
+            //console.log('k',k,ext[k]);
+            // se la funzione non e' tra i metodi sovrascribili allora la istanzio come una nuova funzione dell'oggetto
+            // altrimenti ci pensano i singoli metodi sovrascribili a fare la chiamata
+            if ( (global.viewOverloadMethods.indexOf(k) < 0) && that.conf[k] instanceof Function) {
+                console.debug('_vBase.created ',k,'metodo non fa parte dei sovrascribili')
+                that.overwriteMethods[k] = that.conf[k];
+                __call(k);
+            }
+        }
+        this.Server = Server;
     },
     mounted() {
         this.createViewRoute();
     },
     data() {
-        return CrudCore.viewComponentData(this);
+        return this._loadReactiveData(this.conf)
     },
     watch : {
         loaded() {
@@ -257,7 +281,23 @@ export default {
         }
         console.debug('page params',params,context)
         return params;
-      }
-    }
+      },
+        /**
+         * questa funzione normalizza la configurazione che mi arriva e restituisco solo i dati che devono essere realmente reactive
+         */
+        _loadReactiveData(conf) {
+            let wc = new WrapperConf()
+            let ext = wc.loadConf(conf);
+            let dt = {};
+            for (let k in ext) {
+                if (!(ext[k] instanceof Function)) {
+                    dt[k] = ext[k];
+                }
+            }
+            //dt.errors = [];
+            console.debug('_vBase.data ', dt)
+            return dt;
+        }
+    },
 }
 </script>

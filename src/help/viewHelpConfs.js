@@ -187,7 +187,6 @@ export default {
                             actions : ['action-save'],
                         },
                         hide() {
-                            console.log('HIIIIII',that.toggle);
                             that.toggle = false;
                         }
                     });
@@ -205,10 +204,10 @@ export default {
             modelName: 'user',
             pk:3,
             fields: ['id', 'email'],
-            layout: {
-                labelPosition: 'bottom'
-            }
-            //actions: ['action-view']
+            // layout: {
+            //     labelPosition: 'bottom'
+            // },
+            // actions: ['action-view'],
             // fieldsConfig: {}
         };
     },
@@ -574,18 +573,19 @@ export default {
         return {
             modelName : 'user',
             type : 'v-list',
-            actions:['ActionSelect'],
+            actions:['action-select'],
             actionsConfig : {
-                ActionSelect : {
+                'action-select' : {
                     text : 'mod inst',
                     domainValues : {
                         0 : 'Nessuna azione',
                         1 : 'Pippo',
                         2 : 'Pluto'
                     },
-                    execute() {
-                        alert('value ' + this.value);
-                    }
+                    value : 2,
+                    // execute() {
+                    //     alert('value ' + this.value);
+                    // }
                 }
             },
             orderFields : {

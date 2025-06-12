@@ -12,10 +12,10 @@ export default class JsToCode {
             let fName = 'getNewCode' + this.fIndex;
             //console.debug('fName',fName)
             let s = 'window.' + fName  +' = function() {\n' + code + '\n return conf\n}';
-            //console.debug('sss',s);
+            console.debug('sss',s);
             let script = document.createElement("script");
             script.innerHTML = s;
-            //document.body.appendChild(script);
+            document.body.appendChild(script);
             return fName;
         } catch (e) {
             throw e;

@@ -19,7 +19,7 @@
                     </a>
                 </div>
                 <div class="col-12">
-                    <c-view :conf="_uploadConf()" ref="viewUpload"></c-view>
+                    <component :is="_uploadConf().type" :conf="_uploadConf()" ref="viewUpload"></component>
                 </div>
             </div>
             <div v-if="['saving','loading'].indexOf(step) >= 0">
@@ -45,13 +45,12 @@
 
 <script>
 
-import cView from "../views/cView.vue";
 import vRecord from "../views/vRecord.vue";
 import _cImport from "../../app/_cImport.vue";
 
 export default {
     name: "c-import",
-    components: {vRecord, cView},
+    components: {vRecord},
     extends : _cImport,
 }
 </script>

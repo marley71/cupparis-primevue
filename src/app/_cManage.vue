@@ -47,7 +47,9 @@ export default {
         console.log('wc',wc);
         that.conf.list = wc.loadConf(that.conf.list);
         that.conf.edit = that.conf.edit?wc.loadConf(that.conf.edit):{};
-        // that.conf.insert = that.conf.insert?wc.loadConf(that.conf.insert):null;
+        if (that.conf.search) {
+            that.conf.search.updateHash = that.conf.autoUpdateHash;
+        }
 
         that.setManageActions();
         that.conf.mode = 'list';
@@ -82,16 +84,11 @@ export default {
     },
     methods : {
         searchList(event) {
-            // console.debug('searchList',this.autoUpdateHash,event,this.getViewList());
-            // if (this.getViewList()) {
-            //     this.getViewList().setParams(event);
-            //     // se c'e' autoupdateHash non chiamo la load della lista perche' verrà chiamata
-            //     // dall'evento autoupdateHash, in questo caso mi limito solo ad aggiornare i parametri di ricerca
-            //     if (! this.autoUpdateHash) {
-            //         this.getViewList().load();
-            //     }
-            // }
-            //this.$refs.vList.instance().setParams(event);
+            console.debug('searchList',this.autoUpdateHash,event,this.getViewList());
+            if (this.getViewList()) {
+                this.getViewList().setParams(event);
+                this.getViewList().load();
+            }
         },
         setManageActions() {
             let that = this;

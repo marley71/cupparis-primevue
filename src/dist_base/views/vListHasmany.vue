@@ -47,8 +47,6 @@
                             <!--                    {{slotProps.data[col]}} {{ slotProps.index}}-->
                             <component :is="getWidgetType(row,col)" :ref="'w'+slotProps.index+'_'+col"
                                       :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></component>
-                            <!--                    {{getW(slotProps.index,col,slotProps.data[col])}}-->
-                            <!--                    <component :is="getWidgetType(row,col)" :conf="widgetsConfig[parseInt(slotProps.index)][col]"></c-widget>-->
                         </template>
                     </Column>
                     <template #empty>

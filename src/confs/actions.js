@@ -211,7 +211,7 @@ const actionConfs = {
 
             console.log('ta',ta.viewType,defaultConf);
 
-            CrudCore.componentDialog('c-view',defaultConf,this.dialogTitle);
+            CrudCore.componentDialog('v-view',defaultConf,this.dialogTitle);
             return true;
             //ta.componentDialog(ta.viewType,defaultConf)
         }

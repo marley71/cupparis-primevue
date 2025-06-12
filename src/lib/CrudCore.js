@@ -162,6 +162,7 @@ CrudCore.setupApp = function (app) {
     }
     CrudCore.globalProperties = app.config.globalProperties;
     console.debug('globalProperties',CrudCore.globalProperties)
+    console.debug('componentItems',CrudCore.componentItems);
 }
 
 var _cloneObj = function (item) {

@@ -3,6 +3,9 @@ import CrudComponent from "./CrudComponent.vue"
 import cAction from './dist/actions/cAction.vue'
 import cView from './dist/views/cView.vue'
 import vRecord from './dist/views/vRecord.vue'
+import vView from './dist/views/vView.vue'
+import vEdit from './dist/views/vEdit.vue'
+import vInsert from './dist/views/vInsert.vue'
 import vSearch from './dist/views/vSearch.vue'
 import vList from './dist/views/vList.vue'
 import vListEdit from './dist/views/vListEdit.vue'
@@ -37,6 +40,10 @@ import ImportPage from "./help/ImportPage.vue";
 import ActionsPage from "./help/ActionsPage.vue";
 import DialogsPage from "./help/DialogsPage.vue";
 import EsperimentiPage from "./help/EsperimentiPage.vue";
+import InsertEditUser from "./help/components/InsertEditUser.vue";
+import ListUser from './help/components/ListUser.vue';
+import ActionSelect from "./help/components/ActionSelect.vue";
+
 
 import JsToCode from "./help/JsToCode";
 export default {
@@ -60,6 +67,9 @@ export default {
         CrudCore.componentItems['c-action'] = cAction;
         CrudCore.componentItems['c-view'] = cView;
         CrudCore.componentItems['v-record'] = vRecord;
+        CrudCore.componentItems['v-insert'] = vInsert;
+        CrudCore.componentItems['v-edit'] = vEdit;
+        CrudCore.componentItems['v-view'] = vView;
         CrudCore.componentItems['v-search'] = vSearch;
         CrudCore.componentItems['c-Manage'] = cManage;
         CrudCore.componentItems['v-list'] = vList;
@@ -69,16 +79,23 @@ export default {
         CrudCore.componentItems['a-base'] = aBase;
         CrudCore.componentItems['c-widget'] =  cWidget;
         CrudCore.componentItems['w-base'] =  wBase;
+        // componenti custom utilizzati nelle pagine di help
+        CrudCore.componentItems['list-user'] =  ListUser;
+        CrudCore.componentItems['insert-edit-user'] =  InsertEditUser;
+        CrudCore.componentItems['action-select'] =  ActionSelect;
+
     },
     CrudComponent,cAction,CrudCore,CrudVars,cWidget,wBase,
     cView,
     routerConf,routeConfs,actionConfs,viewConfs,
     vRecord,vSearch,cManage,vList,vListEdit,cImport,vListHasmany,
+    vEdit,vInsert,vView,
     aBase,
     Server,Wait,Route,
     CrudHelpers,
     // --- help pages
     WidgetsPage,ViewsPage,ManagePage,ImportPage,ActionsPage,DialogsPage,EsperimentiPage,
+    InsertEditUser,ListUser,
     JsToCode
 
 }

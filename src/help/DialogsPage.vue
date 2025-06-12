@@ -232,7 +232,7 @@ let cConf = {\n\
     fields: ['email'],\n\
     type : 'v-list',\n\
 }\n\
-CrudCore.componentDialog('c-view',cConf);\n\
+CrudCore.componentDialog('v-list',cConf);\n\
 ";          that.editor.setValue(jsFunc);
             that.dialogType = "customDialog no bottoni";
             that.updateCode();
@@ -251,7 +251,7 @@ let cConf = {\n\
     },\n\
     type : 'v-insert',\n\
 }\n\
-CrudCore.componentDialog('c-view',cConf);\n\
+CrudCore.componentDialog('v-insert',cConf);\n\
 ";          that.editor.setValue(jsFunc);
             that.dialogType = "customDialog no bottoni";
             that.updateCode();
@@ -266,7 +266,7 @@ let cConf = {\n\
     pk : 1,\n\
     type : 'v-view',\n\
 }\n\
-CrudCore.componentDialog('c-view',cConf);\n\
+CrudCore.componentDialog('v-view',cConf);\n\
 ";          that.editor.setValue(jsFunc);
             that.dialogType = "customDialog no bottoni";
             that.updateCode();

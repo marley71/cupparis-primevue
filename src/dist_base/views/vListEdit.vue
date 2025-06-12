@@ -2,7 +2,7 @@
     <div v-if="loaded">
         <template v-for="(v,row) in value">
             <template v-for="(col) in getHiddenFields()" :key="col">
-                <c-widget :ref="'w'+row+'_'+col" :conf="getWidgetConf(row,col,v[col])"></c-widget>
+                <component :is="getWidgetType(row,col)" :ref="'w'+row+'_'+col" :conf="getWidgetConf(row,col,v[col])"></component>
             </template>
         </template>
         <slot name="header" :collectionActions="collectionActions">
@@ -60,10 +60,10 @@
                 <Column v-for="(col) in fields" :field="col" :header="columnLabel(col)" :key="col" :sortable="isSortable(col)" :dir="sortDirection(col)">
                     <template #body="slotProps">
     <!--                    {{getWidgetConf(slotProps.index,col,slotProps.data[col])}}-->
-                        <c-widget v-if="!editMode[slotProps.index % getPerPage()]" :ref="'w'+slotProps.index % getPerPage()+'_'+col"
-                                :conf="getWidgetConf(slotProps.index % getPerPage(),col,slotProps.data[col])"></c-widget>
-                        <c-widget v-if="editMode[slotProps.index % getPerPage()]" :ref="'we'+slotProps.index % getPerPage() +'_'+col"
-                                :conf="getWidgetEditConf(slotProps.index % getPerPage(),col,slotProps.data[col])"></c-widget>
+                        <component :is="getWidgetType(slotProps.index,col)" v-if="!editMode[slotProps.index % getPerPage()]" :ref="'w'+slotProps.index % getPerPage()+'_'+col"
+                                :conf="getWidgetConf(slotProps.index % getPerPage(),col,slotProps.data[col])"></component>
+                        <component :is="getWidgetEditType(slotProps.index,col)" v-if="editMode[slotProps.index % getPerPage()]" :ref="'we'+slotProps.index % getPerPage() +'_'+col"
+                                :conf="getWidgetEditConf(slotProps.index % getPerPage(),col,slotProps.data[col])"></component>
                     </template>
                 </Column>
             </DataTable>

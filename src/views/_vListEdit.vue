@@ -65,6 +65,17 @@ export default {
             that.widgetsEditConfig[index][field].value = data;
             return that.widgetsEditConfig[index][field];
         },
+
+        getWidgetEditType(index,field) {
+            let that = this;
+            if (!that.widgetsEditConfig || !that.widgetsEditConfig[index] || !that.widgetsEditConfig[index][field]) {
+                return that.defaultWidgetType;
+            }
+            if (that.widgetsEditConfig[index][field].type) {
+                return that.widgetsEditConfig[index][field].type;
+            }
+            return that.defaultWidgetType;
+        },
         setEditMode: function (index) {
             var that = this;
             //console.log('edit mode',index);

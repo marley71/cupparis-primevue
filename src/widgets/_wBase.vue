@@ -10,45 +10,35 @@ export default {
     name: "_wBase",
     extends : CrudComponent,
     beforeCreate() {
-      console.debug('wBase.beforeCreate ',this.conf);
+      //console.debug('wBase.beforeCreate ',this.conf);
+        let that = this;
+
+        //console.log('CREATEDDD',that)
+        that.overwriteMethods = {};
+        var __call = function (lk) {
+            that[lk] = function () {
+                var localk = new String(lk);
+                return that.overwriteMethods[localk].apply(that, arguments);
+            }
+        }
+
+        for (let k in that.conf) {
+            //console.log('k',k,ext[k]);
+            // se la funzione non e' tra i metodi sovrascribili allora la istanzio come una nuova funzione dell'oggetto
+            // altrimenti ci pensano i singoli metodi sovrascribili a fare la chiamata
+            if ( (global.widgetOverloadMethods.indexOf(k) < 0) && that.conf[k] instanceof Function) {
+                console.debug('wBase.created ',k,'metodo non fa parte dei sovrascribili')
+                that.overwriteMethods[k] = that.conf[k];
+                __call(k);
+            }
+        }
+        this.Server = Server;
     },
   created() {
       let that = this;
-      console.debug('wBase.created ',that.conf);
-      //console.log('CREATEDDD',that)
-      that.overwriteMethods = {};
-      var __call = function (lk) {
-        that[lk] = function () {
-          var localk = new String(lk);
-          return that.overwriteMethods[localk].apply(that, arguments);
-        }
-      }
-
-      for (let k in that.conf) {
-        //console.log('k',k,ext[k]);
-        // se la funzione non e' tra i metodi sovrascribili allora la istanzio come una nuova funzione dell'oggetto
-        // altrimenti ci pensano i singoli metodi sovrascribili a fare la chiamata
-        if ( (global.overwriteableMethods.indexOf(k) < 0) && that.conf[k] instanceof Function) {
-          console.debug('wBase.created ',k,'metodo non fa parte dei sovrascribili')
-          that.overwriteMethods[k] = that.conf[k];
-          __call(k);
-        }
-      }
-      this.Server = Server;
+      //console.debug('wBase.created ',that.conf);
     },
     data() {
-      // let that = this;
-      // let wc = new WrapperConf()
-      // let ext = wc.loadConf(that.conf);
-      // let dt = {};
-      // for (let k in ext) {
-      //   if (!(ext[k] instanceof Function)) {
-      //     dt[k] = ext[k];
-      //   }
-      // }
-      // dt.errors = [];
-      // console.debug('wBase.data ',dt)
-      // return dt;
       return this._loadReactiveData(this.conf)
     },
 
@@ -193,7 +183,7 @@ export default {
             }
           }
           dt.errors = [];
-          console.debug('wBase.data ', dt)
+          //console.debug('wBase.data ', dt)
           return dt;
         }
 

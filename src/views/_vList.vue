@@ -30,6 +30,7 @@ export default {
       panelConf: defaultPanelConf(),
       labelCols: {},
       layout: this.conf.layout ? this.conf.layout : 'default',
+        tableKey : Date.now(),  // key per forzar3e l'aggionramento di vue del componente datatable nelle liste non ajax
     }
   },
   methods: {
@@ -102,6 +103,43 @@ export default {
         that.route.setParam('order_field', sortField);
         that.route.setParam('order_direction', event.sortOrder > 0 ? 'ASC' : 'DESC');
         that.reload();
+      } else {
+          let key = event.sortField;
+          this.value.sort((a, b) => {
+              // Convertiamo entrambi in numeri
+              const numA = parseFloat(a[key]);
+              const numB = parseFloat(b[key]);
+              console.debug('confronto A,B',numA,numB)
+              // Verifica se sono numeri, usa confronto numerico.
+              if (!isNaN(numA) && !isNaN(numB)) {
+                  if (event.sortOrder > 0) {
+                      return numA - numB;
+                  }
+                  return numB - numA
+              }
+
+              // Se uno solo è un numero, lo considera minore
+              if (!isNaN(numA) && isNaN(numB)) {
+                  return -1;
+              }
+
+              if (isNaN(numA) && !isNaN(numB)) {
+                  return 1;
+              }
+
+              // Se entrambi sono NaN, usa confronto alfanumerico
+              if (event.sortOrder > 0) {
+                  console.debug('confronto alfanumerico A,B',a[key],b[key])
+                  return a[key].localeCompare(b[key]);
+              } else {
+                  console.debug('confronto alfanumerico B,A',b[key],a[key])
+                  return b[key].localeCompare(a[key]);
+              }
+
+
+          });
+          console.debug('value',this.value);
+          this.tableKey = Date.now();
       }
 
     },
@@ -198,8 +236,11 @@ export default {
     },
     getWidgetType(index,field) {
         let that = this;
-        let fieldsConfig = that.fieldsConfig || (that.fieldsConfig[field]?that.fieldsConfig[field]:{});
-        return (fieldsConfig.type?fieldsConfig.type:that.defaultWidgetType);
+        let fieldsConfig = that.fieldsConfig || {};
+        if (that.fieldsConfig[field] && that.fieldsConfig[field].type) {
+            return that.fieldsConfig[field].type;
+        }
+        return that.defaultWidgetType;
     },
     setWidgetsConfig() {
       this._setWidgetsConfig();
@@ -278,7 +319,6 @@ export default {
       if (fieldsConfig[key]) {
         wc = Object.assign(wc, CrudCore.normalizeConf(fieldsConfig[key]));
       }
-      //console.log('field',key,'value',val);
       wc = Object.assign(md, wc);
       // se il value e' undefined allora e' un campo custom della view non ci metto niente
       if (("" + value) != 'undefined') {
