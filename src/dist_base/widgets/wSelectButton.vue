@@ -11,6 +11,7 @@
             </div>
         </template>
     </SelectButton>
+    <RulesErrors :errors="errors"></RulesErrors>
   </span>
 </template>
 
@@ -20,7 +21,8 @@ import _wSelectButton from '../../widgets/_wSelectButton.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wSelectButton",
-  extends: _wSelectButton
+  extends: _wSelectButton,
+  components : {RulesErrors}
 }
 
 </script>

@@ -6,25 +6,18 @@ import CrudCore from "../lib/CrudCore";
 export default {
     name: "_wHasmany",
     extends: _wBase,
-    //components : {cView},
-    emits: ['change'],
-    //emits: ['update:modelValue'],
-    props: {
-        //modelValue: String,
-        conf: Object,
-    },
-    mounted() {
-        // evento da emettere durante le modifiche
-        //this.$emit('update:modelValue', this.selectedCategory.id);
-        window.HS = this;
-        setTimeout(this.ready, 10);
-    },
+    // emits: ['change'],
+    // props: {
+    //     conf: Object,
+    // },
     data() {
         var that = this;
-        var baseName = that.conf.hasmanyConf.modelName?that.conf.hasmanyConf.modelName:that.conf.name;
+        let conf = this._loadReactiveData(that.conf);
+        conf.hasmanyConf = conf.hasmanyConf || {};
+        var baseName = conf.hasmanyConf.modelName?conf.hasmanyConf.modelName:conf.name;
         //console.log('BASENAME',baseName,this.conf);
-        if (!that.conf.hasmanyConf.getFieldName) {
-            that.conf.hasmanyConf.getFieldName = function (name) {
+        if (!conf.hasmanyConf.getFieldName) {
+            conf.hasmanyConf.getFieldName = function (name) {
                 return baseName + '-' + name + '[]';
             }
         }
@@ -32,17 +25,17 @@ export default {
         let keys = that._generateArrayKeys();
 
         //if (that.conf.hasmanyType == 'list') {
-            that.conf.value = that.addDataKeyField(that.conf.value);  // serve per rendere univoco il record della lista per la multiselezione
+            conf.value = that.addDataKeyField(that.conf.value);  // serve per rendere univoco il record della lista per la multiselezione
         //}
 
         //that.conf.hasmanyValue = that.trasformValue(that.conf.value);
-        if (!this.conf.limit) {
-            that.conf.limit = null;
+        if (!conf.limit) {
+            conf.limit = null;
         }
-        that.conf.hasmanyConf.metadata = that.conf.relationConf || {};
-        that.conf.vForKeys = keys;
+        conf.hasmanyConf.metadata = conf.relationConf || {};
+        conf.vForKeys = keys;
         ///console.debug('hasmany_log',keys);
-        return that.conf;
+        return conf;
     },
     methods: {
         toggle(event) {
@@ -61,7 +54,7 @@ export default {
         getValue() {
             //window.WH = this;
             if (this.hasmanyType == 'list') {
-                return this.$refs.listViewHasmany.instance().getValue();
+                return this.$refs.listViewHasmany.getValue();
             }
             let val = [];
             if (this.$refs.recordView) {
@@ -85,8 +78,8 @@ export default {
                 if (that.hasmanyType == 'list') {
                     //console.log("HS",that.value)
                     that.value = that.addDataKeyField(that.value);
-                    that.$refs.listViewHasmany.instance().value = that.value;
-                    that.$refs.listViewHasmany.instance().reload();
+                    that.$refs.listViewHasmany.value = that.value;
+                    that.$refs.listViewHasmany.reload();
                 } else {
                     let keys = that._generateArrayKeys(val);
                     that.vForKeys = keys;
@@ -122,7 +115,7 @@ export default {
                 v.dataKey = that._getRandomKey()
                 let md = that.hasmanyConf.modelData || {};
                 if (that.hasmanyType=='list') {
-                    fieldsConfig[field] = this.$refs.listViewHasmany.instance().getWidgetConfig(field, defVal, (md[field] || {}))
+                    fieldsConfig[field] = this.$refs.listViewHasmany.getWidgetConfig(field, defVal, (md[field] || {}))
                 } else {
                     fieldsConfig[field] = CrudCore.clone(fieldConfig);
                 }
@@ -135,7 +128,7 @@ export default {
                 let val = that.getValue();
                 val.push(v);
                 that.setValue(val);
-                that.$refs.listViewHasmany.instance().widgetsConfig.push(fieldsConfig);
+                that.$refs.listViewHasmany.widgetsConfig.push(fieldsConfig);
 
             } else {
                 let val = that.getValue();
@@ -162,36 +155,17 @@ export default {
                     let arr = index.sort((a,b) => {return a-b});
                     arr.reverse();
                     for (let i in arr) {
-                        that.$refs.listViewHasmany.instance().widgetsConfig.splice(arr[i],1);
-                        that.$refs.listViewHasmany.instance().value.splice(arr[i],1);
+                        that.$refs.listViewHasmany.widgetsConfig.splice(arr[i],1);
+                        that.$refs.listViewHasmany.value.splice(arr[i],1);
 
                         //console.debug('LIST VALUES',arr[i],JSON.parse(JSON.stringify(v)));
                     }
                 } else {
-                    that.$refs.listViewHasmany.instance().widgetsConfig.splice(index,1);
-                    that.$refs.listViewHasmany.instance().value.splice(index,1);
+                    that.$refs.listViewHasmany.widgetsConfig.splice(index,1);
+                    that.$refs.listViewHasmany.value.splice(index,1);
 
                 }
-                that.$refs.listViewHasmany.instance().deselectAll();
-                //console.debug('removeItem result wconfig',that.$refs.listViewHasmany.widgetsConfig)
-                //console.debug('removeItem result wvalue',that.$refs.listViewHasmany.value)
-
-                // let v = this.$refs.listViewHasmany.getValue();
-                // //console.debug('LIST VALUES',JSON.parse(JSON.stringify(v)),index);
-                // if (Array.isArray(index)) {
-                //     let arr = index.sort((a,b) => {return a-b});
-                //     arr.reverse();
-                //     for (let i in arr) {
-                //         v.splice(arr[i],1);
-                //         //console.debug('LIST VALUES',arr[i],JSON.parse(JSON.stringify(v)));
-                //     }
-                // } else {
-                //     v.splice(index,1);
-                // }
-                // that.value = that.addDataKeyField(v);
-                // //console.debug('LIST VALUES  2',JSON.parse(JSON.stringify(that.value)));
-                // this.$refs.listViewHasmany.value = that.value;
-                // this.$refs.listViewHasmany.reload();
+                that.$refs.listViewHasmany.deselectAll();
             } else {
                 console.debug('hasmany_log remove',index)
                 let viewVal = that.getValue();  // prendo i valori aggiornati delle views
@@ -203,36 +177,9 @@ export default {
                         keys.push(that.vForKeys[i]);
                     }
                 }
-                // for (let i in this.value) {
-                //     if (this.value[i].dataKey != index) {
-                //         val.push(viewVal[i]);
-                //         keys.push(that.vForKeys[i]);
-                //     }
-                // }
-                // setTimeout(function() {
-                    //that.setValue(val);
+
                 that.value = val;
                     that.vForKeys = keys;
-                    //console.debug('hasmany_log keys',keys,'values',val);
-                //},20)
-
-                //this.$forceUpdate();
-                    // console.debug('rimuove valore ',index, this.value[index]);
-                    // this.value.splice(parseInt(index), 1);
-                    // console.debug('nuovo vettore',JSON.parse(JSON.stringify(this.value)));
-                    // this.setValue(this.value);
-
-
-
-
-                // let rIndex = Object.keys(this.hasmanyValue).indexOf(index);
-                // //console.log('remove index', index, this.value);
-                // if (rIndex < this.value.length) {
-                //     this.value.splice(parseInt(rIndex), 1);
-                // }
-                // //console.log('removed index', rIndex, this.value);
-                // delete this.hasmanyValue[index];
-                // //this.hasmanyValue = this.trasformValue(this.value);
             }
 
         },
@@ -241,16 +188,16 @@ export default {
          * vengono ridisegnati
          */
         widgetToConf() {
-            for (let i=0;i<this.$refs.listViewHasmany.instance().value.length;i++) {
-                let ws = this.$refs.listViewHasmany.instance().getRowWidgets(i);
+            for (let i=0;i<this.$refs.listViewHasmany.value.length;i++) {
+                let ws = this.$refs.listViewHasmany.getRowWidgets(i);
                 for (let k in ws) {
                     switch (ws[k].type) {
                         case 'w-autocomplete':
                             console.debug('autocompleteValue',ws[k].autocompleteValue);
-                            this.$refs.listViewHasmany.instance().widgetsConfig[i][k].autocompleteValue = ws[k].autocompleteValue;
+                            this.$refs.listViewHasmany.widgetsConfig[i][k].autocompleteValue = ws[k].autocompleteValue;
                             break;
                     }
-                    this.$refs.listViewHasmany.instance().value[i][k] = ws[k].getValue()
+                    this.$refs.listViewHasmany.value[i][k] = ws[k].getValue()
                 }
             }
         },
@@ -282,13 +229,12 @@ export default {
                 },
                 'action-delete-selected':{
                     execute() {
-                        //console.debug('selected',that.$refs.listViewHasmany.instance().selected,that.$refs.listViewHasmany.instance().value);
                         let indexs = [];
-                        let dataKeys = that.$refs.listViewHasmany.instance().value.map(a => a.dataKey);
-                        for (let i in that.$refs.listViewHasmany.instance().selected) {
-                            let index = dataKeys.indexOf(that.$refs.listViewHasmany.instance().selected[i].dataKey);
+                        let dataKeys = that.$refs.listViewHasmany.value.map(a => a.dataKey);
+                        for (let i in that.$refs.listViewHasmany.selected) {
+                            let index = dataKeys.indexOf(that.$refs.listViewHasmany.selected[i].dataKey);
                             if (index < 0) {
-                                console.warn('index non trovato per dataKey',that.$refs.listViewHasmany.instance().selected[i].dataKey,'datakeys',dataKeys);
+                                console.warn('index non trovato per dataKey',that.$refs.listViewHasmany.selected[i].dataKey,'datakeys',dataKeys);
                             } else {
                                 indexs.push(index);
                             }

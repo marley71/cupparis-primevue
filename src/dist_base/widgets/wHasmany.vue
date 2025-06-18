@@ -1,8 +1,9 @@
 <template>
+  <span>
     <template v-if="hasmanyType=='list'">
         <div>
 <!--            <v-list-hasmany ref="listViewHasmany" :conf="getHasmanyList()"></v-list-hasmany>-->
-            <c-view ref="listViewHasmany" :conf="getHasmanyList()"></c-view>
+            <component is="v-list-hasmany" ref="listViewHasmany" :conf="getHasmanyList()"></component>
         </div>
     </template>
     <template v-else-if="hasmanyType=='record'">
@@ -19,9 +20,9 @@
                         <Divider align="right">
                             <Button class="p-button-outlined p-button-danger" icon="fa fa-times" @click="removeItem(dataKey)"></Button>
                         </Divider>
-<!--                        <div class="flex align-self-end">-->
-<!--                            <Button class="p-button-outlined p-button-danger" icon="fa fa-times" @click="removeItem(index)"></Button>-->
-<!--                        </div>-->
+                      <!--                        <div class="flex align-self-end">-->
+                      <!--                            <Button class="p-button-outlined p-button-danger" icon="fa fa-times" @click="removeItem(index)"></Button>-->
+                      <!--                        </div>-->
                         <v-record ref="recordView" :conf="getHasmanyConf(index)"></v-record>
                     </div>
                 </div>
@@ -72,6 +73,9 @@
     <div v-else>
         <span>hasmanyType {{ hasmanyType }} non valido!</span>
     </div>
+    <RulesErrors :errors="errors"></RulesErrors>
+  </span>
+
 </template>
 
 
@@ -82,7 +86,8 @@ import RulesErrors from "./RulesErrors.vue";
 
 export default {
   name: "wHasmany",
-  extends: _wHasmany
+  extends: _wHasmany,
+  components : {RulesErrors}
 }
 
 </script>
@@ -103,4 +108,5 @@ export default {
 }
 </style>
 <script setup>
+import RulesErrors from "./RulesErrors.vue";
 </script>

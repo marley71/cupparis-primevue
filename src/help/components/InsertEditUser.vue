@@ -3,7 +3,7 @@
         <h5>Layout di edit insert</h5>
         <div>
             <component :is="widgetsConfig['email'].type" :conf="widgetsConfig['email']"></component>
-            <c-widget :is="widgetsConfig['name'].type" :conf="widgetsConfig['name']"></c-widget>
+            <component :is="widgetsConfig['name'].type" :conf="widgetsConfig['name']"></component>
         </div>
         <div>
             <c-action ref="actions" :conf="recordActionsConf" layout="buttons" ></c-action>

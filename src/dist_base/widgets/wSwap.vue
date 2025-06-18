@@ -1,14 +1,17 @@
 <template>
-    <div>
+    <span>
         <input :name="getFieldName()" type="hidden" :value="toggleValue?1:0">
         <InputSwitch v-model="toggleValue" @change="swap()" :disabled="extraBind.disabled?true:false"/>
-    </div>
+        <RulesErrors :errors="errors"></RulesErrors>
+    </span>
 </template>
 
 <script>
 import _wSwap from '../../widgets/_wSwap.vue';
+import RulesErrors from "./RulesErrors.vue";
 export default {
     name: "wSwap",
+  components: {RulesErrors},
     extends: _wSwap,
 }
 </script>

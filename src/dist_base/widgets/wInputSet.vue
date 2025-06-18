@@ -11,6 +11,7 @@
                 <Button label="Salva" @click="set()"></Button>
             </div>
         </OverlayPanel>
+      <RulesErrors :errors="errors"></RulesErrors>
     </div>
 </template>
 
@@ -21,6 +22,7 @@ import RulesErrors from "./RulesErrors.vue";
 export default {
     name: "wInputSet",
     extends: _wInputSet,
+  components : {RulesErrors}
 }
 </script>
 

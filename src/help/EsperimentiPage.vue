@@ -24,8 +24,8 @@
             </template>
         </v-list>
         <div v-if="showEsperimento=='lista-e-search'">
-            <c-view :conf="Mu.search" @search="searchList"></c-view>
-            <c-view :conf="Mu.list" ref="muList"></c-view>
+            <component :is="searchConf.type" :conf="searchConf" @search="searchList"></component>
+            <component :is="Mu.list.type" :conf="Mu.list" ref="muList"></component>
         </div>
         <div v-if="showEsperimento=='serverTest'">
             <div>{{dataList}}</div>
@@ -48,11 +48,10 @@ export default {
     extends : CrudComponent,
     data() {
         let muList = CrudCore.clone(Mu.list);  // _.cloneDeep(Mu.list);
+        let searchConf = CrudCore.clone(Mu.search);
+        searchConf.updateHash = false;
         return  {
-
-            searchConf : {
-
-            },
+            searchConf : searchConf,
             showEsperimento : null,
             muList : muList,
             Mu:Mu,

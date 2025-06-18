@@ -1,7 +1,14 @@
 
+import widgets from './dist/widgets'
+import views from './dist/views'
+import apps from './dist/app'
+import lib from './lib';
+import help from "./help";
+
+
 import CrudComponent from "./CrudComponent.vue"
 import cAction from './dist/actions/cAction.vue'
-import cView from './dist/views/cView.vue'
+//import cView from './dist/views/cView.vue'
 import vRecord from './dist/views/vRecord.vue'
 import vView from './dist/views/vView.vue'
 import vEdit from './dist/views/vEdit.vue'
@@ -11,9 +18,7 @@ import vList from './dist/views/vList.vue'
 import vListEdit from './dist/views/vListEdit.vue'
 import vListHasmany from './dist/views/vListHasmany.vue'
 import cImport from './dist/app/cImport.vue'
-import widgets from './dist/widgets'
-import views from './dist/views'
-import apps from './dist/app'
+
 import dialogs from './dist/dialogs'
 import CrudCore from "./lib/CrudCore.js";
 import routerConf from "./confs/router";
@@ -26,7 +31,7 @@ import Route from './lib/Route.js';
 import Wait from "./Wait.vue";
 import viewConfs from "./confs/views.js";
 import CrudHelpers from "./lib/CrudHelpers";
-import cWidget from "./dist/widgets/cWidget.vue";
+//import cWidget from "./dist/widgets/cWidget.vue";
 import wBase from './dist/widgets/wBase.vue';
 import actionConfs from "./confs/actions";
 
@@ -40,20 +45,17 @@ import ImportPage from "./help/ImportPage.vue";
 import ActionsPage from "./help/ActionsPage.vue";
 import DialogsPage from "./help/DialogsPage.vue";
 import EsperimentiPage from "./help/EsperimentiPage.vue";
-import InsertEditUser from "./help/components/InsertEditUser.vue";
-import ListUser from './help/components/ListUser.vue';
-import ActionSelect from "./help/components/ActionSelect.vue";
-
-
 import JsToCode from "./help/JsToCode";
+
 export default {
     install(app) {
-        app.component('crud-component', CrudComponent);
-        app.component('c-action',cAction);
+        lib.install(app);
         widgets.install(app);
         views.install(app);
         apps.install(app);
         dialogs.install(app);
+        help.install(app);
+
         let prefix = CrudVars.useApi?'/api':'';
         for (let k in routeConfs) {
             routeConfs[k].url = prefix + routeConfs[k].url;
@@ -63,30 +65,10 @@ export default {
             generateMessage: localize('appLang', CrudVars.validationMessages),
         });
         setLocale('appLang');
-        CrudCore.componentItems['CrudComponent'] = CrudComponent;
-        CrudCore.componentItems['c-action'] = cAction;
-        CrudCore.componentItems['c-view'] = cView;
-        CrudCore.componentItems['v-record'] = vRecord;
-        CrudCore.componentItems['v-insert'] = vInsert;
-        CrudCore.componentItems['v-edit'] = vEdit;
-        CrudCore.componentItems['v-view'] = vView;
-        CrudCore.componentItems['v-search'] = vSearch;
-        CrudCore.componentItems['c-Manage'] = cManage;
-        CrudCore.componentItems['v-list'] = vList;
-        CrudCore.componentItems['v-list-edit'] = vListEdit;
-        CrudCore.componentItems['c-import'] = cImport;
-        CrudCore.componentItems['v-list-hasmany'] = vListHasmany;
-        CrudCore.componentItems['a-base'] = aBase;
-        CrudCore.componentItems['c-widget'] =  cWidget;
-        CrudCore.componentItems['w-base'] =  wBase;
-        // componenti custom utilizzati nelle pagine di help
-        CrudCore.componentItems['list-user'] =  ListUser;
-        CrudCore.componentItems['insert-edit-user'] =  InsertEditUser;
-        CrudCore.componentItems['action-select'] =  ActionSelect;
 
     },
-    CrudComponent,cAction,CrudCore,CrudVars,cWidget,wBase,
-    cView,
+    CrudComponent,cAction,CrudCore,CrudVars,wBase,
+    //cView,
     routerConf,routeConfs,actionConfs,viewConfs,
     vRecord,vSearch,cManage,vList,vListEdit,cImport,vListHasmany,
     vEdit,vInsert,vView,
@@ -95,7 +77,6 @@ export default {
     CrudHelpers,
     // --- help pages
     WidgetsPage,ViewsPage,ManagePage,ImportPage,ActionsPage,DialogsPage,EsperimentiPage,
-    InsertEditUser,ListUser,
     JsToCode
 
 }

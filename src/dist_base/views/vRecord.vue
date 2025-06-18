@@ -185,13 +185,13 @@
 <script>
 
 import _vRecord from '../../views/_vRecord.vue'
-import cWidget from "../widgets/cWidget.vue";
+//import cWidget from "../widgets/cWidget.vue";
 import cAction from "../actions/cAction.vue";
 
 export default {
   name : "v-record",
   extends: _vRecord,
-  components: {cWidget,cAction},
+  components: {cAction},
 }
 
 </script>

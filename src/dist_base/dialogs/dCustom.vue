@@ -6,8 +6,6 @@
         <div class="h-full" :style="{height:height}">
             <template v-if="componentName">
                 <component ref="compRef" :is="componentName" :conf="componentConf"></component>
-                <!--            <c-view :conf="componentConf"></c-view>-->
-                <!--            <v-list :conf="componentConf"></v-list>-->
             </template>
             <div v-else ref="el">
                 <template v-if="Array.isArray(message)">
@@ -38,7 +36,6 @@
 
 import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
-import CView from "../views/cView.vue";
 import cManage from "../app/cManage.vue";
 
 import _dCustom from '../../dialogs/_dCustom.vue'
@@ -46,7 +43,7 @@ import _dCustom from '../../dialogs/_dCustom.vue'
 export default {
   name: 'd-confirm',
   extends: _dCustom,
-  components: {CView, Button,Dialog,cManage},
+  components: {Button,Dialog,cManage},
 }
 
 </script>

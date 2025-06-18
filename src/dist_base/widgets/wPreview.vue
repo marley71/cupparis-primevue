@@ -15,6 +15,7 @@
         <i class="fa fa-file fa-2xl"></i>
       </template>
     </div>
+    <RulesErrors :errors="errors"></RulesErrors>
   </span>
 </template>
 
@@ -24,7 +25,8 @@ import _wPreview from '../../widgets/_wPreview.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wPreview",
-  extends: _wPreview
+  extends: _wPreview,
+  components : {RulesErrors}
 }
 
 </script>

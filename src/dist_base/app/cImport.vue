@@ -2,7 +2,7 @@
     <Card ref="el">
         <template #title>
             <slot name="title">
-                {{ conf.importTitolo?translate(conf.importTitolo):translate('app.import-titolo') }}
+                {{ conf.importTitle?translate(conf.importTitle):translate('app.import-title') }}
             </slot>
         </template>
         <template #content>
@@ -19,7 +19,7 @@
                     </a>
                 </div>
                 <div class="col-12">
-                    <component :is="_uploadConf().type" :conf="_uploadConf()" ref="viewUpload"></component>
+                    <v-insert :conf="_uploadConf()" ref="viewUpload"></v-insert>
                 </div>
             </div>
             <div v-if="['saving','loading'].indexOf(step) >= 0">
@@ -46,11 +46,12 @@
 <script>
 
 import vRecord from "../views/vRecord.vue";
+import vList from '../views/vList.vue';
 import _cImport from "../../app/_cImport.vue";
 
 export default {
     name: "c-import",
-    components: {vRecord},
+    components: {vRecord,vList},
     extends : _cImport,
 }
 </script>

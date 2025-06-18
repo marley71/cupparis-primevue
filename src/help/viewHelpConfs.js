@@ -178,7 +178,7 @@ export default {
                 console.log('event',event);
                 if (!this.toggle) {
                     this.view.showPanel(event,{
-                        componentName : 'c-view',
+                        componentName : 'v-edit',
                         panelClass : 'w-7',
                         componentConf : {
                             type : 'v-edit',

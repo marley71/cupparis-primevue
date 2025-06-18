@@ -1,28 +1,21 @@
 <template>
     <div class="grid">
         <div class="col-12">
-            <c-import :conf="importConf" v-if="!reload">
-                <!-- <template #title>
-                    diao
-                </template> -->
-                <!-- <template #description>
-                    aaa
-                </template> -->
-            </c-import>
+            <c-import :conf="importConf" v-if="!reload"></c-import>
         </div>
         <div class="col-12">
             <Button class="p-button w-4 mt-1" label="Run" @click="updateCode"></Button>
             <hr />
             <div class="grid">
                 <div class="col-6">
-                    <h6>Configurazione View {{ wSelected }}</h6>
+                    <h6>Configurazione Import </h6>
                     <div class="font-italic">Iniziare il codice sempre con var conf = </div>
                     <div id='example' class="h-20rem w-full">
 
                     </div>
                 </div>
                 <div class="col-6">
-                    <h6>Configurazione di default {{ viewType }}</h6>
+                    <h6>Configurazione di default Import </h6>
                     <div id="defaultCode" class="h-20rem w-full">
 
                     </div>
@@ -35,7 +28,7 @@
 <script>
 import DCupGeoComune from './DCupGeoComune.js';
 import cImport from '../dist/app/cImport.vue';
-import JsToCode from "@/rome-vue-v4.0.0/services/JsToCode";
+import JsToCode from "./JsToCode";
 const jsc = new JsToCode();
 
 export default {

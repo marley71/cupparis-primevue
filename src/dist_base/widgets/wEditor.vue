@@ -20,6 +20,7 @@
       </ssh-pre>
 
     </div>
+    <RulesErrors :errors="errors"></RulesErrors>
   </span>
 
 </template>
@@ -34,7 +35,7 @@ import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wEditor",
   extends: _wEditor,
-  components : {Editor,SshPre},
+  components : {Editor,SshPre,RulesErrors},
 }
 </script>
 

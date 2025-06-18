@@ -5,6 +5,7 @@
         <template v-if="toolbar" #toolbar>
         </template>
     </Editor>
+    <RulesErrors :errors="errors"></RulesErrors>
   </span>
 </template>
 
@@ -14,7 +15,8 @@ import _wTexthtml from '../../widgets/_wTexthtml.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wTexthtml",
-  extends: _wTexthtml
+  extends: _wTexthtml,
+  components : {RulesErrors}
 }
 
 </script>

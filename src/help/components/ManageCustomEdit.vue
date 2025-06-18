@@ -2,8 +2,8 @@
     <div v-if="loaded">
         <h5>Layout di edit insert</h5>
         <div>
-            <c-widget :conf="widgetsConfig['email']"></c-widget>
-            <c-widget :conf="widgetsConfig['name']"></c-widget>
+            <component :is="widgetsConfig['email'].type" :conf="widgetsConfig['email']"></component>
+            <component :is="widgetsConfig['name'].type" :conf="widgetsConfig['name']"></component>
         </div>
         <div>
             <c-action ref="actions" :conf="recordActionsConf" layout="buttons" ></c-action>
@@ -12,12 +12,11 @@
 </template>
 
 <script>
-import cupparisPrimevue from 'cupparis-primevue'
+import vRecord from '../../dist/views/vRecord.vue';
 
-console.log('vRecord',cupparisPrimevue.vRecord);
 export default {
     name: "ManageCustomEdit",
-    extends: cupparisPrimevue.vRecord,
+    extends: vRecord,
 
 }
 </script>

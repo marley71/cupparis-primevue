@@ -12,6 +12,7 @@
     <template v-else>
       <span v-html="domainValuesHtml[value]"></span>
     </template>
+    <RulesErrors :errors="errors"></RulesErrors>
   </span>
 </template>
 
@@ -21,7 +22,8 @@ import _wStatus from '../../widgets/_wStatus.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wStatus",
-  extends: _wStatus
+  extends: _wStatus,
+  components : {RulesErrors}
 }
 
 </script>

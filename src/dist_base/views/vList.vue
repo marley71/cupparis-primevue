@@ -180,12 +180,12 @@
 
 <script>
 import _vList from '../../views/_vList.vue'
-import cWidget from "../widgets/cWidget.vue";
+//import cWidget from "../widgets/cWidget.vue";
 import cAction from "../actions/cAction.vue";
 export default {
   name : "v-list",
   extends: _vList,
-  components: {cAction, cWidget},
+  components: {cAction},
 }
 
 </script>

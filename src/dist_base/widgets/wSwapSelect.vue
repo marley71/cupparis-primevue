@@ -1,17 +1,18 @@
 <template>
+  <span>
     <div>
         <span v-html="_labelTop()"></span>
         <input type="hidden" :name=getFieldName() :value="value">
         <Dropdown class="w-full" :name=getFieldName() v-model="value" :options="options"
                   option-label="label" option-value="id" :placeholder="placeholder || translate('app.seleziona')"
-                   @change="swap()" v-bind="extraBind" :disabled="_disabled()">
+                  @change="swap()" v-bind="extraBind" :disabled="_disabled()">
             <template #value="slotProps">
                 <div v-if="slotProps.value"
-                    :class="'select-button-option select-button-option-'+name+ ' select-button-option-'+name+'-'+slotProps.value"
-                    >
+                     :class="'select-button-option select-button-option-'+name+ ' select-button-option-'+name+'-'+slotProps.value"
+                >
                     {{ domainValues[slotProps.value]?domainValues[slotProps.value]:slotProps.value }}
 
-<!--                    v-html="slotProps.value.label"-->
+                  <!--                    v-html="slotProps.value.label"-->
                 </div>
                 <span v-else>
                     {{ slotProps.placeholder }}
@@ -26,6 +27,9 @@
         </Dropdown>
         <span v-html="_labelBottom()"></span>
     </div>
+    <RulesErrors :errors="errors"></RulesErrors>
+  </span>
+
 </template>
 
 <script>
@@ -35,6 +39,7 @@ import RulesErrors from "./RulesErrors.vue";
 export default {
     name: "wSwapSelect",
     extends: _wSwapSelect,
+  components : {RulesErrors}
 }
 </script>
 

@@ -71,11 +71,11 @@ export default {
         }
         that.conf.custom = that.conf.custom || {};
 
-        that.conf.editComponentName = that.conf.editComponentName || null;
-        that.conf.listComponentName = that.conf.listComponentName || null;
-        that.conf.searchComponentName = that.conf.searchComponentName || null;
-        that.conf.insertComponentName = that.conf.insertComponentName || null;
-        that.conf.viewComponentName = that.conf.viewComponentName || null;
+        that.conf.editComponentName = that.conf.editComponentName || 'v-edit';
+        that.conf.listComponentName = that.conf.listComponentName || 'v-list';
+        that.conf.searchComponentName = that.conf.searchComponentName || 'v-search';
+        that.conf.insertComponentName = that.conf.insertComponentName || 'v-insert';
+        that.conf.viewComponentName = that.conf.viewComponentName || 'v-view';
         that.conf.customComponentName = that.conf.customComponentName || null;
         if (!('viewTitle' in that.conf)) {
             that.conf.viewTitle = null;
@@ -262,32 +262,28 @@ export default {
                 console.warn('wait ' + type + ' non gestito');
             }
         },
-        showListMia() {
-            let that = this;
-            let confName = this.$route.params.cConf;
-            let params = that.getViewList().route.getParams();
-            let context = [];
-            if (params && params instanceof FormData) {
-                for (let key of params.keys()) {
-                    let values = params.getAll(key);
-                    context.push(key+':'+values.join('&'));
-                }
-            } else if (params  && params instanceof Object) {
-                for (let key in params) {
-                    let values = params[key];
-                    if (Array.isArray(values)) {
-                        context.push(key+':'+values.join('&'));
-                    } else {
-                        context.push(key+':'+values);
-                    }
-
-                }
-            }
-            //console.debug('listmia',params,context,window.location.pathname);192
-            //window.history.pushState({},'',window.location.pathname + '#/' + that.baseRouteName + '/'+ confName +'/list/' + context.join('/'));
-            //that.updateHash(confName,'list',context);
-
-        },
+        // showListMia() {
+        //     let that = this;
+        //     let confName = this.$route.params.cConf;
+        //     let params = that.getViewList().route.getParams();
+        //     let context = [];
+        //     if (params && params instanceof FormData) {
+        //         for (let key of params.keys()) {
+        //             let values = params.getAll(key);
+        //             context.push(key+':'+values.join('&'));
+        //         }
+        //     } else if (params  && params instanceof Object) {
+        //         for (let key in params) {
+        //             let values = params[key];
+        //             if (Array.isArray(values)) {
+        //                 context.push(key+':'+values.join('&'));
+        //             } else {
+        //                 context.push(key+':'+values);
+        //             }
+        //
+        //         }
+        //     }
+        // },
 
 
 

@@ -68,10 +68,10 @@ export default {
 
     change(event) {
       console.debug('_wAutocomplete.change',event);
-      this.value = event.value.id;
-      this.referredData = event.value;
+      this.value = event.value?event.value.id:null;
+      this.referredData = event.value?event.value:null;
       if (this.conf.change) {
-        return this.conf.change.apply(this,[event.value]);
+        return this.conf.change.apply(this,[this.value]);
       }
     },
 

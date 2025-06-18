@@ -13,18 +13,16 @@ export default {
     },
     data() {
         let that = this;
-        window.IMPORT = this;
-        if (!('title' in that.conf)) {
-            that.conf.title = null;
-        }
-        if (!('sectionTitle' in that.conf)) {
-            that.conf.sectionTitle = null;
-        }
-        that.conf.step = 'upload';
-        that.conf.viewDisplay = false;
-        that.conf.importStatus = 'upload';
-        that.conf.jobId = null;
-        return that.conf;
+        let conf = that._loadReactiveData(this.conf);
+        conf.title = conf.title || null;
+        conf.sectionTitle = conf.sectionTitle || null;
+        conf.step = 'upload';
+        conf.viewDisplay = false;
+        conf.importStatus = 'upload';
+        conf.jobId = null;
+        conf.importDesc = that.conf.importDesc || null;
+        conf.importFile = that.conf.importFile || null;
+        return conf;
     },
     watch: {
         importStatus() {
@@ -317,7 +315,20 @@ export default {
             this.importStatus = 'upload';
             this.uploadEnabled = true;
             this.saveEnabled = false;
+        },
+      /**
+       * questa funzione normalizza la configurazione che mi arriva e restituisco solo i dati che devono essere realmente reactive
+       */
+      _loadReactiveData(conf) {
+        let dt = {};
+        for (let k in conf) {
+          if (!(conf[k] instanceof Function)) {
+            dt[k] = conf[k];
+          }
         }
+        dt.errors = [];
+        return dt;
+      }
     }
 }
 </script>

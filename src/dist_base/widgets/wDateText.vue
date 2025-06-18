@@ -9,6 +9,7 @@
         <i v-if="iconSuffix" :class="iconSuffix"></i>
         <span v-if="suffix">{{suffix}}</span>
     </template>
+    <RulesErrors :errors="errors"></RulesErrors>
   </span>
 </template>
 
@@ -18,7 +19,8 @@ import _wDateText from '../../widgets/_wDateText.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wDateText",
-  extends: _wDateText
+  extends: _wDateText,
+  components : {RulesErrors}
 }
 
 </script>

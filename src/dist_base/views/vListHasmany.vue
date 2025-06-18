@@ -1,7 +1,7 @@
 <template>
   <div>
         <div v-if="loaded">
-            <template v-for="(v,row) in value">
+            <template v-for="(v,row) in value" :key="row">
                 <template v-for="(col) in getHiddenFields()" :key="col">
                     <component :is="getWidgetType(row,col)" :ref="'w'+row+'_'+col" :conf="getWidgetConf(row,col,v[col])"></component>
                 </template>
@@ -45,7 +45,7 @@
                             :sortable="isSortable(col)" :dir="sortDirection(col)">
                         <template #body="slotProps">
                             <!--                    {{slotProps.data[col]}} {{ slotProps.index}}-->
-                            <component :is="getWidgetType(row,col)" :ref="'w'+slotProps.index+'_'+col"
+                            <component :is="getWidgetType(slotProps.index,col)" :ref="'w'+slotProps.index+'_'+col"
                                       :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></component>
                         </template>
                     </Column>

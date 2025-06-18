@@ -34,15 +34,23 @@ export default {
         }
         this.Server = Server;
     },
-  created() {
+    created() {
       let that = this;
       //console.debug('wBase.created ',that.conf);
     },
+  mounted() {
+    setTimeout(this.ready, 10);
+  },
     data() {
       return this._loadReactiveData(this.conf)
     },
 
     methods : {
+      ready() {
+        if (this.conf.ready) {
+          this.conf.ready.apply(this);
+        }
+      },
       reset() {
         let that = this;
         if (this.conf.reset) {
@@ -93,11 +101,7 @@ export default {
         }
         return this.href;
       },
-        _ready() {
-            if (this.ready) {
-                this.ready.apply(this);
-            }
-        },
+
         _change(event, type) {
             let that = this;
             let evt = event || {};

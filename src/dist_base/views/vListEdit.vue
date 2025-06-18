@@ -76,12 +76,12 @@
 
 <script>
 import _vListEdit from '../../views/_vListEdit.vue'
-import cWidget from "../widgets/cWidget.vue";
+//import cWidget from "../widgets/cWidget.vue";
 import cAction from "../actions/cAction.vue";
 export default {
   name : "v-list-edit",
   extends: _vListEdit,
-  components: {cAction, cWidget},
+  components: {cAction},
 }
 
 </script>

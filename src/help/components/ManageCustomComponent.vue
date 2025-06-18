@@ -1,10 +1,10 @@
 <script>
 
-import cupparisPrimevue from 'cupparis-primevue'
+import CrudComponent from "../../CrudComponent.vue";
 
 export default {
     name: "ManageCustomComponent",
-    extends: cupparisPrimevue.CrudComponent,
+    extends: CrudComponent,
 }
 </script>
 

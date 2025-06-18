@@ -24,6 +24,7 @@
         </div>
       </template>
     </Dropdown>
+    <RulesErrors :errors="errors"></RulesErrors>
   </span>
 </template>
 
@@ -33,7 +34,8 @@ import _wSelect from '../../widgets/_wSelect.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wSelect",
-  extends: _wSelect
+  extends: _wSelect,
+  components : {RulesErrors}
 }
 
 </script>

@@ -3,19 +3,15 @@
         <div >
             <div v-show="mode==='list'">
                 <template v-if="!hideSearch">
-                    <c-view v-if="!searchComponentName" :conf="search" ref="vSearch" @search="searchList"></c-view>
-                    <component v-else :is="searchComponentName" :conf="search" ref="vSearch" @search="searchList"></component>
+                    <component :is="searchComponentName" :conf="search" ref="vSearch" @search="searchList"></component>
                 </template>
-                <c-view v-if="!listComponentName"  :conf="list" ref="vList" @loaded="showListMia"></c-view>
-                <component v-else :is="listComponentName" :conf="list" ref="vList"></component>
+                <component :is="listComponentName" :conf="list" ref="vList"></component>
             </div>
             <template v-if="mode==='edit'">
-                <c-view v-if="!editComponentName"  :conf="edit" ref="vRecord"></c-view>
-                <component v-else :is="editComponentName" :conf="edit" ref="vRecord"></component>
+                <component :is="editComponentName" :conf="edit" ref="vRecord"></component>
             </template>
             <template v-else-if="mode==='insert'">
-                <c-view v-if="!insertComponentName"  :conf="insert" ref="vRecord"></c-view>
-                <component v-else :is="insertComponentName" :conf="insert" ref="vRecord"></component>
+                <component :is="insertComponentName" :conf="insert" ref="vRecord"></component>
             </template>
             <template v-else-if="mode==='custom'">
                 <component :is="customComponentName" :conf="custom" ref="vRecord"></component>
@@ -39,19 +35,15 @@
         <div >
             <div v-show="mode==='list'">
                 <template v-if="!hideSearch">
-                    <c-view v-if="!searchComponentName" :conf="search" ref="vSearch" @search="searchList"></c-view>
-                    <component v-else :is="searchComponentName" :conf="search" ref="vSearch" @search="searchList"></component>
+                    <component :is="searchComponentName" :conf="search" ref="vSearch" @search="searchList"></component>
                 </template>
-                <c-view v-if="!listComponentName"  :conf="list" ref="vList" @loaded="showListMia"></c-view>
-                <component v-else :is="listComponentName" :conf="list" ref="vList"></component>
+                <component :is="listComponentName" :conf="list" ref="vList"></component>
             </div>
             <template v-if="mode==='edit'">
-                <c-view v-if="!editComponentName"  :conf="edit" ref="vRecord"></c-view>
-                <component v-else :is="editComponentName" :conf="edit" ref="vRecord"></component>
+                <component :is="editComponentName" :conf="edit" ref="vRecord"></component>
             </template>
             <template v-else-if="mode==='insert'">
-                <c-view v-if="!insertComponentName"  :conf="insert" ref="vRecord"></c-view>
-                <component v-else :is="insertComponentName" :conf="insert" ref="vRecord"></component>
+                <component :is="insertComponentName" :conf="insert" ref="vRecord"></component>
             </template>
             <template v-else-if="mode==='custom'">
                 <component :is="customComponentName" :conf="custom" ref="vRecord"></component>
@@ -64,8 +56,7 @@
         </template>
 
         <template v-if="viewDisplay">
-            <c-view v-if="!viewComponentName" :conf="view" ref="vView"></c-view>
-            <component v-else :is="viewComponentName" :conf="view"></component>
+            <component :is="viewComponentName" :conf="view" ref="vView"></component>
         </template>
         <div class="modal-footer">
             <Button :label="translate('app.ok')" icon="pi pi-check" autofocus @click="viewDisplay=false"/>
@@ -74,13 +65,11 @@
 </template>
 
 <script>
-import cView from "../views/cView.vue";
 import _cManage from "../../app/_cManage.vue";
 
 export default {
     name: "c-manage",
     extends : _cManage,
-    components: {cView},
 }
 
 </script>

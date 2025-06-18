@@ -26,6 +26,7 @@
         </div>
       </div>
     </div>
+    <RulesErrors :errors="errors"></RulesErrors>
   </span>
 </template>
 
@@ -36,7 +37,8 @@ import RulesErrors from "./RulesErrors.vue";
 
 export default {
   name: "wUploadAjax",
-  extends: _wUploadAjax
+  extends: _wUploadAjax,
+  components : {RulesErrors}
 }
 
 </script>

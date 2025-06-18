@@ -178,13 +178,12 @@
 
 <script>
 import _vSearch from '../../views/_vSearch.vue'
-import cWidget from "../widgets/cWidget.vue";
 import cAction from "../actions/cAction.vue";
 
 export default {
   name : "v-search",
   extends: _vSearch,
-  components : {cWidget,cAction}
+  components : {cAction}
 }
 
 

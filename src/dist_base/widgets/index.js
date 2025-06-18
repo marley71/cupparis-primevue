@@ -101,7 +101,5 @@ export default {
         CrudCore.componentItems['w-swap'] = wSwap;
         app.component('w-swap-select', wSwapSelect);
         CrudCore.componentItems['w-swap-select'] = wSwapSelect;
-    },
-    //cWidget,
-    //wAutocomplete, wHasmany, wSwap, wInputSet,wLeafLet,wEditor,wImage,wTable,wObject,wText,wInput
+    }
 }

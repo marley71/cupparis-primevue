@@ -25,7 +25,7 @@ export default {
     },
     methods: {
         getFieldName(field) {
-            console.debug('v-list-hasmany getFieldName',field);
+            //console.debug('v-list-hasmany getFieldName',field);
             return field + '[]';
         },
         /**
