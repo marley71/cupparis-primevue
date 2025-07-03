@@ -30,7 +30,7 @@
 
 <script>
 
-import _wSelect from '../../widgets/_wSelect.vue'
+import _wSelect from '@cupparis-lib/widgets/_wSelect.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wSelect",

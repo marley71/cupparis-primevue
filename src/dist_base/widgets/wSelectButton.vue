@@ -17,7 +17,7 @@
 
 <script>
 
-import _wSelectButton from '../../widgets/_wSelectButton.vue'
+import _wSelectButton from '@cupparis-lib/widgets/_wSelectButton.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wSelectButton",

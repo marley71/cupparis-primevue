@@ -8,7 +8,7 @@
 
 <script>
 
-import _wChip from '../../widgets/_wChip.vue'
+import _wChip from '@cupparis-lib/widgets/_wChip.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wChip",

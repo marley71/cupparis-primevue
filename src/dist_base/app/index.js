@@ -1,6 +1,6 @@
 import cImport from "./cImport.vue";
 import cManage from "./cManage.vue";
-import CrudCore from '../../lib/CrudCore';
+import CrudCore from '@cupparis-lib/lib/CrudCore';
 
 export default {
     install (app) {

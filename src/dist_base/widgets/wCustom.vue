@@ -8,7 +8,7 @@
 
 <script>
 
-import _wCustom from '../../widgets/_wCustom.vue'
+import _wCustom from '@cupparis-lib/widgets/_wCustom.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wCustom",

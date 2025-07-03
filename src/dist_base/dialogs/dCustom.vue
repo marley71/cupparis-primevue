@@ -1,5 +1,5 @@
 <template>
-    <Dialog class="p-dialog" v-model:visible="display" :modal="true" :style="{width: width}" :class="cssClass">
+    <Dialog class="p-dialog" v-model:visible="display" :modal="true" :style="{width: width}" :class="cssClass" @hide="hide">
         <template #header>
             <h3>{{ translate(title) }}</h3>
         </template>
@@ -38,7 +38,7 @@ import Button from 'primevue/button';
 import Dialog from 'primevue/dialog';
 import cManage from "../app/cManage.vue";
 
-import _dCustom from '../../dialogs/_dCustom.vue'
+import _dCustom from '@cupparis-lib/dialogs/_dCustom.vue'
 
 export default {
   name: 'd-confirm',

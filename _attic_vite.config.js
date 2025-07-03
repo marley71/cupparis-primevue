@@ -20,6 +20,9 @@ module.exports = {
                 ]
 
             })
-        ]
+        ],
+        alias: {
+            '@cupparis-lib' : path.resolve(__dirname, './src'),
+        },
     }
 }

@@ -18,7 +18,7 @@
 
 <script>
 
-import _wStatus from '../../widgets/_wStatus.vue'
+import _wStatus from '@cupparis-lib/widgets/_wStatus.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wStatus",

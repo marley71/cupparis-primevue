@@ -70,7 +70,7 @@
 
 <script>
 
-import _vListHasmany from '../../views/_vListHasmany.vue'
+import _vListHasmany from '@cupparis-lib/views/_vListHasmany.vue'
 
 import cAction from "../actions/cAction.vue";
 

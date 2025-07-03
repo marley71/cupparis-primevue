@@ -29,7 +29,7 @@
 
 <script>
 
-import _aBase from "../../actions/_aBase.vue";
+import _aBase from "@cupparis-lib/actions/_aBase.vue";
 export default {
     name: "aBase",
     extends: _aBase,

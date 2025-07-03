@@ -209,12 +209,13 @@ const actionConfs = {
             let ta = this;
             let defaultConf = ta.getDefaultViewConf(ta.view.modelName,ta.viewType);
             defaultConf.pk = ta.modelData.id;
-
-            console.log('ta',ta.viewType,defaultConf);
-
-            CrudCore.componentDialog('v-view',defaultConf,this.dialogTitle);
-            return true;
-            //ta.componentDialog(ta.viewType,defaultConf)
+            return new Promise((resolve) => {
+                CrudCore.componentDialog('v-view',defaultConf,this.dialogTitle,{
+                    hide() {
+                        resolve();
+                    }
+                });
+            })
         }
     },
     'action-delete' : {

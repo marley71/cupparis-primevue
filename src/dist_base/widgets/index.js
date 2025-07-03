@@ -29,7 +29,7 @@ import wUpload from './wUpload.vue'
 import wUploadAjax from './wUploadAjax.vue';
 import wSwap from "./wSwap.vue";
 import wSwapSelect from './wSwapSelect.vue';
-import CrudCore  from "../../lib/CrudCore";
+import CrudCore  from "@cupparis-lib/lib/CrudCore";
 
 
 

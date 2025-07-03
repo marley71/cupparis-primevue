@@ -4,7 +4,7 @@
 
 <script>
 
-import _wInput from '../../widgets/_wInput.vue'
+import _wInput from '@cupparis-lib/widgets/_wInput.vue'
 export default {
   name: "wHidden",
   extends: _wInput

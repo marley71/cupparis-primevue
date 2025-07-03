@@ -17,7 +17,7 @@
 
 <script>
 
-import _wDateRangePicker from '../../widgets/_wDateRangePicker.vue'
+import _wDateRangePicker from '@cupparis-lib/widgets/_wDateRangePicker.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wDateRangePicker",

@@ -179,7 +179,7 @@
 </template>
 
 <script>
-import _vList from '../../views/_vList.vue'
+import _vList from '@cupparis-lib/views/_vList.vue'
 //import cWidget from "../widgets/cWidget.vue";
 import cAction from "../actions/cAction.vue";
 export default {

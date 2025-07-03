@@ -15,7 +15,7 @@
 
 <script>
 
-import _wCheckbox from '../../widgets/_wCheckbox.vue'
+import _wCheckbox from '@cupparis-lib/widgets/_wCheckbox.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wCheckbox",

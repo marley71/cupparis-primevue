@@ -16,7 +16,7 @@
 
 <script>
 
-import _wBelongstoMany from '../../widgets/_wBelongstoMany.vue'
+import _wBelongstoMany from '@cupparis-lib/widgets/_wBelongstoMany.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wBelongstoMany",

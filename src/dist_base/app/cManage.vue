@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import _cManage from "../../app/_cManage.vue";
+import _cManage from "@cupparis-lib/app/_cManage.vue";
 
 export default {
     name: "c-manage",

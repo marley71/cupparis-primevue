@@ -136,27 +136,22 @@ export default {
             }
             if (that.conf.execute) {
                 that._beforeExecute().then(() => {
-                    try {
-                        let result = that.conf.execute.apply(this,[event]);
-                        console.debug('execute after', result)
-                        if (result && result instanceof Promise) {
-                            result.then(() => {
-                                that._afterExecute();
-                            }).catch((error) => {
-                                console.error('execute fallita', error)
-                            })
-                        } else {
-                            if (result) {
-                                that._afterExecute();
-                            }
+                    let result = that.conf.execute.apply(this,[event]);
+                    console.debug('execute after', result)
+                    if (result && result instanceof Promise) {
+                        result.then(() => {
+                            that._afterExecute();
+                        }).catch((error) => {
+                            console.debug('execute reject', error)
+                        })
+                    } else {
+                        if (result) {
+                            that._afterExecute();
                         }
-                    } catch (e) {
-                        throw e
                     }
-
                 }).catch((error) => {
-                    console.error('beforeExecute failed', error);
-                    throw error;
+                    console.debug('beforeExecute reject', error);
+                    //throw error;
                 })
             } else {
                 alert('execute non definita')

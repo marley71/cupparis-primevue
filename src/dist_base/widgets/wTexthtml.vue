@@ -11,7 +11,7 @@
 
 <script>
 
-import _wTexthtml from '../../widgets/_wTexthtml.vue'
+import _wTexthtml from '@cupparis-lib/widgets/_wTexthtml.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wTexthtml",

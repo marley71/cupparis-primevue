@@ -57,7 +57,7 @@ export default {
                 actionsConfig: {
                     'action-save': {
                         text: 'app.import-button',
-                        enabled:false,
+                        _disabled :true,
                         csvDashboard : that,
                         execute() {
                             that.importForm();
@@ -100,11 +100,9 @@ export default {
 
                 },
                 onSuccess() {
-                    //var that = this
                     var viewUpload = thatImport.$refs.viewUpload.instance();
-                    window.pippo = thatImport;
                     console.log('viewUpload action-save', viewUpload.getAction('action-save'))
-                    viewUpload.getAction('action-save').setEnabled(true)
+                    viewUpload.getAction('action-save')._disabled = false;
                 },
             }
             confUpload = Object.assign(confUpload,(conf.confUpload || {}));

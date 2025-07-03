@@ -38,7 +38,7 @@
 
 <script>
 
-import _wMultiselect from '../../widgets/_wMultiSelect.vue'
+import _wMultiselect from '@cupparis-lib/widgets/_wMultiSelect.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wMultiselect",

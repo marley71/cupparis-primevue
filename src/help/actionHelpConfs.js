@@ -1,4 +1,5 @@
 import CrudCore from "../lib/CrudCore";
+
 export default {
     actionSingola() {
         return {
@@ -7,6 +8,69 @@ export default {
                     text : 'ok',
                     execute() {
                         CrudCore.alertInfo('Hai premuto ok')
+                    },
+                    disabled() {
+
+                    }
+                },
+                'action-before-execute' : {
+                    text : 'con beforeExecute',
+                    beforeExecute() {
+                        CrudCore.alertInfo('Before execute senza promise')
+                        return true;
+                    },
+                    execute() {
+                        CrudCore.alertInfo('Execute');
+                    }
+                },
+                'action-before-execute-promise' : {
+                    text : 'con beforeExecute promise',
+                    beforeExecute() {
+                        return  new Promise((resolve,reject) => {
+                            if (CrudCore.confirmDialog('Sei sicuro',{},{
+                                ok() {
+                                    resolve(true)
+                                },
+                                cancel() {
+                                    reject();
+                                }
+                            }));
+                        })
+
+                    },
+                    execute() {
+                        CrudCore.alertInfo('Execute');
+                    }
+                },
+                'action-before-execute_execute-promise' : {
+                    text : 'con beforeExecute e execute promise',
+                    beforeExecute() {
+                        return  new Promise((resolve,reject) => {
+                            if (CrudCore.confirmDialog('Sei sicuro',{},{
+                                ok() {
+                                    resolve(true)
+                                },
+                                cancel() {
+                                    reject();
+                                }
+                            }));
+                        })
+
+                    },
+                    execute() {
+                        return  new Promise((resolve,reject) => {
+                            if (CrudCore.confirmDialog('Per la seconda volta. Sei sicuro',{},{
+                                ok() {
+                                    resolve(true)
+                                },
+                                cancel() {
+                                    reject();
+                                }
+                            }));
+                        })
+                    },
+                    afterExecute() {
+                        CrudCore.alertInfo('allora sei proprio sicuro')
                     }
                 }
             }

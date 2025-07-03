@@ -16,7 +16,7 @@
 
 <script>
 
-import _wObject from '../../widgets/_wObject.vue'
+import _wObject from '@cupparis-lib/widgets/_wObject.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wObject",

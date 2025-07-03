@@ -12,7 +12,7 @@
 
 <script>
 
-import _wJson from '../../widgets/_wJson.vue'
+import _wJson from '@cupparis-lib/widgets/_wJson.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wJson",

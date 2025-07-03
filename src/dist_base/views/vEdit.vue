@@ -184,7 +184,7 @@
 
 <script>
 
-import _vEdit from '../../views/_vEdit.vue'
+import _vEdit from '@cupparis-lib/views/_vEdit.vue'
 import cAction from "../actions/cAction.vue";
 
 export default {

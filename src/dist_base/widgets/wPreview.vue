@@ -21,7 +21,7 @@
 
 <script>
 
-import _wPreview from '../../widgets/_wPreview.vue'
+import _wPreview from '@cupparis-lib/widgets/_wPreview.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wPreview",

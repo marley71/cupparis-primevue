@@ -31,7 +31,7 @@
 
 <script>
 
-import _wBelongsto from '../../widgets/_wBelongsto.vue'
+import _wBelongsto from '@cupparis-lib/widgets/_wBelongsto.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wBelongsto",

@@ -1,7 +1,7 @@
 import ProtocolList from "./ProtocolList.js";
 import ProtocolRecord from "./ProtocolRecord.js";
 import CrudVars from "./CrudVars";
-import { defineAsyncComponent, createApp } from 'vue'
+import { defineAsyncComponent, createApp,nextTick } from 'vue'
 import ViewWrapperConf from "../views/WrapperConf";
 import WidgetWrapperConf from "../widgets/WrapperConf";
 import {EventBus} from 'primevue/utils';
@@ -353,19 +353,21 @@ CrudCore.warningDialog = function(msg,props,callbacks) {
 }
 
 CrudCore.confirmDialog = function(msg,props,callbacks) {
-    this.globalProperties.$confirm.require({
+    let that = this;
+    that.globalProperties.$confirm.require({
         message: msg,
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
             //callback to execute when user confirms the action
             let cOk = callbacks && callbacks.ok?callbacks.ok:function (){};
-            cOk();
+            // se viene chiamata di nuovo una confirm senza il timeout da' errore
+            setTimeout(cOk,190);
         },
         reject: () => {
             //callback to execute when user rejects the action
             let cCancel = callbacks && callbacks.cancel?callbacks.cancel:function (){};
-            cCancel();
-        }
+            setTimeout(cCancel,190)
+        },
     });
 }
 

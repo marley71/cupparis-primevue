@@ -29,7 +29,7 @@
 <script>
 
 import ABase from "./aBase.vue";
-import _cAction from "../../actions/_cAction.vue";
+import _cAction from "@cupparis-lib/actions/_cAction.vue";
 
 export default {
     name: "c-action",

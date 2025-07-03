@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import _wSwap from '../../widgets/_wSwap.vue';
+import _wSwap from '@cupparis-lib/widgets/_wSwap.vue';
 import RulesErrors from "./RulesErrors.vue";
 export default {
     name: "wSwap",

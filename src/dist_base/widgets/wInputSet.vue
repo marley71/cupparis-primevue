@@ -17,7 +17,7 @@
 
 <script>
 
-import _wInputSet from '../../widgets/_wInputSet.vue'
+import _wInputSet from '@cupparis-lib/widgets/_wInputSet.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
     name: "wInputSet",

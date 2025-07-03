@@ -177,7 +177,7 @@
 
 
 <script>
-import _vSearch from '../../views/_vSearch.vue'
+import _vSearch from '@cupparis-lib/views/_vSearch.vue'
 import cAction from "../actions/cAction.vue";
 
 export default {

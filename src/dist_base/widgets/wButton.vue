@@ -8,7 +8,7 @@
 
 <script>
 
-import _wButton from '../../widgets/_wButton.vue'
+import _wButton from '@cupparis-lib/widgets/_wButton.vue'
 import RulesErrors from "./RulesErrors.vue";
 
 export default {

@@ -21,7 +21,7 @@
 
 <script>
 
-import _wText from '../../widgets/_wText.vue'
+import _wText from '@cupparis-lib/widgets/_wText.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wText",

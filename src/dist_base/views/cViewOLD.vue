@@ -36,7 +36,7 @@
 
 <script>
 
-import _cView from '../../views/_cView.vue'
+import _cView from '@cupparis-lib/views/_cView.vue'
 import vBase from "./vBase.vue";
 import vList from "./vList.vue";
 import vListEdit from './vListEdit.vue';

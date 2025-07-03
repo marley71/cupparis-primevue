@@ -9,7 +9,7 @@
 
 <script>
 
-import _wUpload from '../../widgets/_wUpload.vue'
+import _wUpload from '@cupparis-lib/widgets/_wUpload.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wUpload",

@@ -32,7 +32,7 @@
 
 <script>
 
-import _wUploadAjax from '../../widgets/_wUploadAjax.vue'
+import _wUploadAjax from '@cupparis-lib/widgets/_wUploadAjax.vue'
 import RulesErrors from "./RulesErrors.vue";
 
 export default {

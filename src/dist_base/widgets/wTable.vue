@@ -14,7 +14,7 @@
 
 <script>
 
-import _wTable from '../../widgets/_wTable.vue'
+import _wTable from '@cupparis-lib/widgets/_wTable.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wTable",

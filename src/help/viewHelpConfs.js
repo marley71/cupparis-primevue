@@ -1,3 +1,5 @@
+import CrudCore from "../lib/CrudCore";
+
 export default {
     staticList() {
         return  {
@@ -621,7 +623,7 @@ export default {
                     actionParent : 'action-view',
                     text : 'view 2',
                     afterExecute() {
-                        alert('dopo execute')
+                        CrudCore.alertInfo('afterExecute');
                     },
                 }
             },

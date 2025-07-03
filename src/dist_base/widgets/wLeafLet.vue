@@ -21,7 +21,7 @@
 <script>
 import "leaflet/dist/leaflet.css";
 import { LMap, LTileLayer,LIcon,LMarker } from "@vue-leaflet/vue-leaflet";
-import _wLeafLet from '../../widgets/_wLeafLet.vue'
+import _wLeafLet from '@cupparis-lib/widgets/_wLeafLet.vue'
 import RulesErrors from "./RulesErrors.vue";
 
 

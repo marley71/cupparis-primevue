@@ -81,7 +81,7 @@
 
 
 <script>
-import _wHasmany from '../../widgets/_wHasmany.vue'
+import _wHasmany from '@cupparis-lib/widgets/_wHasmany.vue'
 import RulesErrors from "./RulesErrors.vue";
 
 export default {

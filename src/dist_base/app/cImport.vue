@@ -47,7 +47,7 @@
 
 import vRecord from "../views/vRecord.vue";
 import vList from '../views/vList.vue';
-import _cImport from "../../app/_cImport.vue";
+import _cImport from "@cupparis-lib/app/_cImport.vue";
 
 export default {
     name: "c-import",

@@ -16,7 +16,7 @@
 
 <script>
 
-import _wRadio from '../../widgets/_wRadio.vue'
+import _wRadio from '@cupparis-lib/widgets/_wRadio.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wRadio",

@@ -17,7 +17,7 @@
 
 <script>
 
-import _wDatePicker from '../../widgets/_wDatePicker.vue'
+import _wDatePicker from '@cupparis-lib/widgets/_wDatePicker.vue'
 import RulesErrors from "./RulesErrors.vue";
 
 export default {

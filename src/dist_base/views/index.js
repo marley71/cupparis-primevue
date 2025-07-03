@@ -8,7 +8,7 @@ import vEdit from './vEdit.vue';
 import vView from './vView.vue';
 import vSearch from './vSearch.vue';
 import vListHasmany from './vListHasmany.vue';
-import CrudCore from "../../lib/CrudCore";
+import CrudCore from "@cupparis-lib/lib/CrudCore";
 
 
 export default {

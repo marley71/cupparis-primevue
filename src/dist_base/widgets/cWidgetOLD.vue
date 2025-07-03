@@ -1,7 +1,7 @@
 <template>
     <span>
         <template v-if="conf.type==='w-hidden'">
-            <input type="hidden" :name="name" v-model="value" v-bind="extraBind" @change="_change"/>
+            <input type="hidden" :name="name" v-model="value" v-bind="extraBind" @change="change"/>
         </template>
 
         <template v-else-if="conf.type==='w-autocomplete'">
@@ -119,7 +119,7 @@
 </template>
 
 <script>
-import _cWidget from '../../widgets/_cWidget.vue'
+import _cWidget from '@cupparis-lib/widgets/_cWidget.vue'
 import wHasmany from "./wHasmany.vue";
 import wSwap from "./wSwap.vue";
 import wSwapSelect from "./wSwapSelect.vue";

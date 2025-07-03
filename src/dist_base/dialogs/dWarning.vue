@@ -1,5 +1,5 @@
 <template>
-    <Dialog class="p-dialog" v-model:visible="display" :modal="true" :style="{width: width}">
+    <Dialog class="p-dialog" v-model:visible="display" :modal="true" :style="{width: width}" @hide="hide">
         <template #header>
             <h3>{{ translate(title) }}</h3>
         </template>
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import _dWarning from '../../dialogs/_dWarning.vue'
+import _dWarning from '@cupparis-lib/dialogs/_dWarning.vue'
 import Button from 'primevue/button';
 import Dialog from "primevue/dialog";
 

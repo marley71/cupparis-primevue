@@ -2,7 +2,7 @@
   <span>
     <Password v-if="inputType == 'password'" :inputProps="{'name':name}" :name="name" v-model="value" toggleMask
               v-bind="extraBind"
-              @change="_change" :class="errors.length?'p-invalid':''"
+              @change="change" :class="errors.length?'p-invalid':''"
               :promptLabel="translate('app.scegli-password')" :weakLabel="translate('app.password-semplice')"
               :mediumLabel="translate('app.password-media')"
               :strongLabel="translate('app.password-complessa')"/>
@@ -15,7 +15,7 @@
 
 <script>
 
-import _wInput from '../../widgets/_wInput.vue'
+import _wInput from '@cupparis-lib/widgets/_wInput.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wInput",

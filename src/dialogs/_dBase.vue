@@ -28,7 +28,8 @@ export default {
         that.display = true;
     },
     hide () {
-        let that = this
+        let that = this;
+        console.debug('hide');
         that.display = false;
     },
     ok : function () {
@@ -69,7 +70,7 @@ export default {
         if (that.component)
             that.component.unmount();
     }
-    }
+  }
 }
 </script>
 

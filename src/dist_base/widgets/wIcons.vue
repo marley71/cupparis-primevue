@@ -12,7 +12,7 @@
 
 <script>
 
-import _wIcons from '../../widgets/_wIcons.vue'
+import _wIcons from '@cupparis-lib/widgets/_wIcons.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wIcons",

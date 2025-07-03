@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import _wEditor from '../../widgets/_wEditor.vue'
+import _wEditor from '@cupparis-lib/widgets/_wEditor.vue'
 import Editor from 'primevue/editor';
 import SshPre from 'simple-syntax-highlighter'
 import 'simple-syntax-highlighter/dist/sshpre.css'

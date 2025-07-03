@@ -15,7 +15,7 @@
 
 <script>
 
-import _wDateText from '../../widgets/_wDateText.vue'
+import _wDateText from '@cupparis-lib/widgets/_wDateText.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wDateText",

@@ -184,7 +184,7 @@
 
 <script>
 
-import _vInsert from '../../views/_vInsert.vue'
+import _vInsert from '@cupparis-lib/views/_vInsert.vue'
 import cAction from "../actions/cAction.vue";
 
 export default {

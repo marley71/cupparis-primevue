@@ -8,7 +8,7 @@
 
 <script>
 
-import _wColorPicker from '../../widgets/_wColorPicker.vue'
+import _wColorPicker from '@cupparis-lib/widgets/_wColorPicker.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wColorPicker",

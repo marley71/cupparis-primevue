@@ -9,7 +9,7 @@
 
 <script>
 
-import _wImage from '../../widgets/_wImage.vue'
+import _wImage from '@cupparis-lib/widgets/_wImage.vue'
 import RulesErrors from "./RulesErrors.vue";
 
 export default {

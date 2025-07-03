@@ -2,7 +2,7 @@
     <div>
         <Dropdown class="w-full" :name="name" v-model="value" :options="mapOptions()"
                 option-label="label" option-value="id" :placeholder="placeholder || translate('app.seleziona')"
-                v-bind="extraBind" @change="_change">
+                v-bind="extraBind" @change="change">
                 <template #option="slotProps">
                     <div
                         :class="'select-button-option select-button-option-'+name+ ' select-button-option-'+name+'-'+slotProps.option.id"
@@ -62,7 +62,7 @@ export default {
             //console.log('options',options);
             return options;
         },
-        _change() {
+        change() {
             this.execute();
         }
     }

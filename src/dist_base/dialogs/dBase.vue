@@ -1,6 +1,6 @@
 
 <script>
-import _dBase from '../../dialogs/_dBase.vue'
+import _dBase from '@cupparis-lib/dialogs/_dBase.vue'
 
 export default {
     name: 'd-base',

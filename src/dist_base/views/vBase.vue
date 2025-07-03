@@ -1,6 +1,6 @@
 <script>
 
-import _vBase from '../../views/_vBase.vue'
+import _vBase from '@cupparis-lib/views/_vBase.vue'
 
 export default {
   name : "vBase",

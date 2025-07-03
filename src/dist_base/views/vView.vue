@@ -184,7 +184,7 @@
 
 <script>
 
-import _vView from '../../views/_vView.vue'
+import _vView from '@cupparis-lib/views/_vView.vue'
 import cAction from "../actions/cAction.vue";
 
 export default {

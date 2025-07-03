@@ -13,7 +13,7 @@
 
 <script>
 
-import _wAutocomplete from '../../widgets/_wAutocomplete.vue'
+import _wAutocomplete from '@cupparis-lib/widgets/_wAutocomplete.vue'
 import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wAutocomplete",

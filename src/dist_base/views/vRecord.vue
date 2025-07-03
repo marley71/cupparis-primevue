@@ -184,7 +184,7 @@
 
 <script>
 
-import _vRecord from '../../views/_vRecord.vue'
+import _vRecord from '@cupparis-lib/views/_vRecord.vue'
 //import cWidget from "../widgets/cWidget.vue";
 import cAction from "../actions/cAction.vue";
 

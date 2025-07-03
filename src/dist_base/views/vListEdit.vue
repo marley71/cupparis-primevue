@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import _vListEdit from '../../views/_vListEdit.vue'
+import _vListEdit from '@cupparis-lib/views/_vListEdit.vue'
 //import cWidget from "../widgets/cWidget.vue";
 import cAction from "../actions/cAction.vue";
 export default {

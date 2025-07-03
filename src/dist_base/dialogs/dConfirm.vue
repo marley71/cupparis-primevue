@@ -1,5 +1,5 @@
 <template >
-    <Dialog class="p-dialog" v-model:visible="display" :modal="true" :style="{width: width}" :class="customClass ? customClass : ''" >
+    <Dialog class="p-dialog" v-model:visible="display" :modal="true" :style="{width: width}" :class="customClass ? customClass : ''" @hide="hide" >
         <template #header>
             <h3>{{ translate(title) }}</h3>
         </template>
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import _dConfirm from '../../dialogs/_dConfirm.vue'
+import _dConfirm from '@cupparis-lib/dialogs/_dConfirm.vue'
 
 export default {
   name: 'd-confirm',
