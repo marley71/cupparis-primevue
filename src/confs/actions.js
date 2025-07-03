@@ -7,22 +7,22 @@ const actionConfs = {
     'default': {
         modelData:{},
         extraBind: {},
-        controlType : 'button',
-        enabled:true,
-        visible: true,
+        type : 'button',
+        _disabled:false,
+        _visible: true,
     },
     'action-record-grouped' : {
         componentName:'a-grouped',
-        type :'record',
+        actionType :'record',
         title: 'grouped'
     },
     'action-collection-grouped' : {
         componentName:'a-grouped',
-        type :'collection',
+        actionType :'collection',
         title: 'grouped'
     },
     'action-reset' : {
-        type : 'collection',
+        actionType : 'collection',
         title : 'app.reset',
         css: 'rounded',
         text : 'app.reset',
@@ -34,7 +34,7 @@ const actionConfs = {
         }
     },
     'action-search' : {
-        type : 'collection',
+        actionType : 'collection',
         title : 'app.cerca',
         buttonClass: '',
         icon : 'fa fa-search',
@@ -65,7 +65,7 @@ const actionConfs = {
         }
     },
     'action-search-basic' : {
-        type : 'collection',
+        actionType : 'collection',
         title : 'app.cerca',
         buttonClass: 'p-button p-button-primary',
         icon : 'fa fa-search',
@@ -93,7 +93,7 @@ const actionConfs = {
         }
     },
     'action-save' : {
-        type : 'collection',
+        actionType : 'collection',
         title : 'app.salva',
         buttonClass: 'p-button-outlined p-button-success',
         icon : 'fa fa-save',
@@ -119,6 +119,7 @@ const actionConfs = {
         _save (callback) {
             var that = this;
             if (!that.view) {
+                CrudCore.alertError("impossibile eseguire _save. View non definita")
                 console.error("impossibile eseguire _save view non definita");
                 callback(false)
             }
@@ -142,7 +143,7 @@ const actionConfs = {
 
     },
     'action-save-back' : {
-        type : 'collection',
+        actionType : 'collection',
         title : 'app.salva-torna-indietro',
         buttonClass: 'p-button-outlined p-button-success',
         icon : 'fa fa-save',
@@ -184,7 +185,7 @@ const actionConfs = {
         }
     },
     'action-edit' : {
-        type : 'record',
+        actionType : 'record',
         title : 'app.modifica',
         css: '',
         text : '',
@@ -196,7 +197,7 @@ const actionConfs = {
         }
     },
     'action-view' : {
-        type : 'record',
+        actionType : 'record',
         title : 'app.vista',
         css: '',
         icon : 'fa fa-eye',
@@ -217,7 +218,7 @@ const actionConfs = {
         }
     },
     'action-delete' : {
-        type : 'record',
+        actionType : 'record',
         title : 'app.cancella',
         css: 'text-red-500',
         buttonClass: 'p-button-outlined p-button-danger',
@@ -274,12 +275,12 @@ const actionConfs = {
         }
     },
     'action-save-row' : {
-        type: 'record',
+        actionType: 'record',
         title: 'app.salva',
         css: '',
         text: '',
         icon: 'fa fa-save',
-        visible: false,
+        _visible: false,
         execute (event) {
             let tA = this;
             return new Promise(function (resolve,reject) {
@@ -305,7 +306,7 @@ const actionConfs = {
         },
     },
     'action-edit-mode':  {
-        type : 'record',
+        actionType : 'record',
         title : 'app.modifica',
         css: '',
         text : '',
@@ -316,21 +317,21 @@ const actionConfs = {
         }
     },
     'action-view-mode' : {
-        type : 'record',
+        actionType : 'record',
         title : 'app.annulla',
         css: '',
         //text : 'back',
         icon : 'fa fa-arrow-left',
-        visible : false,
+        _visible : false,
         execute : function () {
             var that = this;
             that.view.setViewMode(that.index);
         }
     },
     'action-insert' : {
-        type : 'collection',
-        visible : true,
-        enabled : true,
+        actionType : 'collection',
+        _visible : true,
+        _disabled : false,
         title : 'app.nuovo',
         buttonClass: 'p-button-outlined p-button-success ',
         icon : 'fa fa-plus',
@@ -342,7 +343,7 @@ const actionConfs = {
         }
     },
     'action-back' : {
-        type : 'collection',
+        actionType : 'collection',
         title : 'app.indietro',
         buttonClass: 'p-button-outlined p-button-warning',
         icon : 'fa fa-backward',
@@ -353,7 +354,7 @@ const actionConfs = {
         }
     },
     'action-delete-selected' : {
-        type : 'collection',
+        actionType : 'collection',
         title : 'app.cancella-selezionati',
         buttonClass: 'p-button-outlined p-button-danger',
         icon : 'fa fa-trash',
@@ -414,13 +415,13 @@ const actionConfs = {
     'action-show-error' : {
         text : 'app.mostra-solo-errori', //'Mostra solo errori',
         css : 'btn-outline-danger',
-        type : 'collection',
-        controlType:'button',
+        actionType : 'collection',
+        type:'button',
         execute() {
             this.view.showError = true;
             this.view.reload();
         },
-        visible() {
+        _visible() {
             if (this.view.metadata.has_datafile_errors)
                 return true
             return false;
@@ -428,13 +429,13 @@ const actionConfs = {
     },
     'action-mostra-tutti' : {
         text : 'app.mostra-tutti', // 'Mostra tutti',
-        type : 'collection',
-        controlType:'button',
+        actionType : 'collection',
+        type:'button',
         execute() {
             this.view.showError = false;
             this.view.reload();
         },
-        visible() {
+        _visible() {
             if (this.view.metadata.has_datafile_errors)
                 return true
             return false;
@@ -491,7 +492,7 @@ const actionConfs = {
 
             //console.log('r', r)
         },
-        type: 'collection',
+        actionType: 'collection',
         icon: 'fa fa-file-csv',
         text: 'Esporta',
         css: 'p-button-sm p-button-text p-button-secondary',
@@ -551,7 +552,7 @@ const actionConfs = {
 
             //console.log('r', r)
         },
-        type: 'record',
+        actionType: 'record',
         icon: 'fa fa-file-pdf',
         text: 'Pdf',
         css: 'p-button-sm p-button-text p-button-secondary',

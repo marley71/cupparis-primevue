@@ -56,7 +56,7 @@ export default {
                 }
                 that.oldValue = that.value;
                 //that.value = that.toggleValue?1:0;
-                that._change();
+                that.change();
             })
         },
         swap(event) {

@@ -46,13 +46,14 @@ export default {
         _uploadConf() {
             let that = this;
             //let userConf = that.viewUpload; //that.merge({},that.viewUpload);
+            let viewUpload = that.conf.viewUpload || {};
             let userConf = {
                 cRef: 'viewUpload',
                 type : 'v-edit',
                 routeName: 'datafile_insert',
-                fields: [],
+                fields: viewUpload.fields?viewUpload.fields:[],
                 actions: ['action-save'], // 'action-cancel'],
-                fieldsConfig: {},
+                fieldsConfig: viewUpload.fieldsConfig?viewUpload.fieldsConfig:{},
                 actionsConfig: {
                     'action-save': {
                         text: 'app.import-button',
@@ -64,6 +65,7 @@ export default {
                     }
                 }
             }
+
 
             userConf.modelName = that.providerName;
             let confUpload = that._defaultUploadConf();
@@ -115,6 +117,10 @@ export default {
             let viewParams = importView.getViewData();
 
             let w = importView.getWidget('resource');
+            if (!w || !w.getValue()) {
+                that.alertError('Inserire il file da importare');
+                return ;
+            }
             let value = JSON.parse(w.getValue());
             let r = this.createRoute('load_datafile');
             r.setParams(viewParams);

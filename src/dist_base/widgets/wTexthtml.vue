@@ -1,7 +1,7 @@
 <template>
   <span>
     <input type="hidden" :name="name" v-model="value"/>
-    <Editor v-model="value" editorStyle="height: 320px" @text-change="_change">
+    <Editor v-model="value" editorStyle="height: 320px" @text-change="change">
         <template v-if="toolbar" #toolbar>
         </template>
     </Editor>

@@ -18,8 +18,8 @@ export default {
 
     viewUpload: {
         fields: [
-            // 'vettore_id',
-            // 'giorni',
+            'vettore_id',
+            'giorni',
 
         ],
         fieldsConfig: {
@@ -27,7 +27,12 @@ export default {
                 type: 'w-select',
             },
             giorni: {
-                type: 'w-checkbox',
+                type: 'w-radio',
+                // domainValues : {
+                //     0 : 'Nessun giorno',
+                //     1 : 'Dispari',
+                //     2 : 'Pari'
+                // }
             }
         }
     },

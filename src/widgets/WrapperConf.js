@@ -12,7 +12,6 @@ export default class WrapperConf {
         type : 'w-input',
         label : '',
         rules:'',
-        disabled : null,
         rowType : '',
         errors : [],
     }
@@ -157,6 +156,7 @@ export default class WrapperConf {
         }
         conf.with = conf.width?conf.width:25;
         conf.height = conf.height?conf.height:25;
+        conf.center = conf.center || [41.42,12.12];
         return conf;
     }
 
@@ -174,14 +174,16 @@ export default class WrapperConf {
         if ( !('inputType' in conf) ) {
             conf.inputType = 'text';
         }
-        conf.reset = conf.reset || function() {
-            let that = this;
-            that.value = null;
-        };
+        // conf.reset = conf.reset || function() {
+        //     let that = this;
+        //     that.value = null;
+        // };
         if ( !('canUpdate' in conf) ) {
             conf.canUpdate = true;
         }
+        console.debug('overlayTitle '+conf.overlayTitle)
         conf.routeName = conf.routeName || 'set';
+        conf.overlayTitle = conf.overlayTitle || 'app.modifica';
         return conf;
     }
     wImage(conf) {

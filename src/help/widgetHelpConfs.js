@@ -523,7 +523,7 @@ export default {
             name : 'mappa',
             value: [
                 [43.3,11.7],
-                [40.3,10.5]
+                [38.3,7.5]
             ],
         }
     },
@@ -534,7 +534,7 @@ export default {
             "markerIcon":"http://www.repstatic.it/cless/main/common/component/header-footer/2020-v1/img/logo-repubblica.svg",
             value: [
                 [43.3,11.7],
-                [40.3,10.5]
+                [38.3,7.5]
             ],
         }
     }

@@ -112,7 +112,7 @@ export default {
             var that = this;
             var a = that.getRecordAction(index, name);
             if (a) {
-                a.setVisible(false);
+                a._visible = false;
             }
 
         },
@@ -120,7 +120,7 @@ export default {
             var that = this;
             var a = that.getRecordAction(index, name);
             if (a) {
-                a.setVisible(true);
+                a._visible = true;
             }
 
         },

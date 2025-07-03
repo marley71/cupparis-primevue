@@ -171,7 +171,7 @@ export default {
         conf.actionsConfig = {};
         conf.actionsConfig['show-panel'] = {
             text : 'sp',
-            type : 'record',
+            actionType : 'record',
             toggle : false,
             execute(event) {
                 let that = this;
@@ -318,13 +318,13 @@ export default {
             },
             actionsConfig: {
                 'action-custom': {
-                    text: 'Custom',
+                    text: 'enabled/disabled',
                     execute() {
                         let tA = this;
-                        let en = tA.view.getAction('action-save').enabled;
+                        let dis = tA.view.getAction('action-save')._disabled;
                         console.log('custom action',tA.view.getAction('action-save'));
-                        tA.view.getAction('action-save').setEnabled(!en);
-                        tA.messageDialog('azione custom, ora la save è ' + (!en?'ABILITATA':'DISABILITATA'));
+                        tA.view.getAction('action-save')._disabled = !dis;
+                        tA.messageDialog('azione custom, ora la save è ' + (dis?'ABILITATA':'DISABILITATA'));
                         return true;
                     }
                 },
@@ -446,9 +446,9 @@ export default {
                     text: 'Custom',
                     execute() {
                         let tA = this;
-                        let en = tA.view.getAction('action-save').enabled;
+                        let dis = tA.view.getAction('action-save')._disabled;
                         console.log('custom action',tA.view.getAction('action-save'));
-                        tA.view.getAction('action-save').setEnabled(!en);
+                        tA.view.getAction('action-save')._disabled = !dis
                     }
                 }
             }
@@ -577,15 +577,22 @@ export default {
             actionsConfig : {
                 'action-select' : {
                     text : 'mod inst',
+                    type : 'w-select',
                     domainValues : {
-                        0 : 'Nessuna azione',
-                        1 : 'Pippo',
-                        2 : 'Pluto'
+                        2 : 'Tutti',
+                        1 : 'Bannati',
+                        0 : 'Non Bannati'
                     },
+                    domainValuesOrder : [2,1,0],
                     value : 2,
-                    // execute() {
-                    //     alert('value ' + this.value);
-                    // }
+                    execute() {
+                        alert('value ' + this.value);
+                    },
+                    change() {
+                        let param = parseInt(this.value) == 2?'':this.value;
+                        this.view.setParams({'s_banned':param});
+                        this.view.load();
+                    }
                 }
             },
             orderFields : {

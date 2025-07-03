@@ -149,11 +149,11 @@ export default {
         },
         actionsConfig : {
             'action-test' : {
-                visible : function () {
+                _visible : function () {
                     return false;
                 },
                 //enabled : false,
-                enabled : function() {
+                _disabled : function() {
                     return false;
                 },
                 text : 'test'

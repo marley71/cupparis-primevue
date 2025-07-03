@@ -1,6 +1,6 @@
 <template>
   <span>
-    <ColorPicker v-model="value" @change="_change" v-bind="extraBind"/>
+    <ColorPicker v-model="value" @change="change" v-bind="extraBind"/>
     <RulesErrors :errors="errors"></RulesErrors>
   </span>
 

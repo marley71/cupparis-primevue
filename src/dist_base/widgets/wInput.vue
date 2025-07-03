@@ -7,7 +7,7 @@
               :mediumLabel="translate('app.password-media')"
               :strongLabel="translate('app.password-complessa')"/>
     <InputText v-else class="w-full" :name="name" :type="inputType" v-model="value" v-bind="extraBind"
-             @change="_change" :class="errors && errors.length?'p-invalid':''"></InputText>
+             @change="change" :class="errors && errors.length?'p-invalid':''"></InputText>
     <RulesErrors :errors="errors"></RulesErrors>
   </span>
 

@@ -5,12 +5,13 @@ import CrudComponent from "../CrudComponent.vue";
 import Server from "../lib/Server";
 import WrapperConf from "./WrapperConf";
 import CrudHelpers from "../lib/CrudHelpers";
+import global from "../confs/global";
 
 export default {
     name: "_aBase",
     extends: CrudComponent,
     //props: ['conf'],
-    created() {
+    beforeCreate() {
         let that = this;
         //console.log('CREATEDDD',that)
         that.overwriteMethods = {};
@@ -21,12 +22,14 @@ export default {
             }
         }
 
-        for (let k in that.wConf) {
+        for (let k in that.conf) {
             //console.log('action wConf k',k,that.wConf[k]);
-
-            if (that.wConf[k] instanceof Function) {
+            if (global.actionReservedKeys.indexOf(k) >= 0) {
+                throw "(" +k+") è una chiave riservata e non può essere sovrascritta";
+            }
+            if (that.conf[k] instanceof Function) {
                 //console.log('found method',k);
-                that.overwriteMethods[k] = that.wConf[k];
+                that.overwriteMethods[k] = that.conf[k];
                 __call(k);
             }
         }
@@ -34,32 +37,14 @@ export default {
     },
     // mounted() {
     //     let that = this;
-    //     if(that.controlType == 'link') {
+    //     if(that.type == 'link') {
     //         that.execute();
     //     }
     // },
     data() {
         let that = this;
-        let wc = new WrapperConf();
-        let ext = wc.loadConf(that.conf);
-        let dt = {};
-        for (let k in ext) {
-            if (!(ext[k] instanceof Function)) {
-                dt[k] = ext[k];
-            }
-        }
-
-        dt.wConf = ext;
-        // bug da capire perche'
-        if (!dt.text)
-            dt.text = '';
-        if (!dt.title)
-            dt.title = '';
-        // if (!dt.icon) {
-        //     dt.icon = '';
-        // }
-        //console.debug('action finalData',dt);
-        return dt;
+        let conf = that._loadReactiveData(that.conf);
+        return conf;
     },
     methods: {
         getButtonSize() {
@@ -90,26 +75,27 @@ export default {
                 + that.getButtonClass() + ' '
                 + that.conf.spacing;
         },
-        _href() {
-            if (this.href instanceof Function) {
-                return this.href.apply(this);
+        href(event) {
+          console.debug('href event',event);
+            if (this.conf.href instanceof Function) {
+                return this.conf.href.apply(this);
             }
-            return this.href;
+            return this.conf.href;
         },
-        _visible() {
+        visible() {
             //console.log('_visible',this.visible);
-            if (this.visible instanceof Function) {
-                return this.visible.apply(this);
+            if (this.conf._visible instanceof Function) {
+                return this.conf._visible.apply(this);
             }
-            return this.visible;
+            return this._visible;
         },
-        _disabled() {
-            //console.log('_disable',this.enabled);
-            if (this.enabled instanceof Function) {
-                return !this.enabled.apply(this);
+        disabled() {
+            if (this.conf._disabled instanceof Function) {
+                return this.conf._disabled.apply(this);
             }
-            return !this.enabled;
+            return this._disabled;
         },
+
         _beforeExecute() {
             let that = this;
             return new Promise((resolve, reject) => {
@@ -140,18 +126,18 @@ export default {
 
             })
         },
-        _execute(event) {
+        execute(event) {
             let that = this;
             event.preventDefault();
-            if (that.controlType === 'link' || that.controlType === 'link-download') {
-                that.execute = function () {
+            if (that.type === 'link' || that.type === 'link-download') {
+                //that.execute = function () {
                     CrudHelpers.createRuntimeLink(that.href(), that.target)
-                }
+                //}
             }
-            if (that.execute) {
+            if (that.conf.execute) {
                 that._beforeExecute().then(() => {
                     try {
-                        let result = that.execute(event);
+                        let result = that.conf.execute.apply(this,[event]);
                         console.debug('execute after', result)
                         if (result && result instanceof Promise) {
                             result.then(() => {
@@ -184,24 +170,44 @@ export default {
             }
         },
 
-        setEnabled(value) {
-            this.enabled = value;
-        },
-        setVisible(value) {
-            this.visible = value;
-        },
+        // setEnabled(value) {
+        //     this.enabled = value;
+        // },
+        // setVisible(value) {
+        //     this.visible = value;
+        // },
 
-        _icon() {
-            if (this.icon instanceof Function) {
-                return this.icon.apply(this);
+        icon() {
+            if (this.conf.icon instanceof Function) {
+                return this.conf.icon.apply(this);
             }
-            return this.icon;
+            return this.conf.icon;
         },
-        _text() {
-            if (this.text instanceof Function) {
-                return this.translate(this.text.apply(this));
+        text() {
+            if (this.conf.text instanceof Function) {
+                return this.translate(this.conf.text.apply(this));
             }
-            return this.translate(this.text);
+            return this.translate(this.conf.text);
+        },
+        /**
+         * questa funzione normalizza la configurazione che mi arriva e restituisco solo i dati che devono essere realmente reactive
+         */
+        _loadReactiveData(conf) {
+          let wc = new WrapperConf()
+          let ext = wc.loadConf(conf);
+          let dt = {};
+          for (let k in ext) {
+              if (global.actionReservedKeys.indexOf(k) < 0) {
+                  if ((global.actionOverloadMethods.indexOf(k) < 0)) {
+                      if (!(ext[k] instanceof Function)) {
+                          dt[k] = ext[k];
+                      }
+                  }
+              }
+          }
+          //dt.errors = [];
+          //console.debug('wBase.data ', dt)
+          return dt;
         }
 
     }

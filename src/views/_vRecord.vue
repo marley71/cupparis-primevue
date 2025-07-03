@@ -13,7 +13,6 @@ export default {
     props: ['inlist', 'indexInlist'],
     emits: ['deleteInlist'],
     mounted() {
-        window.RECORD = this;
         if (this.autoload)
             this.load();
     },

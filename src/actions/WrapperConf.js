@@ -5,20 +5,24 @@ export default class WrapperConf {
             name : '',
             modelData:{},
             extraBind: {},
-            controlType : 'button',
+            type : 'button',
+            actionType : 'record',
             href : '',
             icon : null,
             target : null,
             text : '',
+            title : '',
             css : '',
-            enabled : true,
+            _disabled : false,
+            _visible : true,
             externalLink : false,
         }
     }
 
     loadConf(conf) {
         let that = this;
-        conf = Object.assign(that.defaultConf(),conf);
+        let def = that.defaultConf();
+        conf = Object.assign(def,conf);
         return conf;
     }
 }

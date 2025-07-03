@@ -39,9 +39,11 @@ export default {
         let markers = [];
         for (let i in this.conf.value) {
           if (Array.isArray(this.conf.value[i])) {
+              console.debug('latlng',this.conf.value[i],this.value);
+
             markers.push({
               icon : this.conf.markerIcon || defaultIcon,
-              latlng : this.conf.value[i],
+              latlng : [parseFloat(this.conf.value[i][0]), parseFloat(this.conf.value[i][1])],
               size : [this.conf.width,this.conf.height],
             })
           }

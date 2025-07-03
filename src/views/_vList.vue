@@ -162,12 +162,8 @@ export default {
       for (let i in that.actions) {
         let aName = that.actions[i];
         let aConf = CrudCore.getActionConf(aName, that.actionsConfig[aName]);
-        console.debug(aName, 'caso parent --view', aConf)
-        // --vecchio modo
-        // let aConf = Object.assign({}, actionConfs['default']);
-        // aConf = Object.assign(aConf, actionConfs[aName]);
-        // aConf = Object.assign(aConf, (that.actionsConfig[aName] || {}));
-        if (aConf.type == 'record') {
+        //console.debug(aName, 'caso parent --view', aConf)
+        if (aConf.actionType == 'record') {
           rActions[aName] = aConf;
         } else {
           gActions[aName] = aConf;

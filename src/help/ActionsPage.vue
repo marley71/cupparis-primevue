@@ -48,17 +48,14 @@
 <script>
 
 import JsToCode from "./JsToCode";
-import actionConfs from "./actionConfs";
+import actionConfs from "./actionHelpConfs";
 import CrudComponent from "../CrudComponent.vue";
 import CrudCore from "../lib/CrudCore";
 const jsc = new JsToCode();
 export default {
     name: "TestActions",
     extends : CrudComponent,
-    //components: {cWidget},
-    inject: ['store'],
     data() {
-        window.TW = this;
         return {
             aSelected : null,
             actionLayout : 'simple',

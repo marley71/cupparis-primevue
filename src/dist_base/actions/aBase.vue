@@ -1,29 +1,29 @@
 <template>
-    <template v-if="(controlType=='button' || controlType=='link-download') && _visible()">
-        <span v-if="controlType=='link-download'"
+    <template v-if="(type==='button' || type==='link-download') && visible()">
+        <span v-if="type==='link-download'"
             class="hidden" :linkhref="href()"></span>
-        <Button :title="translate(title)" :label="_text()"
+        <Button :title="translate(title)" :label="text()"
                 :class=getActionClass()
-                :icon="_icon()"
-                :disabled="_disabled()"
-                @click="_execute($event)"
+                :icon="icon()"
+                :disabled="disabled()"
+                @click="execute($event)"
         />
     </template>
-    <template v-else-if="controlType =='link' && _visible()">
-        <a v-if="externalLink" :class="getActionClass()" :href="_href()" :target="conf.target" :title="translate(title)">
-            <i v-if="_icon()" :class="_icon()"></i>
-            {{_text()}}
+    <template v-else-if="type =='link' && visible()">
+        <a v-if="externalLink" :class="getActionClass()" :href="href()" :target="target" :title="translate(title)" :disabled="disabled()">
+            <i v-if="icon()" :class="icon()"></i>
+            {{text()}}
         </a>
-        <router-link v-else :class="getActionClass()" :to="_href()" :conf="conf" :target="conf.target" :title="translate(title)" >
-            <i v-if="_icon()" :class="_icon()"></i>
-            {{_text()}}
+        <router-link v-else :class="getActionClass()" :to="href()" :conf="conf" :target="target" :title="translate(title)" :disabled="disabled()" >
+            <i v-if="icon()" :class="icon()"></i>
+            {{text()}}
         </router-link>
     </template>
-    <template v-else-if="controlType  && _visible()">
-        <component :is="controlType" :conf="conf"></component>
+    <template v-else-if="type  && visible()">
+        <component :is="type" :conf="conf" :disabled="disabled()"></component>
     </template>
-    <template v-else-if="_visible()">
-        <b>controlType ({{ controlType }}) non riconosciuto</b>
+    <template v-else-if="visible()">
+        <b>controlType ({{ type }}) non riconosciuto</b>
     </template>
 </template>
 

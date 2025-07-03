@@ -1,12 +1,20 @@
 export default {
+    // questi sono i metodi che viene consentita la sovrascrittura nella conf e vengono gestiti dalla libreria.
     widgetOverloadMethods : [
-        // questi sono i metodi che viene consentita la sovrascrittura nella conf.
+        // metodi comuni a tutti i widget
         'change','reset','getFieldName','disabled',
         // metodi autocomplete
         'getAutocompleteLabel','search'
     ],
     viewOverloadMethods : [
-        // questi sono i metodi che viene consentita la sovrascrittura nella conf.
         'beforeLoadData','afterLoadData',
+    ],
+    actionOverloadMethods : [
+        'href','text','icon','execute'
+    ],
+
+    // questi metodi NON e' consentito la sovrascrittura nella conf. se succede viene tirato su un errore.
+    actionReservedKeys : [
+        'disabled','visible'
     ]
 }

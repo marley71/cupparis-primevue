@@ -89,7 +89,19 @@ export default {
         modelName: this.modelName
       })
       return route;
-    }
+    },
+      onError(event) {
+          if (this.conf.onError) {
+              return this.conf.onError.apply(this,[event])
+          }
+
+      },
+      onSuccess(event) {
+          if (this.conf.onSuccess) {
+              return this.conf.onSuccess.apply(this,[event])
+          }
+
+      },
   }
 }
 </script>

@@ -2,7 +2,7 @@
 <template>
   <span>
     <div class="w-full" style="height:300px">
-      <l-map ref="map" v-model:zoom="zoom" :center="[47.41322, -1.219482]" :useGlobalLeaflet="false">
+      <l-map ref="map" v-model:zoom="zoom" :center="center" :useGlobalLeaflet="false">
         <l-tile-layer
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             layer-type="base"

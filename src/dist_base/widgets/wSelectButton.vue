@@ -3,7 +3,7 @@
     <input type="hidden" :name="name" v-model="value">
     <SelectButton :name="name" v-model="value" :options="options"
                   option-label="label" option-value="id"
-                  v-bind="extraBind" @change="_change">
+                  v-bind="extraBind" @change="change">
         <template #option="slotProps">
             <div
                 :class="'select-button-option select-button-option-'+name+ ' select-button-option-'+name+'-'+slotProps.option.id"
