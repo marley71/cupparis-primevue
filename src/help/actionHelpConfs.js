@@ -9,9 +9,6 @@ export default {
                     execute() {
                         CrudCore.alertInfo('Hai premuto ok')
                     },
-                    disabled() {
-
-                    }
                 },
                 'action-before-execute' : {
                     text : 'con beforeExecute',
@@ -46,7 +43,7 @@ export default {
                     text : 'con beforeExecute e execute promise',
                     beforeExecute() {
                         return  new Promise((resolve,reject) => {
-                            if (CrudCore.confirmDialog('Sei sicuro',{},{
+                            if (CrudCore.confirmDialog('Promise in before Execute. Sei sicuro?',{},{
                                 ok() {
                                     resolve(true)
                                 },
@@ -59,7 +56,7 @@ export default {
                     },
                     execute() {
                         return  new Promise((resolve,reject) => {
-                            if (CrudCore.confirmDialog('Per la seconda volta. Sei sicuro',{},{
+                            if (CrudCore.confirmDialog('Promise in execute. Per la seconda volta. Sei sicuro?',{},{
                                 ok() {
                                     resolve(true)
                                 },
@@ -70,7 +67,7 @@ export default {
                         })
                     },
                     afterExecute() {
-                        CrudCore.alertInfo('allora sei proprio sicuro')
+                        CrudCore.alertInfo('afterExecute, allora sei proprio sicuro')
                     }
                 }
             }

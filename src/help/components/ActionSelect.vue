@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import aBase from '../../dist/actions/aBase.vue';
+import aBase from '@templates/actions/aBase.vue';
 import CrudVars from '../../lib/CrudVars';
 import Dropdown  from "primevue/dropdown";
 // import cupparisPrimevue from "cupparis-primevue"

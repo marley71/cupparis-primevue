@@ -1,6 +1,6 @@
 import CrudCore from "./CrudCore";
 import CrudComponent from "../CrudComponent.vue";
-import cAction from "../dist_base/actions/cAction.vue";
+import cAction from "@templates/actions/cAction.vue";
 
 export default {
     install (app) {

@@ -27,7 +27,7 @@
 
 <script>
 import DCupGeoComune from './DCupGeoComune.js';
-import cImport from '../dist/app/cImport.vue';
+import cImport from '@templates/app/cImport.vue';
 import JsToCode from "./JsToCode";
 const jsc = new JsToCode();
 

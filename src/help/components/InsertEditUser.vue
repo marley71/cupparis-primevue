@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import vRecord from '../../dist/views/vRecord.vue';
+import vRecord from '@templates/views/vRecord.vue';
 
 export default {
     name: "insert-edit-user",

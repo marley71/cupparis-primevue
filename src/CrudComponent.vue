@@ -1,10 +1,8 @@
 <script>
 
-import Route from "./lib/Route";
+
 import CrudCore from "./lib/CrudCore.js";
 import {createApp,defineAsyncComponent} from 'vue'
-import PrimeVue from "primevue/config";
-import routeConfs from "./confs/routes";
 import CrudVars from "./lib/CrudVars";
 
 
@@ -116,7 +114,7 @@ export default {
         componentDialog(compName,componentConf,title,dialogConf) {
             const div = document.createElement('div');
             document.body.appendChild(div);
-            let  comp = defineAsyncComponent(() => import('./dist/dialogs/dCustom.vue'))
+            let  comp = defineAsyncComponent(() => import('@templates/dialogs/dCustom.vue'))
             dialogConf = dialogConf || {
                 title : title,
                 display : true,

@@ -1,8 +1,8 @@
-import vList from "../dist/views/vList.vue";
-import vListEdit from "../dist/views/vListEdit.vue";
-import vRecord from "../dist/views/vRecord.vue";
-import cManage from "../dist/app/cManage.vue";
-import cImport from "../dist/app/cImport.vue";
+import vList from "@templates/views/vList.vue";
+import vListEdit from "@templates/views/vListEdit.vue";
+import vRecord from "@templates/views/vRecord.vue";
+import cManage from "@templates/app/cManage.vue";
+import cImport from "@templates/app/cImport.vue";
 import CrudVars from "../lib/CrudVars";
 import CrudCore from "../lib/CrudCore";
 

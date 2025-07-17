@@ -22,7 +22,7 @@
 
 <script>
 
-import vList from '../../dist/views/vList.vue';
+import vList from '@templates/views/vList.vue';
 export default {
     name: "ListUser",
     extends:vList
