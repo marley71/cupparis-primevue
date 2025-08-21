@@ -4,14 +4,15 @@ import CrudVars from "./CrudVars";
 import { defineAsyncComponent, createApp,nextTick } from 'vue'
 import ViewWrapperConf from "../views/WrapperConf";
 import WidgetWrapperConf from "../widgets/WrapperConf";
-import {EventBus} from 'primevue/utils';
+import mitt from 'mitt';
 import actions from "../confs/actions";
 import Server from "./Server";
 import routeConfs from "../confs/routes";
 import Route from "./Route";
 import axios from "axios";
 
-const Ev = EventBus();
+//const Ev = EventBus();
+const Ev = mitt();
 const euroFormatter = new Intl.NumberFormat('it-IT', {
     style: 'currency',
     currency: 'EUR',
