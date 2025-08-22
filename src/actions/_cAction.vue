@@ -8,10 +8,10 @@ export default {
     extends: CrudComponent,
     props: {
         //'conf': Object,
-        'layout': {
-            type: String,
-            default: 'buttons'
-        },
+        // 'layout': {
+        //     type: String,
+        //     default: 'buttons'
+        // },
         'whitelist': Array,
         'blacklist': Array,
         'menubarTitle': String,
@@ -23,7 +23,8 @@ export default {
         }
         let cf = that.conf || {};
         cf.title = '';
-        if (that.layout == 'menubar') {
+        cf.layout = cf.layout?cf.layout:'buttons';
+        if (cf.layout == 'menubar') {
             cf.menubarActions = that.getMenubarActions();
         }
         return cf;

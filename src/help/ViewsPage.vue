@@ -118,8 +118,8 @@ export default {
                     <a class="p-button m-1 p-2" :class="vSelected===wName?'':'p-button-outlined'" :href="'#/test2-views/'+wName" >{{ wName }}</a>
                 </template>
             </div>
-            <div class="grid overflow-auto">
-                <div class="col-12 ">
+            <div class="grid grid-cols-1 overflow-auto">
+                <div class="">
                     <Fieldset class=""  legend="Area View">
                         <div class="w-full">
                             <template v-for="(conf,wName) in viewsConf" :key="wName">
@@ -131,21 +131,21 @@ export default {
                     </Fieldset>
                 </div>
             </div>
-            <div class="grid">
-                <div class="col-12">
-                    <Button class="p-button w-4 mt-1 p-button-success" label="Run" @click="updateCode"></Button>
+            <div class="grid grid-cols-1 ">
+                <div class="">
+                    <Button class="p-button w-20 mt-1 p-button-success" label="Run" @click="updateCode"></Button>
                     <hr />
-                    <div class="grid">
-                        <div class="col-6">
+                    <div class="grid grid-cols-2">
+                        <div class="">
                             <h6>Configurazione View {{ vSelected }}</h6>
                             <div class="font-italic">Iniziare il codice sempre con var conf = </div>
-                            <div id='example' class="h-20rem w-full">
+                            <div id='example' class="h-40 w-full">
 
                             </div>
                         </div>
-                        <div class="col-6">
+                        <div class="">
                             <h6>Configurazione di default {{ viewType }}</h6>
-                            <div id="defaultCode" class="h-20rem w-full">
+                            <div id="defaultCode" class="h-40 w-full">
 
                             </div>
                         </div>

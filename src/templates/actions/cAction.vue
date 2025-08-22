@@ -1,6 +1,6 @@
 <template>
     <template v-if="layout==='simple'">
-        <div class="flex p-buttonset border border-round">
+        <div class="inline-flex shadow rounded-lg overflow-hidden">
             <a-base v-for="(action,key) in actions" :key="key" :ref="key" :conf="getConf(action,key)"></a-base>
         </div>
     </template>

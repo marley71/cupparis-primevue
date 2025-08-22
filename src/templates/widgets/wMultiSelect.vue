@@ -8,12 +8,12 @@
         </template>
         <template v-else>
 
-          <div class="inline-flex align-items-center py-1 border-round"
+          <div class="inline-flex align-items-center border-round"
                v-for="option of slotProps.value" :key="option">
             <div class="p-multiselect-label-container" data-pc-section="labelcontainer">
               <div class="p-multiselect-label" data-pc-section="label">
                 <div class="p-multiselect-token" data-pc-section="token">
-                                  <span class="p-multiselect-token-label"
+                                  <span class="p-multiselect-token-label pr-1"
                                         data-pc-section="tokenlabel">{{ getMultiSelectLabel(option) }}</span>
                   <svg @click="removeMultiSelect(option)" width="14" height="14" viewBox="0 0 14 14" fill="none"
                        xmlns="http://www.w3.org/2000/svg" class="p-icon p-multiselect-token-icon"

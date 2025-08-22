@@ -126,19 +126,19 @@ export default {
                         <c-manage v-if="manageSelected==wName && !reload" :conf="conf" ></c-manage>
                     </template>
                 </Fieldset>
-                <Button class="p-button w-4 mt-1" label="Run" @click="updateCode"></Button>
+                <Button class="p-button w-20 mt-1" label="Run" @click="updateCode"></Button>
                 <hr />
-                <div class="grid">
-                    <div class="col-6">
+                <div class="grid grid-cols-2">
+                    <div class="">
                         <h6>Configurazione Manage</h6>
                         <div class="font-italic">Iniziare il codice sempre con var conf = </div>
-                        <div id='example' class="h-20rem w-full">
+                        <div id='example' class="h-40 w-full">
 
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="">
                         <h6>Configurazione di default</h6>
-                        <div id="defaultCode" class="h-20rem w-full">
+                        <div id="defaultCode" class="h-40 w-full">
 
                         </div>
                     </div>

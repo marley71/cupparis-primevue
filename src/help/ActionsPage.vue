@@ -23,11 +23,11 @@
                     </Fieldset>
                     <Button class="p-button w-4 mt-1" label="Run" @click="updateCode"></Button>
                     <hr />
-                    <div class="grid">
-                        <div class="col-6">
+                    <div class="grid grid-col-2">
+                        <div class="">
                             <h6>Configurazione Action {{ widgetType }}</h6>
                             <div class="font-italic">Iniziare il codice sempre con var conf = </div>
-                            <div id='example' class="h-20rem w-full">
+                            <div id='example' class="h-40 w-full">
 
                             </div>
                         </div>
@@ -61,6 +61,7 @@ export default {
             actionLayout : 'simple',
             actionsConf : {
                 'Action Singola' : actionConfs.actionSingola(),
+                'Action Singola Menubar' : actionConfs.actionSingolaMenuBar(),
                 'Action default e Ridefinita' : actionConfs.actionDefaultDoppia(),
                 'Action custom' : actionConfs.actionCustom()
             },
@@ -124,6 +125,7 @@ export default {
             that.reload = true;
             setTimeout(function () {
                 try {
+                    console.debug('eseguo',that.aSelected,fName,window[fName])
                     that.actionsConf[that.aSelected] = window[fName]();
                     that.reload = false;
                 } catch(e) {

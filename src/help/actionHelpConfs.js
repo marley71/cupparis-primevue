@@ -6,14 +6,14 @@ export default {
             actions: {
                 'action-save' :  {
                     text : 'ok',
-                    execute() {
-                        CrudCore.alertInfo('Hai premuto ok')
+                    execute:function () {
+                        CrudCore.alertInfo('Hai premuto ok');
                     },
                 },
                 'action-before-execute' : {
                     text : 'con beforeExecute',
                     beforeExecute() {
-                        CrudCore.alertInfo('Before execute senza promise')
+                        CrudCore.alertInfo('Before execute senza promise');
                         return true;
                     },
                     execute() {
@@ -25,10 +25,10 @@ export default {
                     beforeExecute() {
                         return  new Promise((resolve,reject) => {
                             if (CrudCore.confirmDialog('Sei sicuro',{},{
-                                ok() {
-                                    resolve(true)
+                                ok: function () {
+                                    resolve(true);
                                 },
-                                cancel() {
+                                cancel:function () {
                                     reject();
                                 }
                             }));
@@ -44,10 +44,10 @@ export default {
                     beforeExecute() {
                         return  new Promise((resolve,reject) => {
                             if (CrudCore.confirmDialog('Promise in before Execute. Sei sicuro?',{},{
-                                ok() {
-                                    resolve(true)
+                                ok: function () {
+                                    resolve(true);
                                 },
-                                cancel() {
+                                cancel: function () {
                                     reject();
                                 }
                             }));
@@ -57,21 +57,26 @@ export default {
                     execute() {
                         return  new Promise((resolve,reject) => {
                             if (CrudCore.confirmDialog('Promise in execute. Per la seconda volta. Sei sicuro?',{},{
-                                ok() {
-                                    resolve(true)
+                                ok: function () {
+                                    resolve(true);
                                 },
-                                cancel() {
+                                cancel: function () {
                                     reject();
                                 }
                             }));
                         })
                     },
                     afterExecute() {
-                        CrudCore.alertInfo('afterExecute, allora sei proprio sicuro')
+                        CrudCore.alertInfo('afterExecute, allora sei proprio sicuro');
                     }
                 }
             }
         }
+    },
+    actionSingolaMenuBar() {
+        let a = this.actionSingola();
+        a.layout = 'menubar';
+        return a;
     },
     actionDefaultDoppia() {
         return {

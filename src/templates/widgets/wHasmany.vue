@@ -15,7 +15,7 @@
                 {{ translate(label) }}
             </template>
             <template #content>
-                <div class="flex flex-column">
+                <div class="flex flex-col">
                     <div v-for="(dataKey,index) in vForKeys" :key="dataKey">
                         <Divider align="right">
                             <Button class="p-button-outlined p-button-danger" icon="fa fa-times" @click="removeItem(dataKey)"></Button>

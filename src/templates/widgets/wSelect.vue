@@ -14,8 +14,8 @@
           <!--                    v-html="slotProps.value.label"-->
         </div>
         <span v-else>
-                                {{ slotProps.placeholder }}
-                            </span>
+            {{ slotProps.placeholder }}
+        </span>
       </template>
       <template #option="slotProps">
         <div
