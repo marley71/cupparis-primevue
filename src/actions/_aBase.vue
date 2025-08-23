@@ -25,6 +25,7 @@ export default {
         for (let k in that.conf) {
             //console.log('action wConf k',k,that.wConf[k]);
             if (global.actionReservedKeys.indexOf(k) >= 0) {
+                console.debug(that.conf);
                 throw "(" +k+") è una chiave riservata e non può essere sovrascritta";
             }
             if (that.conf[k] instanceof Function) {
@@ -68,10 +69,11 @@ export default {
         },
         getActionClass() {
             var that = this;
+            let customClass = '';
             if (that.conf.actionClass) {
-                return that.conf.actionClass;
+                customClass = that.conf.actionClass;
             }
-            return that.getButtonSize() + ' '
+            return customClass + ' ' + that.getButtonSize() + ' '
                 + that.getButtonClass() + ' '
                 + that.conf.spacing;
         },

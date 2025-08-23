@@ -107,7 +107,13 @@ export default {
                 },
                 'action-link-d' : {
                     href() {
-                        return 'https://www.repubblica.it'
+                        let urls = [
+                            'https://www.repubblica.it',
+                            'https://www.google.it',
+                            'https://www.facebook.it'
+                        ];
+                        let idx = Math.floor(Math.random() * 3)
+                        return urls[idx]
                     },
                     type : 'link',
                     text : 'link dinamico',

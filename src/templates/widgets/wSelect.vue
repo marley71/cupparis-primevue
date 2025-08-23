@@ -1,7 +1,7 @@
 <template>
   <span>
     <input type="hidden" :name="name" :value="value">
-    <Dropdown class="w-full" :name="name" v-model="value" :options="options"
+    <Select class="w-full" :name="name" v-model="value" :options="options"
               option-label="label" option-value="id"
               :placeholder="placeholder || translate('app.seleziona')"
               v-bind="extraBind" @change="change" :disabled="disabled()">
@@ -23,7 +23,7 @@
             v-html="slotProps.option.label">
         </div>
       </template>
-    </Dropdown>
+    </Select>
     <RulesErrors :errors="errors"></RulesErrors>
   </span>
 </template>

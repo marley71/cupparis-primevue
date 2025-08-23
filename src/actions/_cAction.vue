@@ -27,6 +27,7 @@ export default {
         if (cf.layout == 'menubar') {
             cf.menubarActions = that.getMenubarActions();
         }
+        console.debug('cf',cf);
         return cf;
     },
     methods: {
@@ -111,6 +112,34 @@ export default {
             //console.log('actions',that.conf);
             let actions = that.conf.actions;
             for (let name in actions) {
+                actions[name].label = that.translate(actions[name].text);
+                actions[name].action = name;
+                actions[name].actionClass = (actions[name].actionClass?actions[name].actionClass:'');
+                actions[name].actionClass += ' w-full';
+                items.push(actions[name]);
+                // items.push({
+                //     label: that.translate(actions[name].text),
+                //     icon: actions[name].icon,
+                //     command: () => {
+                //         console.log('name', name, actions[name]);
+                //         actions[name].execute()
+                //     },
+                //     //disabled: actions[name].disabled,
+                //     action: name,
+                // })
+            }
+            //console.log('menubar', items, that.conf);
+            return [{
+                label: this.menubarTitle ? this.menubarTitle : this.translate('app.actions'),
+                items: items
+            }]
+        },
+        getMenubarActionsOld() {
+            let that = this;
+            let items = [];
+            //console.log('actions',that.conf);
+            let actions = that.conf.actions;
+            for (let name in actions) {
 
                 items.push({
                     label: that.translate(actions[name].text),
@@ -119,7 +148,7 @@ export default {
                         console.log('name', name, actions[name]);
                         actions[name].execute()
                     },
-                    disabled: actions[name].disabled,
+                    //disabled: actions[name].disabled,
                     action: name,
                 })
             }

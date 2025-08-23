@@ -16,6 +16,12 @@
             <template v-if="title" #start>
                 <span>{{ title }}</span>
             </template>
+            <template #item="{ item, root }">
+                <a-base class="v-full" v-if="!root" :ref="item.action" :conf="getConf(item,item.action)"></a-base>
+                <div v-else class="cursor-pointer p-1">
+                    {{ item.label }}&nbsp;<i class="fa fa-angle-down"></i>
+                </div>
+            </template>
         </Menubar>
     </template>
     <template v-else>
