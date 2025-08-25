@@ -266,8 +266,12 @@ export default {
             for (let i in that.fields) {
                 let name = that.fields[i];
                 let widget = this.getWidget(name);
-                if (widget) {
-                    rulesArray = rulesArray.concat(widget.rules.split('|'));
+                // TODO pezza  per gli hasmany.. capire come arrivare ai campi per la validazione.
+                if (that.widgetsConfig[name] && that.widgetsConfig[name].type != 'w-hasmany') {
+                    console.debug('name',name,that.widgetsConfig[name].type);
+                    if (widget) {
+                        rulesArray = rulesArray.concat(widget.rules.split('|'));
+                    }
                 }
             }
             for (let i in rulesArray) {
@@ -292,11 +296,21 @@ export default {
          */
         resetWidgetsErrors() {
             let that = this;
+            //window.VT = this;
             for (let i in that.fields) {
                 let name = that.fields[i];
-                if (this.getWidget(name)) {
-                    this.getWidget(name).setErrors([]);
+                // TODO pezza  per gli hasmany.. capire come arrivare ai campi per la validazione.
+                if (that.widgetsConfig[name] && that.widgetsConfig[name].type != 'w-hasmany') {
+                    //console.debug('name',name,this.getWidget(name),this.$refs);
+                    if (this.getWidget(name)) {
+                        if (this.getWidget(name).setErrors) {
+                            this.getWidget(name).setErrors([]);
+                        } else {
+                            console.warn('setErrors non trovata per il widget ' + name);
+                        }
+                    }
                 }
+
             }
         },
         isRemovedWidget(field) {
