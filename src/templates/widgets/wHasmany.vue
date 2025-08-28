@@ -2,7 +2,6 @@
   <span>
     <template v-if="hasmanyType=='list'">
         <div>
-<!--            <v-list-hasmany ref="listViewHasmany" :conf="getHasmanyList()"></v-list-hasmany>-->
             <component is="v-list-hasmany" ref="listViewHasmany" :conf="getHasmanyList()"></component>
         </div>
     </template>
@@ -20,10 +19,7 @@
                         <Divider align="right">
                             <Button class="p-button-outlined p-button-danger" icon="fa fa-times" @click="removeItem(dataKey)"></Button>
                         </Divider>
-                      <!--                        <div class="flex align-self-end">-->
-                      <!--                            <Button class="p-button-outlined p-button-danger" icon="fa fa-times" @click="removeItem(index)"></Button>-->
-                      <!--                        </div>-->
-                        <v-record ref="recordView" :conf="getHasmanyConf(index)"></v-record>
+                        <component is="v-record" ref="recordView" :conf="getHasmanyConf(index)"></component>
                     </div>
                 </div>
             </template>
@@ -42,15 +38,14 @@
             </template>
         </Card>
     </template>
-    <template v-else-if="hasmanyType=='view-only'">
-<!--        <template v-for="(data,index) in hasmanyValue" :key="index">-->
+    <template v-else-if="hasmanyType==='view-only'">
         <template v-for="(data,index) in value" :key="index">
             <div v-for="field in getHasmanyConf(index).fields" :key="field">
                 <component :is="getWidgetType(index,field)" :conf="getHasmanyWidgetConf(index,field)"></component>
             </div>
         </template>
     </template>
-    <template v-else-if="hasmanyType=='panel'">
+    <template v-else-if="hasmanyType==='panel'">
         <Button class="p-button-outlined p-1" type="button" icon="fa-solid fa-circle-chevron-down" :label="label" @click="toggle" />
         <OverlayPanel ref="op" >
             <table class="w-full table p-1">
@@ -87,7 +82,7 @@ import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wHasmany",
   extends: _wHasmany,
-  components : {RulesErrors}
+  components : {RulesErrors},
 }
 
 </script>
@@ -107,6 +102,3 @@ export default {
 
 }
 </style>
-<script setup>
-import RulesErrors from "./RulesErrors.vue";
-</script>

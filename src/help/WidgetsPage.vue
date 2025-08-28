@@ -192,7 +192,7 @@ export default {
             <hr />
 
             <div >
-                <template v-if="['w-hasmany','w-hasmany-list'].indexOf(widgetSelected) >= 0">
+                <template v-if="['w-hasmany type record','w-hasmany type list'].indexOf(widgetSelected) >= 0">
                     <div><Button icon="fa fa-plus" @click="addHasmany" label="setValue dall'esterno"></Button></div>
                 </template>
 

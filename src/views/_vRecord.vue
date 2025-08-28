@@ -239,19 +239,24 @@ export default {
                 }
                 let widget = this.getWidget(name);
 
-                if (widget && widget.rules) {
-                    //console.log('name',name,widget.getValue());
-                    let res = await validate(widget.getValue(),
-                                        widget.rules,
-                                        {
-                                            name : name,
-                                            label : widget.label,
-                                            bails : false,
-                                        });
-                    //console.log(name,'res',res);
-                    isValid = isValid && res.valid;
-                    //console.log('ISVALID',isValid);
-                    that.getWidget(name).setErrors(res.errors);
+                if (widget) {
+                    if (widget.rules) {
+                        let res = await validate(widget.getValue(),
+                            widget.rules,
+                            {
+                                name : name,
+                                label : widget.label,
+                                bails : false,
+                            });
+                        isValid = isValid && res.valid;
+                        widget.setErrors(res.errors);
+                    }
+                    // se e' un hasmany devo anche validare i campi interni
+                    if (that.widgetsConfig[name].type == 'w-hasmany') {
+                        let res = await widget.validate();
+                        isValid = isValid && res.valid;
+                    }
+
                 }
             }
             //console.log('isValid',isValid)
@@ -267,10 +272,11 @@ export default {
                 let name = that.fields[i];
                 let widget = this.getWidget(name);
                 // TODO pezza  per gli hasmany.. capire come arrivare ai campi per la validazione.
-                if (that.widgetsConfig[name] && that.widgetsConfig[name].type != 'w-hasmany') {
+                if (widget) {
                     console.debug('name',name,that.widgetsConfig[name].type);
-                    if (widget) {
-                        rulesArray = rulesArray.concat(widget.rules.split('|'));
+                    rulesArray = rulesArray.concat(widget.rules.split('|'));
+                    if (that.widgetsConfig[name].type == 'w-hasmany') {
+                        rulesArray = rulesArray.concat(widget.getRules());
                     }
                 }
             }
@@ -300,16 +306,20 @@ export default {
             for (let i in that.fields) {
                 let name = that.fields[i];
                 // TODO pezza  per gli hasmany.. capire come arrivare ai campi per la validazione.
-                if (that.widgetsConfig[name] && that.widgetsConfig[name].type != 'w-hasmany') {
-                    //console.debug('name',name,this.getWidget(name),this.$refs);
-                    if (this.getWidget(name)) {
-                        if (this.getWidget(name).setErrors) {
-                            this.getWidget(name).setErrors([]);
-                        } else {
-                            console.warn('setErrors non trovata per il widget ' + name);
-                        }
+                //let tt = (that.widgetsConfig[name] && that.widgetsConfig[name].type)?that.widgetsConfig[name].type:that.defaultWidgetType;
+                let widget = this.getWidget(name);
+                if (widget) {
+                    if (widget.setErrors) {
+                        widget.setErrors([]);
+                    } else {
+                        console.warn('setErrors non trovata per il widget ' + name);
+                    }
+                    if (that.widgetsConfig[name].type == 'w-hasmany') {
+                        widget.resetWidgetsErrors();
                     }
                 }
+
+
 
             }
         },
