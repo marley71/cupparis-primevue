@@ -30,15 +30,15 @@ export default {
       panelConf: defaultPanelConf(),
       labelCols: {},
       layout: this.conf.layout ? this.conf.layout : 'default',
-        tableKey : Date.now(),  // key per forzar3e l'aggionramento di vue del componente datatable nelle liste non ajax
+      tableKey: Date.now(),  // key per forzar3e l'aggionramento di vue del componente datatable nelle liste non ajax
     }
   },
   methods: {
-      draw() {
-          this.setActions();
-          this.paginator = (this.getPerPage() < this.getTotal());
-          this.loaded = true;
-      },
+    draw() {
+      this.setActions();
+      this.paginator = (this.getPerPage() < this.getTotal());
+      this.loaded = true;
+    },
 
     _afterLoadData() {
       if (this.conf.afterLoadData) {
@@ -68,13 +68,13 @@ export default {
     },
 
     _manageHashParams() {
-        let that = this;
-        let searchParams = that.getSearchParams();
+      let that = this;
+      let searchParams = that.getSearchParams();
 
-      console.debug('searchParams',searchParams)
-        for (let field in searchParams) {
-          that.route.setParam(field,searchParams[field]);
-        }
+      console.debug('searchParams', searchParams)
+      for (let field in searchParams) {
+        that.route.setParam(field, searchParams[field]);
+      }
     },
 
 
@@ -104,42 +104,42 @@ export default {
         that.route.setParam('order_direction', event.sortOrder > 0 ? 'ASC' : 'DESC');
         that.reload();
       } else {
-          let key = event.sortField;
-          this.value.sort((a, b) => {
-              // Convertiamo entrambi in numeri
-              const numA = parseFloat(a[key]);
-              const numB = parseFloat(b[key]);
-              console.debug('confronto A,B',numA,numB)
-              // Verifica se sono numeri, usa confronto numerico.
-              if (!isNaN(numA) && !isNaN(numB)) {
-                  if (event.sortOrder > 0) {
-                      return numA - numB;
-                  }
-                  return numB - numA
-              }
+        let key = event.sortField;
+        this.value.sort((a, b) => {
+          // Convertiamo entrambi in numeri
+          const numA = parseFloat(a[key]);
+          const numB = parseFloat(b[key]);
+          console.debug('confronto A,B', numA, numB)
+          // Verifica se sono numeri, usa confronto numerico.
+          if (!isNaN(numA) && !isNaN(numB)) {
+            if (event.sortOrder > 0) {
+              return numA - numB;
+            }
+            return numB - numA
+          }
 
-              // Se uno solo è un numero, lo considera minore
-              if (!isNaN(numA) && isNaN(numB)) {
-                  return -1;
-              }
+          // Se uno solo è un numero, lo considera minore
+          if (!isNaN(numA) && isNaN(numB)) {
+            return -1;
+          }
 
-              if (isNaN(numA) && !isNaN(numB)) {
-                  return 1;
-              }
+          if (isNaN(numA) && !isNaN(numB)) {
+            return 1;
+          }
 
-              // Se entrambi sono NaN, usa confronto alfanumerico
-              if (event.sortOrder > 0) {
-                  console.debug('confronto alfanumerico A,B',a[key],b[key])
-                  return a[key].localeCompare(b[key]);
-              } else {
-                  console.debug('confronto alfanumerico B,A',b[key],a[key])
-                  return b[key].localeCompare(a[key]);
-              }
+          // Se entrambi sono NaN, usa confronto alfanumerico
+          if (event.sortOrder > 0) {
+            console.debug('confronto alfanumerico A,B', a[key], b[key])
+            return a[key].localeCompare(b[key]);
+          } else {
+            console.debug('confronto alfanumerico B,A', b[key], a[key])
+            return b[key].localeCompare(a[key]);
+          }
 
 
-          });
-          console.debug('value',this.value);
-          this.tableKey = Date.now();
+        });
+        console.debug('value', this.value);
+        this.tableKey = Date.now();
       }
 
     },
@@ -163,7 +163,7 @@ export default {
         let aName = that.actions[i];
         let aConf = CrudCore.getActionConf(aName, that.actionsConfig[aName]);
         //console.debug(aName, 'caso parent --view', aConf)
-        if (aConf.actionType == 'record') {
+        if (aConf.actionType === 'record') {
           rActions[aName] = aConf;
         } else {
           gActions[aName] = aConf;
@@ -200,12 +200,12 @@ export default {
       this._setMenuCollection();
     },
 
-      _needSelection(actionConf) {
-          if (typeof actionConf.needSelection === 'function') {
-              return actionConf.needSelection.apply(this);
-          }
-          return actionConf.needSelection
-      },
+    _needSelection(actionConf) {
+      if (typeof actionConf.needSelection === 'function') {
+        return actionConf.needSelection.apply(this);
+      }
+      return actionConf.needSelection
+    },
     getWidgetConf(index, field, data) {
       let that = this;
       index = index % that.getPerPage();
@@ -230,13 +230,13 @@ export default {
       }
       return that.widgetsConfig[index][field];
     },
-    getWidgetType(index,field) {
-        let that = this;
-        let fieldsConfig = that.fieldsConfig || {};
-        if (that.fieldsConfig[field] && that.fieldsConfig[field].type) {
-            return that.fieldsConfig[field].type;
-        }
-        return that.defaultWidgetType;
+    getWidgetType(index, field) {
+      let that = this;
+      let fieldsConfig = that.fieldsConfig || {};
+      if (that.fieldsConfig[field] && that.fieldsConfig[field].type) {
+        return that.fieldsConfig[field].type;
+      }
+      return that.defaultWidgetType;
     },
     setWidgetsConfig() {
       this._setWidgetsConfig();

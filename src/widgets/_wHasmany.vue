@@ -73,7 +73,7 @@ export default {
                     for(let i in nViews) {
                         console.debug('record hasmany prima validate')
                         let res = await nViews[i].validate();
-                        result.valid = result && res.valid;
+                        result.valid = result.valid && res;
                         console.debug('hasmany validate',res)
                     }
                     break;
