@@ -133,6 +133,7 @@ export default {
                 //that.execute = function () {
                     CrudHelpers.createRuntimeLink(that.href(), that.target)
                 //}
+              return;
             }
             if (that.conf.execute) {
                 that._beforeExecute().then(() => {
