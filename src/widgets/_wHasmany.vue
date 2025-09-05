@@ -41,6 +41,51 @@ export default {
         toggle(event) {
           this.$refs.op.toggle(event);
         },
+        // metodo contenuto nelle views e ci faccio il forward
+        resetWidgetsErrors() {
+            console.debug('reset widget error hasmany');
+            let that = this;
+            let nViews = [];
+            switch (this.hasmanyType) {
+                case 'record':
+                    console.debug('record hasmany',that.$refs.recordView)
+                    nViews = that.$refs.recordView?that.$refs.recordView:[];  // possono anche non esserci
+                    for(let i in nViews) {
+                        nViews[i].resetWidgetsErrors();
+                    }
+
+                    break;
+                default:
+                    break;
+            }
+        },
+        // metodo contenuto nelle views e ci faccio il forward
+        async validate() {
+            let that = this;
+            let result = {
+                valid : true
+            }
+            let nViews = [];
+            switch (this.hasmanyType) {
+                case 'record':
+                    nViews = that.$refs.recordView?that.$refs.recordView:[];  // possono anche non esserci
+                    console.debug('record hasmany',nViews.length,that.$refs.recordView)
+                    for(let i in nViews) {
+                        console.debug('record hasmany prima validate')
+                        let res = await nViews[i].validate();
+                        result.valid = result.valid && res;
+                        console.debug('hasmany validate',res)
+                    }
+                    break;
+                default:
+                    break;
+            }
+            console.debug('hasmany return ',result);
+            return result;
+        },
+        getRules() {
+            return [];
+        },
         executeActionInlist(index, action) {
             //console.log('ACTIONINLIST::: ', index, action);
             switch (action) {
@@ -64,10 +109,6 @@ export default {
                 }
             }
             return val;
-            // if (!this.value) {
-            //     return [];
-            // }
-            // return this.value;
         },
         setValue(val) {
             let that = this;
@@ -209,7 +250,7 @@ export default {
             //hs.value = that.hasmanyValue[i];
             hs.value = that.value[i];
             hs.type = 'v-view';
-            //console.log('HS', hs);
+            console.log('HS', hs);
             return hs;
         },
         getHasmanyList() {
@@ -301,7 +342,7 @@ export default {
             if (!conf.height) {
                 conf.height = '30';
             }
-            console.debug('getHasmanyWidgetConf',conf);
+            //console.debug('getHasmanyWidgetConf',conf);
             return conf;
         },
       getWidgetType(index,field) {

@@ -21,13 +21,13 @@
                             <c-action class="w-full" :ref="wName" v-if="aSelected==wName && !reload" :conf="conf" :layout="actionLayout"></c-action>
                         </template>
                     </Fieldset>
-                    <Button class="p-button w-4 mt-1" label="Run" @click="updateCode"></Button>
+                    <Button class="p-button w-200 mt-1" label="Run" @click="updateCode"></Button>
                     <hr />
                     <div class="grid grid-col-2">
                         <div class="">
                             <h6>Configurazione Action {{ widgetType }}</h6>
                             <div class="font-italic">Iniziare il codice sempre con var conf = </div>
-                            <div id='example' class="h-40 w-full">
+                            <div id='example' class="w-full h">
 
                             </div>
                         </div>

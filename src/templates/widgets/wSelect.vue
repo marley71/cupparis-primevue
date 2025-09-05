@@ -13,7 +13,7 @@
 
           <!--                    v-html="slotProps.value.label"-->
         </div>
-        <span v-else>
+        <span v-else-if="! (slotProps.value in Object.values(domainValues))">
             {{ slotProps.placeholder }}
         </span>
       </template>

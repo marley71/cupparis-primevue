@@ -8,7 +8,7 @@ const defaultPanelConf = () => {
   return {
     componentName: null,
     componentConf: {},
-    panelClass: 'w-8',
+    panelClass: 'w-1/3',
     hide() {
       Function.prototype();
     }
@@ -30,15 +30,15 @@ export default {
       panelConf: defaultPanelConf(),
       labelCols: {},
       layout: this.conf.layout ? this.conf.layout : 'default',
-        tableKey : Date.now(),  // key per forzar3e l'aggionramento di vue del componente datatable nelle liste non ajax
+      tableKey: Date.now(),  // key per forzar3e l'aggionramento di vue del componente datatable nelle liste non ajax
     }
   },
   methods: {
-      draw() {
-          this.setActions();
-          this.paginator = (this.getPerPage() < this.getTotal());
-          this.loaded = true;
-      },
+    draw() {
+      this.setActions();
+      this.paginator = (this.getPerPage() < this.getTotal());
+      this.loaded = true;
+    },
 
     _afterLoadData() {
       if (this.conf.afterLoadData) {
@@ -68,13 +68,13 @@ export default {
     },
 
     _manageHashParams() {
-        let that = this;
-        let searchParams = that.getSearchParams();
+      let that = this;
+      let searchParams = that.getSearchParams();
 
-      console.debug('searchParams',searchParams)
-        for (let field in searchParams) {
-          that.route.setParam(field,searchParams[field]);
-        }
+      console.debug('searchParams', searchParams)
+      for (let field in searchParams) {
+        that.route.setParam(field, searchParams[field]);
+      }
     },
 
 
@@ -163,7 +163,7 @@ export default {
         let aName = that.actions[i];
         let aConf = CrudCore.getActionConf(aName, that.actionsConfig[aName]);
         //console.debug(aName, 'caso parent --view', aConf)
-        if (aConf.actionType == 'record') {
+        if (aConf.actionType === 'record') {
           rActions[aName] = aConf;
         } else {
           gActions[aName] = aConf;

@@ -128,6 +128,7 @@ export default {
             modelName : 'user',
             type : 'v-list',
             actions:['action-view'],
+            hiddenColumns : ['mainrole'],
             // actionsConfig:{
             //     "action-view": {
             //         execute() {
@@ -181,7 +182,7 @@ export default {
                 if (!this.toggle) {
                     this.view.showPanel(event,{
                         componentName : 'v-edit',
-                        panelClass : 'w-7',
+                        panelClass : 'w-1/3',
                         componentConf : {
                             type : 'v-edit',
                             pk : that.modelData.id,
@@ -220,12 +221,6 @@ export default {
             fields : ['name','email','mainrole'], //,"mainrole1"], //,'pippo'],
             actions: ['action-save','action-back','action-custom'],
             modelName: 'user',
-            mounted() {
-                var that = this;
-                that.waitWidget('email',function() {
-                    console.log('wait ok',that.getWidget('email').getValue());
-                })
-            },
             fieldsConfig : {
 
                 name : {
@@ -345,12 +340,7 @@ export default {
             fields : ['name','email','mainrole'], //,"mainrole1"], //,'pippo'],
             actions: ['action-save','action-back','action-custom'],
             modelName: 'user',
-            mounted() {
-                var that = this;
-                that.waitWidget('email',function() {
-                    console.log('wait ok',that.getWidget('email').getValue());
-                })
-            },
+
             fieldsConfig : {
 
                 name : {
@@ -456,6 +446,110 @@ export default {
             }
         }
     },
+    userInsertValidate() {
+        return {
+            type : 'v-insert',
+            fields : ['name','email','mainrole','fotos'], //,"mainrole1"], //,'pippo'],
+            actions: ['action-save','action-back','action-custom'],
+            modelName: 'user',
+
+            fieldsConfig : {
+
+                name : {
+                    type:'w-input',
+                    rules : 'required',
+                    required:true,
+                },
+                email : {
+                    type : 'w-input',
+                    rules : 'required|email',
+                    template :  {
+                        name : 'tpl-record',
+                        labelType :'none',
+                    }
+                },
+                fotos : {
+                    type : 'w-hasmany',
+                    rules: "required",
+                    hasmanyConf: {
+                        fields: ['nome', 'descrizione', 'resource'],
+                        //widgetTemplate : 'tpl-record',
+                        fieldsConfig: {
+                            nome : {
+                                type : 'w-input',
+                                rules : 'required'
+                            },
+                            descrizione : {
+                                type : 'w-textarea',
+                                rules : 'required'
+                            },
+                            resource: {
+                                rules : 'required',
+                                type: 'w-upload-ajax',
+                                extensions: ['jpg', 'png'],
+                                maxFileSize: '2M',
+                                ajaxFields: {
+                                    //resource_type: 'foto',
+                                    field: 'resource'
+                                },
+                                modelName: 'user'
+                            }
+                        }
+                    },
+                    limit: 3,
+                },
+                attachments : {
+                    type : 'w-hasmany',
+                    hasmanyConf: {
+                        fields: ['nome', 'descrizione', 'resource'],
+                        fieldsConfig: {
+                            resource: {
+                                type: 'w-upload-ajax',
+                                extensions: ['xls', 'csv'],
+                                maxFileSize: '2M',
+                                ajaxFields: {
+                                    resource_type: 'attachment',
+                                    field: 'resource'
+                                },
+                                modelName: 'user'
+                            }
+                        }
+                    },
+                    value: [],
+                    limit: 3,
+                },
+                mainrole : {
+                    type :'w-select',
+                    mounted() {
+                        let that = this;
+                        setTimeout(function () {
+                            console.log('aaa',that.domainValues,that.domainValuesOrder,that.value);
+                        },3000)
+                    }
+                },
+                // attivo : 'w-radio',
+                // password : {
+                //     type :'w-input',
+                //     inputType : 'password',
+                // },
+                // password_confirmation : {
+                //     type :'w-input',
+                //     inputType : 'password',
+                // }
+            },
+            actionsConfig: {
+                'action-custom': {
+                    text: 'Custom',
+                    execute() {
+                        let tA = this;
+                        let dis = tA.view.getAction('action-save')._disabled;
+                        console.log('custom action',tA.view.getAction('action-save'));
+                        tA.view.getAction('action-save')._disabled = !dis
+                    }
+                }
+            }
+        }
+    },
     userSearch() {
         return {
             modelName: 'user',
@@ -517,9 +611,14 @@ export default {
     listEdit() {
         return {
             modelName : 'user',
-            fields: ['name','email'],
+            fields: ['name','email','mainrole'],
             type : 'v-list-edit',
+            hiddenColumns : ['mainrole'],
             fieldsConfig: {
+                mainrole : {
+                   type : 'w-input',
+                    inputType : 'hidden'
+                },
                 email: {
                     label: 'aaaa'
                 }
@@ -527,7 +626,10 @@ export default {
             fieldsEditConfig:{
                 email: {
                     type : 'w-text'
-                }
+                },
+                mainrole : {
+                    type : 'w-input',
+                },
             }
         }
     },
@@ -587,13 +689,20 @@ export default {
                     },
                     domainValuesOrder : [2,1,0],
                     value : 2,
-                    execute() {
-                        alert('value ' + this.value);
-                    },
+                    // execute() {
+                    //     alert('value ' + this.value);
+                    // },
                     change() {
                         let param = parseInt(this.value) == 2?'':this.value;
                         this.view.setParams({'s_banned':param});
                         this.view.load();
+                    },
+                    ready() {
+                        let params = this.view.getParams();
+                        if ('s_banned' in params) {
+                            this.value = params.s_banned;
+                        }
+                        //alert('ready' + this.view.getParam('s_banned'));
                     }
                 }
             },

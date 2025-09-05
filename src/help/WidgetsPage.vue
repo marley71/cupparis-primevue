@@ -66,12 +66,12 @@ export default {
         setTimeout(function() {
             jsc.loadVisLib(function () {
                 console.debug('OK',document.getElementById('example'));
-                that.editor = ace.edit("example", {
+                that.editor = window.ace.edit("example", {
                     theme: "ace/theme/textmate",
                     mode: "ace/mode/javascript",
                     value: 'var conf = {}',
                 });
-                that.editorDefault = ace.edit("defaultCode", {
+                that.editorDefault = window.ace.edit("defaultCode", {
                     theme: "ace/theme/textmate",
                     mode: "ace/mode/javascript",
                     value: 'var conf = {}',

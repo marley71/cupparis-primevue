@@ -1,7 +1,7 @@
 <template>
     <div v-if="loaded">
         <template v-for="(v,row) in value">
-            <template v-for="(col) in getHiddenFields()" :key="col">
+            <template v-for="col in getHiddenFields()" :key="col">
                 <component :is="getWidgetType(row,col)" :ref="'w'+row+'_'+col" :conf="getWidgetConf(row,col,v[col])"></component>
             </template>
         </template>
@@ -46,6 +46,21 @@
 
             >
                 <Column :selection-mode="selectionMode"></Column>
+              <Column v-show="false">
+                <template #body="slotProps">
+                  <template v-for="(col) in fields">
+                    <!-- ci metto i campi nascosti per garantire l'invio di tutti i campi nel save della riga -->
+                    <template v-if="isHiddenField(col)">
+                      <div class="hidden">
+                        <component :is="getWidgetType(slotProps.index,col)" v-if="!editMode[slotProps.index % getPerPage()]" :ref="'w'+slotProps.index % getPerPage()+'_'+col"
+                                   :conf="getWidgetConf(slotProps.index % getPerPage(),col,slotProps.data[col])"></component>
+                        <component :is="getWidgetEditType(slotProps.index,col)" v-if="editMode[slotProps.index % getPerPage()]" :ref="'we'+slotProps.index % getPerPage() +'_'+col"
+                                   :conf="getWidgetEditConf(slotProps.index % getPerPage(),col,slotProps.data[col])"></component>
+                      </div>
+                    </template>
+                  </template>
+                </template>
+              </Column>
                 <!-- <Column v-if="getRecordActionsPosition() == 'start' && hasRecordActions()" :exportable="false" :header="translate('app.actions')">
                     <template #body="slotProps">
                         <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
@@ -57,9 +72,9 @@
                         <c-action :ref="'r'+slotProps.index % getPerPage()" :conf="recordActionsConf[slotProps.index % getPerPage()]" :layout="actionRecordLayout"></c-action>
                     </template>
                 </Column>
-                <Column v-for="(col) in fields" :field="col" :header="columnLabel(col)" :key="col" :sortable="isSortable(col)" :dir="sortDirection(col)">
+                <Column v-for="(col) in getVisibleFields()" :field="col" :header="columnLabel(col)" :key="col" :sortable="isSortable(col)" :dir="sortDirection(col)">
                     <template #body="slotProps">
-    <!--                    {{getWidgetConf(slotProps.index,col,slotProps.data[col])}}-->
+
                         <component :is="getWidgetType(slotProps.index,col)" v-if="!editMode[slotProps.index % getPerPage()]" :ref="'w'+slotProps.index % getPerPage()+'_'+col"
                                 :conf="getWidgetConf(slotProps.index % getPerPage(),col,slotProps.data[col])"></component>
                         <component :is="getWidgetEditType(slotProps.index,col)" v-if="editMode[slotProps.index % getPerPage()]" :ref="'we'+slotProps.index % getPerPage() +'_'+col"

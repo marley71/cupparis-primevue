@@ -107,6 +107,3 @@ export default {
 
 }
 </style>
-<script setup>
-import RulesErrors from "./RulesErrors.vue";
-</script>

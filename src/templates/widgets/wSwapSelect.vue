@@ -3,7 +3,7 @@
     <div>
         <span v-html="_labelTop()"></span>
         <input type="hidden" :name=getFieldName() :value="value">
-        <Dropdown class="w-full" :name=getFieldName() v-model="value" :options="options"
+        <Select class="w-full" :name=getFieldName() v-model="value" :options="options"
                   option-label="label" option-value="id" :placeholder="placeholder || translate('app.seleziona')"
                   @change="swap()" v-bind="extraBind" :disabled="_disabled()">
             <template #value="slotProps">
@@ -24,7 +24,7 @@
                     v-html="slotProps.option.label">
                 </div>
             </template>
-        </Dropdown>
+        </Select>
         <span v-html="_labelBottom()"></span>
     </div>
     <RulesErrors :errors="errors"></RulesErrors>

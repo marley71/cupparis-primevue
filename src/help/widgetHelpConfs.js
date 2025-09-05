@@ -194,7 +194,8 @@ export default {
                         type : 'w-hidden'
                     },
                     nome : {
-                        type : 'w-input'
+                        type : 'w-input',
+                        rules:"required",
                     },
                     resource: {
                         type : 'w-input',

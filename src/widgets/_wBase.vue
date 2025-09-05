@@ -189,7 +189,10 @@ export default {
           dt.errors = [];
           //console.debug('wBase.data ', dt)
           return dt;
-        }
+        },
+      bgUrl(url) {
+        return 'background-image: url("' + url + '") !important;"';
+      },
 
     }
 }

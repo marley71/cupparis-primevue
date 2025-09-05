@@ -301,8 +301,8 @@ const actionConfs = {
         _saveRow(callback) {
             var that = this;
             console.debug('eseguo save-row');
-            that.view.save(that.index,function() {
-                callback(true)
+            that.view.save(that.index,function(esito) {
+                callback(esito)
             })
         },
     },

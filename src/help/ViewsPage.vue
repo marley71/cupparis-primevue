@@ -16,13 +16,14 @@ export default {
         return {
             vSelected:wSel,
             viewsConf : {
-                'lista statica' :           viewHelpConfs.staticList(),
-                'record statico' :          viewHelpConfs.staticRecord(),
-                'user list' :               viewHelpConfs.userList(),
+                'lista statica' :               viewHelpConfs.staticList(),
+                'record statico' :              viewHelpConfs.staticRecord(),
+                'user list' :                   viewHelpConfs.userList(),
                 'list edit' :               viewHelpConfs.listEdit(),
                 'user view' :               viewHelpConfs.userView(),
                 'user edit' :               viewHelpConfs.userEdit(),
-                'user edit validate js':    viewHelpConfs.userEditValidate(),
+                'user edit validate js':          viewHelpConfs.userEditValidate(),
+                'user insert validate hasmany':   viewHelpConfs.userInsertValidate(),
                 'user search' :             viewHelpConfs.userSearch(),
                 'lista con panel' :         viewHelpConfs.userListPanel(),
                 'lista hide column' :       viewHelpConfs.userListHideColumn(),

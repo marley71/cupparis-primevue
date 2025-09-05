@@ -25,7 +25,6 @@ export default {
         for (let k in that.conf) {
             //console.log('action wConf k',k,that.wConf[k]);
             if (global.actionReservedKeys.indexOf(k) >= 0) {
-                console.debug(that.conf);
                 throw "(" +k+") è una chiave riservata e non può essere sovrascritta";
             }
             if (that.conf[k] instanceof Function) {
@@ -135,6 +134,7 @@ export default {
                 //that.execute = function () {
                     CrudHelpers.createRuntimeLink(that.href(), that.target)
                 //}
+              return;
             }
             if (that.conf.execute) {
                 that._beforeExecute().then(() => {

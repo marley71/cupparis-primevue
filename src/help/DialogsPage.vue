@@ -8,7 +8,7 @@
                     <a class="p-button p-button-secondary p-2 m-1 p-button-outlined" type="button" v-on:click="doCmd(wname)">{{ Array.isArray(wname)?wname[0] + ' con ' + wname[1]:wname }}</a>
                 </template>
                 <hr />
-                <Button class="p-button w-4 mt-1" label="Run" @click="updateCode"></Button>
+                <Button class="p-button w-200 mt-1" label="Run" @click="updateCode"></Button>
                 <hr />
                 <div class="grid">
                     <div class="col-12">
@@ -45,7 +45,7 @@ export default {
         setTimeout(function() {
             jsc.loadVisLib(function () {
                 console.debug('OK',document.getElementById('example'));
-                that.editor = ace.edit("example", {
+                that.editor = window.ace.edit("example", {
                     theme: "ace/theme/textmate",
                     mode: "ace/mode/javascript",
                     value: '',

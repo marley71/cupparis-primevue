@@ -169,7 +169,10 @@ export default {
         },
 
         getFieldName(field) {
-            return field;
+          if (this.conf.getFieldName && (this.conf.getFieldName instanceof Function) ) {
+            return this.conf.getFieldName.apply(this,[field]);
+          }
+          return field;
         },
 
         setFieldLabel(key,conf) {

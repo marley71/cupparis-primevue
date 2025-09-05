@@ -27,7 +27,6 @@ export default {
         if (cf.layout == 'menubar') {
             cf.menubarActions = that.getMenubarActions();
         }
-        console.debug('cf',cf);
         return cf;
     },
     methods: {

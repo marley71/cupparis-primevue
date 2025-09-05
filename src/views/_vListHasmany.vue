@@ -18,7 +18,7 @@ export default {
             panelConf: {
                 componentName: null,
                 componentConf: {},
-                classWidth: 'w-9'
+                classWidth: 'w-1/3'
             },
             labelCols : {}
         }

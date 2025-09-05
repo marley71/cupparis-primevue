@@ -4,7 +4,7 @@
             <c-import :conf="importConf" v-if="!reload"></c-import>
         </div>
         <div class="col-12">
-            <Button class="p-button w-4 mt-1" label="Run" @click="updateCode"></Button>
+            <Button class="p-button w-200 mt-1" label="Run" @click="updateCode"></Button>
             <hr />
             <div class="grid">
                 <div class="col-6">
@@ -40,12 +40,12 @@ export default {
             jsc.loadVisLib(function () {
                 console.debug('OK',document.getElementById('example'));
                 that.dynamicCode =  jsc.getSourceCode(that.importConf);
-                that.editor = ace.edit("example", {
+                that.editor = window.ace.edit("example", {
                     theme: "ace/theme/textmate",
                     mode: "ace/mode/javascript",
                     value: 'var conf = ' + that.dynamicCode,
                 });
-                that.editorDefault = ace.edit("defaultCode", {
+                that.editorDefault = window.ace.edit("defaultCode", {
                     theme: "ace/theme/textmate",
                     mode: "ace/mode/javascript",
                     value: 'var conf = {}',
