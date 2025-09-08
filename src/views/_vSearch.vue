@@ -226,18 +226,20 @@ export default {
         setSearchParamsValue() {
           let that = this;
           let searchParams = that.getSearchParams();
+          console.debug('searchParams',searchParams);
           for (let key in searchParams) {
+            if (that.isSpecialField(key)) {
+              that.setSpecialField(key,searchParams[key]);
+            } else {
             let fieldName = key.substring(2); // tolgo il prefisso s_{fieldName}
+              console.debug('searchParams',that.fields,fieldName);
             if (that.fields.indexOf(fieldName) >=0 )  {
                 let w = this.getWidget(fieldName);
+                console.debug('searchParams',w,fieldName);
                 if (w) {
                     w.setValue(searchParams[key]);
                 }
-
-              // let config = that.fieldsConfig[fieldName] || {};
-              // config.value = searchParams[key];
-              // that.fieldsConfig[fieldName] = config;
-              // console.debug('has fieldName',fieldName,config)
+              }
             }
           }
 
