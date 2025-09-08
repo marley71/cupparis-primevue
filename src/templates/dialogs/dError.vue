@@ -4,13 +4,19 @@
             <h3>{{ translate(title) }}</h3>
         </template>
 
-        <div class="text-red-500" ref="el">
+        <div class="flex text-red-500 gap-5" ref="el">
+            <div>
+              <i class="fa fa-triangle-exclamation fa-2x"></i>
+            </div>
+          <div>
             <template v-if="Array.isArray(message)">
-                <div  v-for="(msg,index) in message" v-html="msg" :key="index"></div>
+              <div  v-for="(msg,index) in message" v-html="msg" :key="index"></div>
             </template>
             <template v-else>
-                <div v-html="message"></div>
+              <div v-html="message"></div>
             </template>
+          </div>
+
         </div>
 
         <template #footer>
