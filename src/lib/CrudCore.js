@@ -357,7 +357,7 @@ CrudCore.confirmDialog = function(msg,props,callbacks) {
     let that = this;
     that.globalProperties.$confirm.require({
         message: msg,
-        icon: 'pi pi-exclamation-triangle',
+        icon: 'fa fa-question-circle fa-2x',
         accept: () => {
             //callback to execute when user confirms the action
             let cOk = callbacks && callbacks.ok?callbacks.ok:function (){};

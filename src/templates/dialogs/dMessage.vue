@@ -5,12 +5,20 @@
         </template>
 
         <div ref="el">
-            <template v-if="Array.isArray(message)">
-                <div  v-for="(msg,index) in message" v-html="msg" :key="index"></div>
-            </template>
-            <template v-else>
-                <div v-html="message"></div>
-            </template>
+            <div class="flex gap-5 text-primary">
+              <div>
+                <i class="fa fa-info-circle fa-2x"></i>
+              </div>
+              <div>
+                <template v-if="Array.isArray(message)">
+                  <div  v-for="(msg,index) in message" v-html="msg" :key="index"></div>
+                </template>
+                <template v-else>
+                  <div v-html="message"></div>
+                </template>
+              </div>
+            </div>
+
         </div>
 
         <template #footer>

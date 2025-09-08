@@ -190,8 +190,18 @@ export default {
           //console.debug('wBase.data ', dt)
           return dt;
         },
+      /**
+       * crea uno sfondo con l'immagine passata per nell'url.. trucchetto css per evitare resize non controllati.
+       * usato dai upload ajax per evitare che il layout spanci per immagini con formato strano.
+       * @param url
+       * @returns {string}
+       */
       bgUrl(url) {
-        return 'background-image: url("' + url + '") !important;"';
+          let realUrl = url;
+          if (import.meta.env.VITE_APP_TARGET) {
+            realUrl = import.meta.env.VITE_APP_TARGET + realUrl;
+          }
+        return 'background-image: url("' + realUrl + '") !important;"';
       },
 
     }
