@@ -48,6 +48,10 @@ export default class WrapperConf {
             conf = that[wName](conf);
         }
         conf = Object.assign(defConf,conf);
+        if (!conf.langContext && conf.langContext !== null) {
+            conf.langContext = conf.modelName ? conf.modelName : ''
+            conf.langContext += '.fields';
+        }
         return conf;
     }
 
@@ -76,6 +80,7 @@ export default class WrapperConf {
         conf.widgetsConfig = [];
         conf.selectedRow = null;
         conf.menuModel = [];
+
         return conf;
     }
 
