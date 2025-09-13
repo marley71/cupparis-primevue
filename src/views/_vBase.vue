@@ -169,7 +169,7 @@ export default {
     },
 
     getFieldName(field) {
-      if (this.conf.getFieldName && this.conf.getFieldName instanceof Function) {
+          if (this.conf.getFieldName && (this.conf.getFieldName instanceof Function) ) {
         return this.conf.getFieldName.apply(this, [field]);
       }
       return field;

@@ -261,46 +261,46 @@ export default {
       that.widgetsConfig = widgetsConfig;
     },
 
-    _setWidgetsConfigOld() {
-      let that = this;
-      // configurazioni widgets
-      if (!that.fields && that.value.length) {
-        that.fields = Object.keys(that.value[0]);
-      }
-      let fConf = {};
-      let fieldsConfig = that.fieldsConfig || {};
-      //console.log('FIEDLS CONFIG',fieldsConfig,that.defaultWidgetType);
-      // configurazione base mergiata con la configurazione passata
-      for (let f in that.fields) {
-        let key = that.fields[f];
-        fConf[key] = {
-          type: that.defaultWidgetType,
-        }
-        if (fieldsConfig[key]) {
-          fConf[key] = Object.assign(fConf[key], CrudCore.normalizeConf(fieldsConfig[key]));
-        }
-        that.setFieldLabel(key, fConf[key]);
-        that.labelCols[key] = fConf[key].label;
-      }
-      // configurazione finale dei widgets
-      let widgetsConfig = [];
-      for (let i in that.value) {
-        widgetsConfig.push({});
-        for (let f in that.fields) {
-          let key = that.fields[f];
-          let val = that.value[i][key];
-          let md = Object.assign({}, (that.metadata[key] || {}));
-          //console.log('field',key,'value',val);
-          widgetsConfig[i][key] = Object.assign(md, fConf[key]);
-          widgetsConfig[i][key].value = val;
-          widgetsConfig[i][key].name = that.getFieldName(key);
-          widgetsConfig[i][key].modelData = that.value[i];
-          widgetsConfig[i][key].view = that;
-          //widgetsConfig[i][key].label = that.getFieldLabel(key);
-        }
-      }
-      that.widgetsConfig = widgetsConfig;
-    },
+    // _setWidgetsConfigOld() {
+    //   let that = this;
+    //   // configurazioni widgets
+    //   if (!that.fields && that.value.length) {
+    //     that.fields = Object.keys(that.value[0]);
+    //   }
+    //   let fConf = {};
+    //   let fieldsConfig = that.fieldsConfig || {};
+    //   //console.log('FIEDLS CONFIG',fieldsConfig,that.defaultWidgetType);
+    //   // configurazione base mergiata con la configurazione passata
+    //   for (let f in that.fields) {
+    //     let key = that.fields[f];
+    //     fConf[key] = {
+    //       type: that.defaultWidgetType,
+    //     }
+    //     if (fieldsConfig[key]) {
+    //       fConf[key] = Object.assign(fConf[key], CrudCore.normalizeConf(fieldsConfig[key]));
+    //     }
+    //     that.setFieldLabel(key, fConf[key]);
+    //     that.labelCols[key] = fConf[key].label;
+    //   }
+    //   // configurazione finale dei widgets
+    //   let widgetsConfig = [];
+    //   for (let i in that.value) {
+    //     widgetsConfig.push({});
+    //     for (let f in that.fields) {
+    //       let key = that.fields[f];
+    //       let val = that.value[i][key];
+    //       let md = Object.assign({}, (that.metadata[key] || {}));
+    //       //console.log('field',key,'value',val);
+    //       widgetsConfig[i][key] = Object.assign(md, fConf[key]);
+    //       widgetsConfig[i][key].value = val;
+    //       widgetsConfig[i][key].name = that.getFieldName(key);
+    //       widgetsConfig[i][key].modelData = that.value[i];
+    //       widgetsConfig[i][key].view = that;
+    //       //widgetsConfig[i][key].label = that.getFieldLabel(key);
+    //     }
+    //   }
+    //   that.widgetsConfig = widgetsConfig;
+    // },
     /**
      * ritorna la configurazione di un widget per poter instanziare widgets dinamici
      * @param key
