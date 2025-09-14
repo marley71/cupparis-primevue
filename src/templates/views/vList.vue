@@ -168,13 +168,13 @@
         </slot>
       </template>
     </div>
-    <OverlayPanel ref="panel" :showCloseIcon="true" :dismissable="true" @hide="panelConf.hide()"
+    <Popover ref="panel" :showCloseIcon="true" :dismissable="true" @hide="panelConf.hide()"
                   :class="panelConf.panelClass">
       <div class="w-full">
         <component v-if="panelConf.componentName" :is="panelConf.componentName"
                    :conf="panelConf.componentConf"></component>
       </div>
-    </OverlayPanel>
+    </Popover>
   </div>
 </template>
 

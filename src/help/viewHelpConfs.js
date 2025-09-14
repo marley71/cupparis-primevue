@@ -557,6 +557,7 @@ export default {
             layout: {
                 cols : 4
             },
+            advancedSearchOpen : true,
             actions:['action-search','action-search-basic'],
             actionsConfig: {
                 'action-search': {

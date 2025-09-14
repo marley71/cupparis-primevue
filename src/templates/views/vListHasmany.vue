@@ -59,12 +59,12 @@
 
             </slot>
         </div>
-    <OverlayPanel ref="panel" :showCloseIcon="true" :dismissable="true">
+    <Popover ref="panel" :showCloseIcon="true" :dismissable="true">
         <div :class="'' + panelConf.classWidth">
             <component v-if="panelConf.componentName" :is="panelConf.componentName"
                        :conf="panelConf.componentConf"></component>
         </div>
-    </OverlayPanel>
+    </Popover>
   </div>
 </template>
 

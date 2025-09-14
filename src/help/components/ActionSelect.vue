@@ -1,6 +1,6 @@
 <template>
     <div>
-        <Dropdown class="w-full" :name="name" v-model="value" :options="mapOptions()"
+        <Select class="w-full" :name="name" v-model="value" :options="mapOptions()"
                 option-label="label" option-value="id" :placeholder="placeholder || translate('app.seleziona')"
                 v-bind="extraBind" @change="change">
                 <template #option="slotProps">
@@ -9,14 +9,14 @@
                         v-html="slotProps.option.label">
                     </div>
                 </template>
-        </Dropdown>
+        </Select>
     </div>
 </template>
 
 <script>
 import aBase from '@templates/actions/aBase.vue';
 import CrudVars from '../../lib/CrudVars';
-import Dropdown  from "primevue/dropdown";
+import Select  from "primevue/select";
 // import cupparisPrimevue from "cupparis-primevue"
 // const aBase = cupparisPrimevue.aBase;
 CrudVars.actionConfs['action-select'] = {
@@ -35,7 +35,7 @@ CrudVars.actionConfs['action-select'] = {
 export default {
     name: "ActionSelect",
     extends:aBase,
-    components : {Dropdown},
+    components : {Select},
     methods : {
         execute() {
             alert('aooo')

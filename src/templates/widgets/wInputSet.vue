@@ -3,14 +3,14 @@
         <span>{{value}}</span>
         <Button icon="fa fa-edit" class="p-button-sm ml-1 p-1" outlined :disabled="!canUpdate"
                 @click="toggle"></Button>
-        <OverlayPanel ref="panel" @hide="cancel()">
+        <Popover ref="panel" @hide="cancel()">
             <h6>{{translate(overlayTitle)}}</h6>
             <div class="my-1 grid w-24rem">
                 <span class="mt-1">{{ translate(label) }}:</span>
                 <InputText v-model="value"/>
                 <Button :label="translate('app.salva')" @click="set()"></Button>
             </div>
-        </OverlayPanel>
+        </Popover>
       <RulesErrors :errors="errors"></RulesErrors>
     </div>
 </template>

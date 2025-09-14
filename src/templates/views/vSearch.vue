@@ -46,68 +46,68 @@
             <div :class="advancedSearchClass()" v-if="hasAdvancedSearch()">
 
                 <div v-if="hasAdvancedSearchAccordion()">
+                    <Accordion :value="isAdvancedSearchOpen()">
+                        <AccordionPanel :value="0">
+                            <AccordionHeader>{{advancedSearchHeader()}}</AccordionHeader>
+                            <AccordionContent>
+                                <form ref="form" enctype="multipart/form-data"
+                                      @change="(event)=> search('advanced',event)"
+                                      @submit.prevent="(event)=> search('advanced',event)"
+                                      class="p-fluid mt-5">
 
-
-                    <Accordion :activeIndex="isAdvancedSearchOpen()">
-
-                        <AccordionTab :header="advancedSearchHeader()">
-                            <form ref="form" enctype="multipart/form-data"
-                                  @change="(event)=> search('advanced',event)"
-                                  @submit.prevent="(event)=> search('advanced',event)"
-                                  class="p-fluid mt-5">
-
-                                <template v-for="field in getHiddenFields()">
-                                    <component :is="widgetsConfig[field].type" :ref="field" :conf="widgetsConfig[field]"></component>
-                                </template>
-                                <div class="grid">
-                                    <template v-for="field in getVisibleFields()" :key="field">
-                                        <div class="py-3" :class="getWidgetLayout(field,'colClass')">
-                                            <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
-                                <span class="p-float-label">
-                                <component :is="widgetsConfig[field].type" :ref="field" :conf="widgetsConfig[field]"></component>
-                                <label :for="field">{{ widgetsConfig[field].label }}</label>
-                                </span>
-                                            </template>
-                                            <template v-else>
-
-                                                <label class="labelTop" :for="field"
-                                                       v-if="getWidgetLayout(field,'labelPosition')=='top'">
-                                                    {{ translateUc(widgetsConfig[field].label) }}
-                                                </label>
-                                                <div class="">
-                                                    <component :is="widgetsConfig[field].type" :ref="field" :conf="widgetsConfig[field]"></component>
-                                                </div>
-                                                <label class="labelBottom" :for="field"
-                                                       v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
-                                                    {{ translateUc(widgetsConfig[field].label) }}
-                                                </label>
-                                            </template>
-                                        </div>
-
-                                        <template v-if="getWidgetLayout(field,'hasDivider')">
-                                            <Divider align="center" class="col-10 col-offset-1">
-                                <span v-if="getWidgetLayout(field,'dividerLabel')"
-                                      class="p-tag">{{ getWidgetLayout(field, 'dividerLabel') }}</span>
-                                            </Divider>
-
-                                        </template>
-                                        <template v-else-if="getWidgetLayout(field,'lastInRow')">
-                                            <div class="col-12 max-h-0 p-0">&nbsp;</div>
-                                        </template>
+                                    <template v-for="field in getHiddenFields()">
+                                        <component :is="widgetsConfig[field].type" :ref="field" :conf="widgetsConfig[field]"></component>
                                     </template>
-                                </div>
-                                <Divider align="center" class="actionsDivider">
+                                    <div class="grid">
+                                        <template v-for="field in getVisibleFields()" :key="field">
+                                            <div class="py-3" :class="getWidgetLayout(field,'colClass')">
+                                                <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
+                                    <span class="p-float-label">
+                                    <component :is="widgetsConfig[field].type" :ref="field" :conf="widgetsConfig[field]"></component>
+                                    <label :for="field">{{ widgetsConfig[field].label }}</label>
+                                    </span>
+                                                </template>
+                                                <template v-else>
 
-                                </Divider>
-                                <div class="flex flex-row justify-content-center">
+                                                    <label class="labelTop" :for="field"
+                                                           v-if="getWidgetLayout(field,'labelPosition')=='top'">
+                                                        {{ translateUc(widgetsConfig[field].label) }}
+                                                    </label>
+                                                    <div class="">
+                                                        <component :is="widgetsConfig[field].type" :ref="field" :conf="widgetsConfig[field]"></component>
+                                                    </div>
+                                                    <label class="labelBottom" :for="field"
+                                                           v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
+                                                        {{ translateUc(widgetsConfig[field].label) }}
+                                                    </label>
+                                                </template>
+                                            </div>
+
+                                            <template v-if="getWidgetLayout(field,'hasDivider')">
+                                                <Divider align="center" class="col-10 col-offset-1">
+                                    <span v-if="getWidgetLayout(field,'dividerLabel')"
+                                          class="p-tag">{{ getWidgetLayout(field, 'dividerLabel') }}</span>
+                                                </Divider>
+
+                                            </template>
+                                            <template v-else-if="getWidgetLayout(field,'lastInRow')">
+                                                <div class="col-12 max-h-0 p-0">&nbsp;</div>
+                                            </template>
+                                        </template>
+                                    </div>
+                                    <Divider align="center" class="actionsDivider">
+
+                                    </Divider>
+                                    <div class="flex flex-row justify-content-center">
 
 
-                                    <c-action ref="actions" :conf="recordActionsConf"
-                                              :blacklist="['action-search-basic']"
-                                              layout="buttons"></c-action>
-                                </div>
-                            </form>
-                        </AccordionTab>
+                                        <c-action ref="actions" :conf="recordActionsConf"
+                                                  :blacklist="['action-search-basic']"
+                                                  layout="buttons"></c-action>
+                                    </div>
+                                </form>
+                            </AccordionContent>
+                        </AccordionPanel>
                     </Accordion>
                 </div>
                 <form v-else ref="form" enctype="multipart/form-data"

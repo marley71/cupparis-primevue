@@ -52,7 +52,7 @@
     </template>
     <template v-else-if="hasmanyType=='panel'">
         <Button class="p-button-outlined p-1" type="button" icon="fa-solid fa-circle-chevron-down" :label="label" @click="toggle" />
-        <OverlayPanel ref="op" >
+        <Popover ref="op" >
             <table class="w-full table p-1">
                 <thead>
                     <tr>
@@ -68,7 +68,7 @@
                     </tr>
                 </tbody>
             </table>
-        </OverlayPanel>
+        </Popover>
     </template>
     <div v-else>
         <span>hasmanyType {{ hasmanyType }} non valido!</span>
