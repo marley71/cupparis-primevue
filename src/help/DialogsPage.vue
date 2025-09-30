@@ -29,6 +29,7 @@
 import CrudCore from "../lib/CrudCore";
 import CrudComponent from "../CrudComponent.vue";
 import JsToCode from "./JsToCode";
+import jsMessage from './dialogsJsCode/messageDialog.txt'
 const jsc = new JsToCode();
 
 
@@ -61,6 +62,7 @@ export default {
                 'errorDialog',
                 'warningDialog',
                 'confirmDialog',
+                'inputDialog',
                 'customDialog',
                 ['customDialog','buttons'],
                 ['customDialog','fcustom'],
@@ -74,6 +76,7 @@ export default {
                 ['successAlert','acustom']
             ],
             dialogType : '',
+            stringCode : '', // stringa del codice in caso non sia disponibile l'editor
         }
     },
     methods: {
@@ -94,13 +97,32 @@ export default {
         getHref: function () {
             return window.location.hash;
         },
+        setCode(code) {
+            let that = this;
+            if (that.editor) {
+                that.editor.setValue(code);
+            } else {
+                that.stringCode = code;
+            }
+
+        },
         updateCode() {
             let that = this;
-            let s = that.editor.getValue();
-            let fName = jsc.updateCode(s);
+            if (that.editor) {
+                let s = that.editor.getValue();
+                let fName = jsc.updateCode(s);
+            } else {
+                let fName = that.stringCode;
+            }
+
             setTimeout(function () {
                 try {
-                    eval(jsc.getCodeString(s))
+                    if (that.editor) {
+                        let s = that.editor.getValue();
+                        eval(jsc.getCodeString(s))
+                    } else {
+                        eval(that.stringCode)
+                    }
                     //window[fName]().call(that,CrudCore);
                 } catch(e) {
                     that.errorDialog(e);
@@ -113,8 +135,6 @@ export default {
         messageDialogFunc() {
             //CrudCore.errorDialog('aaa');
             let that = this;
-            //that.defaultCode = jsc.getSourceCode(this.messageDialog.toString());
-            //let jsFunc = that.messageDialogCall.toString();
             let jsFunc = "\n\
 CrudCore.messageDialog('Dialog generale per messaggi',null,{\n\
     ok : function() {\n\
@@ -122,10 +142,26 @@ CrudCore.messageDialog('Dialog generale per messaggi',null,{\n\
         CrudCore.messageDialog('Dialog generale per messaggioosss',{title:'titolo custom'})\n\
     }\n\
 })\n\
-            "
-
+"
             console.debug('messageDialogFunc',that.editorDefault,jsFunc)
-            that.editor.setValue(jsFunc);
+            that.setCode(jsFunc);
+            //that.editor.setValue(jsFunc);
+            that.dialogType = "messageDialog"
+            that.updateCode();
+
+            //this.messageDialog('Dialog generale per messaggi').show();
+        },
+        inputDialogFunc() {
+            //CrudCore.errorDialog('aaa');
+            let that = this;
+            let jsFunc = "\n\
+CrudCore.inputDialog('Inseririsci un numero',2).then((risposta) => {\n\
+        CrudCore.messageDialog('Il numero che hai digitato ' + risposta)\n\
+})\n\
+"
+            console.debug('messageDialogFunc',that.editorDefault,jsFunc)
+            that.setCode(jsFunc);
+            //that.editor.setValue(jsFunc);
             that.dialogType = "messageDialog"
             that.updateCode();
 
@@ -141,7 +177,8 @@ CrudCore.errorDialog('Dialog generale di errori',null,{\n\
     }\n\
 })\n\
 ";
-            that.editor.setValue(jsFunc);
+            that.setCode(jsFunc);
+            //that.editor.setValue(jsFunc);
             that.dialogType = "errorDialog";
             that.updateCode();
             //this.errorDialog('Dialog generale di errori');
@@ -150,7 +187,9 @@ CrudCore.errorDialog('Dialog generale di errori',null,{\n\
             let that = this;
             let jsFunc = "\n\
 CrudCore.warningDialog('Dialog generale di warning')\n\
-";          that.editor.setValue(jsFunc);
+";
+            that.setCode(jsFunc);
+            //that.editor.setValue(jsFunc);
             that.dialogType = "warningDialog";
             that.updateCode();
         },
@@ -165,7 +204,9 @@ CrudCore.confirmDialog('Dialog generale di conferma',{},{\n\
         alert('cancel');\n\
     }\n\
 });\n\
-";          that.editor.setValue(jsFunc);
+";
+            that.setCode(jsFunc);
+            //that.editor.setValue(jsFunc);
             that.dialogType = "confirmDialog";
             that.updateCode();
         },
@@ -183,7 +224,9 @@ CrudCore.customDialog('Dialog custom con bottoni',{},{\n\
         alert('button3');\n\
     }\n\
 });\n\
-";          that.editor.setValue(jsFunc);
+";
+            that.setCode(jsFunc);
+            //that.editor.setValue(jsFunc);
             that.dialogType = "customDialog Con bottoni";
             that.updateCode();
         },
@@ -192,7 +235,9 @@ CrudCore.customDialog('Dialog custom con bottoni',{},{\n\
             let that = this;
             let jsFunc = "\n\
 CrudCore.customDialog('Dialog custom senza bottoni');\n\
-";          that.editor.setValue(jsFunc);
+";
+            that.setCode(jsFunc);
+            //that.editor.setValue(jsFunc);
             that.dialogType = "customDialog no bottoni";
             that.updateCode();
         },
@@ -218,7 +263,9 @@ CrudCore.customDialog('Dialog con bottoni customizzabili',{\n\
         }\n\
     ]\n\
 });\n\
-";          that.editor.setValue(jsFunc);
+";
+            that.setCode(jsFunc);
+            //that.editor.setValue(jsFunc);
             that.dialogType = "customDialog no bottoni";
             that.updateCode();
         },
@@ -233,7 +280,9 @@ let cConf = {\n\
     type : 'v-list',\n\
 }\n\
 CrudCore.componentDialog('v-list',cConf);\n\
-";          that.editor.setValue(jsFunc);
+";
+            that.setCode(jsFunc);
+            //that.editor.setValue(jsFunc);
             that.dialogType = "customDialog no bottoni";
             that.updateCode();
         },
@@ -252,7 +301,9 @@ let cConf = {\n\
     type : 'v-insert',\n\
 }\n\
 CrudCore.componentDialog('v-insert',cConf);\n\
-";          that.editor.setValue(jsFunc);
+";
+            that.setCode(jsFunc);
+            //that.editor.setValue(jsFunc);
             that.dialogType = "customDialog no bottoni";
             that.updateCode();
         },
@@ -267,7 +318,9 @@ let cConf = {\n\
     type : 'v-view',\n\
 }\n\
 CrudCore.componentDialog('v-view',cConf);\n\
-";          that.editor.setValue(jsFunc);
+";
+            that.setCode(jsFunc);
+            //that.editor.setValue(jsFunc);
             that.dialogType = "customDialog no bottoni";
             that.updateCode();
         },
@@ -275,7 +328,9 @@ CrudCore.componentDialog('v-view',cConf);\n\
             let that = this;
             let jsFunc = "\n\
 CrudCore.alertSuccess('Alert Succes permanente',0);\n\
-";          that.editor.setValue(jsFunc);
+";
+            that.setCode(jsFunc);
+            //that.editor.setValue(jsFunc);
             that.dialogType = "customDialog no bottoni";
             that.updateCode();
         },
@@ -284,7 +339,9 @@ CrudCore.alertSuccess('Alert Succes permanente',0);\n\
             let that = this;
             let jsFunc = "\n\
 CrudCore.alertInfo('Alert',2000);\n\
-";          that.editor.setValue(jsFunc);
+";
+            that.setCode(jsFunc);
+            //that.editor.setValue(jsFunc);
             that.dialogType = "customDialog no bottoni";
             that.updateCode();
         },
@@ -292,7 +349,9 @@ CrudCore.alertInfo('Alert',2000);\n\
             let that = this;
             let jsFunc = "\n\
 CrudCore.alertWarning('Alert warning',2000);\n\
-";          that.editor.setValue(jsFunc);
+";
+            that.setCode(jsFunc);
+            //that.editor.setValue(jsFunc);
             that.dialogType = "customDialog no bottoni";
             that.updateCode();
         },
@@ -300,7 +359,9 @@ CrudCore.alertWarning('Alert warning',2000);\n\
             let that = this;
             let jsFunc = "\n\
 CrudCore.alertError('Alert error',2000);\n\
-";          that.editor.setValue(jsFunc);
+";
+            that.setCode(jsFunc);
+            //that.editor.setValue(jsFunc);
             that.dialogType = "customDialog no bottoni";
             that.updateCode();
         },
@@ -308,7 +369,9 @@ CrudCore.alertError('Alert error',2000);\n\
             let that = this;
             let jsFunc = "\n\
 CrudCore.alertSuccess('Alert Succes',2000);\n\
-";          that.editor.setValue(jsFunc);
+";
+            that.setCode(jsFunc);
+            //that.editor.setValue(jsFunc);
             that.dialogType = "customDialog no bottoni";
             that.updateCode();
         }

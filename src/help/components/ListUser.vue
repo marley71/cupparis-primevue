@@ -11,7 +11,7 @@
         <div class="flex flex-row flex-wrap w-full gap-5">
             <div class="card w-1/5 h-200  border-[2px] rounded p-2 shadow-2xl" v-for="(row,index) in value" :key="index">
                 <div class="text-2xl">{{row.name}}</div>
-                <div>{{row.email}}</div>
+                <div class="overflow-auto">{{row.email}}</div>
                 <div class="mt-2">
                     <c-action :conf="recordActionsConf[index]" layout="buttons"></c-action>
                 </div>

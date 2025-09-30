@@ -1,0 +1,6 @@
+CrudCore.messageDialog('Dialog generale per messaggi',null,{
+    ok : function() {
+        this.hide();
+        CrudCore.messageDialog('Dialog generale per messaggioosss',{title:'titolo custom'})\n\
+    }
+})

@@ -13,6 +13,7 @@ const lang = {
     'app.ok' : 'Si',
     'app.reset' : 'Reset',
     'app.richiesta-conferma': 'Richiesta conferma',
+    'app-richiesta-dati' : 'Richiesta di dati',
     'app.seleziona' : 'Seleziona',
     'app.trova-indirizzo' : 'Trova indirizzo',
     'app.gestione' : 'Gestione',

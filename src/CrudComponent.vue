@@ -11,9 +11,6 @@ export default {
     props: {
         conf: Object,
     },
-    // data() {
-    //     return Object.assign({},(this.conf || {}));
-    // },
     methods: {
         /**
          * istanzia una nuova route a partire dalla configurazione trovata in store

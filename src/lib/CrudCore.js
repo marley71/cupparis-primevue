@@ -10,6 +10,7 @@ import Server from "./Server";
 import routeConfs from "../confs/routes";
 import Route from "./Route";
 import axios from "axios";
+import {reject} from "lodash/collection";
 
 //const Ev = EventBus();
 const Ev = mitt();
@@ -225,6 +226,9 @@ function __dialog(type,msg,props,callbacks) {
         case 'warning':
             comp = defineAsyncComponent(() => import('@templates/dialogs/dWarning.vue'))
             break;
+        case 'input':
+            comp = defineAsyncComponent(() => import('@templates/dialogs/dInput.vue'))
+            break;
         case 'custom':
             comp = defineAsyncComponent(() => import('@templates/dialogs/dCustom.vue'))
             break;
@@ -369,6 +373,22 @@ CrudCore.confirmDialog = function(msg,props,callbacks) {
             let cCancel = callbacks && callbacks.cancel?callbacks.cancel:function (){};
             setTimeout(cCancel,190)
         },
+    });
+}
+
+CrudCore.inputDialog = function (msg,defaultValue) {
+    return new Promise((resolve) => {
+        __dialog('input',msg,{
+            value : defaultValue,
+        },{
+            ok() {
+                let that = this;
+                console.debug('dialog',that.value,that);
+                that.hide();
+                resolve(that.value);
+            }
+        });
+
     });
 }
 
