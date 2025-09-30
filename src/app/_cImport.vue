@@ -1,6 +1,7 @@
 <script>
 import CrudComponent from "../CrudComponent.vue";
 import Server from "../lib/Server";
+import CrudCore from "../lib/CrudCore";
 
 export default {
     name: "_cImport",
@@ -20,8 +21,9 @@ export default {
         conf.viewDisplay = false;
         conf.importStatus = 'upload';
         conf.jobId = null;
-        conf.importDesc = that.conf.importDesc || null;
-        conf.importFile = that.conf.importFile || null;
+        conf.importDesc = that.conf.importDesc || null;  // descrizione dell'importazione
+        conf.importFile = that.conf.importFile || null;  // nome modello da importate di default il nome modello
+        conf.importDescHtml = that.conf.importDescHtml || null; // nome file html per una descrizione complessa
         return conf;
     },
     watch: {
@@ -39,9 +41,27 @@ export default {
     },
     methods: {
         _ready() {
-            if (this.conf.ready && typeof this.conf.ready==='function') {
-                this.ready.apply(this);
+            let that = this;
+            that.getImportDescHtml();
+            if (that.conf.ready && typeof that.conf.ready==='function') {
+                that.ready.apply(this);
             }
+        },
+        getImportDescHtml() {
+            let that = this;
+            if (that.importDescHtml) {
+                console.debug('importo ', that.importDescHtml);
+                let properties =  Object.keys(that).filter(key => typeof that[key] !== 'function');
+                let data = {};
+                for (let k of properties) {
+                    data[k] = that[k];
+                }
+                CrudCore.fetchHtml(that.importDescHtml,function (htmlText) {
+                    console.debug('contenuto',htmlText);
+                    that.importDesc = htmlText;
+                },data)
+            }
+
         },
         _uploadConf() {
             let that = this;

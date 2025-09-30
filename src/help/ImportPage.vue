@@ -1,24 +1,37 @@
 <template>
     <div class="grid">
         <div class="col-12">
-            <c-import :conf="importConf" v-if="!reload"></c-import>
+            <template v-for="(conf,wName) in importsConf" :key="wName">
+                <!--                        <a class="p-button m-1 p-1 p-button-outlined" href="javascript:void(0)" @click="wSelected=wName">{{ wName }}</a>-->
+                <a class="p-button m-1 p-2" :class="importSelected===wName?'':'p-button-outlined'" :href="'#/test2-import/'+wName" >{{ wName }}</a>
+            </template>
         </div>
         <div class="col-12">
-            <Button class="p-button w-200 mt-1" label="Run" @click="updateCode"></Button>
-            <hr />
-            <div class="grid">
-                <div class="col-6">
-                    <h6>Configurazione Import </h6>
-                    <div class="font-italic">Iniziare il codice sempre con var conf = </div>
-                    <div id='example' class="h-20rem w-full">
+<!--            <c-import :conf="importConf" v-if="!reload"></c-import>-->
+            <c-import v-if="!reload && importSelected" :conf="importConf" ></c-import>
+        </div>
+        <div class="grid grid-cols-1 ">
+            <div class="">
+                <Button class="p-button w-20 mt-1 p-button-success" label="Run" @click="updateCode"></Button>
+                <hr />
+                <div class="grid grid-cols-2">
+                    <div class="">
+                        <h6>Configurazione import {{importSelected}}</h6>
+                        <div class="font-italic">Iniziare il codice sempre con var conf = </div>
+                        <div id='example' class="h-40 w-full">
 
+                        </div>
+                    </div>
+                    <div class="">
+                        <h6>Configurazione di default {{ viewType }}</h6>
+                        <div id="defaultCode" class="h-40 w-full">
+
+                        </div>
                     </div>
                 </div>
-                <div class="col-6">
-                    <h6>Configurazione di default Import </h6>
-                    <div id="defaultCode" class="h-20rem w-full">
-
-                    </div>
+                <div v-if="vSelected" class="grid mt-5">
+                    <h5>codice</h5>
+                    <pre v-html="getCodeJs()"></pre>
                 </div>
             </div>
         </div>
@@ -29,42 +42,82 @@
 import DCupGeoComune from './DCupGeoComune.js';
 import cImport from '@templates/app/cImport.vue';
 import JsToCode from "./JsToCode";
+import importHelpConfs from "./importHelpConfs";
 const jsc = new JsToCode();
 
 export default {
   name: "TestImport",
     components: {cImport},
-    mounted() {
-        let that = this;
-        setTimeout(function() {
-            jsc.loadVisLib(function () {
-                console.debug('OK',document.getElementById('example'));
-                that.dynamicCode =  jsc.getSourceCode(that.importConf);
-                that.editor = window.ace.edit("example", {
-                    theme: "ace/theme/textmate",
-                    mode: "ace/mode/javascript",
-                    value: 'var conf = ' + that.dynamicCode,
-                });
-                that.editorDefault = window.ace.edit("defaultCode", {
-                    theme: "ace/theme/textmate",
-                    mode: "ace/mode/javascript",
-                    value: 'var conf = {}',
-                });
-            })
-        },200)
-
-    },
+    // watch: {
+    //     importSelected() {
+    //         this.setCode();
+    //     }
+    // },
     data() {
       console.log('configuration',DCupGeoComune)
+
       return {
-          importConf : DCupGeoComune,
+          importSelected : null,
+          importsConf : {
+              'semplice' : importHelpConfs.semplice(),
+              'con dati aggiuntivi' : importHelpConfs.con_parametri(),
+              'con template info html' : importHelpConfs.con_html(),
+          },
+          importConf : null,
           dynamicCode : '',
           editor : null,
           editorDefault : null,
           reload : false,
       }
     },
+    mounted() {
+        let that = this;
+        setTimeout(function() {
+            jsc.loadVisLib(function () {
+                console.debug('OK',document.getElementById('example'));
+                that.editor = window.ace.edit("example", {
+                    theme: "ace/theme/textmate",
+                    mode: "ace/mode/javascript",
+                    value: 'var conf = {}',
+                });
+                that.editorDefault = window.ace.edit("defaultCode", {
+                    theme: "ace/theme/textmate",
+                    mode: "ace/mode/javascript",
+                    value: 'var conf = {}',
+                });
+                let wSel = that.$route.params?(that.$route.params.case || null):null;
+                if (wSel) {
+                    wSel = decodeURI(wSel)
+                    that.importSelected = wSel;
+                    that.importConf = that.importsConf[wSel];
+                    that.setCode();
+                }
+
+            })
+
+        },200)
+
+    },
     methods : {
+        setCode() {
+            let that = this;
+            this.dynamicCode =  jsc.getSourceCode(that.importConf); //this.viewsConf[this.widgetSelected];
+            //console.debug('connnnfff',this.editor,this.editorDefault,this.dynamicCode);
+            if (this.editor) {
+                this.editor.setValue('var conf = ' + this.dynamicCode);
+            }
+
+            // this.viewType = that.viewsConf[that.vSelected].type;
+            // let defaultConf = jsc.getViewDefaultConf(this.viewType);
+            // that.defaultCode = jsc.getSourceCode(defaultConf);
+            // if (this.editorDefault) {
+            //     that.editorDefault.setValue('var conf = ' + that.defaultCode)
+            // }
+        },
+        getCodeJs() {
+            let code = this.importsConf[this.importSelected];
+            return jsc.getSourceCode(code);
+        },
         updateCode() {
             let that = this;
             let s = that.editor.getValue();

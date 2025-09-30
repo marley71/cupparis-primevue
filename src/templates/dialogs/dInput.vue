@@ -11,7 +11,7 @@
               </div>
               <div>
                   <div v-html="message"></div>
-                  <InputText v-model="value"></InputText>
+                  <InputText v-model="value" @change="ok"></InputText>
               </div>
             </div>
 
