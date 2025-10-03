@@ -16,7 +16,7 @@
 <script>
 import aBase from '@templates/actions/aBase.vue';
 import CrudVars from '../../lib/CrudVars';
-import Select  from "primevue/select";
+//import {Select}  from "primevue/select";
 // import cupparisPrimevue from "cupparis-primevue"
 // const aBase = cupparisPrimevue.aBase;
 CrudVars.actionConfs['action-select'] = {
@@ -35,7 +35,7 @@ CrudVars.actionConfs['action-select'] = {
 export default {
     name: "ActionSelect",
     extends:aBase,
-    components : {Select},
+    //components : {Select},
     methods : {
         execute() {
             alert('aooo')

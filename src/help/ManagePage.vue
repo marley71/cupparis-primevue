@@ -37,18 +37,21 @@ export default {
     mounted() {
         let that = this;
         setTimeout(function() {
-            jsc.loadVisLib(function () {
-                console.debug('OK',document.getElementById('example'));
-                that.editor = ace.edit("example", {
-                    theme: "ace/theme/textmate",
-                    mode: "ace/mode/javascript",
-                    value: 'var conf = {}',
-                });
-                that.editorDefault = ace.edit("defaultCode", {
-                    theme: "ace/theme/textmate",
-                    mode: "ace/mode/javascript",
-                    value: 'var conf = {}',
-                });
+            jsc.loadVisLib(function (error) {
+                console.debug('error',error,document.getElementById('example'));
+                if (!error) {
+                    that.editor = ace.edit("example", {
+                        theme: "ace/theme/textmate",
+                        mode: "ace/mode/javascript",
+                        value: 'var conf = {}',
+                    });
+                    that.editorDefault = ace.edit("defaultCode", {
+                        theme: "ace/theme/textmate",
+                        mode: "ace/mode/javascript",
+                        value: 'var conf = {}',
+                    });
+                }
+
                 switch (that.manageSelected) {
                     case 'semplice':
                     case 'm2':

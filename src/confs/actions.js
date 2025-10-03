@@ -191,9 +191,8 @@ const actionConfs = {
         text : '',
         icon : 'fa fa-edit',
         execute () {
-            this.view.$router.go('/edit/' + CrudCore.pascalCase('model_'+this.view.modelName) + '.edit/' + this.modelData[this.view.primaryKey])
-            //let url = '#/edit/' + CrudCore.pascalCase('model_'+this.view.modelName) + '.edit/' + this.modelData[this.view.primaryKey]
-            //document.location.href=url
+            let url = '/edit/' + CrudCore.pascalCase('model_'+this.view.modelName) + '.edit/' + this.modelData[this.view.primaryKey];
+            this.view.$router.push(url);
         }
     },
     'action-view' : {
@@ -339,8 +338,8 @@ const actionConfs = {
         text : 'app.nuovo',
         execute() {
             //var url = "/insert/" + this.view.modelName + "/new";
-            let url = '#/insert/' + CrudCore.pascalCase('model_'+this.view.modelName) + ".insert"
-            document.location.href=url;
+            let url = '/insert/' + CrudCore.pascalCase('model_'+this.view.modelName) + ".insert"
+            this.view.$router.push(url);
         }
     },
     'action-back' : {

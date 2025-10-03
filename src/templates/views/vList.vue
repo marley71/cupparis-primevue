@@ -91,32 +91,7 @@
           </template>
         </template>
         <slot name="header" :collectionActions="collectionActions">
-          <!--                    <div class="v-list-header">-->
-          <!--                        <div class="surface-section px-4 py-0 md:px-6 lg:px-8">-->
-          <!--                            <div class="flex align-items-start flex-column lg:justify-content-start lg:align-items-center lg:flex-row">-->
-          <!--                                <div class="mr-5 pr-3 border-right-none lg:border-right-1">-->
-          <!--                                    <div class="font-medium text-3xl text-900">{{ translateUc(modelName + '.label', null,1) }}</div>-->
-          <!--                                    <div class="flex align-items-center text-700 flex-wrap">-->
-          <!--                                        <div class="mr-5 flex align-items-center mt-3">-->
-          <!--                                            &lt;!&ndash;                                    <i class="pi pi-users mr-2"></i>&ndash;&gt;-->
-          <!--                                            <span>{{-->
-          <!--                                                    translate('app.numero-records-lista', null, 0, [(value ? value.length : 0), getFirst() + 1, getFirst() + (value ? value.length : 0), getTotal()])-->
-          <!--                                                }}</span>-->
-          <!--                                        </div>-->
-          <!--                                    </div>-->
-          <!--                                </div>-->
-          <!--                                <template v-if="Object.keys(collectionActions).length > 0">-->
-          <!--                                    <div class="mt-5 lg:mt-0">-->
-          <!--                                        <c-action :layout="actionsLayout" :conf="collectionActions"></c-action>-->
-          <!--                                    </div>-->
-
-          <!--                                </template>-->
-          <!--                            </div>-->
-          <!--                        </div>-->
-          <!--                    </div>-->
-
           <div>{{ translate('app.records') }} : {{ getTotal() }}</div>
-
         </slot>
         <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig">
           <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected"
@@ -180,7 +155,6 @@
 
 <script>
 import _vList from '@cupparis-lib/views/_vList.vue'
-//import cWidget from "../widgets/cWidget.vue";
 import cAction from "../actions/cAction.vue";
 export default {
   name : "v-list",

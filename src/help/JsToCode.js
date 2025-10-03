@@ -1,5 +1,8 @@
 import prettyJs from "pretty-js";
 import CrudCore from "../lib/CrudCore";
+// import ace from './editorLib/ace';
+// import beaty from './editorLib/ext-beautify.min';
+// import javascriptmin from './editorLib/javascript.min';
 
 export default class JsToCode {
     constructor() {
@@ -90,6 +93,126 @@ export default class JsToCode {
 
     loadVisLib(callback) {
         // carico la libreria vis-timeline-graph2d dinamicamente perche' non puo' coesistere con graphNetwork
+        //return callback(false);
+
+        let scriptsName = [
+            'src/help/editorLib/ace.js',
+            //'src/help/editorLib/ext-beautify.min.js',
+            //'src/help/editorLib/javascript.min.js',
+        ]
+
+        var __loadScript = function(i) {
+            let body = document.getElementsByTagName('body')[0];
+            let script = document.createElement('script');
+            script.id = 'visScript';
+            script.type = 'text/javascript';
+            script.src = import.meta.env['VITE_HELP_DIR'] + scriptsName[i]; //scriptsName[i];
+            console.debug('src',script.src);
+            script.onload = function() {
+                if (i  < scriptsName.length - 1) {
+                    __loadScript(i+1);
+                } else {
+                    callback();
+                }
+
+            };
+            script.onerror = function() {
+                console.error("cannot load script " + scriptsName[i]);
+                callback(true)
+            }
+            // fire the loading
+            body.appendChild(script);
+        }
+
+
+
+        // var __loadScript = function(i) {
+        //     let body = document.getElementsByTagName('body')[0];
+        //     let script = document.createElement('script');
+        //     script.id = ''
+        //
+        //     fetch(import.meta.env['VITE_HELP_DIR'] + scriptsName[i])
+        //         .then(response => {
+        //             if (!response.ok) {
+        //                 throw new Error('Network response was not ok');
+        //             }
+        //             response.text().then(jsFile => {
+        //
+        //                 script.text = jsFile;
+        //                 console.debug('contenuto',jsFile);
+        //                 body.appendChild(script);
+        //                 if (i  < scriptsName.length - 1) {
+        //                     __loadScript(i+1);
+        //                 } else {
+        //                     callback();
+        //                 }
+        //             });
+        //         })
+        //         .catch(error => {
+        //             console.error('C\'è stato un problema con il caricamento:', error);
+        //         });
+        //
+        //
+        //
+        //     // import(scriptsName[i]).then((contenuto)  => {
+        //     //     console.debug('contenuto',contenuto.default);
+        //     //     contenuto.text().then((contenuto) => {
+        //     //         script.text = contenuto;
+        //     //         console.debug('contenuto',contenuto);
+        //     //         body.appendChild(script);
+        //     //         if (i  < scriptsName.length - 1) {
+        //     //             __loadScript(i+1);
+        //     //         } else {
+        //     //             callback();
+        //     //         }
+        //     //     });
+        //     //
+        //     // })
+        //
+        //     fetch(scriptsName[i]).then((contenuto)  => {
+        //         contenuto.text().then((contenuto) => {
+        //             script.text = contenuto;
+        //             console.debug('contenuto',contenuto);
+        //             body.appendChild(script);
+        //             if (i  < scriptsName.length - 1) {
+        //                 __loadScript(i+1);
+        //             } else {
+        //                 callback();
+        //             }
+        //         });
+        //
+        //     })
+        //
+        //
+        //     // script.id = 'visScript';
+        //     // script.type = 'text/javascript';
+        //     // script.src = scriptsName[i];
+        //     // script.onload = function() {
+        //     //     if (i  < scriptsName.length - 1) {
+        //     //         __loadScript(i+1);
+        //     //     } else {
+        //     //         callback();
+        //     //     }
+        //     //
+        //     // };
+        //     // script.onerror = function() {
+        //     //     console.error("cannot load script " + scriptsName[i]);
+        //     //     callback(true)
+        //     // }
+        //     // // fire the loading
+        //     // body.appendChild(script);
+        // }
+
+        if (scriptsName.length > 0) {
+            __loadScript(0);
+        }
+
+
+
+    }
+
+    loadVisLibOld(callback) {
+        // carico la libreria vis-timeline-graph2d dinamicamente perche' non puo' coesistere con graphNetwork
 
         let scriptsName = [
             'https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.0/ace.js',
@@ -113,6 +236,7 @@ export default class JsToCode {
             };
             script.onerror = function() {
                 console.error("cannot load script " + scriptsName[i]);
+                callback(true)
             }
             // fire the loading
             body.appendChild(script);
