@@ -250,7 +250,7 @@ export default {
             //hs.value = that.hasmanyValue[i];
             hs.value = that.value[i];
             hs.type = 'v-view';
-            console.log('HS', hs);
+            //console.log('HS', hs);
             return hs;
         },
         getHasmanyList() {

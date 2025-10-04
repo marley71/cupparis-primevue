@@ -312,7 +312,7 @@ CrudCore.componentDialog('v-insert',cConf);\n\
             let jsFunc = "\n\
 let cConf = {\n\
     modelName:'user',\n\
-    actions:['action-save'],\n\
+    actions:[],\n\
     fields: ['email','name'],\n\
     pk : 1,\n\
     type : 'v-view',\n\
