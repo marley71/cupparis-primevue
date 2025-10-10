@@ -35,29 +35,11 @@ export default {
       console.log('ajaxFields', that.ajaxFields)
       for (var k in that.ajaxFields)
         fdata.append(k, that.ajaxFields[k])
+      that.waitStart("Caricamento file...");
       Server.post(realUrl,fdata,function(data) {
         that.json = data;
         if (!data.error) {
           console.log("Success: Files sent!", data);
-          if (data.error) {
-            // var msg = null;
-            // try {
-            //     var tmp = JSON.parse(data.msg);
-            //     msg = "";
-            //     for (k in tmp) {
-            //         msg += tmp[k] + '\n';
-            //     }
-            // } catch (e) {
-            //     msg = data.msg;
-            // }
-            that.error = true;
-            that.errorMessage = Server.getErrorMessage(data.msg);
-            //self._showError(dialog,msg);
-            window.jQuery(that.$el).find('[crud-button="ok"]').addClass("disabled");
-            that.value =  JSON.stringify({});
-            that.fileInfo = null;
-            return;
-          }
           that.$emit('success', that);
           that.complete = true;
 
@@ -69,6 +51,7 @@ export default {
           that.value = JSON.stringify(data.result); //.replace(/\\"/g, '"');
           //that.$refs.preview.setValue(data.result);
           that.onSuccess();
+          that.waitEnd();
         } else {
           console.log("An error occurred, the files couldn't be sent!");
           that.fileInfo = null;
@@ -76,6 +59,7 @@ export default {
           that.errorMessage = Server.getErrorMessage(data.msg);
           that.value = JSON.stringify({});
           that.onError();
+          that.waitEnd();
         }
 
       });
