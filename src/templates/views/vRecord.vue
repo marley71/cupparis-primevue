@@ -53,7 +53,7 @@
                             </template>
 
                         </template>
-                        <div class="grid">
+                        <div class="grid grid-cols-12 gap-2">
                             <template v-for="field in getVisibleFields()" :key="field">
                                 <template v-if="!isRemovedWidget(field)" >
                                     <div class="py-3" :class="getWidgetLayout(field,'colClass')" v-show="!isHiddenWidget(field)">
@@ -108,7 +108,7 @@
                                     <component :is="widgetsConfig[field].type" :ref="field" :conf="widgetsConfig[field]"></component>
                                 </template>
                             </template>
-                            <div class="grid">
+                            <div class="grid grid-cols-12 gap-2">
                                 <template v-for="field in getVisibleFields()" :key="field">
                                     <template v-if="hasDividerBefore(field)">
 
