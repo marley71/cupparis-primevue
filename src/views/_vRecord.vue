@@ -274,7 +274,7 @@ export default {
         // TODO pezza  per gli hasmany.. capire come arrivare ai campi per la validazione.
         if (widget) {
           console.debug('name', name, that.widgetsConfig[name].type);
-          rulesArray = rulesArray.concat(widget.rules.split('|'));
+          rulesArray = rulesArray.concat(widget.rules ? widget.rules.split('|') : []);
           if (that.widgetsConfig[name].type == 'w-hasmany') {
             rulesArray = rulesArray.concat(widget.getRules());
           }
