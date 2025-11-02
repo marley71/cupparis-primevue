@@ -16,7 +16,7 @@
           </template>
           <template v-else-if="['image/png','image/jpeg'].indexOf(fileInfo.mimetype) >= 0">
 
-            <div class='w-[100px] h-[100px] border-1 border-red-100 m-auto bg-contain bg-no-repeat' :style="bgUrl(fileInfo.url)">
+            <div class='w-[100px] h-[100px] border border-red-100 m-auto bg-contain bg-no-repeat' :style="bgUrl(fileInfo.url)">
               &nbsp;
             </div>
 

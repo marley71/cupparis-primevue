@@ -6,6 +6,46 @@ class CrudHelpers {
 
 }
 
+CrudHelpers.toggleDarkMode = () => {
+    console.log('ciccio',document.documentElement,localStorage);
+    if (!localStorage.theme) {
+        localStorage.theme = "dark";
+    } else {
+        localStorage.removeItem("theme");
+    }
+    if (
+        localStorage.theme === "dark" ||
+        (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+    ) {
+        document.documentElement.classList.add(
+            "app-dark",
+        );
+        document.getElementById('dark-mode-icon').classList.remove('fa-moon');
+        document.getElementById('dark-mode-icon').classList.add('fa-sun');
+
+    } else {
+        document.documentElement.classList.remove(
+            "app-dark",
+        );
+        document.getElementById('dark-mode-icon').classList.add('fa-moon');
+        document.getElementById('dark-mode-icon').classList.remove('fa-sun');
+    }
+    // // Whenever the user explicitly chooses light mode
+    // localStorage.theme = "light";
+    // // Whenever the user explicitly chooses dark mode
+    // localStorage.theme = "dark";
+    // // Whenever the user explicitly chooses to respect the OS preference
+    // localStorage.removeItem("theme");
+}
+
+CrudHelpers.hasDarkMode = () => {
+    var theme = localStorage.getItem("theme");
+    if (theme && theme==='dark') {
+        return true;
+    }
+    return false;
+}
+
 CrudHelpers.addBearerTokenToUrl = (url, btKey) => {
 
     //;

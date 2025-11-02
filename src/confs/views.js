@@ -114,6 +114,7 @@ const viewConfs = {
     },
     searchView : Object.assign( baseView,{
         updateHash : true,  // se true i parametri di ricerca li mette nell'url
+        advancedFields: null,
     })
 }
 

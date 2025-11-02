@@ -558,7 +558,7 @@ export default {
                 cols : 4
             },
             advancedSearchOpen : true,
-            actions:['action-search','action-search-basic'],
+            actions:['action-search'],
             actionsConfig: {
                 'action-search': {
                     // execute() {
@@ -569,12 +569,6 @@ export default {
                     afterExecute() {
                         console.debug('view search params',this.view.json);
                         this.messageDialog('Ho ricevuto ');
-                    }
-                },
-                'action-search-basic':{
-                    afterExecute() {
-                        console.debug('view search params',this.view.json);
-                        this.messageDialog('Ho ricevuto222 ');
                     }
                 }
             },
