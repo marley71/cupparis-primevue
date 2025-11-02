@@ -629,4 +629,37 @@ CrudCore.fetchHtml = function (htmlFile,callback,data) {
         });
 }
 
+
+/**
+ * setta una formdata da un json
+ * @param obj
+ * @param form
+ * @param prefix
+ */
+CrudCore.jsonToFormData = function (obj, form = new FormData(), prefix = '') {
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            const value = obj[key];
+
+            if (value instanceof Array) {
+                const formKey = prefix ? `${prefix}[${key}]` : key;
+                value.forEach((val, index) => {
+                    // Se vuoi usare notazione array
+                    CrudCore.jsonToFormData({ [index]: val }, form, `${formKey}`);
+                });
+            } else if (value !== null && typeof value === 'object') {
+                const formKey = prefix ? `${prefix}[${key}]` : key;
+                // Oggetti annidati
+                CrudCore.jsonToFormData(value, form, formKey);
+
+            } else {
+                // Valore semplice
+                const formKey = prefix ? `${prefix}[${key}]` : key;
+                form.append(formKey, value);
+            }
+        }
+    }
+    return form;
+}
+
 export default CrudCore;
