@@ -1,7 +1,11 @@
 <template>
   <span>
     <MultiSelect class="w-full" v-model="value" :options="options" optionLabel="name" optionValue="code"
-                 :placeholder="placeholder" :filter="filter" display="chip" @change="change()">
+                 :placeholder="placeholder" :filter="filter" display="chip" @change="change()"
+                 :pt="{
+                      label: 'flex-wrap',
+                  }"
+    >
       <template #value="slotProps">
         <template v-if="!slotProps.value || slotProps.value.length === 0">
           <div class="p-1">{{ name }}</div>
