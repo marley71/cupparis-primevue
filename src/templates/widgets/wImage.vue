@@ -1,7 +1,7 @@
 <template>
   <span>
     <Avatar v-if="imageType == 'avatar'" :image="value" v-bind="extraBind" shape="circle" :class="imageClass"></Avatar>
-    <img v-else :src="value" v-bind="extraBind" :class="imageClass"/>
+    <Image v-else :src="srcUrl(value)" alt="Image" width="100" preview v-bind="extraBind" :class="imageClass"/>
     <RulesErrors :errors="errors"></RulesErrors>
   </span>
 

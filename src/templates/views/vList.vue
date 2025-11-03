@@ -1,10 +1,11 @@
 <template>
-  <div>
+  <div class="">
     <div v-if="loaded">
       <template v-if="layout=='default'">
         <template v-for="(v,row) in value">
           <template v-for="(col) in getHiddenFields()" :key="col">
-            <component :is="getWidgetType(row,col)" :ref="'w'+row+'_'+col" :conf="getWidgetConf(row,col,v[col])"></component>
+            <component :is="getWidgetType(row,col)" :ref="'w'+row+'_'+col"
+                       :conf="getWidgetConf(row,col,v[col])"></component>
           </template>
         </template>
         <slot name="header" :collectionActions="collectionActions">
@@ -14,7 +15,7 @@
                   class="flex align-items-start flex-column lg:justify-content-start lg:align-items-center lg:flex-row">
                 <div class="mr-5 pr-3 border-right-none lg:border-right-1">
                   <div class="font-medium text-3xl text-900">
-                      {{ title?translateUc(title):translateUc(modelName + '.label', null, 1) }}
+                    {{ title ? translateUc(title) : translateUc(modelName + '.label', null, 1) }}
                   </div>
                   <div class="flex align-items-center text-700 flex-wrap">
                     <div class="mr-5 flex align-items-center mt-3">
@@ -38,47 +39,52 @@
 
         </slot>
         <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig">
-          <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected"
-                     :rows="getPerPage()"
-                     :paginator="paginator" :paginatorPosition="paginatorPosition"
-                     :lazy="routeName==null?false:true"
-                     @page="onPage($event)" @sort="onSort($event)"
-                     :total-records="getTotal()"
-                     :first="getFirst()"
-                     :sortField="getSortField()"
-                     :sortOrder="getSortOrder()"
-                     :loading="!loaded"
+          <div class="p-6  flex-1 overflow-auto">
 
+            <div class="card">
 
-          >
-            <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>
-            <Column v-if="getRecordActionsPosition() == 'start' && hasRecordActions()" :exportable="false"
-                    :header="translate('app.actions')">
-              <template #body="slotProps">
-                <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
-                          :layout="actionsLayout" :menubar-title="actionsLayoutTitle"></c-action>
-              </template>
-            </Column>
-            <Column v-for="(col) in getVisibleFields()" :field="col" :header="columnLabel(col)" :key="col"
-                    :sortable="isSortable(col)" :dir="sortDirection(col)">
-              <template #body="slotProps">
-                  <component :is="getWidgetType(slotProps.index,col)" :ref="'w'+slotProps.index+'_'+col"
-                          :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></component>
-              </template>
-            </Column>
-            <Column v-if="getRecordActionsPosition() == 'end' && hasRecordActions()" :exportable="false"
-                    :header="translate('app.actions')">
-              <template #body="slotProps">
-                <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
-                          :layout="actionsLayout" :menubar-title="actionsLayoutTitle"></c-action>
-              </template>
-            </Column>
+              <DataTable :value="value" v-model:selection="selected"
+                         :rows="getPerPage()"
+                         :paginator="paginator" :paginatorPosition="paginatorPosition"
+                         :lazy="routeName==null?false:true"
+                         @page="onPage($event)" @sort="onSort($event)"
+                         :total-records="getTotal()"
+                         :first="getFirst()"
+                         :sortField="getSortField()"
+                         :sortOrder="getSortOrder()"
+                         :loading="!loaded"
+                         scrollable
+              >
+                <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>
+                <Column v-if="getRecordActionsPosition() == 'start' && hasRecordActions()" :exportable="false"
+                        :header="translate('app.actions')">
+                  <template #body="slotProps">
+                    <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
+                              :layout="actionsLayout" :menubar-title="actionsLayoutTitle"></c-action>
+                  </template>
+                </Column>
+                <Column v-for="(col) in getVisibleFields()" :field="col" :header="columnLabel(col)" :key="col"
+                        :sortable="isSortable(col)" :dir="sortDirection(col)">
+                  <template #body="slotProps">
+                    <component :is="getWidgetType(slotProps.index,col)" :ref="'w'+slotProps.index+'_'+col"
+                               :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></component>
+                  </template>
+                </Column>
+                <Column v-if="getRecordActionsPosition() == 'end' && hasRecordActions()" :exportable="false"
+                        :header="translate('app.actions')">
+                  <template #body="slotProps">
+                    <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
+                              :layout="actionsLayout" :menubar-title="actionsLayoutTitle"></c-action>
+                  </template>
+                </Column>
 
-            <template #empty>
-              {{ translate('app.no_records_found') }}
-            </template>
-          </DataTable>
+                <template #empty>
+                  {{ translate('app.no_records_found') }}
+                </template>
+              </DataTable>
+            </div>
 
+          </div>
         </slot>
         <slot name="footer">
 
@@ -87,55 +93,61 @@
       <template v-if="layout=='simple'">
         <template v-for="(v,row) in value">
           <template v-for="(col) in getHiddenFields()" :key="col">
-            <component :is="getWidgetType(row,col)" :ref="'w'+row+'_'+col" :conf="getWidgetConf(row,col,v[col])"></component>
+            <component :is="getWidgetType(row,col)" :ref="'w'+row+'_'+col"
+                       :conf="getWidgetConf(row,col,v[col])"></component>
           </template>
         </template>
         <slot name="header" :collectionActions="collectionActions">
           <div>{{ translate('app.records') }} : {{ getTotal() }}</div>
         </slot>
         <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig">
-          <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected"
-                     :rows="getPerPage()"
-                     :paginator="paginator" :paginatorPosition="paginatorPosition"
-                     :lazy="routeName===null?false:true"
-                     @page="onPage($event)" @sort="onSort($event)"
-                     :total-records="getTotal()"
-                     :first="getFirst()"
-                     :sortField="getSortField()"
-                     :sortOrder="getSortOrder()"
-                     :loading="!loaded"
-                     :key="tableKey"
+          <Card>
+            <template #content>
+              <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected"
+                         :rows="getPerPage()"
+                         :paginator="paginator" :paginatorPosition="paginatorPosition"
+                         :lazy="routeName===null?false:true"
+                         @page="onPage($event)" @sort="onSort($event)"
+                         :total-records="getTotal()"
+                         :first="getFirst()"
+                         :sortField="getSortField()"
+                         :sortOrder="getSortOrder()"
+                         :loading="!loaded"
+                         :key="tableKey"
 
 
-          >
-            <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>
-            <Column v-if="getRecordActionsPosition() == 'start' && hasRecordActions()" :exportable="false"
-                    :header="translate('app.actions')">
-              <template #body="slotProps">
-                <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
-                          :layout="actionsLayout" :menubar-title="actionsLayoutTitle"></c-action>
-              </template>
-            </Column>
-            <Column v-for="(col) in getVisibleFields()" :field="col" :header="columnLabel(col)" :key="col"
-                    :sortable="isSortable(col)" :dir="sortDirection(col)">
-              <template #body="slotProps">ggg
-                <!--                    {{slotProps.data[col]}} {{ slotProps.index}}-->
-                <component :is="getWidgetType(slotProps.index,col)" :ref="'w'+slotProps.index+'_'+col"
-                          :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></component>
-              </template>
-            </Column>
-            <Column v-if="getRecordActionsPosition() == 'end' && hasRecordActions()" :exportable="false"
-                    :header="translate('app.actions')">
-              <template #body="slotProps">
-                <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
-                          :layout="actionsLayout" :menubar-title="actionsLayoutTitle"></c-action>
-              </template>
-            </Column>
+              >
+                <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>
+                <Column v-if="getRecordActionsPosition() == 'start' && hasRecordActions()" :exportable="false"
+                        :header="translate('app.actions')">
+                  <template #body="slotProps">
+                    <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
+                              :layout="actionsLayout" :menubar-title="actionsLayoutTitle"></c-action>
+                  </template>
+                </Column>
+                <Column v-for="(col) in getVisibleFields()" :field="col" :header="columnLabel(col)" :key="col"
+                        :sortable="isSortable(col)" :dir="sortDirection(col)">
+                  <template #body="slotProps">ggg
+                    <!--                    {{slotProps.data[col]}} {{ slotProps.index}}-->
+                    <component :is="getWidgetType(slotProps.index,col)" :ref="'w'+slotProps.index+'_'+col"
+                               :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></component>
+                  </template>
+                </Column>
+                <Column v-if="getRecordActionsPosition() == 'end' && hasRecordActions()" :exportable="false"
+                        :header="translate('app.actions')">
+                  <template #body="slotProps">
+                    <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
+                              :layout="actionsLayout" :menubar-title="actionsLayoutTitle"></c-action>
+                  </template>
+                </Column>
 
-            <template #empty>
-              {{ translate('app.no_records_found') }}
+                <template #empty>
+                  {{ translate('app.no_records_found') }}
+                </template>
+              </DataTable>
             </template>
-          </DataTable>
+
+          </Card>
 
         </slot>
         <slot name="footer">
@@ -144,7 +156,7 @@
       </template>
     </div>
     <Popover ref="panel" :showCloseIcon="true" :dismissable="true" @hide="panelConf.hide()"
-                  :class="panelConf.panelClass">
+             :class="panelConf.panelClass">
       <div class="w-full">
         <component v-if="panelConf.componentName" :is="panelConf.componentName"
                    :conf="panelConf.componentConf"></component>
@@ -156,8 +168,11 @@
 <script>
 import _vList from '@cupparis-lib/views/_vList.vue'
 import cAction from "../actions/cAction.vue";
+import DataTable from "primevue/datatable";
+import Card from 'primevue/card';
+
 export default {
-  name : "v-list",
+  name: "v-list",
   extends: _vList,
   components: {cAction},
 }
@@ -171,6 +186,7 @@ export default {
 }
 
 .p-datatable {
+
   :deep(.p-datatable-header) {
     background-color: transparent;
     padding: 1.25rem 0;

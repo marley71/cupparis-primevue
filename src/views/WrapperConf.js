@@ -205,12 +205,34 @@ export default class WrapperConf {
         }
         conf.defaultWidgetType = 'w-input';
         if (!('actions' in conf) ){
-            conf.actions = ['action-search','action-search-basic'];
+            conf.actions = ['action-search'];
         }
+
+
+        if (! ('basicSearch' in conf) ) {
+            conf.basicSearch = true;
+        }
+
+        if (! ('searchWithButton' in conf) ) {
+            conf.searchWithButton = false;
+        }
+
+        if (!conf.searchWithButton) {
+            var index = conf.actions.indexOf('action-search');
+            if (index !== -1) {
+                conf.actions.splice(index, 1);
+            }
+        }
+
         if (! ('advancedSearchOpen' in conf) ) {
             conf.advancedSearchOpen = false;
         }
         conf.basicSearchPlaceholder = null;
+
+        if (! ('advancedFields' in conf) || !Array.isArray(conf.advancedFields) ) {
+            conf.advancedFields = [];
+        }
+
 
         return conf;
     }

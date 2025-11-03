@@ -1,6 +1,6 @@
 <template>
   <span>
-    <div class="w-full flex flex-wrap border-1 border-round-sm surface-border p-2"
+    <div class="w-full flex flex-wrap border border-round-sm surface-border p-2"
          :class="direction==='row'?'flex-row':'flex-col'">
         <div class="field-checkbox mb-1"
             :class="rowType==='grid'?'w-12 md:w-6 xl:w-3':'mr-2 '" v-for="(label,key) in domainValues" :key="key">

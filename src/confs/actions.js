@@ -24,7 +24,7 @@ const actionConfs = {
     'action-reset' : {
         actionType : 'collection',
         title : 'app.reset',
-        css: 'rounded',
+        css: 'rounded-sm',
         text : 'app.reset',
         execute () {
             if (this.view) {
@@ -57,41 +57,14 @@ const actionConfs = {
         _search (callback) {
             console.log('action-search',this,'view',this.view);
             if (this.view) {
-                this.view.search('advanced')
+                this.view.search()
                 callback(true)
                 return ;
             }
             callback(true)
         }
     },
-    'action-search-basic' : {
-        actionType : 'collection',
-        title : 'app.cerca',
-        buttonClass: 'p-button p-button-primary',
-        icon : 'fa fa-search',
-        execute (event) {
-            let tA = this;
-            return new Promise(function (resolve,reject) {
-                tA._search(function (esito) {
-                    console.log('search Event',event,esito);
-                    if (esito) {
-                        resolve();
-                    } else {
-                        reject();
-                    }
 
-                })
-            })
-
-        },
-        _search (callback) {
-            console.log('action-search-basic',this,'view',this.view);
-            if (this.view) {
-                this.view.search('basic')
-            }
-            callback(true)
-        }
-    },
     'action-save' : {
         actionType : 'collection',
         title : 'app.salva',

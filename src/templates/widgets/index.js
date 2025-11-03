@@ -12,6 +12,7 @@ import wEditor from './wEditor.vue';
 import wHasmany from "./wHasmany.vue";
 import wHidden from './wHidden.vue'
 import wImage from './wImage.vue';
+import wImages from './wImages.vue';
 import wInput from './wInput.vue';
 import wInputSet from './wInputSet.vue';
 import wLeafLet from './wLeafLet.vue';
@@ -67,6 +68,8 @@ export default {
         CrudCore.componentItems['w-hidden'] = wHidden;
         app.component('w-image',wImage);
         CrudCore.componentItems['w-image'] = wImage;
+        app.component('w-images',wImages);
+        CrudCore.componentItems['w-images'] = wImages;
         app.component('w-input',wInput);
         CrudCore.componentItems['w-input'] = wInput;
         app.component('w-input-set',wInputSet);

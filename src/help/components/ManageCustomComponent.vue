@@ -15,7 +15,7 @@ export default {
         che posso modificare e aggiungere metodi e variabili dinamiche.
         <Button class="p-button-sm p-button-outlined"  @click="pulsante">metodo associato al pulsante definito in conf</Button>
         I componenti custom devono comunque essere registrati in fase di avvio dell'applicazione come nell'esempio,altrimenti non verranno visti dalla manage.
-        <pre class="my-3 border-[1px] border-round">
+        <pre class="my-3 border border-round">
             import ComponentExample from '...'
             app.component('component-example',ComponentExample);
         </pre>

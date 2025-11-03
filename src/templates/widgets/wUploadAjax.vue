@@ -2,9 +2,7 @@
   <span>
     <input type="hidden" v-model="value" :name="getFieldName()">
     <Message v-if="error" severity="error" :closable="false">{{ errorMessage }}</Message>
-    <div class="flex">
-      <FileUpload mode="basic" :auto="true" :customUpload="true" @uploader="uploadFile"
-                  :multiple="false" v-bind="extraBind"/>
+    <div class="flex items-center justify-start gap-4">
       <div class="ml-5">
         <div class="mt-3" v-if="fileInfo">
           <template
@@ -16,9 +14,7 @@
           </template>
           <template v-else-if="['image/png','image/jpeg'].indexOf(fileInfo.mimetype) >= 0">
 
-            <div class='w-[100px] h-[100px] border-1 border-red-100 m-auto bg-contain bg-no-repeat' :style="bgUrl(fileInfo.url)">
-              &nbsp;
-            </div>
+            <Image :src="srcUrl(fileInfo.url)" alt="Image" width="100" preview />
 
             <!--                                <img :src="fileInfo.url"/>-->
           </template>
@@ -27,6 +23,8 @@
           </template>
         </div>
       </div>
+      <FileUpload mode="basic" class="p-button-sm p-button-outlined" chooseIcon="fa fa-upload" chooseLabel="Scegli File" :auto="true" :customUpload="true" @uploader="uploadFile"
+                  :multiple="false" v-bind="extraBind"/>
     </div>
     <RulesErrors :errors="errors"></RulesErrors>
   </span>
