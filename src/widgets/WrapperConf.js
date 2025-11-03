@@ -20,6 +20,9 @@ export default class WrapperConf {
         let that = this;
         //console.log('WIDGET CONF',conf);
         let dC = CrudCore.clone(this.defaultConf); //Object.assign({},this.defaultConf);
+        if (typeof conf === 'string') {
+            conf = {type:conf};
+        }
         conf.type = conf.type || that.defaultConf.type;
         let functionName = CrudCore.camelCase(conf.type);
         //console.log('functionName',functionName)

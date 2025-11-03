@@ -370,7 +370,7 @@ export default {
       return this.widgetsConfig[field].dividerContent || false;
     },
     getDividerContentClass(field) {
-      console.log("DCC::: ", this.widgetsConfig[field].dividerContentClass)
+      //console.log("DCC::: ", this.widgetsConfig[field].dividerContentClass)
       return this.widgetsConfig[field].dividerContentClass || 'font-bold';
     },
     getDividerDescription(field) {
