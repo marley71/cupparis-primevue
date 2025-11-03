@@ -19,7 +19,7 @@
         </template>
       </div>
     </div>
-    <Panel v-else class="managePanel" ref="manage">
+    <Panel v-else class="managePanel mt-5" ref="manage">
       <template #header>
         <h5 class="p-panel-title">
                 <span v-if="title">
@@ -78,7 +78,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .managePanel {
+
   :deep(.p-panel-header) {
 
     background-color: var(--p-background-color);
@@ -105,12 +107,20 @@ export default {
     border: 1px solid;
     border-color: var(--p-primary-600);
     border-radius: 0 0 10px 10px;
+    &:where([class~="app-dark"], [class~="app-dark"] *) {
+      border-color: var(--p-primary-400);
+
+    }
   }
 
   :deep(.p-panel-header) {
     border: 1px solid;
     border-bottom: none;
     border-color: var(--p-primary-600);
+    &:where([class~="app-dark"], [class~="app-dark"] *) {
+      border-color: var(--p-primary-400);
+
+    }
     border-radius: 10px 10px 0 0;
   }
 
