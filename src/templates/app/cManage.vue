@@ -2,7 +2,7 @@
   <div>
     <div v-if="layout==='basic'">
       <div>
-        <div v-show="mode==='list'">
+        <div v-if="mode==='list'">
           <template v-if="!hideSearch">
             <component :is="searchComponentName" :conf="search" ref="vSearch" @search="searchList"></component>
           </template>
@@ -34,7 +34,7 @@
         {{ sectionTitle }}
       </div>
       <div>
-        <div v-show="mode==='list'">
+        <div v-if="mode==='list'">
           <template v-if="!hideSearch">
             <component :is="searchComponentName" :conf="search" ref="vSearch" @search="searchList"></component>
           </template>

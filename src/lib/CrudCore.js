@@ -407,6 +407,7 @@ CrudCore.componentDialog = function(compName,componentConf,title,dialogConf) {
         cssClass : null,
     },(dialogConf || {}));
     dialogConf.title = title;
+    dialogConf.ref = 'myref';
     console.debug('componentDialog','compName',compName,'compConf',componentConf,'dialogConf',dialogConf)
     let cc = {
         componentName : compName,
@@ -418,7 +419,9 @@ CrudCore.componentDialog = function(compName,componentConf,title,dialogConf) {
     });
     CrudCore.setupApp(d);
     d.comp = comp;
-    d.mount(div);
+    let dialog = d.mount(div);
+    d.dialog = dialog;
+    //d.dialog = comp.$refs.myref;
     window.DIALOG = d;
     return d;
 }

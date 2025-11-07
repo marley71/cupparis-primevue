@@ -5,6 +5,7 @@ const jsc = new JsToCode();
 
 export default {
     name: "WidgetsPage",
+    components : {},
     data() {
         let wSel = this.$route.params?(this.$route.params.case || null):null;
         if (wSel) {
@@ -63,6 +64,9 @@ export default {
     },
     mounted() {
         let that = this;
+        if (that.widgetSelected) {
+            that.setCode();
+        }
         setTimeout(function() {
             jsc.loadVisLib(function () {
                 console.debug('OK',document.getElementById('example'));

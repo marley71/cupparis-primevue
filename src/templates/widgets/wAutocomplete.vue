@@ -3,9 +3,9 @@
     <input type="hidden" :name="name" v-model="value">
     <div class="flex">
       <Button icon="fa fa-times" @click="clear" v-if="clearButton"/>
-      <AutoComplete class="w-full" :name="name" v-model="autocompleteValue" :suggestions="suggestions"
+      <AutoComplete class="w-full" v-model="autocompleteValue" :suggestions="suggestions"
                     @complete="search" :option-label="getAutocompleteLabel" option-value="id"
-                    v-bind="extraBind" @item-select="itemSelect"/>
+                    v-bind="extraBind" @item-select="itemSelect" input-class="w-full"/>
     </div>
     <RulesErrors :errors="errors"></RulesErrors>
   </span>

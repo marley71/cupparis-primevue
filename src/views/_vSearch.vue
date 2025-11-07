@@ -131,7 +131,7 @@ export default {
       var realAdvancedFields = fields.filter(function (n) {
         return advancedFields.indexOf(n) !== -1;
       });
-      console.log('advancedFields', fields, advancedFields, realAdvancedFields);
+      //console.log('advancedFields', fields, advancedFields, realAdvancedFields);
       return realAdvancedFields;
     },
     defaultSearch() {

@@ -302,12 +302,12 @@ export default {
     wDatePickerConf() {
         return {
             value : '2020-12-20',
-            buttonClear : true,
+            clearButton : true,
             type : 'w-date-picker',
             change() {
                 console.log('date-picker',this.value)
             }
-            // buttonClear: false,
+            // clearButton: false,
         };
     },
     wDateRangePickerConf() {
@@ -315,12 +315,12 @@ export default {
             value : [
                 '2020-12-20','2020-12-25'
             ],
-            buttonClear : true,
+            clearButton : true,
             type : 'w-date-range-picker',
             change() {
                 console.log('date-range-picker',this.value)
             }
-            // buttonClear: false,
+            // clearButton: false,
         };
     },
     wDateTextConf() {

@@ -1,5 +1,6 @@
 import prettyJs from "pretty-js";
 import CrudCore from "../lib/CrudCore";
+
 // import ace from './editorLib/ace';
 // import beaty from './editorLib/ext-beautify.min';
 // import javascriptmin from './editorLib/javascript.min';
@@ -96,7 +97,7 @@ export default class JsToCode {
         //return callback(false);
 
         let scriptsName = [
-            'src/help/editorLib/ace.js',
+            'src/help/editorLib/ace2.js',
             //'src/help/editorLib/ext-beautify.min.js',
             //'src/help/editorLib/javascript.min.js',
         ]

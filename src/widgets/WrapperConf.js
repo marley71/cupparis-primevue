@@ -58,13 +58,19 @@ export default class WrapperConf {
     }
 
     // --- configurazioni widgets
-
+    wKnob(conf) {
+        conf.size = conf.size || 100;
+        conf.prefix = conf.prefix || '';
+        conf.suffix = conf.suffix || '';
+        return conf;
+    }
     wAutocomplete(conf) {
         conf.route = null;
         conf.suggestions = [];
         conf.autocompleteValue = conf.autocompleteValue || null;
         conf.extraBind = conf.extraBind || {};
         conf.autocompleteParams = conf.autocompleteParams || null;
+        conf.clearButton = conf.clearButton || false;
         // conf.getAutocompleteLabel = conf.getAutocompleteLabel || function(event) {
         //     let that = this;
         //
@@ -293,7 +299,7 @@ export default class WrapperConf {
     wDatePicker(conf) {
         //console.log("DATEEEE",conf.value);
         let _conf = {
-            buttonClear : false,
+            clearButton : false,
             dateValue : null,
         }
         conf = Object.assign(_conf,conf);

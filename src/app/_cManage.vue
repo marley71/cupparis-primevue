@@ -52,7 +52,7 @@ export default {
         }
 
         that.setManageActions();
-        that.conf.mode = 'list';
+        that.conf.mode = null;
         that.conf.viewDisplay = false;
         if (!('insert' in that.conf)) {
             that.conf.insert = Object.assign({},CrudCore.clone(that.conf.edit));
@@ -211,6 +211,8 @@ export default {
               case 'list':
                 break;
             }
+          } else {
+              that.mode = 'list';
           }
 
           return ;

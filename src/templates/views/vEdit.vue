@@ -83,6 +83,7 @@
                                     </div>
                                 </template>
                                 <template v-if="getWidgetLayout(field,'hasDivider')">
+
                                     <Divider align="center" class="col-span-10 col-start-2">
                                             <span v-if="getWidgetLayout(field,'dividerLabel')"
                                                   class="p-tag text-white">{{ getWidgetLayout(field, 'dividerLabel') }}</span>
