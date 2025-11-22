@@ -25,8 +25,11 @@ export default {
     },
     methods: {
         getFieldName(field) {
-            //console.debug('v-list-hasmany getFieldName',field);
-            return field + '[]';
+          console.debug('v-list-hasmany getFieldName',field,this.conf.getFieldName);
+          if (this.conf.getFieldName && (this.conf.getFieldName instanceof Function) ) {
+            return this.conf.getFieldName.apply(this,[field]);
+          }
+          return field + '[]';
         },
         /**
          * deseleziona le righe selezionate , importante dopo una cancellazione multipla per evitare che rimanagno
