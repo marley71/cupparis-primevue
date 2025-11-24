@@ -192,6 +192,7 @@ const actionConfs = {
     },
     'action-delete' : {
         actionType : 'record',
+        type : 'button',
         title : 'app.cancella',
         css: 'text-red-500',
         buttonClass: 'p-button-outlined p-button-danger',

@@ -233,7 +233,7 @@ export default {
 
         }
         if (hasmanyType == 'list') {
-            wh.hasmanyConf.actions = ['action-insert','action-delete-selected'];
+            wh.hasmanyConf.actions = ['action-insert','action-delete-selected','action-delete'];
         }
         return wh;
     },

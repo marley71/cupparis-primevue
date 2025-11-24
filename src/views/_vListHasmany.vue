@@ -25,7 +25,7 @@ export default {
     },
     methods: {
         getFieldName(field) {
-          console.debug('v-list-hasmany getFieldName',field,this.conf.getFieldName);
+          //console.debug('v-list-hasmany getFieldName',field,this.conf.getFieldName);
           if (this.conf.getFieldName && (this.conf.getFieldName instanceof Function) ) {
             return this.conf.getFieldName.apply(this,[field]);
           }

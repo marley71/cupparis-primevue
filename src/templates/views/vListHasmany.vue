@@ -9,7 +9,7 @@
             <slot name="header" :collectionActions="collectionActions">
 
             </slot>
-            <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig">
+            <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig" :recordActionsConf="recordActionsConf">
                 <DataTable :value="value" responsiveLayout="scroll"
                         v-model:selection="selected"
                         :rows="getPerPage()"
@@ -27,7 +27,6 @@
                           -->
 
                     <template #header v-if="menuCollection.length > 0">
-
                         <Menubar  :model="menuCollection" class="w-full">
                             <template  v-if="title" #start>
                                 <span>{{title}}</span>
@@ -36,9 +35,9 @@
                     </template>
                     <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>
                     <Column v-if="hasRecordActions()" :exportable="false" header="Actions">
+                    
                         <template #body="slotProps">
-                            <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index]"
-                                      :layout="'simple'"></c-action>
+                            <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index]"></c-action>
                         </template>
                     </Column>
                     <Column v-for="(col) in getVisibleFields()" :field="col" :header="columnLabel(col)" :key="col"

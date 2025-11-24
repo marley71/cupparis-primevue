@@ -262,7 +262,7 @@ export default {
             hs.actions = hs.actions || ['action-delete','action-insert'];
             hs.actionsConfig = {
                 'action-delete':{
-                    type : 'record',
+                    actionType : 'record',
                     execute() {
                         that.removeItem(this.index);
 

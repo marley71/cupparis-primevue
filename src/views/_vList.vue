@@ -152,6 +152,7 @@ export default {
 
     setActions() {
       let that = this;
+      //console.debug('_vList.setActions',JSON.parse(JSON.stringify(that.actionsConfig)));
       this.menuModel = [
         {label: 'View', icon: 'pi pi-fw pi-search', command: () => this.viewRow()},
         {label: 'Delete', icon: 'pi pi-fw pi-times', command: () => this.deleteRow()}
@@ -439,7 +440,7 @@ export default {
       let that = this;
       let rows = [];
       for (let i in that.selected) {
-        console.log('selected rows data', that.selected[i], that.selected)
+        //console.log('selected rows data', that.selected[i], that.selected)
         rows.push(that.selected[i])
       }
       return rows;
@@ -481,7 +482,7 @@ export default {
         })
       }
       that.menuCollection = items;
-      console.log('menuCollection', that.menuCollection, that.collectionActions)
+      //console.log('menuCollection', that.menuCollection, that.collectionActions)
     },
     showPanel(event, conf) {
       if (conf) {
