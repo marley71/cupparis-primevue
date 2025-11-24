@@ -12,7 +12,7 @@ function _getModelConf(obj,key) {
     for(let i in keys) {
         conf = conf[keys[i]];
     }
-    return CrudCore.clone(conf);
+    return conf;  //CrudCore.clone(conf);
 }
 
 function _getModelConfInsert(obj,key) {
@@ -28,19 +28,16 @@ function _getModelConfInsert(obj,key) {
         conf.type = 'v-insert';
         return conf;
     }
-    return CrudCore.clone(conf);
+    return conf; //CrudCore.clone(conf);
 }
 
 function _getManageConf(key,route) {
     if (!CrudVars.modelConfs[key]) {
         console.log(key,'route ',route,CrudVars.modelConfs);
         //document.location.href = '/#404'
-        throw 'Not found'
-        //return ;
-        //document.location.href='/#' + btoa('notfound') // per sollevvare l'eccezione di pagina non trovata
-        //throw 'Not found'
+        throw 'Not found';
     }
-    return  CrudCore.clone(CrudVars.modelConfs[key]);
+    return  CrudVars.modelConfs[key]; //CrudCore.clone(CrudVars.modelConfs[key]);
 }
 var routerConf = null;
 try {

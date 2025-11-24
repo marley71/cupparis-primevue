@@ -607,7 +607,7 @@ CrudCore.createRoute = (routeName) => {
 /**
  * crea una configurazione di default di una view mergiando i valori di default con quelli passati nel
  * parametro confView
- * @param {object} confView 
+ * @param {object} confView
  */
 CrudCore.createConfView = (confView) => {
     let vc = new ViewWrapperConf();
