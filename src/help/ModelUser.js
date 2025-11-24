@@ -6,6 +6,7 @@ export default {
         modelName : 'user',
         //langContext : 'user',
         fields : ['email','name','roles|id'],
+        advancedFields : ['email','name','roles|id'],
         fieldsConfig : {
             'roles|id' : {
                 type: 'w-select',
@@ -149,11 +150,11 @@ export default {
         },
         actionsConfig : {
             'action-test' : {
-                _visible : function () {
+                visible : function () {
                     return false;
                 },
                 //enabled : false,
-                _disabled : function() {
+                disabled : function() {
                     return false;
                 },
                 text : 'test'

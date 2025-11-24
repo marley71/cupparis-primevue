@@ -178,8 +178,13 @@ export default {
        * questa funzione normalizza la configurazione che mi arriva e restituisco solo i dati che devono essere realmente reactive
        */
         _loadReactiveData(conf) {
-          let wc = new WrapperConf()
+          let wc = new WrapperConf();
+          if (!conf.type) {
+              conf.type = this.$options.name;
+              console.debug('wBase con senza type name:' , this.$options.name);
+          }
           let ext = wc.loadConf(conf);
+          //console.debug('wBase conf,ext ', conf,ext)
           let dt = {};
           for (let k in ext) {
             if (!(ext[k] instanceof Function)) {

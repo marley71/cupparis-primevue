@@ -12,6 +12,7 @@ export default class WrapperConf {
         type : 'w-input',
         label : '',
         rules:'',
+        customRules : {},
         rowType : '',
         errors : [],
     }
@@ -252,6 +253,7 @@ export default class WrapperConf {
         return conf;
     }
 
+
     wBelongsto(conf) {
         conf.labelFields = conf.labelFields || ['label'];
         conf.separator =  conf.separator || ' ';
@@ -297,23 +299,18 @@ export default class WrapperConf {
         return conf;
     }
     wDatePicker(conf) {
-        //console.log("DATEEEE",conf.value);
-        let _conf = {
-            clearButton : false,
-            dateValue : null,
-        }
-        conf = Object.assign(_conf,conf);
+        conf.clearButton = conf.clearButton || false;
+        conf.dateValue = conf.dateValue || null;
         if (conf.value) {
             conf.dateValue = new Date(conf.value);
-            //console.log("DATEEEE",conf.dateValue);
         }
         conf.displayFormat = conf.displayFormat || 'dd/mm/yy';
         conf.dateFormat =  conf.dateFormat || 'yy-mm-dd';
-
         return conf;
     }
     wDateRangePicker(conf) {
-        //console.log("DATEEEE",conf.value);
+        conf.clearButton = conf.clearButton || false;
+        conf.dateValue = conf.dateValue || null;
         if (conf.value) {
             if (Array.isArray(conf.value)) {
                 conf.dateValue = [new Date(conf.value[0]),new Date(conf.value[1])];
@@ -328,13 +325,12 @@ export default class WrapperConf {
         conf.iconPrefix = conf.iconPrefix || null;
         conf.suffix = conf.suffix || null;
         conf.iconSuffix = conf.iconSuffix || null;
-        return Object.assign({
-            displayFormat : 'DD/MM/YYYY',
-            dateFormat : 'yy-mm-dd',
-            formattedValue : null,
-            invalidDateString : 'app.data-non-valida'
-        },conf);
-        //return conf;
+        conf.displayFormat  = conf.displayFormat || 'DD/MM/YYYY';
+        conf.dateFormat  = conf.dateFormat || 'yy-mm-dd';
+        conf.formattedValue  = conf.formattedValue || null;
+        conf.invalidDateString  = conf.invalidDateString || 'app.data-non-valida';
+
+        return conf;
     }
     wMultiSelect(conf) {
         let value = conf.value || [];

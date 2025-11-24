@@ -1,16 +1,16 @@
 <template>
-    <div class="grid">
-        <div class="col-12">
+    <div>
+        <div class="w-full">
             <template v-for="(conf,wName) in importsConf" :key="wName">
                 <!--                        <a class="p-button m-1 p-1 p-button-outlined" href="javascript:void(0)" @click="wSelected=wName">{{ wName }}</a>-->
                 <a class="p-button m-1 p-2" :class="importSelected===wName?'':'p-button-outlined'" :href="'#/test2-import/'+wName" >{{ wName }}</a>
             </template>
         </div>
-        <div class="col-12">
+        <div class="w-full mt-3">
 <!--            <c-import :conf="importConf" v-if="!reload"></c-import>-->
             <c-import v-if="!reload && importSelected" :conf="importConf" ></c-import>
         </div>
-        <div class="grid grid-cols-1 ">
+        <div class="w-full">
             <div class="">
                 <Button class="p-button w-20 mt-1 p-button-success" label="Run" @click="updateCode"></Button>
                 <hr />

@@ -24,6 +24,7 @@ export default {
         conf.importDesc = that.conf.importDesc || null;  // descrizione dell'importazione
         conf.importFile = that.conf.importFile || null;  // nome modello da importate di default il nome modello
         conf.importDescHtml = that.conf.importDescHtml || null; // nome file html per una descrizione complessa
+        console.debug('import data conf ', conf);
         return conf;
     },
     watch: {
@@ -77,7 +78,7 @@ export default {
                 actionsConfig: {
                     'action-save': {
                         text: 'app.import-button',
-                        _disabled :true,
+                        disabled :true,
                         csvDashboard : that,
                         execute() {
                             that.importForm();
@@ -120,9 +121,9 @@ export default {
 
                 },
                 onSuccess() {
-                    var viewUpload = thatImport.$refs.viewUpload.instance();
-                    console.log('viewUpload action-save', viewUpload.getAction('action-save'))
-                    viewUpload.getAction('action-save')._disabled = false;
+                    var viewUpload = thatImport.$refs.viewUpload;
+                    console.log('viewUpload action-save aaaa', viewUpload.getAction('action-save'))
+                    viewUpload.getAction('action-save').disabled = false;
                 },
             }
             confUpload = Object.assign(confUpload,(conf.confUpload || {}));
@@ -146,16 +147,12 @@ export default {
             r.setParam('datafileProviderName',that.providerName);
             r.setParam('resource',value);
 
-            // var params = thatAction.merge(viewParams,{
-            //     'fileName': value.id,
-            //     'datafileProviderName': thatAction.csvDashboard.providerName,
-            // })
-            // r.setParams(params);
             console.log('ROUTE',r.getConf());
             //that.waitStart('caricamento file da importare...');
             window.RR = r;
-
+            CrudCore.waitStart('Caricamento file....')
             Server.route(r,function (json) {
+                CrudCore.waitEnd();
                 console.log('json',json);
                 var checkError = that.checkJobError(json);
                 if (checkError.error) {
@@ -208,10 +205,8 @@ export default {
             })
         },
         progress : function (json) {
-            var that = this;
-
-            var checkError = that.checkJobError(json);
-
+            let that = this;
+            let checkError = that.checkJobError(json);
             if (checkError.error ) {
                 that.progressEnabled = false;
                 that.errorDialog(checkError.msg);
@@ -220,7 +215,7 @@ export default {
                     clearInterval(that.timerStatus);
                     that.timerStatus = null;
                 }
-
+                that.reset();
                 return ;
             }
             if (json.job.end) {
@@ -275,13 +270,16 @@ export default {
         },
         _listConf() {
             var that = this;
-            var userConf = that.viewList; //that.merge({},that.viewList);
+            var userConf = that.viewList || {}; //that.clone({},that.viewList);
             if (!userConf.type) {
                 userConf.type = 'v-list';
             }
+            userConf.routeName = userConf.routeName || 'list-constraint';
+            userConf = CrudCore.createConfView(userConf);
             userConf.jobId = that.jobId;
             userConf.modelName = that.providerName;
             userConf.actions = [];
+            userConf.constraintKey = 'datafile_id';
             userConf.constraintValue = that.jobId;
             console.debug('import list conf',userConf);
             return userConf;
@@ -305,12 +303,6 @@ export default {
                 r.setParams(viewParams);
                 r.setParam('datafile_load_id',thatAction.csvDashboard.jobId);
                 r.setParam('datafileProviderName',thatAction.csvDashboard.providerName);
-
-                // var params = thatAction.merge(viewParams,{
-                //     datafile_load_id : thatAction.csvDashboard.jobId,
-                //     datafileProviderName : thatAction.csvDashboard.providerName,
-                // })
-                // r.setParams(params);
                 Server.route(r,function (json) {
                     if (json.error) {
                         thatAction.errorDialog(json.msg);

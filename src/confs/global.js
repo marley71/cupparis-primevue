@@ -15,6 +15,6 @@ export default {
 
     // questi metodi NON e' consentito la sovrascrittura nella conf. se succede viene tirato su un errore.
     actionReservedKeys : [
-        'disabled','visible'
+        '_disabled','_visible','_text','_icon','_href'
     ]
 }

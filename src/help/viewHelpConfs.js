@@ -318,7 +318,7 @@ export default {
                     text: 'enabled/disabled',
                     execute() {
                         let tA = this;
-                        let dis = tA.view.getAction('action-save')._disabled;
+                        let dis = tA.view.getAction('action-save').disabled();
                         console.log('custom action',tA.view.getAction('action-save'));
                         tA.view.getAction('action-save')._disabled = !dis;
                         tA.messageDialog('azione custom, ora la save è ' + (dis?'ABILITATA':'DISABILITATA'));
@@ -438,7 +438,7 @@ export default {
                     text: 'Custom',
                     execute() {
                         let tA = this;
-                        let dis = tA.view.getAction('action-save')._disabled;
+                        let dis = tA.view.getAction('action-save').disabled();
                         console.log('custom action',tA.view.getAction('action-save'));
                         tA.view.getAction('action-save')._disabled = !dis
                     }
@@ -542,7 +542,7 @@ export default {
                     text: 'Custom',
                     execute() {
                         let tA = this;
-                        let dis = tA.view.getAction('action-save')._disabled;
+                        let dis = tA.view.getAction('action-save').disabled();
                         console.log('custom action',tA.view.getAction('action-save'));
                         tA.view.getAction('action-save')._disabled = !dis
                     }

@@ -392,6 +392,32 @@ export default {
       }
       return null;
     },
+
+      callRecordAction(index,name) {
+        let action = this.getRecordAction(index,name);
+        if (!action) {
+            this.alertError('Azione sul record non trovata ' + index + ' name ' + name);
+            return ;
+        }
+        action.execute();
+      },
+      getCollectionAction(name) {
+          console.debug('getCollection action ', this.$refs);
+          // let key = name;
+          // console.log('getRecordAction', index, name, key, this.$refs);
+          // if (this.$refs[key]) {
+          //     return this.$refs[key].instance(name);
+          // }
+          return null;
+      },
+      callCollectionAction(name) {
+          let action = this.getCollectionAction(name);
+          if (!action) {
+              this.alertError('Azione globale non trovata ' + name );
+              return ;
+          }
+          action.execute();
+      },
     /**
      * ritorna un vettore di primaryKey
      * @returns {*[]}

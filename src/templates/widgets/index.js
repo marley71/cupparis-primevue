@@ -36,9 +36,6 @@ import CrudCore  from "@cupparis-lib/lib/CrudCore";
 
 
 
-
-
-
 export default {
     install (app) {
         app.component('w-autocomplete',wAutocomplete);

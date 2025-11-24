@@ -51,15 +51,15 @@ export default {
                 execute() {
                     let ta = this;
                     //ta.manage.components.ManageCustomEdit = ManageCustomEdit;
-                    ta.manage.mode = 'custom';
                     ta.manage.customComponentName = 'manage-custom-edit';//'ManageCustomEdit'
-                    ta.manage.custom =  CrudCore.clone(ModelUser.edit);
-                    ta.manage.custom.pk = this.modelData.id;
-                    ta.manage.custom.actionsConfig['action-back'] = {
+                    let customConf =  CrudCore.clone(ModelUser.edit);
+                    customConf.pk = this.modelData.id;
+                    customConf.actionsConfig['action-back'] = {
                         execute() {
                             ta.manage.showList();
                         }
                     }
+                    ta.manage.showCustom(customConf);
                 }
             },
             'action-custom2': {
@@ -68,9 +68,8 @@ export default {
                 title : 'Istanzia un widget custom',
                 execute() {
                     let ta = this;
-                    ta.manage.mode = 'custom';
                     ta.manage.customComponentName = 'manage-custom-component'
-                    ta.manage.custom =  {
+                    let customConf =  {
                         titolo : 'titolo del mio compoenente',
                         pulsante() {
                             ta.alertInfo('premuto pulsante')
@@ -79,6 +78,8 @@ export default {
                             ta.manage.showList();
                         }
                     }
+
+                    ta.manage.showCustom(customConf);
                 }
             }
         }

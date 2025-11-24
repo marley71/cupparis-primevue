@@ -13,8 +13,8 @@ export default class WrapperConf {
             text : '',
             title : '',
             css : '',
-            _disabled : false,
-            _visible : true,
+            disabled : false,
+            visible : true,
             externalLink : false,
         }
     }
