@@ -604,6 +604,18 @@ CrudCore.createRoute = (routeName) => {
     return new Route(routeConf);
 }
 /**
+ * crea una configurazione di default di una view mergiando i valori di default con quelli passati nel
+ * parametro confView
+ * @param {object} confView 
+ */
+CrudCore.createConfView = (confView) => {
+    let vc = new ViewWrapperConf();
+    return vc.loadConf(confView);
+}
+
+
+
+/**
  * esegue il fetch di un file html nella cartella definita nell'env VITE_PUBLISH_DIR
  * @param htmlFile : stringa, nome file html
  * @param callback : funzione di ritorno a cui viene passato il contenuto html.

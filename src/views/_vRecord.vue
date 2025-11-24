@@ -52,15 +52,8 @@ export default {
       }
       this.setActions();
       this.loaded = true;
-      setTimeout(function () {  // per permettere la renderizzazione html
-        that._afterDraw();
-      }, 100)
     },
-    _afterDraw() {
-      if (this.afterDraw) {
-        this.afterDraw.apply(this);
-      }
-    },
+   
     removeFromList() {
       this.isInlist = false;
     },
@@ -160,6 +153,7 @@ export default {
           var pk = that.cPk || that.pk || 0;
           route.setValues({
             modelName: that.modelName,
+              foormName : (that.foormName || 'edit'),
             pk: pk
           });
         } else {
@@ -193,6 +187,14 @@ export default {
       //console.log('getAction',name,this.recordActionsConf);
       return this.$refs.actions.instance(name);
     },
+      callAction(name) {
+          let action = this.getAction(name);
+          if (!action) {
+              this.alertError('Azionenon trovata '  + name);
+              return ;
+          }
+          action.execute();
+      },
     getValue() {
       var that = this;
       var values = {};
@@ -275,6 +277,20 @@ export default {
         if (widget) {
           console.debug('name', name, that.widgetsConfig[name].type);
           rulesArray = rulesArray.concat(widget.rules ? widget.rules.split('|') : []);
+          // controllo che non ci siano rules custom e se i sono devono essere definite in customRules del widget
+          for (let i in rulesArray) {
+              let rName = rulesArray[i].split(':')[0];
+              console.debug('rName',rName,AllRules[rName]);
+              if (!AllRules[rName]) {
+                  if (!widget.customRules[rName]) {
+                      throw "Regola " + rName + ' non è stata definita';
+                  } else {
+                      AllRules[rName] = function() {
+                          return widget.customRules[rName].apply(widget,[]);
+                      }
+                  }
+              }
+          }
           if (that.widgetsConfig[name].type == 'w-hasmany') {
             rulesArray = rulesArray.concat(widget.getRules());
           }

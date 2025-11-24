@@ -61,16 +61,31 @@ export default {
         },
         load() {
             let that = this;
+            that._beforeSetRouteValues();
             that.setRouteValues();
+            that._afterSetRouteValues();
             that._beforeLoadData();
             that.loadData(function (json) {
                 that.json = CrudCore.clone(json);
                 that.fillData(json);
                 that._afterLoadData(json);
                 that.setWidgetsConfig();
+                that._beforeDraw();
                 that.draw();
+                that._afterDraw();
             });
         },
+
+        _beforeDraw() {
+            if (this.beforeDraw) {
+                this.beforeDraw.apply(this);
+            }
+        },
+        _afterDraw() {
+            if (this.afterDraw) {
+                this.afterDraw.apply(this);
+            }
+         },
 
         reload() {
             let that = this;
@@ -87,6 +102,11 @@ export default {
             }
         },
 
+        _beforeSetRouteValues() {
+            if (this.beforeSetRouteValues) {
+                this.beforeSetRouteValues.apply(this);
+            }
+        },
         setRouteValues() {
             let that = this;
             if (!that.routeName)
@@ -94,6 +114,11 @@ export default {
             that.route.setValuesFromObj(that);
             that._manageHashParams();
             that._addDefaultParams();
+        },
+        _afterSetRouteValues() {
+            if (this.afterSetRouteValues) {
+                this.afterSetRouteValues.apply(this);
+            }
         },
         _manageHashParams() {
             // questa metodo permette di aggiungere eventuali parametri in hash
@@ -290,6 +315,10 @@ export default {
          */
         _loadReactiveData(conf) {
             let wc = new WrapperConf()
+            if (!conf.type) {
+                conf.type = this.$options.name;
+                console.debug('vBase con senza type name:' , this.$options.name);
+            }
             let ext = wc.loadConf(conf);
             let dt = {};
             for (let k in ext) {

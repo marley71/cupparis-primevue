@@ -144,15 +144,10 @@ export default {
                         } else {
                             that.getViewList().reload();
                         }
-
-
                     }
                 }
                 that.conf.edit.actionsConfig['action-back'] = actionBack;
             }
-
-
-
         },
         /**
          * assegno a tutte le azioni il riferimento alla manage
@@ -174,11 +169,32 @@ export default {
         showList() {
             let that = this;
             that.mode = 'list';
-            //console.debug('showContext showList')
             if (that.autoUpdateHash) {
                 window.history.back();
             } else {
-                that.getViewList().reload();
+                setTimeout(function () {
+                    that.getViewList().reload();
+                },100)
+
+            }
+        },
+        /**
+         * context e' un parametro che viene usato quando siamo in modalita' updateHash in questo caso infatti se abbiamo
+         * bisogno di parametri che devono essere mantenuti anche da un reload.. vanno messi neli parametri della route.
+         * @param conf
+         * @param context
+         */
+        showCustom(context) {
+            let that = this;
+            //let cc = conf?Object.assign(that.custom,conf):that.custom;
+
+            console.debug('showCustom',that.autoUpdateHash)
+            that.mode = 'custom';
+            that.custom.manage = this;
+            that.custom.context = context;
+            //that.conf.custom.manage = this;
+            if (that.autoUpdateHash) {
+                that.updateHash('custom','custom',(context || []));
             }
         },
 
@@ -202,43 +218,22 @@ export default {
             let context = that.$route.params.context || [];
             that.mode = that.$route.params.viewType;
             console.debug('mode',that.mode,context)
-            switch(that.mode) {
-              case 'edit':
-                that.edit.pk = context[0];
-                break;
-              case 'insert':
-                break;
-              case 'list':
-                break;
-            }
+              switch (that.mode) {
+                  case 'edit':
+                      that.edit.pk = context[0];
+                      break;
+                  case 'insert':
+                      break;
+                  case 'list':
+                      break;
+                  case 'custom':
+                      that.custom.context = context;
+              }
           } else {
               that.mode = 'list';
           }
 
           return ;
-
-          //   console.debug('showContext',that.$route.params.context)
-          // alert('aa');
-          //   let context = that.$route.params.context;
-          //   if (!context || context.length == 0) {
-          //       if (that.getViewList()) {
-          //           that.mode = 'list';
-          //           that.searchList();
-          //       }
-          //
-          //       return ;
-          //   }
-          //   let mode = context[0];
-          //   that.mode = mode;
-          //   switch(mode) {
-          //       case 'edit':
-          //           that.edit.pk = context[1];
-          //           break;
-          //       case 'insert':
-          //           break;
-          //       case 'list':
-          //           break;
-          //   }
         },
         waitViewLoaded(type,callback) {
             let that = this;
@@ -264,60 +259,18 @@ export default {
                 console.warn('wait ' + type + ' non gestito');
             }
         },
-        // showListMia() {
-        //     let that = this;
-        //     let confName = this.$route.params.cConf;
-        //     let params = that.getViewList().route.getParams();
-        //     let context = [];
-        //     if (params && params instanceof FormData) {
-        //         for (let key of params.keys()) {
-        //             let values = params.getAll(key);
-        //             context.push(key+':'+values.join('&'));
-        //         }
-        //     } else if (params  && params instanceof Object) {
-        //         for (let key in params) {
-        //             let values = params[key];
-        //             if (Array.isArray(values)) {
-        //                 context.push(key+':'+values.join('&'));
-        //             } else {
-        //                 context.push(key+':'+values);
-        //             }
-        //
-        //         }
-        //     }
-        // },
-
-
-
-
         updateHash(confName,type,context) {
-
-
-
             let that = this;
-            //let hash = '';
+            console.debug('confName',confName,'type',type,'context',context);
             if (this.autoUpdateHash) {
                 let params = that.$route.params;
                 params.viewType = type;
                 params.context = context;
                 that.$router.push({name:'c-manage-view',params : params})
-
-
-
-
-
-
-                //
-                // hash = '/' + that.baseRouteName + '/'+ confName +'/' + type;
-                // if (context && context.length > 0) {
-                //     hash += '/' + context.join('/');
-                // }
-                // that.$router.replace(hash);
-                //window.history.pushState({},'',hash);
             }
         },
         _setCss() {
-            console.debug('manage csss',this.$refs.manage.$el.offsetHeight, 'px')
+            //console.debug('manage csss',this.$refs.manage.$el.offsetHeight, 'px')
             //this.$refs.manage.$el.style.minHeight = '200px';// this.$refs.manage.offsetHeight + 'px';
         }
     }

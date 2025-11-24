@@ -1,5 +1,5 @@
 <template>
-    <div v-show="visible" class="overlay-body" :style="'heigth:'+myHeight()">
+    <div v-show="visible" class="overlay-body" :style="'heigth:'+myHeight()" @click="clicked">
     <span class="wait-msg" :class="msg=='...'?'':'text-lg font-bold'">
       {{ msg }}
     </span>
@@ -26,6 +26,9 @@ export default {
         }
     },
     methods: {
+        clicked() {
+            console.debug('wait clicked')
+        },
         myHeight() {
             let body = document.body;
             let html = document.documentElement;

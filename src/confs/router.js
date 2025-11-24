@@ -88,7 +88,7 @@ try {
             props: route => ({ conf: _getManageConf(route.params.cConf,route) })
         },
         {
-            path: '/manage/:viewType(list|edit|insert|view)/:cConf/:context*',
+            path: '/manage/:viewType(list|edit|insert|view|custom)/:cConf/:context*',
             name: 'c-manage-view',
             component: cManage,
             props: route => ({ conf: _getManageConf(route.params.cConf,route) })

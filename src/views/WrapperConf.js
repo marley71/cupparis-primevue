@@ -185,6 +185,7 @@ export default class WrapperConf {
         if (!('actions' in conf) ){
             conf.actions = ['action-save','action-back'];
         }
+        conf.foormName = conf.foormName || 'edit';
         return conf;
     }
 

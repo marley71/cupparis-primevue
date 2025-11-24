@@ -151,41 +151,40 @@ export default {
             <i class="fa fa-question-circle cursor-pointer mr-3" @click="toggleHelp"></i>Help Manages
         </template>
         <template #content>
-            <div>
+            <div class="w-full">
                 <template v-for="(conf,wName) in mConf" :key="wName">
                     <router-link class="p-button m-1 p-2" :class="manageSelected===wName?'':'p-button-outlined'" :to="'/test2-manage/'+wName" >
                         {{ manageLabels[wName] }}
                     </router-link>
                 </template>
             </div>
-            <hr />
+            <div class="grid grid-cols-1 overflow-auto">
+                <div>
+                    <Fieldset legend="Area Manage">
+                        <template v-for="(conf,wName) in mConf" :key="wName">
+                            <c-manage v-if="confReady && manageSelected==wName && !reload" :conf="conf" ></c-manage>
+                        </template>
+                    </Fieldset>
+                </div>
 
-            <div >
-
-                <Fieldset legend="Area Manage">
-                    <template v-for="(conf,wName) in mConf" :key="wName">
-                        <c-manage v-if="confReady && manageSelected==wName && !reload" :conf="conf" ></c-manage>
-                    </template>
-                </Fieldset>
-                <Button class="p-button w-20 mt-1" label="Run" @click="updateCode"></Button>
-                <hr />
-                <div class="grid grid-cols-2">
+                <div class="grid grid-cols-1">
                     <div class="">
-                        <h6>Configurazione Manage</h6>
-                        <div class="font-italic">Iniziare il codice sempre con var conf = </div>
-                        <div id='example' class="h-40 w-full">
-
-                        </div>
-                    </div>
-                    <div class="">
-                        <h6>Configurazione di default</h6>
-                        <div id="defaultCode" class="h-40 w-full">
-
-                        </div>
+                        <Button class="p-button w-20 mt-1" label="Run" @click="updateCode"></Button>
+                        <hr />
+                        <div class="grid grid-cols-2">
+                            <div class="">
+                                <h6>Configurazione Manage</h6>
+                                <div class="font-italic">Iniziare il codice sempre con var conf = </div>
+                                <div id='example' class="h-40 w-full"></div>
+                            </div>
+                            <div class="">
+                                <h6>Configurazione di default</h6>
+                                <div id="defaultCode" class="h-40 w-full"></div>
+                            </div>
+                       </div>
                     </div>
                 </div>
             </div>
-
             <Popover ref="oHelp" class="w-2/3">
                 <div v-if="manageSelected==='semplice'">
                     <h4 class="text-xl">Semplice</h4>

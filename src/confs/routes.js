@@ -40,7 +40,7 @@ const routeConfs = {
     },
     update: {
         method: "post",
-        url:'/foorm/{modelName}/{pk}',
+        url:'/foorm/{modelName}/{pk}/{foormName}',
         resultType: 'record',
         protocol: 'record',
         type: 'update',
@@ -56,7 +56,7 @@ const routeConfs = {
     },
     edit: {
         method: "get",
-        url:'/foorm/{modelName}/{pk}/edit',
+        url:'/foorm/{modelName}/{pk}/{foormName}',
         //url         :'/foorm/{modelName}/{pk}/edit',
         resultType: 'record',
         protocol: 'record',

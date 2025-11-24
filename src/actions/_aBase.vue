@@ -76,25 +76,25 @@ export default {
                 + that.getButtonClass() + ' '
                 + that.conf.spacing;
         },
-        href(event) {
+        _href(event) {
           console.debug('href event',event);
             if (this.conf.href instanceof Function) {
                 return this.conf.href.apply(this);
             }
             return this.conf.href;
         },
-        visible() {
+        _visible() {
             //console.log('_visible',this.visible);
-            if (this.conf._visible instanceof Function) {
-                return this.conf._visible.apply(this);
+            if (this.conf.visible instanceof Function) {
+                return this.conf.visible.apply(this);
             }
-            return this._visible;
+            return this.visible;
         },
-        disabled() {
-            if (this.conf._disabled instanceof Function) {
-                return this.conf._disabled.apply(this);
+        _disabled() {
+            if (this.conf.disabled instanceof Function) {
+                return this.conf.disabled.apply(this);
             }
-            return this._disabled;
+            return this.disabled;
         },
 
         _beforeExecute() {
@@ -174,13 +174,13 @@ export default {
         //     this.visible = value;
         // },
 
-        icon() {
+        _icon() {
             if (this.conf.icon instanceof Function) {
                 return this.conf.icon.apply(this);
             }
             return this.conf.icon;
         },
-        text() {
+        _text() {
             if (this.conf.text instanceof Function) {
                 return this.translate(this.conf.text.apply(this));
             }

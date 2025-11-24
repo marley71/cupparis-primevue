@@ -84,24 +84,14 @@ Server.post = function (url, params, callback) {
     axios.post(realUrl, params, {
         headers: Server.getHearders()
     }).then((response) => {
-        callback(response.data);
+        if (typeof response.data === 'object' && response.data !== null) {
+            callback(response.data);
+        } else {
+            callback({error: 1, msg: response.data});
+        }
     }).catch((error) => {
         callback({error: 1, msg: error})
     })
-
-
-    // window.jQuery.ajax({
-    //     url: realUrl,
-    //     headers: Server.getHearders(),
-    //     type: 'POST',
-    //     data: params,
-    //     contentType: contentType,
-    //     processData: processData,
-    // }).done(function(json) {
-    //     callback(json);
-    // }).fail(function (data, error, msg) {
-    //     callback({error:1,msg:msg});
-    // });
 };
 
 Server.get = function (url, params, callback) {
@@ -137,23 +127,15 @@ Server.get = function (url, params, callback) {
         headers: Server.getHearders(),
         params: _data,
     }).then((response) => {
-        callback(response.data);
+        if (typeof response.data === 'object' && response.data !== null) {
+            callback(response.data);
+        } else {
+            callback({error: 1, msg: response.data});
+        }
     }).catch((error) => {
         callback({error: 1, msg: error});
     })
     console.log('serverGet', (params instanceof FormData), contentType, processData, params, realUrl);
-    // window.jQuery.ajax({
-    //     url: realUrl,
-    //     headers: Server.getHearders(),
-    //     type: 'GET',
-    //     data: _data,
-    //     contentType: contentType,
-    //     processData: processData,
-    // }).done(function(json) {
-    //     callback(json);
-    // }).fail(function (data, error, msg) {
-    //     callback({error:1,msg:msg});
-    // });
 };
 
 Server.route = function (route, callback) {
@@ -168,23 +150,23 @@ Server.route = function (route, callback) {
     })
 };
 
-Server.postJson = function (url, params, callback) {
-    var realUrl = Server.getUrl(url);
-    var contentType = 'application/json; charset=UTF-8';
-    console.log('serverPost', (params instanceof FormData), contentType);
-    window.jQuery.ajax({
-        url: realUrl,
-        headers: Server.getHearders(),
-        type: 'POST',
-        data: JSON.stringify(params),
-        contentType: contentType,
-        processData: false,
-    }).done(function (json) {
-        callback(json);
-    }).fail(function (data, error, msg) {
-        callback({error: 1, msg: msg});
-    });
-};
+// Server.postJson = function (url, params, callback) {
+//     var realUrl = Server.getUrl(url);
+//     var contentType = 'application/json; charset=UTF-8';
+//     console.log('serverPost', (params instanceof FormData), contentType);
+//     window.jQuery.ajax({
+//         url: realUrl,
+//         headers: Server.getHearders(),
+//         type: 'POST',
+//         data: JSON.stringify(params),
+//         contentType: contentType,
+//         processData: false,
+//     }).done(function (json) {
+//         callback(json);
+//     }).fail(function (data, error, msg) {
+//         callback({error: 1, msg: msg});
+//     });
+// };
 
 Server.getErrorMessage = function (message) {
     var msg = null;

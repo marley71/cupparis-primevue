@@ -8,8 +8,8 @@ const actionConfs = {
         modelData:{},
         extraBind: {},
         type : 'button',
-        _disabled:false,
-        _visible: true,
+        disabled:false,
+        visible: true,
     },
     'action-record-grouped' : {
         componentName:'a-grouped',
@@ -303,8 +303,8 @@ const actionConfs = {
     },
     'action-insert' : {
         actionType : 'collection',
-        _visible : true,
-        _disabled : false,
+        visible : true,
+        disabled : false,
         title : 'app.nuovo',
         buttonClass: 'p-button-outlined p-button-success ',
         icon : 'fa fa-plus',
