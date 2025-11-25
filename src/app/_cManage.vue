@@ -92,7 +92,6 @@ export default {
         },
         setManageActions() {
             let that = this;
-            let manage = this;
             if (!that.conf.list.actionsConfig) {
                 that.conf.list.actionsConfig = {};
             }
@@ -101,9 +100,9 @@ export default {
                 if (!actionView.execute){
                     actionView.execute = function () {
                         let thatAction = this;
-                        that.view.pk = thatAction.modelData[that.$refs.vList.instance().primaryKey];
-                        that.viewDisplay = true;
-                        that.viewTitle = that.viewTitle==null?that.translate('app.dettagli',0,null,[that.view.pk]):that.viewTitle;
+                        thatAction.manage.view.pk = thatAction.modelData[thatAction.manage.primaryKey];
+                        thatAction.manage.viewDisplay = true;
+                        thatAction.manage.viewTitle = thatAction.manage.viewTitle==null?thatAction.manage.translate('app.dettagli',0,null,[thatAction.manage.view.pk]):thatAction.manage.viewTitle;
                     }
                 }
                 that.conf.list.actionsConfig['action-view'] = actionView;
@@ -113,10 +112,10 @@ export default {
                 if (!actionEdit.execute){
                     actionEdit.execute = function () {
                         let thatAction = this;
-                        that.edit.pk = thatAction.modelData[manage.getViewList().primaryKey];
-                        that.mode = 'edit';
+                        thatAction.manage.edit.pk = thatAction.modelData[thatAction.manage.getViewList().primaryKey];
+                        thatAction.manage.mode = 'edit';
                         let confName = this.$route.params.cConf;
-                        that.updateHash(confName,'edit',[that.edit.pk]);
+                        thatAction.manage.updateHash(confName,'edit',[thatAction.manage.edit.pk]);
                         //window.history.pushState({},'',window.location.pathname + '#/' + manage.baseRouteName + '/'+ confName +'/edit/' + that.edit.pk);
                     }
                 }
@@ -126,9 +125,10 @@ export default {
                 let actionInsert = that.conf.list.actionsConfig['action-insert'] || {};
                 if (!actionInsert.execute){
                     actionInsert.execute = function () {
-                        that.mode = 'insert';
-                        let confName = this.$route.params.cConf;
-                        that.updateHash(confName,'insert');
+                        let thatAction = this;
+                        thatAction.manage.mode = 'insert';
+                        let confName = thatAction.$route.params.cConf;
+                        thatAction.manage.updateHash(confName,'insert');
                         //window.history.pushState({},'',window.location.pathname + '#/' + manage.baseRouteName + '/'+ confName +'/insert');
                     }
                 }
@@ -138,11 +138,12 @@ export default {
                 let actionBack = that.conf.edit.actionsConfig['action-back'] || {};
                 if (!actionBack.execute){
                     actionBack.execute = function () {
-                        that.mode = 'list';
-                        if (that.autoUpdateHash) {
+                        let thatAction = this;
+                        thatAction.manage.mode = 'list';
+                        if (thatAction.manage.autoUpdateHash) {
                             window.history.back();
                         } else {
-                            that.getViewList().reload();
+                            thatAction.manage.getViewList().reload();
                         }
                     }
                 }
@@ -199,7 +200,8 @@ export default {
         },
 
         getViewList() {
-            return this.$refs.vList?this.$refs.vList.instance():null;
+            console.debug('getViewList',this.$refs);
+            return this.$refs.vList?this.$refs.vList:null;
         },
         getViewSearch() {
             return this.$refs.vSearch?this.$refs.vSearch.instance():null;
