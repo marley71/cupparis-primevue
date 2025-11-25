@@ -48,7 +48,7 @@ const routeConfs = {
     },
     create: {
         method: "post",
-        url:'/foorm/{modelName}',
+        url:'/foorm/{modelName}/{foormName}',
         resultType: 'record',
         protocol: 'record',
         type: 'create',

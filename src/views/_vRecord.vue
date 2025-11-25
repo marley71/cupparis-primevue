@@ -160,6 +160,7 @@ export default {
           route = that.createRoute('create');
           route.setValues({
             modelName: that.modelName,
+            foormName : (that.foormName || 'insert'),
           });
         }
         route.setParams(that.getViewData());
