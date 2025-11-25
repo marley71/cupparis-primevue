@@ -260,15 +260,20 @@ export default {
             hs.type = 'v-list-hasmany'
             hs.routeName = null;
             hs.actions = hs.actions || ['action-delete','action-insert'];
+            hs.actionsConfig = hs.actionsConfig || {};
             hs.actionsConfig = {
-                'action-delete':{
+                'action-delete': Object.assign({
                     actionType : 'record',
                     execute() {
-                        that.removeItem(this.index);
-
+                        CrudCore.confirmDialog('app.conferma-cancellazione',{},{
+                            ok() {
+                                that.removeItem(this.index);
+                            }
+                        })
+                        
                     }
-                },
-                'action-delete-selected':{
+                },(hs.actionsConfig['action-delete'] || {})),
+                'action-delete-selected':Object.assign({
                     execute() {
                         let indexs = [];
                         let dataKeys = that.$refs.listViewHasmany.value.map(a => a.dataKey);
@@ -281,10 +286,9 @@ export default {
                             }
                         }
                         that.removeItem(indexs);
-
                     }
-                },
-                'action-insert':{
+                },(hs.actionsConfig['action-delete-selected'] || {})),
+                'action-insert':Object.assign({
                     disabled() {
                         if (that.limit) {
                             return that.value.length >= that.limit
@@ -294,8 +298,9 @@ export default {
                     execute() {
                         that.addItem();
                     }
-                },
+                },(hs.actionsConfig['action-insert'] || {})),
             }
+
             hs.value = that.value;
             console.debug('HS', hs);
             return hs;

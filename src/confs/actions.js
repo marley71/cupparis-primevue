@@ -365,7 +365,8 @@ const actionConfs = {
                 callback(true);
                 return ;
             }
-            that.view.confirmDialog(that.view.translate('app.conferma-multidelete',null,false,[num]), {
+            let msg = that.view.translate('app.conferma-multidelete',null,false,[num]);
+            that.view.confirmDialog(msg, {}, {
                 ok : function () {
                     var r = that.createRoute('multi-delete');
                     that.setRouteValues(r);
