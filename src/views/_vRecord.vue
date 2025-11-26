@@ -93,7 +93,7 @@ export default {
         let aName = rActions[k];
         let currenConfig = Object.assign({}, (that.actionsConfig[aName] || {}));
         currenConfig.modelData = that.value;
-        currenConfig.view = that;
+        currenConfig.viewInstance = that;
         let aConf = CrudCore.getActionConf(aName, currenConfig);
         that.recordActionsConf.actions[aName] = aConf;
       }
@@ -133,7 +133,7 @@ export default {
         widgetsConfig[key].value = val;
         widgetsConfig[key].name = that.getFieldName(key);
         widgetsConfig[key].modelData = that.value;
-        widgetsConfig[key].view = that;
+        widgetsConfig[key].viewInstance = that;
         widgetsConfig[key].rules = fConf[key].rules || '';
       }
       console.log('vRecord setWidgetsConfig', widgetsConfig)

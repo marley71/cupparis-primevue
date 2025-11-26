@@ -87,7 +87,12 @@ export default {
         //let page = Math.floor(event.first / event.rows) +1;
         let page = event.page + 1;
         this.route.setParam('page', page);
-        this.reload();
+        console.debug('onPAge updateHash',this)
+        if (this.updateHash) {
+          this.setHash(this.route.getParams());
+        } else {
+          this.reload();
+        }
       }
 
     },
@@ -102,7 +107,11 @@ export default {
         }
         that.route.setParam('order_field', sortField);
         that.route.setParam('order_direction', event.sortOrder > 0 ? 'ASC' : 'DESC');
-        that.reload();
+        if (this.updateHash) {
+          this.setHash(this.route.getParams());
+        } else {
+          this.reload();
+        }
       } else {
           let key = event.sortField;
           this.value.sort((a, b) => {
@@ -143,6 +152,37 @@ export default {
       }
 
     },
+
+    setHash(formData) {
+      let that = this;
+      console.debug('setHash', that.$route, formData);
+      let currentParams = {...this.$route.params};
+      let routeName = this.$route.name;
+      //
+      // let confName = this.$route.params.cConf;
+      // let params = that.getViewList().route.getParams();
+      let context = [];
+      if (formData && formData instanceof FormData) {
+        for (let key of formData.keys()) {
+          let values = formData.getAll(key);
+          context.push(key + ':' + values.join('&'));
+        }
+      } else if (formData && formData instanceof Object) {
+        for (let key in formData) {
+          let values = formData[key];
+          if (Array.isArray(values)) {
+            context.push(key + ':' + values.join('&'));
+          } else {
+            context.push(key + ':' + values);
+          }
+
+        }
+      }
+      currentParams.context = context;
+      that.$router.push({name: routeName, params: currentParams});
+    },
+
+
     viewRow() {
       console.log('viewRow', this.selectedRow)
     },
@@ -180,7 +220,7 @@ export default {
         for (let aName in rActions) {
           let aConf = Object.assign({}, rActions[aName]);
           aConf.modelData = that.value[i];
-          aConf.view = that;
+          aConf.viewInstance = that;
           aConf.index = i;
           rowActions[aName] = aConf;
         }
@@ -191,7 +231,7 @@ export default {
       for (let aName in gActions) {
         let aConf = Object.assign({}, gActions[aName]);
         aConf.modelData = that.value;
-        aConf.view = that;
+        aConf.viewInstance = that;
         needSelection |= that._needSelection(aConf); // aConf.needSelection;
         that.collectionActions.actions[aName] = aConf;
       }
@@ -262,46 +302,6 @@ export default {
       that.widgetsConfig = widgetsConfig;
     },
 
-    // _setWidgetsConfigOld() {
-    //   let that = this;
-    //   // configurazioni widgets
-    //   if (!that.fields && that.value.length) {
-    //     that.fields = Object.keys(that.value[0]);
-    //   }
-    //   let fConf = {};
-    //   let fieldsConfig = that.fieldsConfig || {};
-    //   //console.log('FIEDLS CONFIG',fieldsConfig,that.defaultWidgetType);
-    //   // configurazione base mergiata con la configurazione passata
-    //   for (let f in that.fields) {
-    //     let key = that.fields[f];
-    //     fConf[key] = {
-    //       type: that.defaultWidgetType,
-    //     }
-    //     if (fieldsConfig[key]) {
-    //       fConf[key] = Object.assign(fConf[key], CrudCore.normalizeConf(fieldsConfig[key]));
-    //     }
-    //     that.setFieldLabel(key, fConf[key]);
-    //     that.labelCols[key] = fConf[key].label;
-    //   }
-    //   // configurazione finale dei widgets
-    //   let widgetsConfig = [];
-    //   for (let i in that.value) {
-    //     widgetsConfig.push({});
-    //     for (let f in that.fields) {
-    //       let key = that.fields[f];
-    //       let val = that.value[i][key];
-    //       let md = Object.assign({}, (that.metadata[key] || {}));
-    //       //console.log('field',key,'value',val);
-    //       widgetsConfig[i][key] = Object.assign(md, fConf[key]);
-    //       widgetsConfig[i][key].value = val;
-    //       widgetsConfig[i][key].name = that.getFieldName(key);
-    //       widgetsConfig[i][key].modelData = that.value[i];
-    //       widgetsConfig[i][key].view = that;
-    //       //widgetsConfig[i][key].label = that.getFieldLabel(key);
-    //     }
-    //   }
-    //   that.widgetsConfig = widgetsConfig;
-    // },
     /**
      * ritorna la configurazione di un widget per poter instanziare widgets dinamici
      * @param key
@@ -324,7 +324,7 @@ export default {
 
       wc.name = that.getFieldName(key);
       wc.modelData = modelData;
-      wc.view = that;
+      wc.viewInstance = that;
       that.setFieldLabel(key, wc);
       that.labelCols[key] = wc.label;
       return wc;

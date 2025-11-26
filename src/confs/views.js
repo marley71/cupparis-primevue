@@ -20,6 +20,7 @@ const baseView = {
 
 
 const viewConfs = {
+    baseView : baseView,
     recordLayouts : {
         default : {
             cols : 2, // puo' essere 1,2,3,4,6,12
@@ -88,7 +89,8 @@ const viewConfs = {
         blocked : false,
         modelName : null,
         hiddenColumns : [],
-        autoSearch : true, // se e' true la view cerca dentro l'hash se ci sono parametri di ricerca (s_{fieldName}) e li applica alla chiamata
+        updateHash : true,  // se true aggiorna la hash invece di fare il reload della view.
+        //autoSearch : true, // se e' true la view cerca dentro l'hash se ci sono parametri di ricerca (s_{fieldName}) e li applica alla chiamata
         filterFields : {}, // se sono presenti dei fields nel formato s_{fieldName} li applica alla chiamata ajax
         //numeroRecordsLabel : null, // label del numero dei records
     },

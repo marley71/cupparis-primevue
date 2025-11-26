@@ -166,8 +166,9 @@ CrudCore.setupApp = function (app) {
     console.debug('globalProperties',CrudCore.globalProperties)
     console.debug('componentItems',CrudCore.componentItems);
 }
-
+var excludeCloneKeys = ['dialogInstance','manageInstance','viewInstance'];
 var _cloneObj = function (item) {
+
     if (item instanceof Function) {
         return item;
     }
@@ -181,7 +182,11 @@ var _cloneObj = function (item) {
     if (item instanceof Object) {
         let res = {};
         for (let k in item) {
-            res[k] = _cloneObj(item[k])
+            if (excludeCloneKeys.indexOf(k) >= 0) {
+                res[k] = item[k];
+            } else {
+                res[k] = _cloneObj(item[k])
+            }
         }
         return res;
     }
@@ -420,9 +425,8 @@ CrudCore.componentDialog = function(compName,componentConf,title,dialogConf) {
     CrudCore.setupApp(d);
     d.comp = comp;
     let dialog = d.mount(div);
-    d.dialog = dialog;
-    //d.dialog = comp.$refs.myref;
-    window.DIALOG = d;
+    d.dialogInstance = dialog;
+    //d.dialogInstance = comp.$refs.myref;
     return d;
 }
 

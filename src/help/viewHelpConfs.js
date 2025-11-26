@@ -180,7 +180,7 @@ export default {
                 let that = this;
                 console.log('event',event);
                 if (!this.toggle) {
-                    this.view.showPanel(event,{
+                    this.viewInstance.showPanel(event,{
                         componentName : 'v-edit',
                         panelClass : 'w-1/3',
                         componentConf : {
@@ -194,7 +194,7 @@ export default {
                         }
                     });
                 } else {
-                    this.view.hidePanel();
+                    this.viewInstance.hidePanel();
                 }
                 this.toggle = ! this.toggle;
             }
@@ -318,9 +318,9 @@ export default {
                     text: 'enabled/disabled',
                     execute() {
                         let tA = this;
-                        let dis = tA.view.getAction('action-save').disabled();
-                        console.log('custom action',tA.view.getAction('action-save'));
-                        tA.view.getAction('action-save')._disabled = !dis;
+                        let dis = tA.vviewInstanceiew.getAction('action-save').disabled();
+                        console.log('custom action',tA.viewInstance.getAction('action-save'));
+                        tA.viewInstance.getAction('action-save')._disabled = !dis;
                         tA.messageDialog('azione custom, ora la save è ' + (dis?'ABILITATA':'DISABILITATA'));
                         return true;
                     }
@@ -438,9 +438,9 @@ export default {
                     text: 'Custom',
                     execute() {
                         let tA = this;
-                        let dis = tA.view.getAction('action-save').disabled();
-                        console.log('custom action',tA.view.getAction('action-save'));
-                        tA.view.getAction('action-save')._disabled = !dis
+                        let dis = tA.viewInstance.getAction('action-save').disabled();
+                        console.log('custom action',tA.viewInstance.getAction('action-save'));
+                        tA.viewInstance.getAction('action-save')._disabled = !dis
                     }
                 }
             }
@@ -542,9 +542,9 @@ export default {
                     text: 'Custom',
                     execute() {
                         let tA = this;
-                        let dis = tA.view.getAction('action-save').disabled();
-                        console.log('custom action',tA.view.getAction('action-save'));
-                        tA.view.getAction('action-save')._disabled = !dis
+                        let dis = tA.viewInstance.getAction('action-save').disabled();
+                        console.log('custom action',tA.viewInstance.getAction('action-save'));
+                        tA.viewInstance.getAction('action-save')._disabled = !dis
                     }
                 }
             }
@@ -563,11 +563,11 @@ export default {
                 'action-search': {
                     // execute() {
                     //     var that = this;
-                    //     window.FF = that.view.getViewData();
-                    //     console.log('view data', that.view.getViewData())
+                    //     window.FF = that.viewInstance.getViewData();
+                    //     console.log('view data', that.viewInstance.getViewData())
                     // },
                     afterExecute() {
-                        console.debug('view search params',this.view.json);
+                        console.debug('view search params',this.viewInstance.json);
                         this.messageDialog('Ho ricevuto ');
                     }
                 }
@@ -638,8 +638,8 @@ export default {
                     text : 'Hide Column',
                     execute() {
                         let ta = this;
-                        let fieldName = prompt('inserire nome campo da rimuovere. campi disponibili ( ' + this.view.fields.join(',') + ')');
-                        this.view.hideColumn(fieldName);
+                        let fieldName = prompt('inserire nome campo da rimuovere. campi disponibili ( ' + this.viewInstance.fields.join(',') + ')');
+                        this.viewInstance.hideColumn(fieldName);
 
                     }
                 },
@@ -647,8 +647,8 @@ export default {
                     text : 'Show Column',
                     execute() {
                         let ta = this;
-                        let fieldName = prompt('inserire nome campo da visualizzare. campi disponibili ( ' + ta.view.hiddenColumns.join(',') + ')');
-                        ta.view.showColumn(fieldName);
+                        let fieldName = prompt('inserire nome campo da visualizzare. campi disponibili ( ' + ta.viewInstance.hiddenColumns.join(',') + ')');
+                        ta.viewInstance.showColumn(fieldName);
                     }
                 }
             },
@@ -689,15 +689,15 @@ export default {
                     // },
                     change() {
                         let param = parseInt(this.value) == 2?'':this.value;
-                        this.view.setParams({'s_banned':param});
-                        this.view.load();
+                        this.viewInstance.setParams({'s_banned':param});
+                        this.viewInstance.load();
                     },
                     ready() {
-                        let params = this.view.getParams();
+                        let params = this.viewInstance.getParams();
                         if ('s_banned' in params) {
                             this.value = params.s_banned;
                         }
-                        //alert('ready' + this.view.getParam('s_banned'));
+                        //alert('ready' + this.viewInstance.getParam('s_banned'));
                     }
                 }
             },

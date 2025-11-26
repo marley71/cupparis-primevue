@@ -100,9 +100,9 @@ export default {
                 if (!actionView.execute){
                     actionView.execute = function () {
                         let thatAction = this;
-                        thatAction.manage.view.pk = thatAction.modelData[thatAction.manage.primaryKey];
-                        thatAction.manage.viewDisplay = true;
-                        thatAction.manage.viewTitle = thatAction.manage.viewTitle==null?thatAction.manage.translate('app.dettagli',0,null,[thatAction.manage.view.pk]):thatAction.manage.viewTitle;
+                        thatAction.manageInstance.view.pk = thatAction.modelData[thatAction.manageInstance.primaryKey];
+                        thatAction.manageInstance.viewDisplay = true;
+                        thatAction.manageInstance.viewTitle = thatAction.manageInstance.viewTitle==null?thatAction.manageInstance.translate('app.dettagli',0,null,[thatAction.manageInstance.view.pk]):thatAction.manageInstance.viewTitle;
                     }
                 }
                 that.conf.list.actionsConfig['action-view'] = actionView;
@@ -112,10 +112,10 @@ export default {
                 if (!actionEdit.execute){
                     actionEdit.execute = function () {
                         let thatAction = this;
-                        thatAction.manage.edit.pk = thatAction.modelData[thatAction.manage.getViewList().primaryKey];
-                        thatAction.manage.mode = 'edit';
+                        thatAction.manageInstance.edit.pk = thatAction.modelData[thatAction.manageInstance.getViewList().primaryKey];
+                        thatAction.manageInstance.mode = 'edit';
                         let confName = this.$route.params.cConf;
-                        thatAction.manage.updateHash(confName,'edit',[thatAction.manage.edit.pk]);
+                        thatAction.manageInstance.updateHash(confName,'edit',[thatAction.manageInstance.edit.pk]);
                         //window.history.pushState({},'',window.location.pathname + '#/' + manage.baseRouteName + '/'+ confName +'/edit/' + that.edit.pk);
                     }
                 }
@@ -126,9 +126,9 @@ export default {
                 if (!actionInsert.execute){
                     actionInsert.execute = function () {
                         let thatAction = this;
-                        thatAction.manage.mode = 'insert';
+                        thatAction.manageInstance.mode = 'insert';
                         let confName = thatAction.$route.params.cConf;
-                        thatAction.manage.updateHash(confName,'insert');
+                        thatAction.manageInstance.updateHash(confName,'insert');
                         //window.history.pushState({},'',window.location.pathname + '#/' + manage.baseRouteName + '/'+ confName +'/insert');
                     }
                 }
@@ -139,11 +139,11 @@ export default {
                 if (!actionBack.execute){
                     actionBack.execute = function () {
                         let thatAction = this;
-                        thatAction.manage.mode = 'list';
-                        if (thatAction.manage.autoUpdateHash) {
+                        thatAction.manageInstance.mode = 'list';
+                        if (thatAction.manageInstance.autoUpdateHash) {
                             window.history.back();
                         } else {
-                            thatAction.manage.getViewList().reload();
+                            thatAction.manageInstance.getViewList().reload();
                         }
                     }
                 }
@@ -162,7 +162,7 @@ export default {
                 if (manage.conf[v]) {
                     for (let a in manage.conf[v].actionsConfig) {
                         //console.debug('setto manage a ',v,a, manage.conf[v].actionsConfig[a]);
-                        manage.conf[v].actionsConfig[a].manage = manage;
+                        manage.conf[v].actionsConfig[a].manageInstance = manage;
                     }
                 }
             }
@@ -191,9 +191,8 @@ export default {
 
             console.debug('showCustom',that.autoUpdateHash)
             that.mode = 'custom';
-            that.custom.manage = this;
+            that.custom.manageInstance = this;
             that.custom.context = context;
-            //that.conf.custom.manage = this;
             if (that.autoUpdateHash) {
                 that.updateHash('custom','custom',(context || []));
             }
@@ -272,8 +271,7 @@ export default {
             }
         },
         _setCss() {
-            //console.debug('manage csss',this.$refs.manage.$el.offsetHeight, 'px')
-            //this.$refs.manage.$el.style.minHeight = '200px';// this.$refs.manage.offsetHeight + 'px';
+
         }
     }
 }

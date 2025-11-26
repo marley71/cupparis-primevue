@@ -72,8 +72,6 @@ export default {
     },
     setHash(formData) {
       let that = this;
-      // let path = that.$route.path.split('?');
-      // let params = Object.fromEntries(formData.entries());
       console.debug('setHash', that.$route, formData);
       let currentParams = {...this.$route.params};
       let routeName = this.$route.name;
@@ -99,17 +97,6 @@ export default {
       }
       currentParams.context = context;
       that.$router.push({name: routeName, params: currentParams});
-
-      //
-      //
-      //
-      //
-      // let url = '';
-      // for (let key in params) {
-      //     url += url?('&'+url):url;
-      //     url += key + '=' + params[key];
-      // }
-      // that.$router.push(path[0] + '?' + url);
     },
 
     getFieldName(field) {

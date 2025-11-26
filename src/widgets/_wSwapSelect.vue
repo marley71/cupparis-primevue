@@ -51,7 +51,7 @@ export default {
                     }
                     that.change();
                     if (that.reload) {
-                        that.view.reload();
+                        that.viewInstance.reload();
                     }
                 })
             } else {

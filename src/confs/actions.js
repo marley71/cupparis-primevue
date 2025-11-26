@@ -27,8 +27,8 @@ const actionConfs = {
         css: 'rounded-sm',
         text : 'app.reset',
         execute () {
-            if (this.view) {
-                this.view.reset();
+            if (this.viewInstance) {
+                this.viewInstance.reset();
                 return true;
             }
         }
@@ -55,9 +55,9 @@ const actionConfs = {
 
         },
         _search (callback) {
-            console.log('action-search',this,'view',this.view);
-            if (this.view) {
-                this.view.search()
+            console.log('action-search',this,'view',this.viewInstance);
+            if (this.viewInstance) {
+                this.viewInstance.search()
                 callback(true)
                 return ;
             }
@@ -91,24 +91,24 @@ const actionConfs = {
 
         _save (callback) {
             var that = this;
-            if (!that.view) {
+            if (!that.viewInstance) {
                 CrudCore.alertError("impossibile eseguire _save. View non definita")
                 console.error("impossibile eseguire _save view non definita");
                 callback(false)
             }
             //that.waitStart();
-            that.view.save(function (json) {
+            that.viewInstance.save(function (json) {
                 //that.waitEnd();
                 if (json.error) {
-                    that.view.errorDialog(json.msg);
+                    that.viewInstance.errorDialog(json.msg);
                     callback(false);
                     return ;
                 }
                 that.json = json;
-                var msg = json.msg?json.msg:that.view.translate('app.salvataggio-ok');
-                that.view.alertSuccess(msg,3000);
+                var msg = json.msg?json.msg:that.viewInstance.translate('app.salvataggio-ok');
+                that.viewInstance.alertSuccess(msg,3000);
                 if (that.autoreloadView) {
-                    that.view.reload();
+                    that.viewInstance.reload();
                 }
                 callback(true);
             })
@@ -140,16 +140,16 @@ const actionConfs = {
         _save (callback) {
             var that = this;
             that.waitStart();
-            that.view.save(function (json) {
+            that.viewInstance.save(function (json) {
                 that.waitEnd();
                 if (json.error) {
-                    that.view.errorDialog(json.msg)
+                    that.viewInstance.errorDialog(json.msg)
                     callback(false);
                     return ;
                 }
                 that.json = json;
                 var msg = json.msg?json.msg:that.translate('app.salvataggio-ok');
-                that.view.alertSuccess(msg,3000);
+                that.viewInstance.alertSuccess(msg,3000);
                 callback(true);
             })
         },
@@ -164,8 +164,8 @@ const actionConfs = {
         text : '',
         icon : 'fa fa-edit',
         execute () {
-            let url = '/edit/' + CrudCore.pascalCase('model_'+this.view.modelName) + '.edit/' + this.modelData[this.view.primaryKey];
-            this.view.$router.push(url);
+            let url = '/edit/' + CrudCore.pascalCase('model_'+this.viewInstance.modelName) + '.edit/' + this.modelData[this.viewInstance.primaryKey];
+            this.viewInstance.$router.push(url);
         }
     },
     'action-view' : {
@@ -179,7 +179,7 @@ const actionConfs = {
         dialogConf : null,
         execute () {
             let ta = this;
-            let defaultConf = ta.getDefaultViewConf(ta.view.modelName,ta.viewType);
+            let defaultConf = ta.getDefaultViewConf(ta.viewInstance.modelName,ta.viewType);
             defaultConf.pk = ta.modelData.id;
             return new Promise((resolve) => {
                 CrudCore.componentDialog('v-view',defaultConf,this.dialogTitle,{
@@ -201,10 +201,10 @@ const actionConfs = {
         setRouteValues : function(route) {
             var that = this;
             route.setValues({
-                modelName: that.view.modelName
+                modelName: that.viewInstance.modelName
             });
             route.setParams({
-                id : that.modelData[that.view.primaryKey],
+                id : that.modelData[that.viewInstance.primaryKey],
                 _method:'DELETE',
             });
             return route;
@@ -226,9 +226,9 @@ const actionConfs = {
         },
         _delete : function (callback) {
             var that = this;
-            that.view.confirmDialog(that.view.translate('app.conferma-cancellazione') ,{},{
+            that.viewInstance.confirmDialog(that.viewInstance.translate('app.conferma-cancellazione') ,{},{
                 ok : function () {
-                    var r = that.view.createRoute('delete');
+                    var r = that.viewInstance.createRoute('delete');
                     that.setRouteValues(r);
                     Server.route(r,function (json) {
                         if (json.error) {
@@ -236,9 +236,9 @@ const actionConfs = {
                             callback(false);
                             return
                         }
-                        var msg = json.msg?json.msg:that.view.translate('app.cancellazione-successo');
-                        that.view.alertSuccess(msg,3000);
-                        that.view.reload();
+                        var msg = json.msg?json.msg:that.viewInstance.translate('app.cancellazione-successo');
+                        that.viewInstance.alertSuccess(msg,3000);
+                        that.viewInstance.reload();
                         callback(true);
                     });
                 },
@@ -261,7 +261,7 @@ const actionConfs = {
                 tA._saveRow(function (esito) {
                     console.log('save back Event',event,esito);
                     if (esito) {
-                        tA.view.reload();  // TODO sarebbe meglio fare l'aggiornamento di un riga via script senza reload vista
+                        tA.viewInstance.reload();  // TODO sarebbe meglio fare l'aggiornamento di un riga via script senza reload vista
                         resolve();
                     } else {
                         reject();
@@ -274,7 +274,7 @@ const actionConfs = {
         _saveRow(callback) {
             var that = this;
             console.debug('eseguo save-row');
-            that.view.save(that.index,function(esito) {
+            that.viewInstance.save(that.index,function(esito) {
                 callback(esito)
             })
         },
@@ -287,7 +287,7 @@ const actionConfs = {
         icon : 'fa fa-edit',
         execute : function () {
             var that = this;
-            that.view.setEditMode(that.index);
+            that.viewInstance.setEditMode(that.index);
         }
     },
     'action-view-mode' : {
@@ -299,7 +299,7 @@ const actionConfs = {
         _visible : false,
         execute : function () {
             var that = this;
-            that.view.setViewMode(that.index);
+            that.viewInstance.setViewMode(that.index);
         }
     },
     'action-insert' : {
@@ -311,9 +311,8 @@ const actionConfs = {
         icon : 'fa fa-plus',
         text : 'app.nuovo',
         execute() {
-            //var url = "/insert/" + this.view.modelName + "/new";
-            let url = '/insert/' + CrudCore.pascalCase('model_'+this.view.modelName) + ".insert"
-            this.view.$router.push(url);
+            let url = '/insert/' + CrudCore.pascalCase('model_'+this.viewInstance.modelName) + ".insert"
+            this.viewInstance.$router.push(url);
         }
     },
     'action-back' : {
@@ -337,7 +336,7 @@ const actionConfs = {
         setRouteValues : function(route) {
             var that = this;
             route.setValues({
-                modelName: that.view.modelName,
+                modelName: that.viewInstance.modelName,
             });
             return route;
         },
@@ -358,15 +357,15 @@ const actionConfs = {
         },
         _deleteSelected : function (callback) {
             var that = this;
-            var checked = that.view.selectedRows();
+            var checked = that.viewInstance.selectedRows();
             var num = checked.length;
-            console.log(num,'view',that.view)
+            //console.log(num,'view',that.viewInstance)
             if (num === 0) {
                 callback(true);
                 return ;
             }
-            let msg = that.view.translate('app.conferma-multidelete',null,false,[num]);
-            that.view.confirmDialog(msg, {}, {
+            let msg = that.viewInstance.translate('app.conferma-multidelete',null,false,[num]);
+            that.viewInstance.confirmDialog(msg, {}, {
                 ok : function () {
                     var r = that.createRoute('multi-delete');
                     that.setRouteValues(r);
@@ -379,12 +378,12 @@ const actionConfs = {
                             callback(false);
                             return ;
                         }
-                        that.view.reload();
+                        that.viewInstance.reload();
                         callback(true);
                     })
                 }
             });
-            //console.log('selected',that.view.selectedRows())
+            //console.log('selected',that.viewInstance.selectedRows())
         }
     },
     'action-show-error' : {
@@ -393,11 +392,11 @@ const actionConfs = {
         actionType : 'collection',
         type:'button',
         execute() {
-            this.view.showError = true;
-            this.view.reload();
+            this.viewInstance.showError = true;
+            this.viewInstance.reload();
         },
         _visible() {
-            if (this.view.metadata.has_datafile_errors)
+            if (this.viewInstance.metadata.has_datafile_errors)
                 return true
             return false;
         }
@@ -407,11 +406,11 @@ const actionConfs = {
         actionType : 'collection',
         type:'button',
         execute() {
-            this.view.showError = false;
-            this.view.reload();
+            this.viewInstance.showError = false;
+            this.viewInstance.reload();
         },
         _visible() {
-            if (this.view.metadata.has_datafile_errors)
+            if (this.viewInstance.metadata.has_datafile_errors)
                 return true
             return false;
         }
@@ -435,18 +434,18 @@ const actionConfs = {
         },
         _exportCsv (callback) {
             var that = this
-            var r = that.view.createRoute(that.routeName)
+            var r = that.viewInstance.createRoute(that.routeName)
             r.setValues({
-                'foorm': that.view.modelName,
+                'foorm': that.viewInstance.modelName,
                 'foormtype': 'list'
             })
-            r.setParams(that.view.getParams());
+            r.setParams(that.viewInstance.getParams());
             r.setParam('csvType', that.csvType)
-            that.view.waitStart(that.startMessage)
+            that.viewInstance.waitStart(that.startMessage)
             Server.route(r, function (json) {
-                that.view.waitEnd()
+                that.viewInstance.waitEnd()
                 if (json.error) {
-                    that.view.errorDialog(json.msg)
+                    that.viewInstance.errorDialog(json.msg)
                     callback(false)
                     return
                 }
@@ -497,20 +496,20 @@ const actionConfs = {
         },
         _exportPdf (callback) {
             var that = this
-            var r = that.view.createRoute(that.routeName)
-            let foormPk = that.modelData[that.view.primaryKey];
+            var r = that.viewInstance.createRoute(that.routeName)
+            let foormPk = that.modelData[that.viewInstance.primaryKey];
             r.setValues({
-                'foorm': that.view.modelName,
+                'foorm': that.viewInstance.modelName,
                 'foormtype': 'list',
                 'foormpk' : foormPk
             })
-            r.setParams(that.view.getParams());
+            r.setParams(that.viewInstance.getParams());
             r.setParam('pdfType', that.pdfType)
-            that.view.waitStart(that.startMessage)
+            that.viewInstance.waitStart(that.startMessage)
             Server.route(r, function (json) {
-                that.view.waitEnd()
+                that.viewInstance.waitEnd()
                 if (json.error) {
-                    that.view.errorDialog(json.msg)
+                    that.viewInstance.errorDialog(json.msg)
                     callback(false);
                     return
                 }

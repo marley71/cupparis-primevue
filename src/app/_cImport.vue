@@ -299,7 +299,7 @@ export default {
             aS.execute = function () {
                 var thatAction = this;
                 var r = thatAction.createRoute('save_datafile');
-                var viewParams = thatAction.view.getViewData();
+                var viewParams = thatAction.viewInstance.getViewData();
                 r.setParams(viewParams);
                 r.setParam('datafile_load_id',thatAction.csvDashboard.jobId);
                 r.setParam('datafileProviderName',thatAction.csvDashboard.providerName);

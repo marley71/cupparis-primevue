@@ -16,7 +16,7 @@ export default {
       let componentName = cc.componentName?cc.componentName:null;
       let componentConf = cc.componentConf?cc.componentConf:null;
       if (componentConf) {
-          componentConf.dialog = this;   // passo il riferimento alla dialog
+          componentConf.dialogInstance = this;   // passo il riferimento alla dialog
           console.debug('assegnato riferimento a dialog');
       }
       // @TODO in caso di manage si dovrebbe settare alcune configurazioni per evitare funzionamenti inattesi. updateHash,disabilitarla, togliere la view in popup,ecc

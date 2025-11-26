@@ -189,7 +189,7 @@ export default {
             let that = this;
             var values = that.getRowEditData(index);
 
-            //var id = that.view.value[that.index][that.view.primaryKey];
+            //var id = that.viewInstance.value[that.index][that.viewInstance.primaryKey];
             var r = that.createRoute('update');
             r.setValues({
                 modelName: that.modelName,
@@ -214,7 +214,7 @@ export default {
                     callback(true)
                 },20)
 
-                //that.view.reload();
+                //that.viewInstance.reload();
             })
             //console.log('values', values);
         }
