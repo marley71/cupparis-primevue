@@ -106,6 +106,13 @@ const routeConfs = {
         resultType: 'record',
         protocol: 'record'
     },
+    foormaction_record: {
+        method: "post",
+        //url:'/api/json/set/{modelName}/{field}/{value}',
+        url : "/foormaction/{actionName}/{modelName}/list",
+        resultType: 'record',
+        protocol: 'record'
+    },
     pages: {
         url:'/crud/page/{path}',
     },
