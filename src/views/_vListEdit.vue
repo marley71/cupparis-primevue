@@ -8,7 +8,6 @@ export default {
     name: "_vListEdit",
     extends: _vList,
     mounted() {
-        //window.VLISTEDIT = this;
         this.load();
     },
     data() {

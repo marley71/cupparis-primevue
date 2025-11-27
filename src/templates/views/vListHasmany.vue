@@ -34,7 +34,7 @@
                         </Menubar>
                     </template>
                     <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>
-                    <Column v-if="hasRecordActions()" :exportable="false" header="Actions">
+                    <Column v-if="hasRecordActions()" :exportable="false" :header="translate('app.actions')">
                     
                         <template #body="slotProps">
                             <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index]"></c-action>

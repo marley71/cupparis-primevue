@@ -3,7 +3,7 @@
     <input type="hidden" :name="name" v-model="value">
     <div class="flex">
       <Button icon="fa fa-times" @click="clear" v-if="clearButton"/>
-      <AutoComplete class="w-full" v-model="autocompleteValue" :suggestions="suggestions"
+      <AutoComplete class="w-full" v-model="autocompleteValue" :suggestions="suggestions" @show="onShow"
                     @complete="search" :option-label="getAutocompleteLabel" option-value="id"
                     v-bind="extraBind" @item-select="itemSelect" input-class="w-full"/>
     </div>
@@ -18,7 +18,12 @@ import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wAutocomplete",
   extends: _wAutocomplete,
-  components : {RulesErrors}
+  components : {RulesErrors},
+  methods: {
+    onShow() {
+      document.querySelector('.p-autocomplete-overlay').style['z-index'] = 10000;
+    }
+  }
 }
 
 </script>

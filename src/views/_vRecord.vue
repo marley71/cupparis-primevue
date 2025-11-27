@@ -208,7 +208,7 @@ export default {
           values[field] = w.getValue();
         }
       }
-      console.log('rowData ', that.value);
+      //console.log('rowData ', that.value);
       return values;
     },
     setValue(values) {
@@ -216,7 +216,7 @@ export default {
       for (let key in values) {
         if (that.fields.indexOf(key) >= 0) {
           let w = that.getWidget(key);
-          console.log('set Value w', w, key);
+          //console.log('set Value w', w, key);
           if (w) {
             w.setValue(values[key]);
           }
@@ -276,12 +276,12 @@ export default {
         let widget = this.getWidget(name);
         // TODO pezza  per gli hasmany.. capire come arrivare ai campi per la validazione.
         if (widget) {
-          console.debug('name', name, that.widgetsConfig[name].type);
+          //console.debug('name', name, that.widgetsConfig[name].type);
           rulesArray = rulesArray.concat(widget.rules ? widget.rules.split('|') : []);
           // controllo che non ci siano rules custom e se i sono devono essere definite in customRules del widget
           for (let i in rulesArray) {
               let rName = rulesArray[i].split(':')[0];
-              console.debug('rName',rName,AllRules[rName]);
+              //console.debug('rName',rName,AllRules[rName]);
               if (!AllRules[rName]) {
                   if (!widget.customRules[rName]) {
                       throw "Regola " + rName + ' non è stata definita';

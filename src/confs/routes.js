@@ -61,6 +61,7 @@ const routeConfs = {
         resultType: 'record',
         protocol: 'record',
         type: 'update',
+        //commonParams : {'foormName':'edit'},
     },
     search: {
         method: "get",

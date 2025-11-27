@@ -327,7 +327,7 @@ export default {
                 }
             }
             //dt.errors = [];
-            console.debug('_vBase.data ', dt)
+            //console.debug('_vBase.data ', dt)
             return dt;
         }
     },

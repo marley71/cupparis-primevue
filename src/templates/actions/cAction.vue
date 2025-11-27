@@ -5,11 +5,11 @@
         </div>
     </template>
     <template v-else-if="layout==='buttons'">
-        <div class="flex">
+        <InputGroup>
             <template v-for="(action,key) in getActions()" :key="key">
                 <a-base :ref="key" :conf="getConf(action,key)" v-if="inWhitelist(key)"></a-base>
             </template>
-        </div>
+        </InputGroup>
     </template>
     <template v-else-if="layout==='menubar'">
         <Menubar :model="menubarActions" class="w-full text-left">

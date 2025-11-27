@@ -4,9 +4,9 @@
     <input type="hidden" :name="name" v-model="value">
     <div class="flex ">
       <Button icon="fa fa-times" @click="clear" v-if="clearButton"/>
-      <DatePicker class="w-full my-datapicker" :showButtonBar="true" v-model="dateValue" @date-select="change"
+      <DatePicker class="w-full cupparis-datapicker" :showButtonBar="true" v-model="dateValue" @date-select="change"
                 :inputDateFormat="dateFormat" :date-format="displayFormat"
-                v-bind="extraBind"
+                v-bind="extraBind" @show="onShow"
                 @clear-click="clear"/>
     </div>
   </div>
@@ -24,12 +24,15 @@ export default {
   name: "w-date-picker",
   extends: _wDatePicker,
   components : {RulesErrors},
+  methods: {
+    onShow() {
+      document.querySelector('.p-datepicker-panel').style['z-index'] = 10000;
+    }
+  }
 }
 
 </script>
 
-<style>
-.my-datapicker {
-  z-index: 100001 !important;
-}
+<style scoped>
+
 </style>

@@ -191,7 +191,7 @@ export default class WrapperConf {
         if ( !('canUpdate' in conf) ) {
             conf.canUpdate = true;
         }
-        console.debug('overlayTitle '+conf.overlayTitle)
+        //console.debug('overlayTitle '+conf.overlayTitle)
         conf.routeName = conf.routeName || 'set';
         conf.overlayTitle = conf.overlayTitle || 'app.modifica';
         return conf;

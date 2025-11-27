@@ -47,6 +47,8 @@ import DialogsPage from "./help/DialogsPage.vue";
 import EsperimentiPage from "./help/EsperimentiPage.vue";
 import JsToCode from "./help/JsToCode";
 
+import "./assets/cupparis.css"
+
 export default {
     install(app) {
         lib.install(app);

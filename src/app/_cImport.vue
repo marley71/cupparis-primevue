@@ -58,7 +58,7 @@ export default {
                     data[k] = that[k];
                 }
                 CrudCore.fetchHtml(that.importDescHtml,function (htmlText) {
-                    console.debug('contenuto',htmlText);
+                    //console.debug('contenuto',htmlText);
                     that.importDesc = htmlText;
                 },data)
             }
