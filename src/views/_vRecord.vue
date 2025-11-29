@@ -148,6 +148,7 @@ export default {
         if (!res) {
           return;
         }
+      
         if (that.type == 'v-edit') {
           route = that.createRoute('update');
           var pk = that.cPk || that.pk || 0;

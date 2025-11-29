@@ -46,7 +46,9 @@ export default {
         let wc = new viewWrapperConf();
         console.log('wc',wc);
         that.conf.list = wc.loadConf(that.conf.list);
+        that.conf.insert = that.conf.insert?CrudCore.clone(that.conf.insert):CrudCore.clone(that.conf.edit)
         that.conf.edit = that.conf.edit?wc.loadConf(that.conf.edit):{};
+
         if (that.conf.search) {
             that.conf.search.updateHash = that.conf.autoUpdateHash;
         }
@@ -64,7 +66,7 @@ export default {
             that.conf.view.type = 'v-view';
             that.conf.view.routeName = 'view';
             that.conf.view.modelName = that.conf.modelName;
-            console.log('modelName',that.conf.modelName);
+            //console.log('modelName',that.conf.modelName);
         }
         if (!that.conf.baseRouteName) {  // indica il nome del path per la manage, di default e' manage ma in caso di oggetti estesi potrebbe essere diverso
             that.conf.baseRouteName = 'manage';
@@ -214,16 +216,17 @@ export default {
         showContext() {
           let that = this;
           console.debug('showContext params',that.$route.params);
-
           if (that.$route.params.viewType) {
             let context = that.$route.params.context || [];
             that.mode = that.$route.params.viewType;
             console.debug('mode',that.mode,context)
               switch (that.mode) {
                   case 'edit':
+                      that.edit.type = 'v-edit';
                       that.edit.pk = context[0];
                       break;
                   case 'insert':
+                        that.insert.type = 'v-insert';
                       break;
                   case 'list':
                       break;

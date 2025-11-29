@@ -6,6 +6,8 @@ const baseView = {
     extraBind: {},
     title:'',
     headerHelp:'',
+    headerHelpFile : null,  // file html in caso di help complesso al posto della descrizione semplice headerHelp
+    headerHelpHtml : null,
     loaded : false,
     route : null,
     routeName : null,
@@ -35,18 +37,16 @@ const viewConfs = {
             labelPosition : 'top',  // puo' essere top,bottom,none
         }
     },
-    defaultView : {
+    defaultView : Object.assign(baseView,{
         name : '',
         value: null,
         fields: null,
         type: 'v-base',
         extraBind: {},
         title:'',
-        headerHelp:'',
         orderFields:{},
         paginator:true,
         rows : 20,
-        loaded : false,
         route : null,
         routeName : null,
         defaultWidgetType : 'w-text',
@@ -58,20 +58,18 @@ const viewConfs = {
         autoload : true,
         blocked : false,
         modelName : null,
-    },
-    listView : {
+    }),
+    listView : Object.assign(baseView,{
         name : '',
         value: null,
         fields: null,
         type: 'v-base',
         extraBind: {},
         title:'',
-        headerHelp:'',
         orderFields:{},
         paginator:true,
         paginatorPosition:'both',
         rows : 20,
-        loaded : false,
         route : null,
         routeName : null,
         defaultWidgetType : 'w-text',
@@ -93,16 +91,14 @@ const viewConfs = {
         //autoSearch : true, // se e' true la view cerca dentro l'hash se ci sono parametri di ricerca (s_{fieldName}) e li applica alla chiamata
         filterFields : {}, // se sono presenti dei fields nel formato s_{fieldName} li applica alla chiamata ajax
         //numeroRecordsLabel : null, // label del numero dei records
-    },
-    recordView : {
+    }),
+    recordView : Object.assign(baseView,{
         name : '',
         value: null,
         fields: null,
         type: 'v-base',
         extraBind: {},
         title:'',
-        headerHelp:'',
-        loaded : false,
         route : null,
         routeName : null,
         defaultWidgetType : 'w-input',
@@ -113,7 +109,7 @@ const viewConfs = {
         actionDivider: false,
         blocked : false,
         modelName : null,
-    },
+    }),
     searchView : Object.assign( baseView,{
         updateHash : true,  // se true i parametri di ricerca li mette nell'url
         advancedFields: null,

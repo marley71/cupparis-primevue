@@ -12,7 +12,7 @@ function _getModelConf(obj,key) {
     for(let i in keys) {
         conf = conf[keys[i]];
     }
-    return conf;  //CrudCore.clone(conf);
+    return CrudCore.clone(conf);
 }
 
 function _getModelConfInsert(obj,key) {
@@ -26,9 +26,10 @@ function _getModelConfInsert(obj,key) {
         conf = obj[keys[keys.length-2]];
         conf = CrudCore.clone(conf.edit);
         conf.type = 'v-insert';
+        delete conf.pk;
         return conf;
     }
-    return conf; //CrudCore.clone(conf);
+    return CrudCore.clone(conf);
 }
 
 function _getManageConf(key,route) {

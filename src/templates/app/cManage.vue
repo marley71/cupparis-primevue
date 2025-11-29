@@ -9,9 +9,11 @@
           <component :is="listComponentName" :conf="list" ref="vList"></component>
         </div>
         <template v-if="mode==='edit'">
+          <div>edit</div>
           <component :is="editComponentName" :conf="edit" ref="vRecord"></component>
         </template>
         <template v-else-if="mode==='insert'">
+          <div>insert</div>
           <component :is="insertComponentName" :conf="insert" ref="vRecord"></component>
         </template>
         <template v-else-if="mode==='custom'">

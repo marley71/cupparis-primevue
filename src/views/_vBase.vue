@@ -11,10 +11,7 @@ export default {
     emits : ['loaded'],
     beforeCreate() {
         //CrudCore.viewComponentCreate(this);
-
         let that = this;
-        ///console.debug('_vBase.beforeCreate ',that.conf);
-        //console.log('CREATEDDD',that)
         that.overwriteMethods = {};
         var __call = function (lk) {
             that[lk] = function () {
@@ -22,7 +19,6 @@ export default {
                 return that.overwriteMethods[localk].apply(that, arguments);
             }
         }
-
         for (let k in that.conf) {
             //console.log('k',k,ext[k]);
             // se la funzione non e' tra i metodi sovrascribili allora la istanzio come una nuova funzione dell'oggetto
@@ -82,6 +78,7 @@ export default {
             }
         },
         _afterDraw() {
+            this.getheaderHelpFile();
             if (this.afterDraw) {
                 this.afterDraw.apply(this);
             }
@@ -310,6 +307,41 @@ export default {
         console.debug('page params',params,context)
         return params;
       },
+        getheaderHelpFileData() {
+            let that = this;
+            if (that.conf.getheaderHelpFileData) {
+                return that.conf.getheaderHelpFileData.apply(this);
+            }
+            
+            let data = {
+                value : that.value,
+                metadata : that.metadata,
+            };
+            return data;
+
+            // cosi' passo troppa roba
+            //let properties =  Object.keys(that).filter(key => typeof that[key] !== 'function').filter(key => CrudCore.customVueObjectKeys.indexOf(key) < 0);
+            // for (let k of properties) {
+            //     data[k] = that[k];
+            // }
+            // return data;
+        },
+        /**
+         * importa un file esterno html da mettere nell'headerHelp, al posto di una descrizione semplice
+         * 
+         */
+        getheaderHelpFile() {
+            let that = this;
+            if (that.headerHelpFile) {
+                console.debug('importo ', that.headerHelpFile);
+                let data = that.getheaderHelpFileData();
+                CrudCore.fetchHtml(that.headerHelpFile,function (htmlText) {
+                    //console.debug('contenuto',htmlText);
+                    that.headerHelpHtml = htmlText;
+                },data)
+            }
+
+        },
         /**
          * questa funzione normalizza la configurazione che mi arriva e restituisco solo i dati che devono essere realmente reactive
          */

@@ -34,14 +34,6 @@ export default class WrapperConf {
                 break;
         }
 
-        //
-        // if (['v-edit','v-view','v-insert','v-record','v-search'].indexOf(conf.type) >= 0) {
-        //     defConf = CrudCore.clone(viewConfs.recordView);
-        // } else if (['v-list','v-list-edit','v-list-hasmany'].indexOf(conf.type) >= 0) {
-        //     defConf = CrudCore.clone(viewConfs.listView);
-        // } else {
-        //     defConf = CrudCore.clone(viewConfs.defaultView);
-        // }
         let wName = CrudCore.camelCase(conf.type || viewConfs.defaultView.type);
         //console.log('wname',that[wName])
         if (that[wName]) {
@@ -56,8 +48,7 @@ export default class WrapperConf {
     }
 
     vList(conf) {
-        //console.log('wList conf',conf);
-        //conf.selectionMode = 'multiple';
+
         conf.selected = null;
         if (!conf.type) {
             conf.type = 'v-list'
@@ -248,6 +239,7 @@ export default class WrapperConf {
         if (!('actions' in conf) ){
             conf.actions = ['action-save','action-back'];
         }
+        conf.foormName = conf.foormName || 'insert';
         return conf;
     }
 
