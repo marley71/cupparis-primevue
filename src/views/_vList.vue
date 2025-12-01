@@ -155,7 +155,7 @@ export default {
 
     setHash(formData) {
       let that = this;
-      console.debug('setHash', that.$route, formData);
+      console.debug('AAA setHash', that.$route, formData);
       let currentParams = {...this.$route.params};
       let routeName = this.$route.name;
       //

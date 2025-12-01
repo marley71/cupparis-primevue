@@ -8,17 +8,18 @@ import CrudCore from "../lib/CrudCore";
 export default {
     name: "_cManage",
     extends : CrudComponent,
-    watch : {
-        '$route.params.context': {
-            handler: function(context) {
-                console.debug('showContext context',context);
-                this.showContext();
-            },
-            deep: true,
-        }
-    },
+    // watch : {
+    //     '$route.params.context': {
+    //         handler: function(context) {
+    //             console.debug('showContext context',context);
+    //             this.showContext();
+    //         },
+    //         deep: true,
+    //     }
+    // },
     mounted() {
         let that = this;
+        console.debug('AAA mounted',that.$route.params);
         this.showContext();
         this.setManageReference();
         setTimeout(function () {
@@ -27,6 +28,7 @@ export default {
 
     },
     data() {
+        console.debug('AAA data');
         let that = this;
         if (!('title' in that.conf)) {
             that.conf.title = null;
@@ -46,16 +48,31 @@ export default {
         let wc = new viewWrapperConf();
 
         that.conf.list = wc.loadConf(that.conf.list);
-        let ve = that.conf.edit?wc.loadConf(that.conf.edit):{type:'v-edit'};
-        if (that.conf.insert) {
-            that.conf.insert = wc.loadConf(that.conf.insert);
-        } else {
-            that.conf.insert = wc.loadConf(ve);
-            that.conf.insert.type = 'v-insert';
-            that.conf.insert.routeName = 'insert';
-            that.conf.insert.foormName = 'insert';
+        //console.debug('_cManage conf list',that.conf.list)
+        let ce = CrudCore.clone( (that.conf.edit || {type:'v-edit'}) );
+        let ci = CrudCore.clone( (that.conf.insert || that.conf.edit || {type:'v-insert'}) );
+        let cv = CrudCore.clone( (that.conf.view || that.conf.edit || {type:'v-view'}) );
+
+        // se non e' presente insert, modifico il clone di insert perche' e' uguale a quello di edit
+        if (!('insert' in that.conf)) {
+            ci.type = 'v-insert';
+            ci.routeName = 'insert';
+            ci.foormName = 'insert';
         }
-        that.conf.edit = wc.loadConf(ve);
+        // se non e' presente view, modifico il clone di view perche' e' uguale a quello di edit
+        if (!('view' in that.conf)) {
+            cv.type = 'v-view';
+            cv.routeName = 'view';
+            cv.modelName = that.conf.modelName;
+        }
+        
+        //console.debug('_cManage conf edit',ce,'insert',ci,'view',cv);
+        that.conf.edit = wc.loadConf(ce);
+        that.conf.insert = wc.loadConf(ci);
+        that.conf.view = wc.loadConf(cv);
+        
+
+        //console.debug('_cManage conf edit',that.conf.edit,'insert',that.conf.insert,'view',that.conf.view);
 
         if (that.conf.search) {
             that.conf.search.updateHash = that.conf.autoUpdateHash;
@@ -64,18 +81,18 @@ export default {
         that.setManageActions();
         that.conf.mode = null;
         that.conf.viewDisplay = false;
-        if (!('insert' in that.conf)) {
-            that.conf.insert = Object.assign({},CrudCore.clone(that.conf.edit));
-            that.conf.insert.type = 'v-insert';
-            that.conf.insert.routeName = 'insert';
-        }
-        if (!('view' in that.conf)) {
-            that.conf.view = Object.assign({},CrudCore.clone(that.conf.view));
-            that.conf.view.type = 'v-view';
-            that.conf.view.routeName = 'view';
-            that.conf.view.modelName = that.conf.modelName;
-            //console.log('modelName',that.conf.modelName);
-        }
+        // if (!('insert' in that.conf)) {
+        //     that.conf.insert = Object.assign({},CrudCore.clone(that.conf.edit));
+        //     that.conf.insert.type = 'v-insert';
+        //     that.conf.insert.routeName = 'insert';
+        // }
+        // if (!('view' in that.conf)) {
+        //     that.conf.view = Object.assign({},CrudCore.clone(that.conf.view));
+        //     that.conf.view.type = 'v-view';
+        //     that.conf.view.routeName = 'view';
+        //     that.conf.view.modelName = that.conf.modelName;
+        //     //console.log('modelName',that.conf.modelName);
+        // }
         if (!that.conf.baseRouteName) {  // indica il nome del path per la manage, di default e' manage ma in caso di oggetti estesi potrebbe essere diverso
             that.conf.baseRouteName = 'manage';
         }
@@ -161,11 +178,11 @@ export default {
             let viewConfs = ['list','edit','insert','view','custom'];
             for (let i in viewConfs) {
                 let v = viewConfs[i];
-                console.debug('setto view ',v,manage.conf[v])
+                //console.debug('setto view ',v,manage.conf[v])
                 if (manage.conf[v]) {
                     let actions = manage.conf[v].actions || [];
                     for (let action of actions) {
-                        console.debug('aggiungo manage alla action ',action)
+                        //console.debug('aggiungo manage alla action ',action)
                         let aC = manage.conf[v].actionsConfig || {};
                         if (aC[action]) {
                             aC[action].manageInstance = manage;
@@ -189,7 +206,8 @@ export default {
             let that = this;
             that.mode = 'list';
             if (that.autoUpdateHash) {
-                window.history.back();
+                //window.history.back();
+                this.$router.back();
             } else {
                 setTimeout(function () {
                     console.debug('showList',that.listParams)
@@ -197,7 +215,7 @@ export default {
                         if (that.getViewSearch()) {
                             that.getViewSearch().setSearchParamsValue(that.listParams);
                         }
-                        that.getViewList().setParams(that.listParams,true);
+                        that.getViewList().setParams(that.listParams);
                         //that.getViewList().reload();
                     }
                 },100)
@@ -238,7 +256,7 @@ export default {
          */
         showContext() {
           let that = this;
-          console.debug('showContext params',that.$route.params);
+          console.debug('AAA showContext params',that.$route.params);
           if (that.$route.params.viewType) {
             let context = that.$route.params.context || [];
             that.mode = that.$route.params.viewType;

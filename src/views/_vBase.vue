@@ -57,6 +57,7 @@ export default {
 
         },
         load() {
+            console.debug('AAA _vBase.load',this.type);
             let that = this;
             that._beforeSetRouteValues();
             that.setRouteValues();

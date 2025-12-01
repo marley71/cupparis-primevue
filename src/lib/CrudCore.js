@@ -173,6 +173,7 @@ CrudCore.setupApp = function (app) {
 var _cloneObj = function (item) {
 
     if (item instanceof Function) {
+        //console.debug('cloneObj function',item);
         return item;
     }
     if (item instanceof Array) {
@@ -186,6 +187,7 @@ var _cloneObj = function (item) {
         let res = {};
         for (let k in item) {
             if (CrudCore.customVueObjectKeys.indexOf(k) >= 0) {
+                //console.debug('cloneObj customVueObjectKeys',k);
                 res[k] = item[k];
             } else {
                 res[k] = _cloneObj(item[k])
@@ -198,6 +200,7 @@ var _cloneObj = function (item) {
 
 CrudCore.clone = function (obj) {
     let cloned = _cloneObj(obj);
+    //console.debug('cloneObj cloned',cloned);
     return cloned;
 }
 
