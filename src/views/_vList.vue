@@ -285,6 +285,7 @@ export default {
     _setWidgetsConfig() {
       let that = this;
       // configurazioni widgets se non ci sono fields configurati prendo le keys dei valori
+      console.debug('vlist value',that.value);
       if (!that.fields && that.value.length) {
         that.fields = Object.keys(that.value[0]);
       }

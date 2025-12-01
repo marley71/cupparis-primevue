@@ -32,6 +32,7 @@ const lang = {
     ',
     'app.import-file' : 'Seleziona file da importare',
     'app.import-button' : 'Importa file',
-    'app.dettagli' : 'Dettagli id (0)'
+    'app.dettagli' : 'Dettagli id (0)',
+    'app.salva-torna-indietro' : 'Salva e torna alla lista'
 }
 export default lang

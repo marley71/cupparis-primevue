@@ -3,13 +3,9 @@ import viewConfs from "../confs/views";
 
 export default class WrapperConf {
 
-    constructor(view) {
-        this.view = view;
-    }
-
     loadConf(conf) {
         let that = this;
-        //console.log('VIEW CONF',conf);
+        //console.log('VIEW CONF',conf.type+'');
         //console.log('View.WrapperConf type',conf.type);
         if (!conf.type)
             throw "confurazione non trovata per la view definire il type della vista";
@@ -19,23 +15,23 @@ export default class WrapperConf {
             case 'v-view':
             case 'v-insert':
             case 'v-record':
-                defConf = CrudCore.clone(viewConfs.recordView);
+                defConf = viewConfs.recordView(); //CrudCore.clone(viewConfs.recordView);
                 break;
             case 'v-search':
-                defConf = CrudCore.clone(viewConfs.searchView);
+                defConf = viewConfs.searchView(); //CrudCore.clone(viewConfs.searchView);
                 break;
             case 'v-list':
             case 'v-list-edit':
             case 'v-list-hasmany':
-                defConf = CrudCore.clone(viewConfs.listView);
+                defConf = viewConfs.listView(); //CrudCore.clone(viewConfs.listView);
                 break;
             default:
-                defConf = CrudCore.clone(viewConfs.defaultView);
+                defConf = viewConfs.defaultView(); //CrudCore.clone(viewConfs.defaultView);
                 break;
         }
 
-        let wName = CrudCore.camelCase(conf.type || viewConfs.defaultView.type);
-        //console.log('wname',that[wName])
+        let wName = CrudCore.camelCase(conf.type || viewConfs.defaultView().type);
+        //console.log('wname ... ',that[wName])
         if (that[wName]) {
             conf = that[wName](conf);
         }
@@ -141,7 +137,7 @@ export default class WrapperConf {
     }
     vRecord(conf) {
         if (!conf.layout) {
-            conf.layout = viewConfs.recordLayouts.record
+            conf.layout = viewConfs.recordLayouts().record
         }
         if (!conf.fields && conf.value) {
             console.log('keys',Object.keys(conf.value))
@@ -182,7 +178,7 @@ export default class WrapperConf {
 
     vSearch(conf) {
         if (!conf.layout) {
-            conf.layout = viewConfs.recordLayouts.search
+            conf.layout = viewConfs.recordLayouts().search
         }
         if (!conf.searchType) {
             conf.searchType = conf.searchType = 'both';
@@ -244,7 +240,7 @@ export default class WrapperConf {
     }
 
     vBase(conf) {
-        conf = Object.assign(viewConfs.defaultView,conf);
+        conf = Object.assign(viewConfs.defaultView(),conf);
         return conf;
     }
 }

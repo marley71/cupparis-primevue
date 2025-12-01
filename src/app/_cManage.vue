@@ -11,7 +11,7 @@ export default {
     watch : {
         '$route.params.context': {
             handler: function(context) {
-                console.debug('showContext ',context);
+                console.debug('showContext context',context);
                 this.showContext();
             },
             deep: true,
@@ -44,10 +44,18 @@ export default {
             that.conf.autoUpdateHash = true;
         }
         let wc = new viewWrapperConf();
-        console.log('wc',wc);
+
         that.conf.list = wc.loadConf(that.conf.list);
-        that.conf.insert = that.conf.insert?CrudCore.clone(that.conf.insert):CrudCore.clone(that.conf.edit)
-        that.conf.edit = that.conf.edit?wc.loadConf(that.conf.edit):{};
+        let ve = that.conf.edit?wc.loadConf(that.conf.edit):{type:'v-edit'};
+        if (that.conf.insert) {
+            that.conf.insert = wc.loadConf(that.conf.insert);
+        } else {
+            that.conf.insert = wc.loadConf(ve);
+            that.conf.insert.type = 'v-insert';
+            that.conf.insert.routeName = 'insert';
+            that.conf.insert.foormName = 'insert';
+        }
+        that.conf.edit = wc.loadConf(ve);
 
         if (that.conf.search) {
             that.conf.search.updateHash = that.conf.autoUpdateHash;
@@ -82,14 +90,15 @@ export default {
         if (!('viewTitle' in that.conf)) {
             that.conf.viewTitle = null;
         }
+        that.conf.listParams = null;  // parametri della lista nel caso di manage con autoUpdateHash a false;
         return that.conf;
     },
     methods : {
         searchList(event) {
             console.debug('searchList',this.autoUpdateHash,event,this.getViewList());
             if (this.getViewList()) {
-                this.getViewList().setParams(event);
-                this.getViewList().load();
+                this.listParams = event;
+                this.getViewList().setParams(event,true);
             }
         },
         setManageActions() {
@@ -114,11 +123,9 @@ export default {
                 if (!actionEdit.execute){
                     actionEdit.execute = function () {
                         let thatAction = this;
-                        thatAction.manageInstance.edit.pk = thatAction.modelData[thatAction.manageInstance.getViewList().primaryKey];
-                        thatAction.manageInstance.mode = 'edit';
+                        let pk = thatAction.modelData[thatAction.manageInstance.getViewList().primaryKey];
                         let confName = this.$route.params.cConf;
-                        thatAction.manageInstance.updateHash(confName,'edit',[thatAction.manageInstance.edit.pk]);
-                        //window.history.pushState({},'',window.location.pathname + '#/' + manage.baseRouteName + '/'+ confName +'/edit/' + that.edit.pk);
+                        thatAction.manageInstance.updateHash(confName,'edit',[pk]);
                     }
                 }
                 that.conf.list.actionsConfig['action-edit'] = actionEdit;
@@ -128,29 +135,23 @@ export default {
                 if (!actionInsert.execute){
                     actionInsert.execute = function () {
                         let thatAction = this;
-                        thatAction.manageInstance.mode = 'insert';
                         let confName = thatAction.$route.params.cConf;
                         thatAction.manageInstance.updateHash(confName,'insert');
-                        //window.history.pushState({},'',window.location.pathname + '#/' + manage.baseRouteName + '/'+ confName +'/insert');
                     }
                 }
                 that.conf.list.actionsConfig['action-insert'] = actionInsert;
             }
-            if (that.conf.edit && that.conf.edit.actions && that.conf.edit.actions.indexOf('action-back') >= 0) {
-                let actionBack = that.conf.edit.actionsConfig['action-back'] || {};
-                if (!actionBack.execute){
-                    actionBack.execute = function () {
-                        let thatAction = this;
-                        thatAction.manageInstance.mode = 'list';
-                        if (thatAction.manageInstance.autoUpdateHash) {
-                            window.history.back();
-                        } else {
-                            thatAction.manageInstance.getViewList().reload();
-                        }
-                    }
-                }
-                that.conf.edit.actionsConfig['action-back'] = actionBack;
-            }
+            // if (that.conf.edit && that.conf.edit.actions && that.conf.edit.actions.indexOf('action-back') >= 0) {
+            //     let actionBack = that.conf.edit.actionsConfig['action-back'] || {};
+            //     if (!actionBack.execute){
+            //         actionBack.execute = function () {
+            //             let thatAction = this;
+            //             let confName = this.$route.params.cConf;
+            //             thatAction.manageInstance.updateHash(confName,'list',[]);
+            //         }
+            //     }
+            //     that.conf.edit.actionsConfig['action-back'] = actionBack;
+            // }
         },
         /**
          * assegno a tutte le azioni il riferimento alla manage
@@ -160,12 +161,27 @@ export default {
             let viewConfs = ['list','edit','insert','view','custom'];
             for (let i in viewConfs) {
                 let v = viewConfs[i];
-                //console.debug('setto view ',v,manage.conf[v])
+                console.debug('setto view ',v,manage.conf[v])
                 if (manage.conf[v]) {
-                    for (let a in manage.conf[v].actionsConfig) {
-                        //console.debug('setto manage a ',v,a, manage.conf[v].actionsConfig[a]);
-                        manage.conf[v].actionsConfig[a].manageInstance = manage;
+                    let actions = manage.conf[v].actions || [];
+                    for (let action of actions) {
+                        console.debug('aggiungo manage alla action ',action)
+                        let aC = manage.conf[v].actionsConfig || {};
+                        if (aC[action]) {
+                            aC[action].manageInstance = manage;
+
+                        } else {
+                            aC[action] = {
+                                manageInstance : manage
+                            }
+                        }
+                        manage.conf[v].actionsConfig = aC;
                     }
+
+                    // for (let a in manage.conf[v].actionsConfig) {
+                    //     //console.debug('setto manage a ',v,a, manage.conf[v].actionsConfig[a]);
+                    //     manage.conf[v].actionsConfig[a].manageInstance = manage;
+                    // }
                 }
             }
         },
@@ -176,7 +192,14 @@ export default {
                 window.history.back();
             } else {
                 setTimeout(function () {
-                    that.getViewList().reload();
+                    console.debug('showList',that.listParams)
+                    if (that.listParams) {
+                        if (that.getViewSearch()) {
+                            that.getViewSearch().setSearchParamsValue(that.listParams);
+                        }
+                        that.getViewList().setParams(that.listParams,true);
+                        //that.getViewList().reload();
+                    }
                 },100)
 
             }
@@ -271,6 +294,21 @@ export default {
                 params.viewType = type;
                 params.context = context;
                 that.$router.push({name:'c-manage-view',params : params})
+            } else {
+                that.mode = type;
+                switch (that.mode) {
+                  case 'edit':
+                      that.edit.type = 'v-edit';
+                      that.edit.pk = context[0];
+                      break;
+                  case 'insert':
+                        that.insert.type = 'v-insert';
+                      break;
+                  case 'list':
+                      break;
+                  case 'custom':
+                      that.custom.context = context;
+              }
             }
         },
         _setCss() {

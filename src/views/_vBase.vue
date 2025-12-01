@@ -19,6 +19,7 @@ export default {
                 return that.overwriteMethods[localk].apply(that, arguments);
             }
         }
+        console.debug('_vBase.beforeCreate',that.conf.type+'');
         for (let k in that.conf) {
             //console.log('k',k,ext[k]);
             // se la funzione non e' tra i metodi sovrascribili allora la istanzio come una nuova funzione dell'oggetto
@@ -62,9 +63,13 @@ export default {
             that._afterSetRouteValues();
             that._beforeLoadData();
             that.loadData(function (json) {
+                console.debug('loadData callback',that.type)
                 that.json = CrudCore.clone(json);
+                console.debug('fillData')
                 that.fillData(json);
+                console.debug('_afterLoadData')
                 that._afterLoadData(json);
+                console.debug('setWidgetsConfig')
                 that.setWidgetsConfig();
                 that._beforeDraw();
                 that.draw();
@@ -181,10 +186,22 @@ export default {
 
         },
 
-        setParams(params) {
+        /**
+         * setta i parametri alla route della view, ed esegue la reload se richiesto.
+         * @param params parametri da aggiungere alla route
+         * @param reload se true eseguo la reload della view
+         */
+
+        setParams(params,reload) {
             console.log('route set params',params);
-            this.route.setParams(params);
-            this.reload();
+            if (this.route) {
+                this.route.setParams(params);
+                if (reload) {
+                    this.reload();
+                }
+            } else {
+                console.warn('_vBase.setParams route nulla');
+            }
         },
         getParams() {
             return this.route.getParams();
@@ -346,6 +363,7 @@ export default {
          * questa funzione normalizza la configurazione che mi arriva e restituisco solo i dati che devono essere realmente reactive
          */
         _loadReactiveData(conf) {
+            console.debug('_loadReactiveData',conf);
             let wc = new WrapperConf()
             if (!conf.type) {
                 conf.type = this.$options.name;

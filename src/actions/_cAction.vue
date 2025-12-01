@@ -7,11 +7,6 @@ export default {
     name: "_cAction",
     extends: CrudComponent,
     props: {
-        //'conf': Object,
-        // 'layout': {
-        //     type: String,
-        //     default: 'buttons'
-        // },
         'whitelist': Array,
         'blacklist': Array,
         'menubarTitle': String,
@@ -34,8 +29,6 @@ export default {
         getConf(actionConf, actionKey) {
             var that = this;
             actionConf.spacing = that.getSpacing(actionConf, actionKey);
-
-            //console.log("ALAYOUT",that.layout,actionConf);
             return actionConf;
         },
         getSpacing(actionConf, actionKey) {
@@ -116,16 +109,6 @@ export default {
                 actions[name].actionClass = (actions[name].actionClass?actions[name].actionClass:'');
                 actions[name].actionClass += ' w-full';
                 items.push(actions[name]);
-                // items.push({
-                //     label: that.translate(actions[name].text),
-                //     icon: actions[name].icon,
-                //     command: () => {
-                //         console.log('name', name, actions[name]);
-                //         actions[name].execute()
-                //     },
-                //     //disabled: actions[name].disabled,
-                //     action: name,
-                // })
             }
             //console.log('menubar', items, that.conf);
             return [{
@@ -133,30 +116,6 @@ export default {
                 items: items
             }]
         },
-        getMenubarActionsOld() {
-            let that = this;
-            let items = [];
-            //console.log('actions',that.conf);
-            let actions = that.conf.actions;
-            for (let name in actions) {
-
-                items.push({
-                    label: that.translate(actions[name].text),
-                    icon: actions[name].icon,
-                    command: () => {
-                        console.log('name', name, actions[name]);
-                        actions[name].execute()
-                    },
-                    //disabled: actions[name].disabled,
-                    action: name,
-                })
-            }
-            //console.log('menubar', items, that.conf);
-            return [{
-                label: this.menubarTitle ? this.menubarTitle : this.translate('app.actions'),
-                items: items
-            }]
-        }
     }
 }
 </script>

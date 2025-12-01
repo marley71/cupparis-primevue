@@ -1,9 +1,7 @@
 import CrudCore from "../lib/CrudCore";
-import Server from "../lib/Server";
-// import moment from "moment"
 
-export default class WrapperConf {
-    defaultConf =  {
+const defaultConf = () => {
+    return {
         name : '',
         value: null,
         defaultValue : null,
@@ -16,15 +14,18 @@ export default class WrapperConf {
         rowType : '',
         errors : [],
     }
+}
 
+
+export default class WrapperConf {
     loadConf(conf) {
         let that = this;
         //console.log('WIDGET CONF',conf);
-        let dC = CrudCore.clone(this.defaultConf); //Object.assign({},this.defaultConf);
+        let dC =  defaultConf(); // CrudCore.clone(this.defaultConf); //Object.assign({},this.defaultConf);
         if (typeof conf === 'string') {
             conf = {type:conf};
         }
-        conf.type = conf.type || that.defaultConf.type;
+        conf.type = conf.type || dC.type;
         let functionName = CrudCore.camelCase(conf.type);
         //console.log('functionName',functionName)
         if (that[functionName]) {
@@ -72,30 +73,6 @@ export default class WrapperConf {
         conf.extraBind = conf.extraBind || {};
         conf.autocompleteParams = conf.autocompleteParams || null;
         conf.clearButton = conf.clearButton || false;
-        // conf.getAutocompleteLabel = conf.getAutocompleteLabel || function(event) {
-        //     let that = this;
-        //
-        //     if (that.labelFields && that.labelFields.length > 0) {
-        //         let label = '';
-        //         for (let i in that.labelFields) {
-        //             label += (event[that.labelFields[i]] || '') + ' ';
-        //         }
-        //         return label;
-        //     }
-        //     if (event.label)
-        //         return event.label;
-        //     return '';
-        //     //console.log(that,'label',event);
-        // }
-
-        // conf.reset = conf.reset || function() {
-        //     console.debug('reset w-autocomplete');
-        //     let that = this;
-        //     console.debug('reset w-autocomplete',that.value,that.autocompleteValue,that);
-        //     that.value = null;
-        //     that.autocompleteValue = null;
-        // };
-
         //console.log('referredData',conf.referredData);
         let __initialValue = function () {
             let that = this;

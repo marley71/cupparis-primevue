@@ -4,7 +4,7 @@ import CrudVars from "../lib/CrudVars";
 import CrudHelpers from "../lib/CrudHelpers";
 
 const actionConfs = {
-    'default': function () {
+    'default': () => {
         return {
             modelData:{},
             extraBind: {},
@@ -13,21 +13,21 @@ const actionConfs = {
             visible: true,
         }
     },
-    'action-record-grouped' : function() {
+    'action-record-grouped' : () => {
         return  {
             componentName:'a-grouped',
             actionType :'record',
             title: 'grouped'
         }
     },
-    'action-collection-grouped'  : function() {
+    'action-collection-grouped'  : () => {
         return  {
             componentName:'a-grouped',
             actionType :'collection',
             title: 'grouped'
         }
     },
-    'action-reset'  : function() {
+    'action-reset'  : () => {
         return  {
             actionType : 'collection',
             title : 'app.reset',
@@ -41,7 +41,7 @@ const actionConfs = {
             }
         }
     },
-    'action-search'  : function() {
+    'action-search'  : () => {
         return  {
             actionType : 'collection',
             title : 'app.cerca',
@@ -75,7 +75,7 @@ const actionConfs = {
         }
     },
 
-    'action-save'  : function() {
+    'action-save'  : () => {
         return  {
             actionType : 'collection',
             title : 'app.salva',
@@ -127,7 +127,7 @@ const actionConfs = {
         }
 
     },
-    'action-save-back'  : function() {
+    'action-save-back'  : () => {
         return  {
             actionType : 'collection',
             title : 'app.salva-torna-indietro',
@@ -167,11 +167,15 @@ const actionConfs = {
                 })
             },
             afterExecute () {
-                this.$router.back();
+                if (this.manageInstance) {
+                    this.manageInstance.showList();
+                } else {
+                    this.$router.back();
+                }
             }
         }
     },
-    'action-edit'  : function() {
+    'action-edit'  : () => {
         return  {
             actionType : 'record',
             title : 'app.modifica',
@@ -184,7 +188,7 @@ const actionConfs = {
             }
         }
     },
-    'action-view'  : function() {
+    'action-view'  : () => {
         return  {
             actionType : 'record',
             title : 'app.vista',
@@ -208,7 +212,7 @@ const actionConfs = {
             }
         }
     },
-    'action-delete'  : function() {
+    'action-delete'  : () => {
         return  {
             actionType : 'record',
             type : 'button',
@@ -243,7 +247,7 @@ const actionConfs = {
                 })
                 //this._save(callback)
             },
-            _delete : function (callback) {
+            _delete (callback) {
                 var that = this;
                 that.viewInstance.confirmDialog(that.viewInstance.translate('app.conferma-cancellazione') ,{},{
                     ok : function () {
@@ -268,7 +272,7 @@ const actionConfs = {
             }
         }
     },
-    'action-save-row' : function() {
+    'action-save-row' : () => {
         return  {
             actionType: 'record',
             title: 'app.salva',
@@ -301,7 +305,7 @@ const actionConfs = {
             },
         }
     },
-    'action-edit-mode' : function() {
+    'action-edit-mode' : () => {
         return  {
             actionType : 'record',
             title : 'app.modifica',
@@ -314,7 +318,7 @@ const actionConfs = {
             }
         }
     },
-    'action-view-mode'  : function() {
+    'action-view-mode'  : () => {
         return  {
             actionType : 'record',
             title : 'app.annulla',
@@ -328,7 +332,7 @@ const actionConfs = {
             }
         }
     },
-    'action-insert'  : function() {
+    'action-insert'  : () => {
         return  {
             actionType : 'collection',
             visible : true,
@@ -343,7 +347,7 @@ const actionConfs = {
             }
         }
     },
-    'action-back'  : function() {
+    'action-back'  : () => {
         return  {
             actionType : 'collection',
             title : 'app.indietro',
@@ -351,12 +355,15 @@ const actionConfs = {
             icon : 'fa fa-backward',
             text : 'app.indietro',
             execute : function () {
-                this.$router.back();
-                //window.history.back();
+                if (this.manageInstance) {
+                    this.manageInstance.showList();
+                } else {
+                    this.$router.back();
+                }
             }
         }
     },
-    'action-delete-selected'  : function() {
+    'action-delete-selected'  : () => {
         return  {
             actionType : 'collection',
             title : 'app.cancella-selezionati',
@@ -418,7 +425,7 @@ const actionConfs = {
             }
         }
     },
-    'action-show-error'  : function() {
+    'action-show-error'  : () => {
         return  {
             text : 'app.mostra-solo-errori', //'Mostra solo errori',
             css : 'btn-outline-danger',
@@ -435,7 +442,7 @@ const actionConfs = {
             }
         }
     },
-    'action-mostra-tutti'  : function() {
+    'action-mostra-tutti'  : () => {
         return  {
             text : 'app.mostra-tutti', // 'Mostra tutti',
             actionType : 'collection',
@@ -452,7 +459,7 @@ const actionConfs = {
         }
 
     },
-    'action-export-csv'  : function() {
+    'action-export-csv'  : () => {
         return  {
             execute (event) {
                 let tA = this;
@@ -516,7 +523,7 @@ const actionConfs = {
             nameField: 'name',
         }
     },
-    'action-export-pdf'  : function() {
+    'action-export-pdf'  : () => {
         return  {
             execute (event) {
                 let tA = this;

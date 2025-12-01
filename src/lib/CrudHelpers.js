@@ -177,4 +177,16 @@ CrudHelpers.dateFormat = (value,displayFormat) => {
         return CrudCore.translate('app.invalidDateString'); // + '*' ;
     }
 }
+
+CrudHelpers.formDataToAssociativeArray = (values) => {
+    let params = {}
+    if (values instanceof FormData) {
+        for (var pair of values.entries()) {
+            params[pair[0]] = pair[1]
+        }
+    } else {
+        params = values;
+    }
+    return params;
+}
 export default CrudHelpers;
