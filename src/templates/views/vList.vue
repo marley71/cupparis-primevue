@@ -64,7 +64,7 @@
                   </template>
                 </Column>
                 <Column v-for="(col) in getVisibleFields()" :field="col" :header="columnLabel(col)" :key="col"
-                        :sortable="isSortable(col)" :dir="sortDirection(col)">
+                        :sortable="isSortable(col)" :dir="sortDirection(col)" :class="'field-'+col">
                   <template #body="slotProps">
                     <component :is="getWidgetType(slotProps.index,col)" :ref="'w'+slotProps.index+'_'+col"
                                :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></component>
