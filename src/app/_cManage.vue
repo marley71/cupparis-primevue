@@ -23,6 +23,7 @@ export default {
         this.showContext();
         this.setManageReference();
         setTimeout(function () {
+            that.loadContext();
             that._setCss();
         },100)
 
@@ -48,10 +49,14 @@ export default {
         let wc = new viewWrapperConf();
 
         that.conf.list = wc.loadConf(that.conf.list);
+        that.conf.list.autoload = false;
         //console.debug('_cManage conf list',that.conf.list)
         let ce = CrudCore.clone( (that.conf.edit || {type:'v-edit'}) );
         let ci = CrudCore.clone( (that.conf.insert || that.conf.edit || {type:'v-insert'}) );
         let cv = CrudCore.clone( (that.conf.view || that.conf.edit || {type:'v-view'}) );
+        ce.autoload = false;
+        ci.autoload = false;
+        cv.autoload = false;
 
         // se non e' presente insert, modifico il clone di insert perche' e' uguale a quello di edit
         if (!('insert' in that.conf)) {
@@ -75,6 +80,7 @@ export default {
         //console.debug('_cManage conf edit',that.conf.edit,'insert',that.conf.insert,'view',that.conf.view);
 
         if (that.conf.search) {
+            that.conf.search.autoload = false;
             that.conf.search.updateHash = that.conf.autoUpdateHash;
         }
 
@@ -97,7 +103,8 @@ export default {
             that.conf.baseRouteName = 'manage';
         }
         that.conf.custom = that.conf.custom || {};
-
+        that.conf.custom.autoload = false;
+        
         that.conf.editComponentName = that.conf.editComponentName || 'v-edit';
         that.conf.listComponentName = that.conf.listComponentName || 'v-list';
         that.conf.searchComponentName = that.conf.searchComponentName || 'v-search';
@@ -115,7 +122,7 @@ export default {
             console.debug('searchList',this.autoUpdateHash,event,this.getViewList());
             if (this.getViewList()) {
                 this.listParams = event;
-                this.getViewList().setParams(event,true);
+                this.getViewList().setParams(event,false);
             }
         },
         setManageActions() {
@@ -279,6 +286,21 @@ export default {
           }
 
           return ;
+        },
+        loadContext() {
+            console.debug('AAA loadContext params');
+            let that = this;
+            switch (that.mode) {
+                case 'edit':
+                case 'insert':
+                case 'custom':
+                    that.$refs.vRecord.load();
+                    break;
+                case 'list':
+                    that.$refs.vSearch.load();
+                    that.$refs.vList.load();
+                    break;
+            }
         },
         waitViewLoaded(type,callback) {
             let that = this;

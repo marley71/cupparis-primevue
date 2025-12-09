@@ -13,6 +13,7 @@ const defaultConf = () => {
         customRules : {},
         rowType : '',
         errors : [],
+        inPopup : false, // per alcuni controlli permette di eseguire css se visualizzati in popup
     }
 }
 

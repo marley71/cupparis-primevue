@@ -274,6 +274,7 @@ export default {
             if (!userConf.type) {
                 userConf.type = 'v-list';
             }
+            userConf.updateHash = false;
             userConf.routeName = userConf.routeName || 'datafile_data';
             userConf = CrudCore.createConfView(userConf);
             userConf.jobId = that.jobId;
