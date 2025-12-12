@@ -26,7 +26,11 @@ export default {
   components : {RulesErrors},
   methods: {
     onShow() {
-      document.querySelector('.p-datepicker-panel').style['z-index'] = 10000;
+      // in popup  devo aumentare lo z-index altrimenti capita di sotto
+      if (this.inPopup) {
+        document.querySelector('.p-datepicker-panel').style['z-index'] = 10000;
+      }
+      
     }
   }
 }

@@ -37,7 +37,8 @@ function _getManageConf(key,route) {
     if (!CrudVars.modelConfs[key]) {
         console.log(key,'route ',route,CrudVars.modelConfs);
         //document.location.href = '/#404'
-        throw 'Not found';
+        //throw 'Not found';
+        CrudCore.event().emit('route-error',{msg: key +' Not found',route:route});
     }
     console.debug('router CrudVars',key,CrudVars.modelConfs[key]())
     return  CrudVars.modelConfs[key](); //CrudCore.clone(CrudVars.modelConfs[key]);

@@ -20,16 +20,23 @@ export default {
             }
         }
         console.debug('_vBase.beforeCreate',that.conf.type+'');
+        
         for (let k in that.conf) {
             //console.log('k',k,ext[k]);
             // se la funzione non e' tra i metodi sovrascribili allora la istanzio come una nuova funzione dell'oggetto
             // altrimenti ci pensano i singoli metodi sovrascribili a fare la chiamata
-            if ( (global.viewOverloadMethods.indexOf(k) < 0) && that.conf[k] instanceof Function) {
-                console.debug('_vBase.created ',k,'metodo non fa parte dei sovrascribili')
+            if (global.overloadMethodsCheck) {  
+                if ( (global.viewOverloadMethods.indexOf(k) < 0) && that.conf[k] instanceof Function) {
+                    console.debug('_vBase.created ',k,'metodo non fa parte dei sovrascribili')
+                    that.overwriteMethods[k] = that.conf[k];
+                    __call(k);
+                }
+            } else {
                 that.overwriteMethods[k] = that.conf[k];
                 __call(k);
             }
-        }
+        }  
+        
         this.Server = Server;
     },
     mounted() {
