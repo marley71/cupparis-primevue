@@ -23,15 +23,17 @@
                     <div class="grid grid-cols-12 gap-2">
                         <template v-for="field in getVisibleFields()" :key="field">
                             <template v-if="hasDividerBefore(field)">
-                                <Divider align="center" :class="getDividerClass(field)" v-show="!isHiddenWidget(field)">
-                                    <span v-if="getDividerContent(field)" v-html="getDividerContent(field)"
-                                        :class="getDividerContentClass(field)">
-                                    </span>
-                                </Divider>
-                                <div class="col-12 dividerDescription" v-if="getDividerDescription(field)"
-                                    v-show="!isHiddenWidget(field)" v-html="getDividerDescription(field)">
+                              <v-record-divider></v-record-divider>
 
-                                </div>
+<!--                                <Divider align="center" :class="getDividerClass(field)" v-show="!isHiddenWidget(field)">-->
+<!--                                    <span v-if="getDividerContent(field)" v-html="getDividerContent(field)"-->
+<!--                                        :class="getDividerContentClass(field)">-->
+<!--                                    </span>-->
+<!--                                </Divider>-->
+<!--                                <div class="col-12 dividerDescription" v-if="getDividerDescription(field)"-->
+<!--                                    v-show="!isHiddenWidget(field)" v-html="getDividerDescription(field)">-->
+
+<!--                                </div>-->
 
                             </template>
 

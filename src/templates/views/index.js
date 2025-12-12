@@ -3,6 +3,8 @@ import vBase from "./vBase.vue";
 import vList from "./vList.vue";
 import vListEdit from './vListEdit.vue'
 import vRecord from './vRecord.vue';
+import vRecordDivider from './vRecordDivider.vue';
+import vRecordWidget from './vRecordWidget.vue';
 import vInsert from './vInsert.vue';
 import vEdit from './vEdit.vue';
 import vView from './vView.vue';
@@ -20,6 +22,10 @@ export default {
         CrudCore.componentItems['v-list'] = vList;
         app.component('v-record', vRecord);
         CrudCore.componentItems['v-record'] = vRecord;
+        app.component('v-record-divider', vRecordDivider);
+        CrudCore.componentItems['v-record-divider'] = vRecordDivider;
+        app.component('v-record-widget', vRecordWidget);
+        CrudCore.componentItems['v-record-widget'] = vRecordWidget;
         app.component('v-insert', vInsert);
         CrudCore.componentItems['v-insert'] = vInsert;
         app.component('v-edit', vEdit);

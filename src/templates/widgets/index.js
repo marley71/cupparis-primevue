@@ -15,6 +15,7 @@ import wImage from './wImage.vue';
 import wKnob from './wKnob.vue';
 import wImages from './wImages.vue';
 import wInput from './wInput.vue';
+import wInputMask from './wInputMask.vue';
 import wInputSet from './wInputSet.vue';
 import wLeafLet from './wLeafLet.vue';
 import wMultiSelect from './wMultiSelect.vue'
@@ -72,6 +73,8 @@ export default {
         CrudCore.componentItems['w-images'] = wImages;
         app.component('w-input',wInput);
         CrudCore.componentItems['w-input'] = wInput;
+        app.component('w-input-mask',wInputMask);
+        CrudCore.componentItems['w-input-mask'] = wInputMask;
         app.component('w-input-set',wInputSet);
         CrudCore.componentItems['w-input-set'] = wInputSet;
         app.component('w-leaf-let',wLeafLet);

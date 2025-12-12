@@ -36,6 +36,8 @@ export default {
       removedWidgets: [], // rimuove il widget usando v-if
       hiddenWidgets: [],   // nasconde il widget usando v-show
       myShow: false,
+      removedGroups: [], // rimuove il widget usando v-if
+      hiddenGroups: [],   // nasconde il widget usando v-show
     }
   },
   methods: {
@@ -63,6 +65,56 @@ export default {
     },
     hasActionsDivider() {
       return this.actionDivider;
+    },
+    getGroups() {
+      return Array.isArray(this.groups) ? this.groups : false;
+    },
+    getGroupVisibleFields(groupFields) {
+      var groupVisibleFields = [];
+      for (var i in groupFields) {
+        var f = groupFields[i];
+        if (!this.isHiddenField(f))
+          groupVisibleFields.push(f);
+      }
+      console.log("GVF:::: ",groupVisibleFields)
+      return groupVisibleFields;
+    },
+    getGroupWrapper(group) {
+      return group.wrapper || false;
+    },
+    getGroupHeader(group) {
+      return group.header || false;
+    },
+    getGroupName(group) {
+      return group.name || '';
+    },
+    getGroupActions(group) {
+      return Array.isArray(group.actions) ? group.actions : false;
+    },
+    getGroupTitle(group) {
+      return group.title ?
+          this.translateUc(group.title) :
+          (CrudCore.upperCaseFirst(CrudCore.sentenceCase(group.name)) || '');
+    },
+    getGroupClass(group) {
+      let classes = '';
+      classes += group.cssClass || 'col col-span-12 my-4';
+      classes += ' group-'+this.getGroupName(group);
+      return classes;
+    },
+    hideGroup(group) {
+      if (this.hiddenGroups.indexOf(group) < 0) {
+        this.hiddenGroups.push(group);
+      }
+      //console.debug('hideGroup',group,this.hiddenGroups)
+    },
+    showGroup(group) {
+      let idx = this.hiddenGroups.indexOf(group);
+      if (idx >= 0) {
+        this.hiddenGroups.splice(idx, 1);
+      } else {
+        console.warn('group', group, 'is not hidden');
+      }
     },
     getColClass(col) {
       switch (col) {
@@ -98,6 +150,12 @@ export default {
         that.recordActionsConf.actions[aName] = aConf;
       }
       console.log('recordActionsConf', that.recordActionsConf)
+    },
+    getActionsWhitelist() {
+      if (Array.isArray(this.actionsWhitelist)) {
+        return this.actionsWhitelist
+      }
+      return this.actions;
     },
     getWidgetConf(index, field, data) {
       let that = this;
@@ -183,7 +241,19 @@ export default {
       return formData;
     },
     getWidget(field) {
-      return Array.isArray(this.$refs[field]) ? this.$refs[field][0] : this.$refs[field];
+      var fieldRefName = 'fields-'+field;
+      // console.log("REFSSSS",field,this.$refs,this.$refs[fieldRefName])
+      var fieldRef = this.$refs[fieldRefName];
+      if (Array.isArray(fieldRef)) {
+        if (fieldRef.length > 0) {
+          return this.$refs[fieldRefName][0].$refs[field];
+        }
+        //return fieldRef;
+      }
+      // if (this.$refs[fieldRefName]) {
+      //   return this.$refs[fieldRefName].$refs[field];
+      // }
+      return null;
     },
     getAction(name) {
       //console.log('getAction',name,this.recordActionsConf);
@@ -263,7 +333,7 @@ export default {
 
         }
       }
-      //console.log('isValid',isValid)
+      console.log('isValid',isValid)
       return isValid;
     },
     /**
@@ -323,6 +393,7 @@ export default {
       //window.VT = this;
       for (let i in that.fields) {
         let name = that.fields[i];
+        console.log("RESET WIDGETS ERRORS",name);
         // TODO pezza  per gli hasmany.. capire come arrivare ai campi per la validazione.
         //let tt = (that.widgetsConfig[name] && that.widgetsConfig[name].type)?that.widgetsConfig[name].type:that.defaultWidgetType;
         let widget = this.getWidget(name);
@@ -361,6 +432,10 @@ export default {
       //console.debug('isHiddenWidget',field,(this.hiddenWidgets.indexOf(field) >= 0))
       return (this.hiddenWidgets.indexOf(field) >= 0);
     },
+    isHiddenGroup(group) {
+      //console.debug('isHiddenWidget',field,(this.hiddenWidgets.indexOf(field) >= 0))
+      return (this.hiddenGroups.indexOf(this.getGroupName(group)) >= 0);
+    },
     hideWidget(field) {
       if (this.hiddenWidgets.indexOf(field) < 0) {
         this.hiddenWidgets.push(field);
@@ -381,18 +456,23 @@ export default {
     hasDividerAfter(field) {
       return this.widgetsConfig[field].divider === 'after';
     },
-    getDividerClass(field) {
-      return this.widgetsConfig[field].dividerClass || '';
+    getDividerInfo(field) {
+      let conf = this.widgetsConfig[field];
+      return {
+        'class' : conf.dividerClass || '',
+        'content' : conf.dividerContent || false,
+        'contentClass' : conf.dividerContentClass || 'font-bold',
+        'description' : conf.dividerDescription || false
+      }
     },
-    getDividerContent(field) {
-      return this.widgetsConfig[field].dividerContent || false;
-    },
-    getDividerContentClass(field) {
-      //console.log("DCC::: ", this.widgetsConfig[field].dividerContentClass)
-      return this.widgetsConfig[field].dividerContentClass || 'font-bold';
-    },
-    getDividerDescription(field) {
-      return this.widgetsConfig[field].dividerDescription || false;
+    getLabelInfo(field) {
+      let conf = this.widgetsConfig[field];
+      let layout = this.getWidgetLayout(field);
+      return {
+        'label' : this.translateUc(conf.label),
+        'position' : layout.labelPosition,
+        'required' : this.isRequired(field),
+      }
     },
     reset() {
       let fields = this.fields || [];
