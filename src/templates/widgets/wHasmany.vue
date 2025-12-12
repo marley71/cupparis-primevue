@@ -30,7 +30,7 @@
                 <template #content>
 
                             <div class="flex flex-col gap-4 mb-4 gap-y-6">
-                                <div v-for="(invoice, index) in vForKeys" :key="index"
+                                <div v-for="(dataKey, index) in vForKeys" :key="dataKey"
                                      class="flex items-center overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
     <!--                              <div class="sm:block hidden w-2.5 min-h-20" :class="'bg-green-500'">&nbsp;</div>-->
                                     <div

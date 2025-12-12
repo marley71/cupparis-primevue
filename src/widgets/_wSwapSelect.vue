@@ -31,7 +31,7 @@ export default {
             });
             route.setParams({
                 id: that.modelData.id,
-                field: that.name,
+                field: that.swapField || that.name,
                 value: that.value,
             });
             return route;

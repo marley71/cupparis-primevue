@@ -35,9 +35,6 @@ import CrudHelpers from "./lib/CrudHelpers";
 import wBase from '@templates/widgets/wBase.vue';
 import actionConfs from "./confs/actions";
 
-import { configure } from 'vee-validate';
-import { localize,setLocale } from '@vee-validate/i18n';
-
 import WidgetsPage from "./help/WidgetsPage.vue";
 import ViewsPage from "./help/ViewsPage.vue";
 import ManagePage from "./help/ManagePage.vue";
@@ -48,6 +45,8 @@ import EsperimentiPage from "./help/EsperimentiPage.vue";
 import JsToCode from "./help/JsToCode";
 
 import "./assets/cupparis.css"
+
+
 
 export default {
     install(app) {
@@ -62,13 +61,13 @@ export default {
         for (let k in routeConfs) {
             routeConfs[k].url = prefix + routeConfs[k].url;
         }
-        configure({
-            // Generates an English message locale generator
-            generateMessage: localize('appLang', CrudVars.validationMessages),
-        });
-        setLocale('appLang');
+        
+        // Configura VeeValidate con i messaggi tradotti
+        CrudCore.configureValidationMessages();
 
     },
+    // Funzione per aggiornare i messaggi di validazione dopo il caricamento delle traduzioni
+    //updateValidationMessages: configureValidationMessages,
     CrudComponent,cAction,CrudCore,CrudVars,wBase,
     //cView,
     routerConf,routeConfs,actionConfs,viewConfs,

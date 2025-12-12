@@ -189,4 +189,32 @@ CrudHelpers.formDataToAssociativeArray = (values) => {
     }
     return params;
 }
+
+/**
+ * mappa i domainValues in options per i componenti di primevue
+ * @param {*} domainValues 
+ * @param {*} domainValuesOrder 
+ * @returns 
+ */
+CrudHelpers.mapOptions = (domainValues,domainValuesOrder) => {
+    let options = [];
+    if (domainValuesOrder) {
+        for (let i in domainValuesOrder) {
+            let opt = {
+                id : domainValuesOrder[i],
+                label : domainValues[domainValuesOrder[i]],
+            }
+            options.push(opt);
+        }
+    } else {
+        for (let k in domainValues) {
+            let opt = {
+                id : k,
+                label : domainValues[k],
+            }
+            options.push(opt);
+        }
+    }
+    return options;
+}
 export default CrudHelpers;

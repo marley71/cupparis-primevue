@@ -32,8 +32,10 @@ export default {
                     __call(k);
                 }
             } else {
-                that.overwriteMethods[k] = that.conf[k];
-                __call(k);
+                if (that.conf[k] instanceof Function) {
+                    that.overwriteMethods[k] = that.conf[k];
+                    __call(k);
+                }
             }
         }  
         

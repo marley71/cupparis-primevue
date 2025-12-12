@@ -294,7 +294,9 @@ export default {
                 case 'edit':
                 case 'insert':
                 case 'custom':
-                    that.$refs.vRecord.load();
+                    if (that.$refs.vRecord.load) {
+                        that.$refs.vRecord.load();
+                    }
                     break;
                 case 'list':
                     that.$refs.vSearch.load();

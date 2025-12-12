@@ -224,7 +224,11 @@ export default {
           aConf.index = i;
           rowActions[aName] = aConf;
         }
-        that.recordActionsConf.push({actions: rowActions});
+        that.recordActionsConf.push({
+          layout: that.actionsRecordLayout,
+          menubarTitle: that.actionsRecordLayoutTitle,
+          actions: rowActions
+        });
       }
       that.collectionActions.actions = {};
       let needSelection = false;

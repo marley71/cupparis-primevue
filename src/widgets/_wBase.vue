@@ -5,6 +5,7 @@ import moment from "moment/moment";
 import Server from "../lib/Server";
 import WrapperConf from "./WrapperConf";
 import global from '../confs/global';
+import CrudHelpers from "../lib/CrudHelpers";
 
 export default {
     name: "_wBase",
@@ -26,10 +27,17 @@ export default {
             //console.log('k',k,ext[k]);
             // se la funzione non e' tra i metodi sovrascribili allora la istanzio come una nuova funzione dell'oggetto
             // altrimenti ci pensano i singoli metodi sovrascribili a fare la chiamata
-            if ( (global.widgetOverloadMethods.indexOf(k) < 0) && that.conf[k] instanceof Function) {
-                //console.debug('wBase.created (',k,') metodo non fa parte dei sovrascribili')
+            if (global.overloadMethodsCheck) {  
+              if ( (global.widgetOverloadMethods.indexOf(k) < 0) && that.conf[k] instanceof Function) {
+                  //console.debug('wBase.created (',k,') metodo non fa parte dei sovrascribili')
+                  that.overwriteMethods[k] = that.conf[k];
+                  __call(k);
+              }
+            } else {
+              if (that.conf[k] instanceof Function) {
                 that.overwriteMethods[k] = that.conf[k];
                 __call(k);
+              } 
             }
         }
         this.Server = Server;
@@ -110,53 +118,6 @@ export default {
         }
         return this.href;
       },
-
-        // _change(event, type) {
-        //     let that = this;
-        //     let evt = event || {};
-        //     evt.widget = this;
-        //     switch (this.type) {
-        //         case 'w-date-picker':
-        //             if (type == 'clear') {
-        //                 this.value = null;
-        //                 this.dateValue = null;
-        //             } else if (event) {
-        //                 let inputDateFormat = evt.widget.inputDateFormat || 'YYYY-MM-DD';
-        //                 let date = event ? moment(event).format(inputDateFormat) : null;
-        //                 //console.log("DATE",date, inputDateFormat)
-        //                 //var date = new Date();
-        //                 this.value = date;
-        //             }
-        //             break;
-        //         case 'w-date-range-picker':
-        //             if (type == 'clear') {
-        //                 this.value = null;
-        //                 this.dateValue = null;
-        //             } else if (event) {
-        //                 let inputDateFormat = evt.widget.inputDateFormat || 'YYYY-MM-DD';
-        //                 if (this.dateValue) {
-        //                     let d1 = this.dateValue[0]?moment(this.dateValue[0]).format(inputDateFormat) : null;
-        //                     let d2 = this.dateValue[1]?moment(this.dateValue[1]).format(inputDateFormat) : null;
-        //                     this.value = [d1,d2];
-        //                 }
-        //
-        //                 // let date = event ? moment(event).format(inputDateFormat) : null;
-        //                 // console.log("DATE",date, inputDateFormat,this.dateValue);
-        //                 // //var date = new Date();
-        //                 // this.value = [date,date];
-        //             }
-        //             break;
-        //         default:
-        //             break;
-        //     }
-        //     this.$emit('change', evt);
-        //     if (this.change) {
-        //         setTimeout(function () {
-        //             that.change(evt);
-        //         },10)
-        //     }
-        //
-        // },
         getValue() {
             let that = this;
             switch (that.conf.type) {
@@ -215,6 +176,13 @@ export default {
         }
         return realUrl;
       },
+      setDomainValues(domainValues,domainValuesOrder) {
+          this.domainValues = domainValues;
+          this.domainValuesOrder = domainValuesOrder || Object.keys(domainValues);
+          this.options = CrudHelpers.mapOptions(domainValues,domainValuesOrder);
+          this.options_order = domainValuesOrder;
+      }
+    
 
     }
 }

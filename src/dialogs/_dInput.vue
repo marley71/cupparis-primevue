@@ -13,9 +13,14 @@ export default {
     methods: {
         ok : function () {
             let that = this;
+            if (that.widgetConf) {
+                that.value = that.$refs.widget.getValue();
+            }
+            console.debug('ok value',that.widgetConf);
             let exist = that.callbacks['ok'] && {}.toString.call(that.callbacks['ok']) === '[object Function]'
             if (exist)
                 return that.callbacks['ok'].apply(that);
+            
             console.log('default ok');
             this.hide();
         },
