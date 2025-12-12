@@ -11,7 +11,10 @@
               </div>
               <div>
                   <div v-html="message"></div>
-                  <InputText v-model="value" @change="ok"></InputText>
+                  <div v-if="widgetConf">
+                    <component ref="widget" :is="widgetConf.type" :conf="widgetConf"></component>
+                  </div>
+                  <InputText v-else v-model="value" @change="ok"></InputText>
               </div>
             </div>
 
@@ -24,6 +27,7 @@
 </template>
 
 <script>
+
 import _dInput from '@cupparis-lib/dialogs/_dInput.vue'
 import Button from 'primevue/button';
 import Dialog from "primevue/dialog";
@@ -31,7 +35,11 @@ import InputText from "primevue/inputtext";
 
 export default {
     name: 'd-input',
-    components: {Button,Dialog,InputText},
+    components: {
+        Button,
+        Dialog,
+        InputText,
+    },
     extends: _dInput,
 }
 </script>

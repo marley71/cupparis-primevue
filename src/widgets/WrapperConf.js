@@ -1,4 +1,5 @@
 import CrudCore from "../lib/CrudCore";
+import CrudHelpers from "../lib/CrudHelpers";
 
 const defaultConf = () => {
     return {
@@ -37,28 +38,28 @@ export default class WrapperConf {
         return conf;
     }
 
-    mapOptions(domainValues,domainValuesOrder) {
-        let options = [];
-        if (domainValuesOrder) {
-            for (let i in domainValuesOrder) {
-                let opt = {
-                    id : domainValuesOrder[i],
-                    label : domainValues[domainValuesOrder[i]],
-                }
-                options.push(opt);
-            }
-        } else {
-            for (let k in domainValues) {
-                let opt = {
-                    id : k,
-                    label : domainValues[k],
-                }
-                options.push(opt);
-            }
-        }
-        //console.log('options',options);
-        return options;
-    }
+    // mapOptions(domainValues,domainValuesOrder) {
+    //     let options = [];
+    //     if (domainValuesOrder) {
+    //         for (let i in domainValuesOrder) {
+    //             let opt = {
+    //                 id : domainValuesOrder[i],
+    //                 label : domainValues[domainValuesOrder[i]],
+    //             }
+    //             options.push(opt);
+    //         }
+    //     } else {
+    //         for (let k in domainValues) {
+    //             let opt = {
+    //                 id : k,
+    //                 label : domainValues[k],
+    //             }
+    //             options.push(opt);
+    //         }
+    //     }
+    //     //console.log('options',options);
+    //     return options;
+    // }
 
     // --- configurazioni widgets
     wKnob(conf) {
@@ -180,7 +181,7 @@ export default class WrapperConf {
         return conf;
     }
     wSelect(conf) {
-        conf.options = this.mapOptions(conf.domainValues,conf.domainValuesOrder);
+        conf.options = CrudHelpers.mapOptions(conf.domainValues,conf.domainValuesOrder);
         // conf.reset = conf.reset || function() {
         //     let that = this;
         //     that.value = null;
@@ -208,7 +209,7 @@ export default class WrapperConf {
         return conf;
     }
     wSelectButton(conf) {
-        conf.options = this.mapOptions(conf.domainValues,conf.domainValuesOrder);
+        conf.options = CrudHelpers.mapOptions(conf.domainValues,conf.domainValuesOrder);
         conf.reset = conf.reset || function() {
             let that = this;
             that.value = null;
@@ -387,7 +388,7 @@ export default class WrapperConf {
             labelBottom : null,
         },conf);
         conf.change = conf.change || function() {};
-        conf.options = this.mapOptions(conf.domainValues,conf.domainValuesOrder);
+        conf.options = CrudHelpers.mapOptions(conf.domainValues,conf.domainValuesOrder);
         //console.log('SWAP-SELECT',conf);
         return conf;
     }

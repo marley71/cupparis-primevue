@@ -128,6 +128,8 @@ export default {
             modelName : 'user',
             type : 'v-list',
             actions:['action-view'],
+            actionsRecordLayout : 'menubar',
+            actionsRecordLayoutTitle : 'do',
             hiddenColumns : ['mainrole'],
             // actionsConfig:{
             //     "action-view": {

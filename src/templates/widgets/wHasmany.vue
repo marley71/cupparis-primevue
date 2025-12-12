@@ -16,7 +16,7 @@
             <template #content>
 
                         <div class="flex flex-col gap-4 mb-4">
-                            <div v-for="(invoice, index) in vForKeys" :key="index" class="flex items-center overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700 ">
+                            <div v-for="(dataKey,index) in vForKeys" :key="dataKey" class="flex items-center overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700 ">
 <!--                              <div class="sm:block hidden w-2.5 min-h-20" :class="'bg-green-500'">&nbsp;</div>-->
                                 <div class="flex flex-1 sm:items-center justify-start p-2 gap-4 border-l-6 border-green-500">
                                     <Button class="mx-3 p-button-outlined p-button-danger" icon="fa fa-times" @click="removeItem(dataKey)"></Button>

@@ -37,7 +37,7 @@ export default {
     },
     data() {
         let that = this;
-        console.debug('actions ', that.conf.actionType);
+        //console.debug('actions ', that.conf.actionType);
         let conf = that._loadReactiveData(that.conf);
         return conf;
     },
