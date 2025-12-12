@@ -110,7 +110,7 @@
                                     </span>
                                 </Divider>
                             <div class="flex flex-col gap-4 mb-4 gap-y-6">
-                                <div v-for="(invoice, index) in vForKeys" :key="index"
+                                <div v-for="(dataKey, index) in vForKeys" :key="index"
                                      class="flex items-center overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
     <!--                              <div class="sm:block hidden w-2.5 min-h-20" :class="'bg-green-500'">&nbsp;</div>-->
                                     <div
@@ -136,7 +136,7 @@
                     <Button v-else class="p-button p-button-sm p-component p-button-outlined justify-content-center"
                             icon="fa fa-add"
                             type="button" :label="addButtonMsg()"
-                            @click="addItem(dataKey)">
+                            @click="addItem()">
                     </Button>
                     <Divider align="center" v-if="hasFinalDivider()">
                       </Divider>
