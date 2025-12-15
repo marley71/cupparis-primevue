@@ -20,7 +20,7 @@
 <!--                              <div class="sm:block hidden w-2.5 min-h-20" :class="'bg-green-500'">&nbsp;</div>-->
                                 <div class="flex flex-1 sm:items-center justify-start p-2 gap-4 border-l-6 border-green-500">
                                     <Button class="mx-3 p-button-outlined p-button-danger" icon="fa fa-times" @click="removeItem(dataKey)"></Button>
-                                    <component is="v-record" ref="recordView" :conf="getHasmanyConf(index)"></component>
+                                    <component is="v-view" ref="recordView" :conf="getHasmanyConf(index)"></component>
                                 </div>
                             </div>
                         </div>

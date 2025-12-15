@@ -54,6 +54,7 @@
                          :sortOrder="getSortOrder()"
                          :loading="!loaded"
                          scrollable
+                         :rowClass="rowClass"
               >
                 <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>
                 <Column v-if="getRecordActionsPosition() == 'start' && hasRecordActions()" :exportable="false"
@@ -114,6 +115,7 @@
                          :sortOrder="getSortOrder()"
                          :loading="!loaded"
                          :key="tableKey"
+                         :rowClass="rowClass"
 
 
               >
@@ -175,6 +177,11 @@ export default {
   name: "v-list",
   extends: _vList,
   components: {cAction},
+  methods: {
+    rowClass(rowData, rowIndex) {
+      return rowIndex % 2 === 0 ? 'p-highlight' : ''; // Aggiunge la classe p-highlight a righe alternate
+    }
+  }
 }
 
 </script>
@@ -204,6 +211,18 @@ export default {
     margin-top: 2rem;
     margin-bottom: 2rem;
   }
+
+  .p-highlight {
+    background-color: var(--primary-color) !important; /* Colore di sfondo chiaro */
+  }
+
+  .p-even-row {
+  background-color: #f3f4f6 !important; /* Colore di sfondo per righe pari */
+}
+
+.p-odd-row {
+  background-color: #ffffff !important; /* Colore di sfondo per righe dispari */
+}
 
 }
 
