@@ -18,6 +18,7 @@ const defaultPanelConf = () => {
 export default {
   name: "_vList",
   extends: _vBase,
+  emits: ['route-change'],
   //props: ['conf'],
   mounted() {
     if (this.autoload)
@@ -88,6 +89,7 @@ export default {
         let page = event.page + 1;
         this.route.setParam('page', page);
         console.debug('onPAge updateHash',this)
+        this.$emit('route-change');
         if (this.updateHash) {
           this.setHash(this.route.getParams());
         } else {
@@ -107,6 +109,7 @@ export default {
         }
         that.route.setParam('order_field', sortField);
         that.route.setParam('order_direction', event.sortOrder > 0 ? 'ASC' : 'DESC');
+        this.$emit('route-change');
         if (this.updateHash) {
           this.setHash(this.route.getParams());
         } else {
@@ -155,7 +158,7 @@ export default {
 
     setHash(formData) {
       let that = this;
-      console.debug('setHash', that.$route, formData);
+      console.debug('AAA setHash', that.$route, formData);
       let currentParams = {...this.$route.params};
       let routeName = this.$route.name;
       //
@@ -224,7 +227,11 @@ export default {
           aConf.index = i;
           rowActions[aName] = aConf;
         }
-        that.recordActionsConf.push({actions: rowActions});
+        that.recordActionsConf.push({
+          layout: that.actionsRecordLayout,
+          menubarTitle: that.actionsRecordLayoutTitle,
+          actions: rowActions
+        });
       }
       that.collectionActions.actions = {};
       let needSelection = false;
@@ -285,6 +292,7 @@ export default {
     _setWidgetsConfig() {
       let that = this;
       // configurazioni widgets se non ci sono fields configurati prendo le keys dei valori
+      console.debug('vlist value',that.value);
       if (!that.fields && that.value.length) {
         that.fields = Object.keys(that.value[0]);
       }

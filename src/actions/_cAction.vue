@@ -7,36 +7,38 @@ export default {
     name: "_cAction",
     extends: CrudComponent,
     props: {
-        //'conf': Object,
-        // 'layout': {
-        //     type: String,
-        //     default: 'buttons'
-        // },
         'whitelist': Array,
         'blacklist': Array,
-        'menubarTitle': String,
+        //'menubarTitle': String,
     },
     data() {
         let that = this;
         if (!that.conf) {
             console.warn('cAction conf null', that.conf);
         }
-        let cf = that.conf || {};
+        // Crea una copia per evitare di modificare direttamente conf reattivo
+        let cf = Object.assign({}, that.conf || {});
         cf.title = '';
         cf.layout = cf.layout?cf.layout:'buttons';
-        if (cf.layout == 'menubar') {
-            cf.menubarActions = that.getMenubarActions();
-        }
+        // menubarActions verrà calcolato come computed property per evitare problemi di reattività
         return cf;
+    },
+    computed: {
+        menubarActions() {
+            if (this.layout === 'menubar') {
+                return this.getMenubarActions();
+            }
+            return null;
+        }
     },
     methods: {
 
         getConf(actionConf, actionKey) {
             var that = this;
-            actionConf.spacing = that.getSpacing(actionConf, actionKey);
-
-            //console.log("ALAYOUT",that.layout,actionConf);
-            return actionConf;
+            // Crea una copia per evitare di modificare direttamente oggetti reattivi
+            let confCopy = Object.assign({}, actionConf);
+            confCopy.spacing = that.getSpacing(actionConf, actionKey);
+            return confCopy;
         },
         getSpacing(actionConf, actionKey) {
             var that = this;
@@ -111,52 +113,22 @@ export default {
             //console.log('actions',that.conf);
             let actions = that.conf.actions;
             for (let name in actions) {
-                actions[name].label = that.translate(actions[name].text);
-                actions[name].action = name;
-                actions[name].actionClass = (actions[name].actionClass?actions[name].actionClass:'');
-                actions[name].actionClass += ' w-full';
-                items.push(actions[name]);
-                // items.push({
-                //     label: that.translate(actions[name].text),
-                //     icon: actions[name].icon,
-                //     command: () => {
-                //         console.log('name', name, actions[name]);
-                //         actions[name].execute()
-                //     },
-                //     //disabled: actions[name].disabled,
-                //     action: name,
-                // })
+                // Crea una copia dell'oggetto action invece di modificarlo direttamente
+                // per evitare loop infiniti di reattività
+                let actionCopy = Object.assign({}, actions[name]);
+                actionCopy.label = that.translate(actions[name].text);
+                actionCopy.action = name;
+                actionCopy.actionClass = (actions[name].actionClass?actions[name].actionClass:'');
+                actionCopy.actionClass += ' w-full';
+                items.push(actionCopy);
             }
             //console.log('menubar', items, that.conf);
             return [{
-                label: this.menubarTitle ? this.menubarTitle : this.translate('app.actions'),
+                label: this.conf.menubarTitle ? this.conf.menubarTitle : this.translate('app.actions'),
+                //icon : this.conf.menubarIcon ? this.conf.menubarIcon : 'fa fa-ellipsis-v',
                 items: items
             }]
         },
-        getMenubarActionsOld() {
-            let that = this;
-            let items = [];
-            //console.log('actions',that.conf);
-            let actions = that.conf.actions;
-            for (let name in actions) {
-
-                items.push({
-                    label: that.translate(actions[name].text),
-                    icon: actions[name].icon,
-                    command: () => {
-                        console.log('name', name, actions[name]);
-                        actions[name].execute()
-                    },
-                    //disabled: actions[name].disabled,
-                    action: name,
-                })
-            }
-            //console.log('menubar', items, that.conf);
-            return [{
-                label: this.menubarTitle ? this.menubarTitle : this.translate('app.actions'),
-                items: items
-            }]
-        }
     }
 }
 </script>

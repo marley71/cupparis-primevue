@@ -1,9 +1,9 @@
 import CrudCore from "../lib/CrudCore";
-import Server from "../lib/Server";
-// import moment from "moment"
+import CrudHelpers from "../lib/CrudHelpers";
+import WidgetConf from "../confs/widgets";
 
-export default class WrapperConf {
-    defaultConf =  {
+const defaultConf = () => {
+    return {
         name : '',
         value: null,
         defaultValue : null,
@@ -15,47 +15,28 @@ export default class WrapperConf {
         customRules : {},
         rowType : '',
         errors : [],
+        inPopup : false, // per alcuni controlli permette di eseguire css se visualizzati in popup
     }
+}
 
+
+export default class WrapperConf {
     loadConf(conf) {
         let that = this;
         //console.log('WIDGET CONF',conf);
-        let dC = CrudCore.clone(this.defaultConf); //Object.assign({},this.defaultConf);
+        let dC =  defaultConf(); // CrudCore.clone(this.defaultConf); //Object.assign({},this.defaultConf);
         if (typeof conf === 'string') {
             conf = {type:conf};
         }
-        conf.type = conf.type || that.defaultConf.type;
+        conf.type = conf.type || dC.type;
         let functionName = CrudCore.camelCase(conf.type);
         //console.log('functionName',functionName)
         if (that[functionName]) {
              conf = that[functionName](conf);
         }
-        conf = Object.assign(dC,conf);
+            conf = Object.assign(dC,conf);
         //console.log('WIDGET',conf);
         return conf;
-    }
-
-    mapOptions(domainValues,domainValuesOrder) {
-        let options = [];
-        if (domainValuesOrder) {
-            for (let i in domainValuesOrder) {
-                let opt = {
-                    id : domainValuesOrder[i],
-                    label : domainValues[domainValuesOrder[i]],
-                }
-                options.push(opt);
-            }
-        } else {
-            for (let k in domainValues) {
-                let opt = {
-                    id : k,
-                    label : domainValues[k],
-                }
-                options.push(opt);
-            }
-        }
-        //console.log('options',options);
-        return options;
     }
 
     // --- configurazioni widgets
@@ -72,30 +53,6 @@ export default class WrapperConf {
         conf.extraBind = conf.extraBind || {};
         conf.autocompleteParams = conf.autocompleteParams || null;
         conf.clearButton = conf.clearButton || false;
-        // conf.getAutocompleteLabel = conf.getAutocompleteLabel || function(event) {
-        //     let that = this;
-        //
-        //     if (that.labelFields && that.labelFields.length > 0) {
-        //         let label = '';
-        //         for (let i in that.labelFields) {
-        //             label += (event[that.labelFields[i]] || '') + ' ';
-        //         }
-        //         return label;
-        //     }
-        //     if (event.label)
-        //         return event.label;
-        //     return '';
-        //     //console.log(that,'label',event);
-        // }
-
-        // conf.reset = conf.reset || function() {
-        //     console.debug('reset w-autocomplete');
-        //     let that = this;
-        //     console.debug('reset w-autocomplete',that.value,that.autocompleteValue,that);
-        //     that.value = null;
-        //     that.autocompleteValue = null;
-        // };
-
         //console.log('referredData',conf.referredData);
         let __initialValue = function () {
             let that = this;
@@ -118,32 +75,6 @@ export default class WrapperConf {
             conf.autocompleteValue = __initialValue();
             conf.suggestions = [conf.referredData];
         }
-
-        // conf.search = conf.search || function (event) {
-        //     let that = this;
-        //
-        //     if (!that.route) {
-        //         that.route = that.createRoute('autocomplete');
-        //         that.route.setValuesFromObj(that);
-        //     }
-        //     let field = that.autocompleteField?that.autocompleteField:that.name;
-        //     that.route.setParams({
-        //         field : field,
-        //         value : event.query,
-        //         params : that.autocompleteParams,
-        //
-        //     });
-        //
-        //     console.log('route',that.route,that);
-        //     that.Server.route(that.route,function (json) {
-        //         console.log('json',json);
-        //         that.suggestions = json.result;
-        //     });
-        //     console.log('search',conf,event);
-        // }
-
-
-
         return conf;
     }
 
@@ -178,6 +109,15 @@ export default class WrapperConf {
         if ( !('title' in conf) ) {
             conf.title = null;
         }
+        if ( !('separator' in conf) ) {
+            conf.separator = ':';
+        }
+        return conf;
+    }
+    wKnob(conf) {
+        conf.size = conf.size || 100;
+        conf.prefix = conf.prefix || '';
+        conf.suffix = conf.suffix || '';
         return conf;
     }
     wInputSet(conf) {
@@ -202,7 +142,7 @@ export default class WrapperConf {
         return conf;
     }
     wSelect(conf) {
-        conf.options = this.mapOptions(conf.domainValues,conf.domainValuesOrder);
+        conf.options = CrudHelpers.mapOptions(conf.domainValues,conf.domainValuesOrder);
         // conf.reset = conf.reset || function() {
         //     let that = this;
         //     that.value = null;
@@ -230,7 +170,7 @@ export default class WrapperConf {
         return conf;
     }
     wSelectButton(conf) {
-        conf.options = this.mapOptions(conf.domainValues,conf.domainValuesOrder);
+        conf.options = CrudHelpers.mapOptions(conf.domainValues,conf.domainValuesOrder);
         conf.reset = conf.reset || function() {
             let that = this;
             that.value = null;
@@ -305,7 +245,7 @@ export default class WrapperConf {
             conf.dateValue = new Date(conf.value);
         }
         conf.displayFormat = conf.displayFormat || 'dd/mm/yy';
-        conf.dateFormat =  conf.dateFormat || 'yy-mm-dd';
+        conf.dateFormat =  conf.dateFormat || 'Y-MM-DD';
         return conf;
     }
     wDateRangePicker(conf) {
@@ -317,7 +257,7 @@ export default class WrapperConf {
             }
         }
         conf.displayFormat = conf.displayFormat || 'dd/mm/yy';
-        conf.dateFormat =  conf.dateFormat || 'yy-mm-dd';
+        conf.dateFormat =  conf.dateFormat || 'Y-MM-DD';
         return conf;
     }
     wDateText(conf) {
@@ -409,7 +349,7 @@ export default class WrapperConf {
             labelBottom : null,
         },conf);
         conf.change = conf.change || function() {};
-        conf.options = this.mapOptions(conf.domainValues,conf.domainValuesOrder);
+        conf.options = CrudHelpers.mapOptions(conf.domainValues,conf.domainValuesOrder);
         //console.log('SWAP-SELECT',conf);
         return conf;
     }

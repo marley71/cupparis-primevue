@@ -54,17 +54,18 @@
                          :sortOrder="getSortOrder()"
                          :loading="!loaded"
                          scrollable
+                         :rowClass="rowClass"
               >
                 <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>
                 <Column v-if="getRecordActionsPosition() == 'start' && hasRecordActions()" :exportable="false"
                         :header="translate('app.actions')">
                   <template #body="slotProps">
                     <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
-                              :layout="actionsLayout" :menubar-title="actionsLayoutTitle"></c-action>
+                              :layout="actionsRecordLayout" :menubar-title="actionsRecordLayoutTitle"></c-action>
                   </template>
                 </Column>
                 <Column v-for="(col) in getVisibleFields()" :field="col" :header="columnLabel(col)" :key="col"
-                        :sortable="isSortable(col)" :dir="sortDirection(col)">
+                        :sortable="isSortable(col)" :dir="sortDirection(col)" :class="'field-'+col">
                   <template #body="slotProps">
                     <component :is="getWidgetType(slotProps.index,col)" :ref="'w'+slotProps.index+'_'+col"
                                :conf="getWidgetConf(slotProps.index,col,slotProps.data[col])"></component>
@@ -74,7 +75,7 @@
                         :header="translate('app.actions')">
                   <template #body="slotProps">
                     <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
-                              :layout="actionsLayout" :menubar-title="actionsLayoutTitle"></c-action>
+                              :layout="actionsRecordLayout" :menubar-title="actionsRecordLayoutTitle"></c-action>
                   </template>
                 </Column>
 
@@ -114,15 +115,16 @@
                          :sortOrder="getSortOrder()"
                          :loading="!loaded"
                          :key="tableKey"
+                         :rowClass="rowClass"
 
 
               >
                 <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>
                 <Column v-if="getRecordActionsPosition() == 'start' && hasRecordActions()" :exportable="false"
-                        :header="translate('app.actions')">
+                        :header="translate('app.actions') + actionsRecordLayout">
                   <template #body="slotProps">
                     <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
-                              :layout="actionsLayout" :menubar-title="actionsLayoutTitle"></c-action>
+                              :layout="actionsRecordLayout" :menubar-title="actionsRecordLayoutTitle"></c-action>
                   </template>
                 </Column>
                 <Column v-for="(col) in getVisibleFields()" :field="col" :header="columnLabel(col)" :key="col"
@@ -137,7 +139,7 @@
                         :header="translate('app.actions')">
                   <template #body="slotProps">
                     <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
-                              :layout="actionsLayout" :menubar-title="actionsLayoutTitle"></c-action>
+                              :layout="actionsRecordLayout" :menubar-title="actionsRecordLayoutTitle"></c-action>
                   </template>
                 </Column>
 
@@ -175,6 +177,11 @@ export default {
   name: "v-list",
   extends: _vList,
   components: {cAction},
+  methods: {
+    rowClass(rowData, rowIndex) {
+      return rowIndex % 2 === 0 ? 'p-highlight' : ''; // Aggiunge la classe p-highlight a righe alternate
+    }
+  }
 }
 
 </script>
@@ -204,6 +211,18 @@ export default {
     margin-top: 2rem;
     margin-bottom: 2rem;
   }
+
+  .p-highlight {
+    background-color: var(--primary-color) !important; /* Colore di sfondo chiaro */
+  }
+
+  .p-even-row {
+  background-color: #f3f4f6 !important; /* Colore di sfondo per righe pari */
+}
+
+.p-odd-row {
+  background-color: #ffffff !important; /* Colore di sfondo per righe dispari */
+}
 
 }
 

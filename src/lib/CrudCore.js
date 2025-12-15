@@ -11,6 +11,8 @@ import routeConfs from "../confs/routes";
 import Route from "./Route";
 import axios from "axios";
 import {reject} from "lodash/collection";
+import { configure } from 'vee-validate';
+import { localize,setLocale } from '@vee-validate/i18n';
 
 //const Ev = EventBus();
 const Ev = mitt();
@@ -173,6 +175,7 @@ CrudCore.setupApp = function (app) {
 var _cloneObj = function (item) {
 
     if (item instanceof Function) {
+        //console.debug('cloneObj function',item);
         return item;
     }
     if (item instanceof Array) {
@@ -186,6 +189,7 @@ var _cloneObj = function (item) {
         let res = {};
         for (let k in item) {
             if (CrudCore.customVueObjectKeys.indexOf(k) >= 0) {
+                //console.debug('cloneObj customVueObjectKeys',k);
                 res[k] = item[k];
             } else {
                 res[k] = _cloneObj(item[k])
@@ -198,6 +202,7 @@ var _cloneObj = function (item) {
 
 CrudCore.clone = function (obj) {
     let cloned = _cloneObj(obj);
+    //console.debug('cloneObj cloned',cloned);
     return cloned;
 }
 
@@ -242,6 +247,7 @@ function __dialog(type,msg,props,callbacks) {
             break;
     }
     //let comp = defineAsyncComponent(() => import(componentPath))
+    
     let p = props || {};
     let conf = {
         message : msg,
@@ -254,6 +260,7 @@ function __dialog(type,msg,props,callbacks) {
     let d = createApp(comp,{
         conf : conf,
     });
+    CrudCore.setupApp(d);
     console.debug('dialog conf',conf);
     //d.use(PrimeVue);
     // configure gli useItems anche per l'app dialog.
@@ -266,6 +273,8 @@ function __dialog(type,msg,props,callbacks) {
         }
     }
     d.mount(div);
+    
+    
 }
 
 function _sanitizeMessage(str) {
@@ -387,10 +396,11 @@ CrudCore.confirmDialog = function(msg,props,callbacks) {
     });
 }
 
-CrudCore.inputDialog = function (msg,defaultValue) {
+CrudCore.inputDialog = function (msg,defaultValue,widgetConf) {
     return new Promise((resolve) => {
         __dialog('input',msg,{
             value : defaultValue,
+            widgetConf : widgetConf,
         },{
             ok() {
                 let that = this;
@@ -483,14 +493,14 @@ CrudCore.waitEnd = () => {
 }
 
 CrudCore.getActionConf = (name,options) => {
-    let aConf = Object.assign({}, actions['default']);
+    let aConf = Object.assign({}, actions['default']());
     let opt = options || {};
     //console.debug('CrudCore.getActionConf',name,options);
-    let defaultActionConf = actions[name]?actions[name]:null;
+    let defaultActionConf = actions[name]?actions[name]():null;
     if (!defaultActionConf) {
         console.debug('actions caso parent ',opt.actionParent ,actions[opt.actionParent])
         if (opt.actionParent && actions[opt.actionParent]) {
-            defaultActionConf = actions[opt.actionParent];
+            defaultActionConf = actions[opt.actionParent]();
         } else {
             defaultActionConf = {};
         }
@@ -714,5 +724,170 @@ CrudCore.jsonToFormData = function (obj, form = new FormData(), prefix = '') {
     }
     return form;
 }
+
+
+
+/**
+ * Converte le traduzioni dal formato Laravel (:attribute, :min, :max, ecc.)
+ * al formato VeeValidate ({field}, {min}, {max}, ecc.)
+ */
+function convertLaravelToVeeValidate(message) {
+    if (typeof message !== 'string') {
+        return message;
+    }
+    
+    // Mappa dei placeholder Laravel a VeeValidate
+    const replacements = {
+        ':attribute': '{field}',
+        ':min': '{min}',
+        ':max': '{max}',
+        ':date': '{date}',
+        ':digits': '{digits}',
+        ':size': '{size}',
+        ':values': '{values}',
+        ':other': '{other}',
+        ':value': '{value}',
+        ':format': '{format}',
+    };
+    
+    let converted = message;
+    // Sostituisce i placeholder Laravel con quelli VeeValidate
+    // Usa escape per i caratteri speciali nella regex
+    for (const [laravel, veevalidate] of Object.entries(replacements)) {
+        // Escape del carattere ':' per la regex
+        const escapedLaravel = laravel.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        converted = converted.replace(new RegExp(escapedLaravel, 'g'), veevalidate);
+    }
+    
+    return converted;
+}
+
+/**
+ * Crea i messaggi di validazione per VeeValidate dalle traduzioni
+ */
+function createValidationMessages(translations) {
+    if (!translations || typeof translations !== 'object') {
+        return {};
+    }
+    
+    const messages = {};
+    
+    // Mappa delle regole VeeValidate ai nomi delle chiavi di traduzione
+    // VeeValidate gestisce automaticamente le varianti (string, numeric, file, array)
+    // quindi usiamo le traduzioni generiche o quelle specifiche quando disponibili
+    const ruleMapping = {
+        'required': 'validation.required',
+        'email': 'validation.email',
+        'alpha': 'validation.alpha',
+        'alpha_dash': 'validation.alpha_dash',
+        'alpha_num': 'validation.alpha_num',
+        'alpha_spaces': 'validation.alpha',
+        'numeric': 'validation.numeric',
+        'integer': 'validation.integer',
+        'url': 'validation.url',
+        'confirmed': 'validation.confirmed',
+        'digits': 'validation.digits',
+        'digits_between': 'validation.digits_between',
+        'between': 'validation.between.numeric', // VeeValidate userà automaticamente la variante corretta
+        'min': 'validation.min.numeric', // VeeValidate userà automaticamente la variante corretta
+        'min_value': 'validation.min.numeric',
+        'max': 'validation.max.numeric', // VeeValidate userà automaticamente la variante corretta
+        'max_value': 'validation.max.numeric',
+        'size': 'validation.size.numeric',
+        'length': 'validation.size.string',
+        'regex': 'validation.regex',
+        'one_of': 'validation.in',
+        'not_one_of': 'validation.not_in',
+        'is': 'validation.same',
+        'is_not': 'validation.different',
+        'mimes': 'validation.mimes',
+        'ext': 'validation.mimes',
+        'image': 'validation.image',
+        'dimensions': 'validation.dimensions',
+        'date': 'validation.date',
+        'after': 'validation.after',
+        'before': 'validation.before',
+        'after_or_equal': 'validation.after_or_equal',
+        'before_or_equal': 'validation.before_or_equal',
+        'date_equals': 'validation.date_equals',
+        'date_format': 'validation.date_format',
+        'array': 'validation.array',
+        'boolean': 'validation.boolean',
+        'file': 'validation.file',
+        'filled': 'validation.filled',
+        'ip': 'validation.ip',
+        'ipv4': 'validation.ipv4',
+        'ipv6': 'validation.ipv6',
+        'json': 'validation.json',
+        'string': 'validation.string',
+        'uuid': 'validation.uuid',
+        'active_url': 'validation.active_url',
+        'captcha': 'validation.captcha',
+        'exists': 'validation.exists',
+        'not_regex': 'validation.not_regex',
+        'password': 'validation.password',
+        'present': 'validation.present',
+        'required_if': 'validation.required_if',
+        'required_with': 'validation.required_with',
+        'required_with_all': 'validation.required_with_all',
+        'required_without': 'validation.required_without',
+        'required_without_all': 'validation.required_without_all',
+        'required_unless': 'validation.required_unless',
+        'starts_with': 'validation.starts_with',
+        'ends_with': 'validation.ends_with',
+        'timezone': 'validation.timezone',
+        'unique': 'validation.unique',
+        'uploaded': 'validation.uploaded',
+        'in_array': 'validation.in_array',
+        'distinct': 'validation.distinct',
+        'mimetypes': 'validation.mimetypes',
+    };
+    
+    // Crea i messaggi per ogni regola
+    for (const [rule, translationKey] of Object.entries(ruleMapping)) {
+        const translation = translations[translationKey];
+        if (translation) {
+            const convertedMessage = convertLaravelToVeeValidate(translation);
+            messages[rule] = convertedMessage;
+        }
+    }
+    
+    // Gestione speciale per regole con varianti - VeeValidate può usare messaggi specifici
+    // per tipo (string, numeric, file, array) se disponibili
+    const variantRules = {
+        'between': ['validation.between.string', 'validation.between.numeric', 'validation.between.file', 'validation.between.array'],
+        'min': ['validation.min.string', 'validation.min.numeric', 'validation.min.file', 'validation.min.array'],
+        'max': ['validation.max.string', 'validation.max.numeric', 'validation.max.file', 'validation.max.array'],
+        'size': ['validation.size.string', 'validation.size.numeric', 'validation.size.file', 'validation.size.array'],
+    };
+    
+    // Se ci sono traduzioni specifiche per varianti, le usiamo
+    for (const [rule, keys] of Object.entries(variantRules)) {
+        // Preferiamo string, poi numeric, poi file, poi array
+        for (const key of keys) {
+            if (translations[key]) {
+                messages[rule] = convertLaravelToVeeValidate(translations[key]);
+                break; // Usa la prima disponibile
+            }
+        }
+    }
+    
+    return messages;
+}
+
+/**
+ * Configura o aggiorna i messaggi di validazione per VeeValidate
+ */
+CrudCore.configureValidationMessages = function() {
+    const validationMessages = createValidationMessages(CrudVars.lang || {});
+    
+    configure({
+        generateMessage: localize('appLang', {
+            messages: validationMessages
+        }),
+    });
+    setLocale('appLang');
+}
+
 
 export default CrudCore;

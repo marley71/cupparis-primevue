@@ -6,7 +6,7 @@
           <template v-if="!hideSearch">
             <component :is="searchComponentName" :conf="search" ref="vSearch" @search="searchList"></component>
           </template>
-          <component :is="listComponentName" :conf="list" ref="vList"></component>
+          <component :is="listComponentName" :conf="list" ref="vList" @route-change="onListRouteChange"></component>
         </div>
         <template v-if="mode==='edit'">
           <div>edit</div>
@@ -40,7 +40,7 @@
           <template v-if="!hideSearch">
             <component :is="searchComponentName" :conf="search" ref="vSearch" @search="searchList"></component>
           </template>
-          <component :is="listComponentName" :conf="list" ref="vList"></component>
+          <component :is="listComponentName" :conf="list" ref="vList" @route-change="onListRouteChange"></component>
         </div>
         <template v-if="mode==='edit'">
           <component :is="editComponentName" :conf="edit" ref="vRecord"></component>

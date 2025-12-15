@@ -35,14 +35,9 @@ export default {
         }
         this.Server = Server;
     },
-    // mounted() {
-    //     let that = this;
-    //     if(that.type == 'link') {
-    //         that.execute();
-    //     }
-    // },
     data() {
         let that = this;
+        //console.debug('actions ', that.conf.actionType);
         let conf = that._loadReactiveData(that.conf);
         return conf;
     },
@@ -202,8 +197,6 @@ export default {
                   }
               }
           }
-          //dt.errors = [];
-          //console.debug('wBase.data ', dt)
           return dt;
         }
 

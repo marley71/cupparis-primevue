@@ -13,9 +13,9 @@
     </template>
     <template v-else-if="layout==='menubar'">
         <Menubar :model="menubarActions" class="w-full text-left">
-            <template v-if="title" #start>
-                <span>{{ title }}</span>
-            </template>
+            <!-- <template v-if="menubarTitle" #start>
+                <span>{{ menubarTitle }}</span>
+            </template> -->
             <template #item="{ item, root }">
                 <a-base v-if="!root" :ref="item.action" :conf="getConf(item,item.action)"></a-base>
                 <div v-else class="cursor-pointer p-1">

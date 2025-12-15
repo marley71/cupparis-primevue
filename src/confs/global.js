@@ -15,6 +15,7 @@ export default {
 
     // questi metodi NON e' consentito la sovrascrittura nella conf. se succede viene tirato su un errore.
     actionReservedKeys : [
-        '_disabled','_visible','_text','_icon','_href'
-    ]
+        '_disabled','_visible','_text','_icon','_href','_title','_click'
+    ],
+    overloadMethodsCheck : false, // se true verifica se il metodo e' sovrascrivibile, se false non verifica
 }

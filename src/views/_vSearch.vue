@@ -1,4 +1,5 @@
 <script>
+import CrudHelpers from '../lib/CrudHelpers';
 import _vRecord from './_vRecord.vue';
 
 export default {
@@ -202,10 +203,16 @@ export default {
     },
     /**
      * setta i valori del widget ad eventuali valori presenti nell'url come s_{nome_campo}
+     * o nel vettore passato che può essere array associativo o FormData
      */
-    setSearchParamsValue() {
+    setSearchParamsValue(values) {
       let that = this;
-      let searchParams = that.getSearchParams();
+      let searchParams = null;
+      if (values) {
+        searchParams =CrudHelpers.formDataToAssociativeArray(values);
+      } else {
+        searchParams = that.getSearchParams();
+      }
       console.debug('searchParams', searchParams);
       for (let key in searchParams) {
         if (that.isSpecialField(key)) {
@@ -222,21 +229,6 @@ export default {
           }
         }
       }
-
-
-      // let params = CrudHelpers.getContextParams(this);
-      // console.debug('vSearch context params',params);
-      // for (let param of params) {
-      //     let tmp = param.split(':');
-      //     console.debug('vSearch param',tmp);
-      //     let field = tmp[0].substring(2);
-      //     console.debug('vSearch field',field);
-      //     let w = this.getWidget(field);
-      //     if (w) {
-      //         w.setValue(tmp[1]);
-      //     }
-      //
-      // }
     }
 
   }

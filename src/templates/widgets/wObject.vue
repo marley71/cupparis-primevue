@@ -3,9 +3,10 @@
     <div class="card  w-full">
       <h2 v-if="title">{{title}}</h2>
       <table class="card-body w-full">
-        <tr class="" v-for="(item,key) in value" :key="key">
+        <tr class="" v-for="(key) in getFields()" :key="key">
           <td>{{key}}</td>
-          <td>{{ item }}</td>
+          <td v-if="separator">{{ separator }}</td>
+          <td>{{ value[key] }}</td>
         </tr>
       </table>
     </div>

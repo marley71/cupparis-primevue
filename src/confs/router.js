@@ -7,38 +7,41 @@ import CrudVars from "../lib/CrudVars";
 import CrudCore from "../lib/CrudCore";
 
 function _getModelConf(obj,key) {
-    let conf = obj;
+    let conf = obj();
     let keys = key.split('.');
     for(let i in keys) {
         conf = conf[keys[i]];
     }
-    return CrudCore.clone(conf);
+    console.log('router. _getModelConf conf',conf,obj,keys.length)
+    return conf;
 }
 
 function _getModelConfInsert(obj,key) {
-    let conf = obj;
+    let conf = obj();
     let keys = key.split('.');
     for(let i in keys) {
         conf = conf[keys[i]];
     }
     console.log('Insert conf',conf,obj,keys.length)
     if (!conf) {
-        conf = obj[keys[keys.length-2]];
-        conf = CrudCore.clone(conf.edit);
+        conf = obj()[keys[keys.length-2]];
+        conf = conf.edit;
         conf.type = 'v-insert';
         delete conf.pk;
         return conf;
     }
-    return CrudCore.clone(conf);
+    return conf;
 }
 
 function _getManageConf(key,route) {
     if (!CrudVars.modelConfs[key]) {
         console.log(key,'route ',route,CrudVars.modelConfs);
         //document.location.href = '/#404'
-        throw 'Not found';
+        //throw 'Not found';
+        CrudCore.event().emit('route-error',{msg: key +' Not found',route:route});
     }
-    return  CrudVars.modelConfs[key]; //CrudCore.clone(CrudVars.modelConfs[key]);
+    console.debug('router CrudVars',key,CrudVars.modelConfs[key]())
+    return  CrudVars.modelConfs[key](); //CrudCore.clone(CrudVars.modelConfs[key]);
 }
 var routerConf = null;
 try {
@@ -77,7 +80,7 @@ try {
             path: '/view/:cConf/:cPk',
             name: 'v-view',
             component: vRecord,
-            props: route => ({ conf: Object.assign(_getModelConf(CrudVars.modelConfs,route.params.cConf),{pk:route.params.pk} )})
+            props: route => ({ conf: Object.assign(_getModelConf(CrudVars.modelConfs,route.params.cConf),{pk:route.params.cPk} )})
         },
         {
             path: '/manage/:cConf/:context*',
@@ -95,7 +98,7 @@ try {
             path: '/import/:cConf',
             name: 'c-import',
             component: cImport,
-            props: route => ({ conf: CrudVars.modelConfs[route.params.cConf] })
+            props: route => ({ conf: CrudVars.modelConfs[route.params.cConf]() })
         },
         // {
         //     path: '/calendar/:cConf',

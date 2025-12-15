@@ -20,9 +20,9 @@ export default {
     //console.log('vRecord', this.conf);
     let ly = this.conf.layout || {};
     if (ly instanceof String) {
-      ly = viewConfs.recordLayouts[ly] || viewConfs.recordLayouts.default;
+      ly = viewConfs.recordLayouts()[ly] || viewConfs.recordLayouts().default;
     } else {
-      let tmp = Object.assign({}, viewConfs.recordLayouts.default);
+      let tmp = Object.assign({}, viewConfs.recordLayouts().default);
       ly = Object.assign(tmp, ly);
     }
     ly.colClass = this.getColClass(ly.cols);
