@@ -7,7 +7,12 @@
                 </template>
             </template>
             <slot name="header" :collectionActions="collectionActions">
+              <template v-if="Object.keys(collectionActions).length > 0">
+                <div class="mt-5 lg:mt-2">
+                  <c-action :layout="actionsLayout" :conf="collectionActions"></c-action>
+                </div>
 
+              </template>
             </slot>
             <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig" :recordActionsConf="recordActionsConf">
                 <DataTable :value="value" responsiveLayout="scroll"
@@ -26,13 +31,13 @@
                           :scrollable="true" scrollHeight="100px"
                           -->
 
-                    <template #header v-if="menuCollection.length > 0">
-                        <Menubar  :model="menuCollection" class="w-full">
-                            <template  v-if="title" #start>
-                                <span>{{title}}</span>
-                            </template>
-                        </Menubar>
-                    </template>
+<!--                    <template #header v-if="menuCollection.length > 0">-->
+<!--                        <Menubar  :model="menuCollection" class="w-full">-->
+<!--                            <template  v-if="title" #start>-->
+<!--                                <span>{{title}}</span>-->
+<!--                            </template>-->
+<!--                        </Menubar>-->
+<!--                    </template>-->
                     <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>
                     <Column v-if="hasRecordActions()" :exportable="false" :header="translate('app.actions')">
                     

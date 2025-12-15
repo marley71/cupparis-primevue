@@ -14,8 +14,10 @@ import wHasmany from "./wHasmany.vue";
 import wHidden from './wHidden.vue'
 import wImage from './wImage.vue';
 import wKnob from './wKnob.vue';
+import wAttachments from './wAttachments.vue';
 import wImages from './wImages.vue';
 import wInput from './wInput.vue';
+import wInputMask from './wInputMask.vue';
 import wInputSet from './wInputSet.vue';
 import wLeafLet from './wLeafLet.vue';
 import wMultiSelect from './wMultiSelect.vue'
@@ -71,10 +73,14 @@ export default {
         CrudCore.componentItems['w-image'] = wImage;
         app.component('w-knob',wKnob);
         CrudCore.componentItems['w-knob'] = wKnob;
+        app.component('w-attachments',wAttachments);
+        CrudCore.componentItems['w-attachments'] = wAttachments;
         app.component('w-images',wImages);
         CrudCore.componentItems['w-images'] = wImages;
         app.component('w-input',wInput);
         CrudCore.componentItems['w-input'] = wInput;
+        app.component('w-input-mask',wInputMask);
+        CrudCore.componentItems['w-input-mask'] = wInputMask;
         app.component('w-input-set',wInputSet);
         CrudCore.componentItems['w-input-set'] = wInputSet;
         app.component('w-leaf-let',wLeafLet);

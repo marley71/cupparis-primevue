@@ -1,15 +1,15 @@
 <template>
     <template v-if="layout==='simple'">
-        <div class="inline-flex shadow-sm rounded-lg overflow-hidden">
+        <div class="inline-flex rounded-lg overflow-hidden gap-1">
             <a-base v-for="(action,key) in actions" :key="key" :ref="key" :conf="getConf(action,key)"></a-base>
         </div>
     </template>
     <template v-else-if="layout==='buttons'">
-        <InputGroup>
+        <ButtonGroup>
             <template v-for="(action,key) in getActions()" :key="key">
                 <a-base :ref="key" :conf="getConf(action,key)" v-if="inWhitelist(key)"></a-base>
             </template>
-        </InputGroup>
+        </ButtonGroup>
     </template>
     <template v-else-if="layout==='menubar'">
         <Menubar :model="menubarActions" class="w-full text-left">

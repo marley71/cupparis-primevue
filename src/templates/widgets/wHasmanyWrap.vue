@@ -30,7 +30,7 @@
                 <template #content>
 
                             <div class="flex flex-col gap-4 mb-4 gap-y-6">
-                                <div v-for="(dataKey, index) in vForKeys" :key="dataKey"
+                                <div v-for="(invoice, index) in vForKeys" :key="index"
                                      class="flex items-center overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
     <!--                              <div class="sm:block hidden w-2.5 min-h-20" :class="'bg-green-500'">&nbsp;</div>-->
                                     <div
@@ -38,7 +38,7 @@
                                         <Button class="mx-3 p-button-outlined p-button-danger" icon="fa fa-times"
                                                 @click="removeItem(dataKey)"></Button>
                                         <div class="grow px-2">
-                                          <component is="v-view" ref="recordView" :conf="getHasmanyConf(index)"
+                                          <component is="v-record" ref="recordView" :conf="getHasmanyConf(index)"
                                                      :class="''"></component>
 
                                         </div>
@@ -72,7 +72,7 @@
               <div class="my-2 mt-5">
 
                             <div class="flex flex-col gap-4 mb-4 gap-y-6">
-                                <div v-for="(dataKey, index) in vForKeys" :key="dataKey"
+                                <div v-for="(invoice, index) in vForKeys" :key="index"
                                      class="flex items-center overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
     <!--                              <div class="sm:block hidden w-2.5 min-h-20" :class="'bg-green-500'">&nbsp;</div>-->
                                     <div
@@ -80,7 +80,7 @@
                                         <Button class="mx-3 p-button-outlined p-button-danger" icon="fa fa-times"
                                                 @click="removeItem(dataKey)"></Button>
                                         <div class="grow px-2">
-                                          <component is="v-view" ref="recordView" :conf="getHasmanyConf(index)"
+                                          <component is="v-record" ref="recordView" :conf="getHasmanyConf(index)"
                                                      :class="''"></component>
 
                                         </div>
@@ -105,12 +105,12 @@
             </Fieldset>
         </template>
       <template v-else>
-                            <Divider align="center" v-if="hasInitialDivider()">
+        <Divider align="center">
                                     <span v-html="titleMsg()">
                                     </span>
                                 </Divider>
                             <div class="flex flex-col gap-4 mb-4 gap-y-6">
-                                <div v-for="(dataKey, index) in vForKeys" :key="dataKey"
+                                <div v-for="(invoice, index) in vForKeys" :key="index"
                                      class="flex items-center overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
     <!--                              <div class="sm:block hidden w-2.5 min-h-20" :class="'bg-green-500'">&nbsp;</div>-->
                                     <div
@@ -118,7 +118,7 @@
                                         <Button class="mx-3 p-button-outlined p-button-danger" icon="fa fa-times"
                                                 @click="removeItem(dataKey)"></Button>
                                         <div class="grow px-2">
-                                          <component is="v-view" ref="recordView" :conf="getHasmanyConf(index)"
+                                          <component is="v-record" ref="recordView" :conf="getHasmanyConf(index)"
                                                      :class="''"></component>
 
                                         </div>
@@ -135,11 +135,11 @@
                     </template>
                     <Button v-else class="p-button p-button-sm p-component p-button-outlined justify-content-center"
                             icon="fa fa-add"
-                            type="button" :label="addButtonMsg()"
-                            @click="addItem()">
+                            type="button" :label="translate('app.aggiungi') + ' ' + titleMsg()"
+                            @click="addItem(dataKey)">
                     </Button>
-                    <Divider align="center" v-if="hasFinalDivider()">
-                      </Divider>
+        <Divider align="center" v-if="hasFinalDivider()">
+                                </Divider>
 
         </template>
 
@@ -193,25 +193,17 @@ export default {
 
   methods: {
 
-    addButtonMsg() {
-      return this.addButton || this.translateUc("app.add") + " " +  this.translate("model."+this.name,null,0);
-    },
     titleMsg() {
-      return this.title || cs.CrudCore.upperCaseFirst(this.translateUc("model."+this.name,null,0));
+      return this.title || cs.CrudCore.upperCaseFirst(this.name);
     },
 
     wrapperType() {
-      return this.wrapper || '';
+      return this.wrapper || 'card';
     },
 
     hasFinalDivider() {
       return this.finalDivider || false;
-    },
-
-    hasInitialDivider() {
-      return this.initialDivider || false;
     }
-
   }
 }
 
