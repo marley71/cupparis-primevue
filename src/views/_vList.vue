@@ -237,6 +237,8 @@ export default {
       let needSelection = false;
       for (let aName in gActions) {
         let aConf = Object.assign({}, gActions[aName]);
+        aConf.layout = that.actionsLayout;
+        aConf.layoutTitle = that.actionsLayoutTitle;
         aConf.modelData = that.value;
         aConf.viewInstance = that;
         needSelection |= that._needSelection(aConf); // aConf.needSelection;
