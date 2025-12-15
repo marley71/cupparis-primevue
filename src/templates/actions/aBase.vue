@@ -1,5 +1,4 @@
 <template>
-    <span>
         <template v-if="(type==='button' || type==='link-download') && _visible()">
             <span v-if="type==='link-download'"
                   class="hidden" :linkhref="_href()"></span>
@@ -26,7 +25,6 @@
         <template v-else-if="_visible()">
             <b>controlType ({{ type }}) non riconosciuto</b>
         </template>
-    </span>
 
 </template>
 

@@ -14,6 +14,7 @@ import wHasmany from "./wHasmany.vue";
 import wHidden from './wHidden.vue'
 import wImage from './wImage.vue';
 import wKnob from './wKnob.vue';
+import wAttachments from './wAttachments.vue';
 import wImages from './wImages.vue';
 import wInput from './wInput.vue';
 import wInputMask from './wInputMask.vue';
@@ -72,6 +73,8 @@ export default {
         CrudCore.componentItems['w-image'] = wImage;
         app.component('w-knob',wKnob);
         CrudCore.componentItems['w-knob'] = wKnob;
+        app.component('w-attachments',wAttachments);
+        CrudCore.componentItems['w-attachments'] = wAttachments;
         app.component('w-images',wImages);
         CrudCore.componentItems['w-images'] = wImages;
         app.component('w-input',wInput);

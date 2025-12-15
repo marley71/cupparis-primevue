@@ -159,7 +159,7 @@
           </div>
 
         </form>
-        <div class="w-full">
+        <div class="w-full mt-4">
           <c-action ref="actions" :conf="recordActionsConf" :whitelist="getActionsWhitelist()" layout="buttons"></c-action>
         </div>
       </slot>

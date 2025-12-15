@@ -5,21 +5,16 @@
     <div class="flex items-center justify-start gap-4">
       <div class="ml-5">
         <div class="mt-3" v-if="fileInfo">
-          <template
-              v-if="['application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'].indexOf(fileInfo.mimetype) >= 0">
-            <i class="fa fa-file-excel fa-2xl"></i>
-          </template>
-          <template v-else-if="['application/pdf'].indexOf(fileInfo.mimetype) >= 0">
-            <i class="fa fa-file-pdf fa-2xl"></i>
-          </template>
-          <template v-else-if="['image/png','image/jpeg'].indexOf(fileInfo.mimetype) >= 0">
+          <template v-if="['image/png','image/jpeg'].indexOf(fileInfo.mimetype) >= 0">
 
-            <Image :src="srcUrl(fileInfo.url)" alt="Image" width="100" preview />
+            <Image :src="dataImage(fileInfo)" alt="Image" width="100" preview />
 
             <!--                                <img :src="fileInfo.url"/>-->
           </template>
           <template v-else>
-            <i class="fa fa-file fa-2xl"></i>
+            <i class="fa fa-file fa-2xl cursor-pointer"
+              @click="download(fileInfo)"
+            ></i>
           </template>
         </div>
       </div>
@@ -34,11 +29,17 @@
 
 import _wUploadAjax from '@cupparis-lib/widgets/_wUploadAjax.vue'
 import RulesErrors from "./RulesErrors.vue";
+import {userApp} from '@/application/stores/userApp';
+import cs from "@cupparis-lib";
 
 export default {
   name: "wUploadAjax",
   extends: _wUploadAjax,
-  components : {RulesErrors}
+  components : {RulesErrors},
+
+  methods: {
+
+  }
 }
 
 </script>

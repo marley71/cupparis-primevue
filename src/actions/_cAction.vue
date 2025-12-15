@@ -19,6 +19,7 @@ export default {
         // Crea una copia per evitare di modificare direttamente conf reattivo
         let cf = Object.assign({}, that.conf || {});
         cf.title = '';
+        console.log("ALYOUT:::",cf);
         cf.layout = cf.layout?cf.layout:'buttons';
         // menubarActions verrà calcolato come computed property per evitare problemi di reattività
         return cf;
