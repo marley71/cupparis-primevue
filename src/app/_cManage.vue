@@ -8,28 +8,23 @@ import CrudCore from "../lib/CrudCore";
 export default {
     name: "_cManage",
     extends : CrudComponent,
-    // watch : {
-    //     '$route.params.context': {
-    //         handler: function(context) {
-    //             console.debug('showContext context',context);
-    //             this.showContext();
-    //         },
-    //         deep: true,
-    //     }
-    // },
     mounted() {
         let that = this;
         console.debug('AAA mounted',that.$route.params);
-        this.showContext();
         this.setManageReference();
-        setTimeout(function () {
-            that.loadContext();
-            that._setCss();
-        },100)
+        // inizializza il key per evitare doppie esecuzioni sullo stesso contesto
+        that._lastContextKey = null;
+        // forzo la prima applicazione del contesto
+        that.showContext(true);
+        // setTimeout(function () {
+            
+        //     that.loadContext();
+            
+        //     that._setCss();
+        // },100)
 
     },
     data() {
-        console.debug('AAA data');
         let that = this;
         if (!('title' in that.conf)) {
             that.conf.title = null;
@@ -46,6 +41,8 @@ export default {
         if (!('autoUpdateHash' in that.conf)) {
             that.conf.autoUpdateHash = true;
         }
+        // usato per evitare di eseguire piu' volte showContext sullo stesso hash
+        that._lastContextKey = null;
         let wc = new viewWrapperConf();
 
         let cl = CrudCore.clone( (that.conf.list || {type:'v-list'}) );
@@ -53,12 +50,7 @@ export default {
         let ci = CrudCore.clone( (that.conf.insert || that.conf.edit || {type:'v-insert'}) );
         let cv = CrudCore.clone( (that.conf.view || that.conf.edit || {type:'v-view'}) );
         cl.updateHash = that.conf.autoUpdateHash;
-        cl.autoload = false;
-
-        //ce.autoload = false;
-        
-
-        //ci.autoload = false;
+        //cl.autoload = false;
         ci.updateHash = that.conf.autoUpdateHash;
 
         //cv.autoload = false;
@@ -86,7 +78,7 @@ export default {
         //console.debug('_cManage conf edit',that.conf.edit,'insert',that.conf.insert,'view',that.conf.view);
 
         if (that.conf.search) {
-            that.conf.search.autoload = false;
+            //that.conf.search.autoload = false;
             that.conf.search.updateHash = that.conf.autoUpdateHash;
         }
 
@@ -111,6 +103,16 @@ export default {
         }
         that.conf.listParams = null;  // parametri della lista nel caso di manage con autoUpdateHash a false;
         return that.conf;
+    },
+    watch: {
+        /**
+         * quando viene aggiornato l'hash (autoUpdateHash=true) sincronizzo il contesto
+         */
+        $route() {
+            if (this.autoUpdateHash) {
+                this.showContext();
+            }
+        }
     },
     methods : {
         searchList(event) {
@@ -259,7 +261,6 @@ export default {
          */
         showCustom(context) {
             let that = this;
-            //let cc = conf?Object.assign(that.custom,conf):that.custom;
             console.debug('showCustom',that.autoUpdateHash)
             that.mode = 'custom';
             if (that.autoUpdateHash) {
@@ -284,49 +285,41 @@ export default {
         /**
          * gestione del back mostra la vista giusta in baso allo stato della cmanage
          */
-        showContext() {
-          let that = this;
-          console.debug('AAA showContext params',that.$route.params);
-          if (that.$route.params.viewType) {
-            let context = that.$route.params.context || [];
-            that.mode = that.$route.params.viewType;
-            console.debug('mode',that.mode,context)
-              switch (that.mode) {
-                  case 'edit':
-                      that.edit.type = 'v-edit';
-                      that.edit.pk = context[0];
-                      break;
-                  case 'insert':
-                        that.insert.type = 'v-insert';
-                      break;
-                  case 'list':
-                      break;
-                  case 'custom':
-                      that.custom.context = context;
-              }
-          } else {
-              that.mode = 'list';
-          }
-
-          return ;
-        },
-        loadContext() {
-            console.debug('AAA loadContext params');
+        showContext(force = false) {
             let that = this;
-            switch (that.mode) {
-                case 'edit':
-                case 'insert':
-                case 'custom':
-                    if (that.$refs.vRecord.load) {
-                        that.$refs.vRecord.load();
-                    }
-                    break;
-                case 'list':
-                    that.$refs.vSearch.load();
-                    that.$refs.vList.load();
-                    break;
+            // normalizzo i parametri della route in modo da avere una chiave univoca
+            const viewType = that.autoUpdateHash ? (that.$route.params.viewType || 'list') : 'list';
+            const rawContext = that.$route.params.context;
+            const context = Array.isArray(rawContext) ? rawContext : (rawContext ? [rawContext] : []);
+            const contextKey = viewType + '|' + JSON.stringify(context);
+
+            // se il contesto non e' cambiato evito di eseguire due volte la stessa logica
+            if (!force && that._lastContextKey === contextKey) {
+                return;
+            }
+            that._lastContextKey = contextKey;
+
+            if (that.autoUpdateHash) {
+                that.mode = viewType;
+                console.debug('mode',that.mode,context)
+                switch (that.mode) {
+                    case 'edit':
+                        that.edit.type = 'v-edit';
+                        that.edit.pk = context[0];
+                        break;
+                    case 'insert':
+                        that.insert.type = 'v-insert';
+                        break;
+                    case 'list':
+                        break;
+                    case 'custom':
+                        that.custom.context = context;
+                }
+            } else {
+                that.mode = 'list';
             }
         },
+        
         waitViewLoaded(type,callback) {
             let that = this;
             if (type ==  'list') {
@@ -358,6 +351,7 @@ export default {
                 let params = that.$route.params;
                 params.viewType = type;
                 params.context = context;
+                that[confName].context = context;
                 that.$router.push({name:'c-manage-view',params : params})
             } else {
                 that.mode = type;
