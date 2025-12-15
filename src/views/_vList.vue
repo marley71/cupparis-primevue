@@ -18,6 +18,7 @@ const defaultPanelConf = () => {
 export default {
   name: "_vList",
   extends: _vBase,
+  emits: ['route-change'],
   //props: ['conf'],
   mounted() {
     if (this.autoload)
@@ -88,6 +89,7 @@ export default {
         let page = event.page + 1;
         this.route.setParam('page', page);
         console.debug('onPAge updateHash',this)
+        this.$emit('route-change');
         if (this.updateHash) {
           this.setHash(this.route.getParams());
         } else {
@@ -107,6 +109,7 @@ export default {
         }
         that.route.setParam('order_field', sortField);
         that.route.setParam('order_direction', event.sortOrder > 0 ? 'ASC' : 'DESC');
+        this.$emit('route-change');
         if (this.updateHash) {
           this.setHash(this.route.getParams());
         } else {

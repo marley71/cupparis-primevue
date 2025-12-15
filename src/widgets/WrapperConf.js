@@ -1,5 +1,6 @@
 import CrudCore from "../lib/CrudCore";
 import CrudHelpers from "../lib/CrudHelpers";
+import WidgetConf from "../confs/widgets";
 
 const defaultConf = () => {
     return {
@@ -33,33 +34,10 @@ export default class WrapperConf {
         if (that[functionName]) {
              conf = that[functionName](conf);
         }
-        conf = Object.assign(dC,conf);
+            conf = Object.assign(dC,conf);
         //console.log('WIDGET',conf);
         return conf;
     }
-
-    // mapOptions(domainValues,domainValuesOrder) {
-    //     let options = [];
-    //     if (domainValuesOrder) {
-    //         for (let i in domainValuesOrder) {
-    //             let opt = {
-    //                 id : domainValuesOrder[i],
-    //                 label : domainValues[domainValuesOrder[i]],
-    //             }
-    //             options.push(opt);
-    //         }
-    //     } else {
-    //         for (let k in domainValues) {
-    //             let opt = {
-    //                 id : k,
-    //                 label : domainValues[k],
-    //             }
-    //             options.push(opt);
-    //         }
-    //     }
-    //     //console.log('options',options);
-    //     return options;
-    // }
 
     // --- configurazioni widgets
     wKnob(conf) {
@@ -97,32 +75,6 @@ export default class WrapperConf {
             conf.autocompleteValue = __initialValue();
             conf.suggestions = [conf.referredData];
         }
-
-        // conf.search = conf.search || function (event) {
-        //     let that = this;
-        //
-        //     if (!that.route) {
-        //         that.route = that.createRoute('autocomplete');
-        //         that.route.setValuesFromObj(that);
-        //     }
-        //     let field = that.autocompleteField?that.autocompleteField:that.name;
-        //     that.route.setParams({
-        //         field : field,
-        //         value : event.query,
-        //         params : that.autocompleteParams,
-        //
-        //     });
-        //
-        //     console.log('route',that.route,that);
-        //     that.Server.route(that.route,function (json) {
-        //         console.log('json',json);
-        //         that.suggestions = json.result;
-        //     });
-        //     console.log('search',conf,event);
-        // }
-
-
-
         return conf;
     }
 
@@ -157,6 +109,15 @@ export default class WrapperConf {
         if ( !('title' in conf) ) {
             conf.title = null;
         }
+        if ( !('separator' in conf) ) {
+            conf.separator = ':';
+        }
+        return conf;
+    }
+    wKnob(conf) {
+        conf.size = conf.size || 100;
+        conf.prefix = conf.prefix || '';
+        conf.suffix = conf.suffix || '';
         return conf;
     }
     wInputSet(conf) {
@@ -284,7 +245,7 @@ export default class WrapperConf {
             conf.dateValue = new Date(conf.value);
         }
         conf.displayFormat = conf.displayFormat || 'dd/mm/yy';
-        conf.dateFormat =  conf.dateFormat || 'yy-mm-dd';
+        conf.dateFormat =  conf.dateFormat || 'Y-MM-DD';
         return conf;
     }
     wDateRangePicker(conf) {
@@ -296,7 +257,7 @@ export default class WrapperConf {
             }
         }
         conf.displayFormat = conf.displayFormat || 'dd/mm/yy';
-        conf.dateFormat =  conf.dateFormat || 'yy-mm-dd';
+        conf.dateFormat =  conf.dateFormat || 'Y-MM-DD';
         return conf;
     }
     wDateText(conf) {
