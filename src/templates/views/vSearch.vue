@@ -24,7 +24,7 @@
             @submit.prevent="(event)=> search('basic',event)"
             class="p-fluid mt-1">
         <template v-for="field in getHiddenFields()" :key="field">
-          <component :is="widgetsConfig[field].type" :ref="field" :conf="widgetsConfig[field]"></component>
+          <component :is="widgetsConfig[field].type" :ref="'fields-'+field" :conf="widgetsConfig[field]"></component>
         </template>
         <div class="w-full p-inputgroup" v-if="hasBasicSearch()">
 
@@ -52,7 +52,7 @@
                   {{ translateUc(widgetsConfig[field].label) }}
                 </label>
                 <div class="">
-                  <component :is="widgetsConfig[field].type" :ref="field"
+                  <component :is="widgetsConfig[field].type" :ref="'fields-'+field"
                              :conf="widgetsConfig[field]"></component>
                 </div>
                 <label class="labelBottom" :for="field"
@@ -100,7 +100,7 @@
                           {{ translateUc(widgetsConfig[field].label) }}
                         </label>
                         <div class="">
-                          <component :is="widgetsConfig[field].type" :ref="field"
+                          <component :is="widgetsConfig[field].type" :ref="'fields-'+field"
                                      :conf="widgetsConfig[field]"></component>
                         </div>
                         <label class="labelBottom" :for="field"
