@@ -311,6 +311,17 @@ export default {
                         that.insert.type = 'v-insert';
                         break;
                     case 'list':
+                        // setTimeout(function () {
+                        //     console.debug('showList',that.listParams)
+                        //     if (that.listParams) {
+                        //         if (that.getViewSearch()) {
+                        //             that.getViewSearch().setSearchParamsValue(that.listParams);
+                        //         }
+                        //         that.getViewList().setParams(that.listParams);
+                        //     }
+                        //     that.getViewSearch().reload();
+                        //     that.getViewList().reload();
+                        // },100)
                         break;
                     case 'custom':
                         that.custom.context = context;
@@ -351,7 +362,7 @@ export default {
                 let params = that.$route.params;
                 params.viewType = type;
                 params.context = context;
-                that[confName].context = context;
+                //that[confName].context = context;
                 that.$router.push({name:'c-manage-view',params : params})
             } else {
                 that.mode = type;
