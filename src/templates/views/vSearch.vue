@@ -40,7 +40,7 @@
             <div class="py-1" :class="getWidgetLayout(field,'colClass')">
               <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
                                     <span class="p-float-label">
-                                    <component :is="widgetsConfig[field].type" :ref="field"
+                                    <component :is="widgetsConfig[field].type" :ref="'fields-'+field"
                                                :conf="widgetsConfig[field]"></component>
                                     <label :for="field">{{ widgetsConfig[field].label }}</label>
                                     </span>
@@ -88,7 +88,7 @@
                     <div class="py-3" :class="getWidgetLayout(field,'colClass')">
                       <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
                                     <span class="p-float-label">
-                                    <component :is="widgetsConfig[field].type" :ref="field"
+                                    <component :is="widgetsConfig[field].type" :ref="'fields-'+field"
                                                :conf="widgetsConfig[field]"></component>
                                     <label :for="field">{{ widgetsConfig[field].label }}</label>
                                     </span>
