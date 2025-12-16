@@ -54,27 +54,27 @@ export default class WrapperConf {
         conf.autocompleteParams = conf.autocompleteParams || null;
         conf.clearButton = conf.clearButton || false;
         //console.log('referredData',conf.referredData);
-        let __initialValue = function () {
-            let that = this;
-            //console.log('extra bind ',conf.extraBind['option-label'],conf);
-            if (conf.extraBind['option-label']) {
-                if (conf.extraBind['option-label'] instanceof  Function) {
-                    return conf.extraBind['option-label'](conf.referredData);
-                }
-                return conf.referredData[conf.extraBind['option-label']];
-            }
+        // let __initialValue = function () {
+        //     let that = this;
+        //     //console.log('extra bind ',conf.extraBind['option-label'],conf);
+        //     if (conf.extraBind['option-label']) {
+        //         if (conf.extraBind['option-label'] instanceof  Function) {
+        //             return conf.extraBind['option-label'](conf.referredData);
+        //         }
+        //         return conf.referredData[conf.extraBind['option-label']];
+        //     }
 
-            return conf.getAutocompleteLabel(conf.referredData);
+        //     return that.getAutocompleteLabel(conf.referredData);
 
 
-            //return conf.referredData['label'];
-        }
-        if (conf.referredData) {
-            // let label = 'label'
-            // conf.autocompleteValue  = conf.referredData[label]; //conf.referredData;
-            conf.autocompleteValue = __initialValue();
-            conf.suggestions = [conf.referredData];
-        }
+        //     //return conf.referredData['label'];
+        // }
+        // if (conf.referredData) {
+        //     // let label = 'label'
+        //     // conf.autocompleteValue  = conf.referredData[label]; //conf.referredData;
+        //     conf.autocompleteValue = that.__initialValue();
+        //     conf.suggestions = [conf.referredData];
+        // }
         return conf;
     }
 

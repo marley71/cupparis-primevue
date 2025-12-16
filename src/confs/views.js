@@ -118,6 +118,8 @@ const viewConfs = {
             actionDivider: false,
             blocked : false,
             modelName : null,
+            groups : null,
+            actionsWhitelist : null,
         }
         return Object.assign(bv,rv);   
     },
