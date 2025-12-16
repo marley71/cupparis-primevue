@@ -38,28 +38,9 @@
         <div class="grid grid-cols-12 gap-1 gap-x-3">
           <template v-for="field in getBasicFields()" :key="field">
             <div class="py-1" :class="getWidgetLayout(field,'colClass')">
-              <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
-                                    <span class="p-float-label">
-                                    <component :is="widgetsConfig[field].type" :ref="field"
-                                               :conf="widgetsConfig[field]"></component>
-                                    <label :for="field">{{ widgetsConfig[field].label }}</label>
-                                    </span>
-              </template>
-              <template v-else>
-
-                <label class="labelTop" :for="field"
-                       v-if="getWidgetLayout(field,'labelPosition')=='top'">
-                  {{ translateUc(widgetsConfig[field].label) }}
-                </label>
-                <div class="">
-                  <component :is="widgetsConfig[field].type" :ref="'fields-'+field"
-                             :conf="widgetsConfig[field]"></component>
-                </div>
-                <label class="labelBottom" :for="field"
-                       v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
-                  {{ translateUc(widgetsConfig[field].label) }}
-                </label>
-              </template>
+              <v-record-widget :field="field" :ref="'fields-'+field" :labelInfo="getLabelInfo(field)"
+                               :widgetConfig="widgetsConfig[field]">
+              </v-record-widget>
             </div>
 
             <template v-if="getWidgetLayout(field,'hasDivider')">
@@ -86,36 +67,14 @@
                 <div class="grid grid-cols-12">
                   <template v-for="field in getAdvancedFields()" :key="field">
                     <div class="py-3" :class="getWidgetLayout(field,'colClass')">
-                      <template v-if="getWidgetLayout(field,'labelPosition')==='float'">
-                                    <span class="p-float-label">
-                                    <component :is="widgetsConfig[field].type" :ref="field"
-                                               :conf="widgetsConfig[field]"></component>
-                                    <label :for="field">{{ widgetsConfig[field].label }}</label>
-                                    </span>
-                      </template>
-                      <template v-else>
-
-                        <label class="labelTop" :for="field"
-                               v-if="getWidgetLayout(field,'labelPosition')=='top'">
-                          {{ translateUc(widgetsConfig[field].label) }}
-                        </label>
-                        <div class="">
-                          <component :is="widgetsConfig[field].type" :ref="'fields-'+field"
-                                     :conf="widgetsConfig[field]"></component>
-                        </div>
-                        <label class="labelBottom" :for="field"
-                               v-if="getWidgetLayout(field,'labelPosition')=='bottom'">
-                          {{ translateUc(widgetsConfig[field].label) }}
-                        </label>
-                      </template>
+                      <v-record-widget :field="field" :ref="'fields-'+field" :labelInfo="getLabelInfo(field)"
+                                       :widgetConfig="widgetsConfig[field]">
+                      </v-record-widget>
                     </div>
 
-                    <template v-if="getWidgetLayout(field,'hasDivider')">
-                      <Divider align="center" class="col-10 col-offset-1">
-                                    <span v-if="getWidgetLayout(field,'dividerLabel')"
-                                          class="p-tag">{{ getWidgetLayout(field, 'dividerLabel') }}</span>
-                      </Divider>
-
+                    <template v-if="hasDividerAfter(field)">
+                      <v-record-divider v-show="!isHiddenWidget(field)"
+                                        :dividerInfo="getDividerInfo(field)"></v-record-divider>
                     </template>
                     <template v-else-if="getWidgetLayout(field,'lastInRow')">
                       <div class="col-12 max-h-0 p-0">&nbsp;</div>
