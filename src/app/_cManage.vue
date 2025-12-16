@@ -220,13 +220,14 @@ export default {
                     console.debug('showList',that.listParams)
                     if (that.listParams) {
                         if (that.getViewSearch()) {
+                            //console.debug('searchParams showList',that.listParams)
                             that.getViewSearch().setSearchParamsValue(that.listParams);
                         }
                         that.getViewList().setParams(that.listParams);
                     }
                     that.getViewSearch().reload();
                     that.getViewList().reload();
-                },100)
+                },1000)
 
             }
         },
