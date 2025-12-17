@@ -255,6 +255,7 @@ export default {
         },
         getWidgetLayout(field,prop) {
             var that = this;
+            console.log('getWidgetLayout',field,prop,that.widgetsConfig[field]);
             var layout = that.widgetsConfig[field].layout;
             //console.debug(field,prop,"PROPLAYOUT",layout,'view layout',that.layout);
             if (!layout) {
