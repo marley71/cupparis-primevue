@@ -18,10 +18,13 @@ export default {
 
     _afterDraw() {
       let that = this;
-      that.setSearchParamsValue();
-      if (that.conf.afterDraw) {
-        that.conf.afterDraw.apply(that);
-      }
+      setTimeout(() => {
+        that.setSearchParamsValue();
+        if (that.conf.afterDraw) {
+          that.conf.afterDraw.apply(that);
+        }
+      }, 1000);
+      
     },
 
     _beforeLoadData() {
@@ -207,6 +210,7 @@ export default {
      */
     setSearchParamsValue(values) {
       let that = this;
+
       let searchParams = null;
       if (values) {
         searchParams =CrudHelpers.formDataToAssociativeArray(values);

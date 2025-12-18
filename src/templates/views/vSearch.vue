@@ -57,7 +57,7 @@
         </div>
 
 
-        <div class="w-full mt-3" v-if="hasAdvancedSearch()">
+        <div class="w-full mt-3" v-show="hasAdvancedSearch()">
 
           <Accordion :value="isAdvancedSearchOpen()" class="border border-primary-200">
             <AccordionPanel :value="0" style="box-shadow:none">
