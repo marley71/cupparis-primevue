@@ -66,20 +66,20 @@ export default {
 
         },
         load() {
-            console.debug('AAA _vBase.load',this.type);
+            //console.debug('AAA _vBase.load',this.type);
             let that = this;
             that._beforeSetRouteValues();
             that.setRouteValues();
             that._afterSetRouteValues();
             that._beforeLoadData();
             that.loadData(function (json) {
-                console.debug('loadData callback',that.type)
+                //console.debug('loadData callback',that.type)
                 that.json = CrudCore.clone(json);
-                console.debug('fillData')
+                //console.debug('fillData')
                 that.fillData(json);
-                console.debug('_afterLoadData')
+                //console.debug('_afterLoadData')
                 that._afterLoadData(json);
-                console.debug('setWidgetsConfig')
+                //console.debug('setWidgetsConfig')
                 that.setWidgetsConfig();
                 that._beforeDraw();
                 that.draw();
@@ -180,7 +180,7 @@ export default {
             var that = this;
             if (that.route) {
                 var protocol = that.createProtocol(that.route.getProtocol());
-                console.log('fillData',json);
+                //console.log('fillData',json);
                 protocol.jsonToData(json);
                 var prop = Object.getOwnPropertyNames(protocol);
                 for (var i in prop) {
@@ -255,7 +255,7 @@ export default {
         },
         getWidgetLayout(field,prop) {
             var that = this;
-            console.log('getWidgetLayout',field,prop,that.widgetsConfig[field]);
+            //console.log('getWidgetLayout',field,prop,that.widgetsConfig[field]);
             var layout = that.widgetsConfig[field].layout;
             //console.debug(field,prop,"PROPLAYOUT",layout,'view layout',that.layout);
             if (!layout) {

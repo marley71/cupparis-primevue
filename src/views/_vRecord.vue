@@ -250,9 +250,9 @@ export default {
         }
         //return fieldRef;
       }
-      // if (this.$refs[fieldRefName]) {
-      //   return this.$refs[fieldRefName].$refs[field];
-      // }
+      if (this.$refs[fieldRefName]) {
+        return this.$refs[fieldRefName].$refs[field];
+      }
       return null;
     },
     getAction(name) {

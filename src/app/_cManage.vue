@@ -13,7 +13,7 @@ export default {
         console.debug('AAA mounted',that.$route.params);
         this.setManageReference();
         // inizializza il key per evitare doppie esecuzioni sullo stesso contesto
-        that._lastContextKey = null;
+        //that._lastContextKey = null;
         // forzo la prima applicazione del contesto
         that.showContext(true);
         // setTimeout(function () {
@@ -363,23 +363,10 @@ export default {
                 let params = that.$route.params;
                 params.viewType = type;
                 params.context = context;
-                //that[confName].context = context;
+                // if (that[confName]) {   
+                //     that[confName].context = context;
+                // }
                 that.$router.push({name:'c-manage-view',params : params})
-            } else {
-                that.mode = type;
-                switch (that.mode) {
-                  case 'edit':
-                      that.edit.type = 'v-edit';
-                      that.edit.pk = context[0];
-                      break;
-                  case 'insert':
-                        that.insert.type = 'v-insert';
-                      break;
-                  case 'list':
-                      break;
-                  case 'custom':
-                      that.custom.context = context;
-              }
             }
         },
         _setCss() {
