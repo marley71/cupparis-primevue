@@ -482,6 +482,16 @@ export default {
           w._reset();
         }
       }
+    },
+    getTitleMsg() {
+      console.log("TITLE MSG::: ",this,this.value)
+      if (this.conf.titleMsg) {
+        return this.conf.titleMsg.apply(this,[this.value]);
+      }
+      if (this.title) {
+        return this.title;
+      }
+      return null;
     }
   }
 }

@@ -7,11 +7,11 @@
       </slot>
       <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig" :loaded="loaded"
             :recordActionsConf="recordActionsConf">
-        <div v-if="hasActionsDivider()">
+        <div v-if="getTitleMsg()">
           <Divider align="center" class="actionsDivider">
-                                    <span class="p-tag text-white">
-                                        {{ title }}
-                                    </span>
+                        <span class="p-tag text-white">
+                            {{ getTitleMsg() }}
+                        </span>
           </Divider>
         </div>
         <form ref="form" enctype="multipart/form-data" @submit="handleSubmit" class="p-fluid">
