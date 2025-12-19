@@ -246,7 +246,9 @@ export default {
       var fieldRef = this.$refs[fieldRefName];
       if (Array.isArray(fieldRef)) {
         if (fieldRef.length > 0) {
-          return this.$refs[fieldRefName][0].$refs[field];
+          return this.$refs[fieldRefName][0].$refs[field]
+            ? this.$refs[fieldRefName][0].$refs[field]
+              : this.$refs[fieldRefName][0];
         }
         //return fieldRef;
       }
