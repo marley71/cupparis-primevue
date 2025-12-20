@@ -254,7 +254,9 @@ export default {
       var fieldRef = this.$refs[fieldRefName];
       if (Array.isArray(fieldRef)) {
         if (fieldRef.length > 0) {
-          return this.$refs[fieldRefName][0].$refs[field];
+          return this.$refs[fieldRefName][0].$refs[field]
+            ? this.$refs[fieldRefName][0].$refs[field]
+              : this.$refs[fieldRefName][0];
         }
         //return fieldRef;
       }
@@ -490,6 +492,16 @@ export default {
           w._reset();
         }
       }
+    },
+    getTitleMsg() {
+      console.log("TITLE MSG::: ",this,this.value)
+      if (this.conf.titleMsg) {
+        return this.conf.titleMsg.apply(this,[this.value]);
+      }
+      if (this.title) {
+        return this.title;
+      }
+      return null;
     }
   }
 }
