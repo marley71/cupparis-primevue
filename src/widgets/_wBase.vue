@@ -10,6 +10,7 @@ import CrudHelpers from "../lib/CrudHelpers";
 export default {
     name: "_wBase",
     extends : CrudComponent,
+    emits: ['change'],
     beforeCreate() {
       //console.debug('wBase.beforeCreate ',this.conf);
         let that = this;
@@ -87,6 +88,7 @@ export default {
       },
 
       change(event) {
+        this.$emit('change',event);
         if (this.conf.change) {
           return this.conf.change.apply(this,[event])
         }

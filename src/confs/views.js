@@ -128,6 +128,7 @@ const viewConfs = {
         let sv = {
             updateHash : true,  // se true i parametri di ricerca li mette nell'url
             advancedFields: null,
+            advancedSearchOpen: null,
         }
         return Object.assign(bv,sv);   
     } 

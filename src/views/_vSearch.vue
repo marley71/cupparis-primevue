@@ -23,7 +23,7 @@ export default {
         if (that.conf.afterDraw) {
           that.conf.afterDraw.apply(that);
         }
-      }, 1000);
+      }, 10);
       
     },
 
@@ -65,7 +65,7 @@ export default {
       type = type || that.defaultSearch();
       let form = 'formSearch';
       var formData = that.getViewData(form);
-      console.debug('ciccio', formData);
+      //console.debug('ciccio', formData);
 
       if (this.updateHash) {
         this.setHash(formData)
@@ -170,7 +170,7 @@ export default {
       return this.translate("app.search_label");
     },
     isAdvancedSearchOpen() {
-      return this.conf.advancedSearchOpen ? 0 : null;
+      return this.advancedSearchOpen ? '0' : null;
     },
     getBasicSearchPlaceholder() {
       return this.conf.basicSearchPlaceholder ?

@@ -59,8 +59,8 @@
 
         <div class="w-full mt-3" v-show="hasAdvancedSearch()">
 
-          <Accordion :value="isAdvancedSearchOpen()" class="border border-primary-200">
-            <AccordionPanel :value="0" style="box-shadow:none">
+          <Accordion :value="advancedSearchOpen" v-model:value="advancedSearchOpen" class="border border-primary-200" >
+            <AccordionPanel value="0"  style="box-shadow:none" >
               <AccordionHeader class="text-primary-800!">{{ advancedSearchHeader() }}</AccordionHeader>
               <AccordionContent>
 
@@ -111,11 +111,27 @@
 <script>
 import _vSearch from '@cupparis-lib/views/_vSearch.vue'
 import cAction from "../actions/cAction.vue";
+import {libStatus} from '@cupparis-lib/store/libStatus';
 
 export default {
   name: "v-search",
   extends: _vSearch,
-  components: {cAction}
+  components: {cAction},
+  mounted() {
+    if (libStatus().advancedSearchActive[this.modelName]) {
+      this.advancedSearchOpen = '0';
+    }
+  },
+  watch: {
+    advancedSearchOpen(value) {
+      console.debug('advancedSearchOpen',value);
+      if (value == null) {
+        libStatus().advancedSearchActive[this.modelName] = false;
+      } else {
+        libStatus().advancedSearchActive[this.modelName] = true;
+      }
+    }
+  }
 }
 
 

@@ -1,6 +1,7 @@
 <script>
 import widgetHelpConfs from "./widgetHelpConfs";
 import JsToCode from "./JsToCode";
+import CrudCore from "../lib/CrudCore";
 const jsc = new JsToCode();
 
 export default {
@@ -94,6 +95,10 @@ export default {
         }
     },
     methods: {
+        changeVue(event) {
+            console.debug('changeVue',event);
+            CrudCore.alertInfo('changeVue')
+        },
         setCode() {
             let that = this;
             let conf = this.widgetsConf[this.widgetSelected];
@@ -204,7 +209,7 @@ export default {
                     <template v-for="(conf,wName) in widgetsConf" :key="wName">
 <!--                        <c-widget class="w-full" :ref="wName" v-if="widgetSelected==wName && !reload" :conf="conf"></c-widget>-->
 <!--                        <c-widget class="w-full" :ref="wName" v-if="widgetSelected==wName && !reload" :conf="conf"></c-widget>-->
-                        <component  :is="conf.type" class="w-full" :ref="wName" v-if="widgetSelected==wName && !reload" :conf="conf"></component>
+                        <component  :is="conf.type" class="w-full" :ref="wName" v-if="widgetSelected==wName && !reload" :conf="conf" @change="changeVue"></component>
                     </template>
                 </Fieldset>
                 <Button class="p-button w-20 mt-1" label="Run" @click="updateCode"></Button>

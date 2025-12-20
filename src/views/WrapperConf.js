@@ -216,7 +216,7 @@ export default class WrapperConf {
         }
 
         if (! ('advancedSearchOpen' in conf) ) {
-            conf.advancedSearchOpen = false;
+            conf.advancedSearchOpen = null;
         }
         conf.basicSearchPlaceholder = null;
 
