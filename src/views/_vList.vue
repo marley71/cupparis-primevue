@@ -328,9 +328,19 @@ export default {
       }
       wc = Object.assign(md, wc);
       // se il value e' undefined allora e' un campo custom della view non ci metto niente
-      if (("" + value) != 'undefined') {
-        wc.value = value;
+      // if (("" + value) != 'undefined') {
+      //   wc.value = value;
+      // }
+      let val = null;
+      if (wc.bind) {
+        val = modelData[wc.bind];
+      } else if (wc.bind_all_data) {
+        val = modelData;
+      } else {
+        val = modelData[key];
       }
+      wc.value = val;
+          //let val = that.value[i][key];
 
       wc.name = that.getFieldName(key);
       wc.modelData = modelData;

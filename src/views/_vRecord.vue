@@ -188,6 +188,14 @@ export default {
         let val = that.value[key];
         let md = that.metadata[key] || {};
         widgetsConfig[key] = Object.assign(md, fConf[key]);
+        // il valore del campo puo' essere il nome del field o se c'e' il bind il nome del bind o se c'e' bind_all_data true il valore di tutti i campi
+        if (widgetsConfig[key].bind) {
+          val = that.value[widgetsConfig[key].bind];
+        } else if (widgetsConfig[key].bind_all_data) {
+          val = that.value;
+        } else {
+          val = that.value[key];
+        }
         widgetsConfig[key].value = val;
         widgetsConfig[key].name = that.getFieldName(key);
         widgetsConfig[key].modelData = that.value;

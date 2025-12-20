@@ -16,6 +16,8 @@ const defaultConf = () => {
         rowType : '',
         errors : [],
         inPopup : false, // per alcuni controlli permette di eseguire css se visualizzati in popup
+        bind : null,
+        bind_all_data : false,
     }
 }
 
@@ -106,6 +108,9 @@ export default class WrapperConf {
         return conf;
     }
     wObject(conf) {
+        if ( !('fields' in conf) ) {
+            conf.fields = null;
+        }
         if ( !('title' in conf) ) {
             conf.title = null;
         }
