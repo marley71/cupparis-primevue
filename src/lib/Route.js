@@ -5,15 +5,19 @@
 
 import CrudCore from "./CrudCore";
 
-var defaultConf =  {
-    method : 'get',       // metodo della richiesta http, GET o POST
-    url : '',             // url della route, puo' contenere variabili racchiusi tra {} che vengono valorizzati prima dell'utilizzo
-    params : {},          //  parametri da inviare alla route
-    commonParams : {},    //  parametri statici da aggiungere sempre alla chiamata
-    values : {},          //  vettore associativo per sostituire i parametri per la costruzione dell'url racchiusi da {}
-    protocol : null,      // tipo di protocollo da usare
-    resultType : null,    // tipo di risultato, 'record' o 'list'
+const defaultConf = () =>  {
+    return  {
+        method : 'get',       // metodo della richiesta http, GET o POST
+        url : '',             // url della route, puo' contenere variabili racchiusi tra {} che vengono valorizzati prima dell'utilizzo
+        params : {},          //  parametri da inviare alla route
+        commonParams : {},    //  parametri statici da aggiungere sempre alla chiamata
+        values : {},          //  vettore associativo per sostituire i parametri per la costruzione dell'url racchiusi da {}
+        protocol : null,      // tipo di protocollo da usare
+        resultType : null,    // tipo di risultato, 'record' o 'list'
+    }
 }
+
+
 export default class Route {
 
 
@@ -21,7 +25,7 @@ export default class Route {
 
     constructor(conf) {
         let c = Object.assign({},conf || {});
-        this.routeConf = Object.assign({}, defaultConf);
+        this.routeConf = Object.assign({}, defaultConf());
         for (var k in c) {
             this.routeConf[k] = c[k];
         }

@@ -250,7 +250,7 @@ export default {
     },
     getWidget(field) {
       var fieldRefName = 'fields-'+field;
-      console.log("searchParams REFSSSS",field,this.$refs,this.$refs[fieldRefName])
+      //console.log("searchParams REFSSSS",field,this.$refs,this.$refs[fieldRefName])
       var fieldRef = this.$refs[fieldRefName];
       if (Array.isArray(fieldRef)) {
         if (fieldRef.length > 0) {

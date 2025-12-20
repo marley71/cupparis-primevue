@@ -72,7 +72,7 @@ export default {
       let that = this;
       let searchParams = that.getSearchParams();
 
-      console.debug('searchParams', searchParams)
+      console.debug('searchParams', searchParams,'route params',that.route.getParams())
       for (let field in searchParams) {
         that.route.setParam(field, searchParams[field]);
       }
