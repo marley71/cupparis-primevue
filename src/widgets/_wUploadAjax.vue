@@ -1,13 +1,12 @@
-
 <script>
 
 import _wBase from "./_wBase.vue"
 import Server from "../lib/Server";
 
 export default {
-    name: '_wUploadAjax',
-    extends : _wBase,
-  methods : {
+  name: '_wUploadAjax',
+  extends: _wBase,
+  methods: {
     uploadFile(event) {
       this.files = event.files;
       this.sendAjax();
@@ -36,7 +35,7 @@ export default {
       for (var k in that.ajaxFields)
         fdata.append(k, that.ajaxFields[k])
       that.waitStart("Caricamento file...");
-      Server.post(realUrl,fdata,function(data) {
+      Server.post(realUrl, fdata, function (data) {
         that.json = data;
         if (!data.error) {
           console.log("Success: Files sent!", data);
@@ -46,7 +45,7 @@ export default {
           console.log('done, data.result', data.result);
 
           //that.lastUpload = Object.assign({},data.result);
-          that.fileInfo = Object.assign({},data.result);
+          that.fileInfo = Object.assign({}, data.result);
           // TODO sfruttare meglio l'oggetto upload primeface
           that.value = JSON.stringify(data.result); //.replace(/\\"/g, '"');
           //that.$refs.preview.setValue(data.result);
@@ -66,7 +65,7 @@ export default {
     },
     setRouteValues(route) {
       if (this.conf.setRouteValues) {
-        this.conf.setRouteValues.apply(this,[route]);
+        this.conf.setRouteValues.apply(this, [route]);
         return route;
       }
       route.setValues({
@@ -74,18 +73,21 @@ export default {
       })
       return route;
     },
-      onError(event) {
-          if (this.conf.onError) {
-              return this.conf.onError.apply(this,[event])
-          }
+    onError(event) {
+      if (this.conf.onError) {
+        return this.conf.onError.apply(this, [event])
+      }
 
-      },
-      onSuccess(event) {
-          if (this.conf.onSuccess) {
-              return this.conf.onSuccess.apply(this,[event])
-          }
+    },
+    onSuccess(event) {
+      if (this.conf.onSuccess) {
+        return this.conf.onSuccess.apply(this, [event])
+      }
 
-      },
+    },
+    bgUrl(url) {
+      return 'background-image: url("' + url + '") !important;"';
+    },
   }
 }
 </script>
