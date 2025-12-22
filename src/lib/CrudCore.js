@@ -634,7 +634,16 @@ CrudCore.createConfView = (confView) => {
     return vc.loadConf(confView);
 }
 
-
+/**
+ * crea una configurazione di default di un widget mergiando i valori di default con quelli passati nel
+ * parametro confWidget
+ * @param {object} confWidget 
+ * @returns 
+ */
+CrudCore.createConfWidget = (confWidget) => {
+    let vc = new WidgetWrapperConf();
+    return vc.loadConf(confWidget);
+}
 
 /**
  * esegue il fetch di un file html nella cartella definita nell'env VITE_PUBLISH_DIR

@@ -92,16 +92,16 @@ export default {
 
       });
 
-      console.log('route',that.route,that);
+      //console.log('route',that.route,that);
       that.Server.route(that.route,function (json) {
         console.log('json',json);
         that.suggestions = json.result;
       });
-      console.log('search',that.conf,event);
+      //console.log('search',that.conf,event);
     },
 
     change(event) {
-      console.debug('_wAutocomplete.change',event);
+      //console.debug('_wAutocomplete.change',event);
       this.value = event.value?event.value.id:null;
       this.referredData = event.value?event.value:null;
       if (this.conf.change) {
@@ -116,9 +116,10 @@ export default {
     },
 
     itemSelect(event) {
-      console.debug('_wAutocomplete.itemSelect',this.autocompleteValue,event);
-      this.setValue(this.autocompleteValue.id)
-      this.change(event);
+      //console.debug('_wAutocomplete.itemSelect',this.autocompleteValue,event);
+      let that = this;
+      this.setValue(this.autocompleteValue.id);
+      that.change(event);
     },
   }
 }
