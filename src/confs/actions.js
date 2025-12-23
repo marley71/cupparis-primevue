@@ -542,13 +542,18 @@ const actionConfs = {
             },
             _exportPdf (callback) {
                 var that = this
+                console.log('export pdf', that.routeName,that.modelData)
                 var r = that.viewInstance.createRoute(that.routeName)
                 let foormPk = that.modelData[that.viewInstance.primaryKey];
-                r.setValues({
+                let routeValues = {
                     'foorm': that.viewInstance.modelName,
-                    'foormtype': 'list',
-                    'foormpk' : foormPk
-                })
+                    'foormtype': that.pdfType,
+                }
+                
+                if (foormPk) {
+                    routeValues['foormpk'] = foormPk
+                }
+                r.setValues(routeValues)
                 r.setParams(that.viewInstance.getParams());
                 r.setParam('pdfType', that.pdfType)
                 that.viewInstance.waitStart(that.startMessage)
