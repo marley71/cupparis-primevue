@@ -138,6 +138,9 @@ export default {
 
         _addDefaultParams() {
             // controlla che ci siano parametri di default in configurazione.
+            if (this.conf.addDefaultParams) {
+                this.conf.addDefaultParams.apply(this);
+            }
         },
 
         _beforeLoadData() {

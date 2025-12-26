@@ -1,16 +1,18 @@
 <template>
   <span>
-    <input type="hidden" :name="name" v-model="value">
-    <div class="flex">
-      <InputGroup>
+    <slot name="main">
+      <input type="hidden" :name="name" v-model="value">
+      <div class="flex">
+        <InputGroup>
 
-        <Button size="small" icon="fa fa-times" @click="clear" v-if="clearButton"/>
-        <AutoComplete class="w-full" v-model="autocompleteValue" :suggestions="suggestions" @show="onShow"
-                      @complete="search" :option-label="getAutocompleteLabel" option-value="id"
-                      v-bind="extraBind" @item-select="itemSelect" input-class="w-full"/>
-      </InputGroup>
-    </div>
-    <RulesErrors :errors="errors"></RulesErrors>
+          <Button size="small" icon="fa fa-times" @click="clear" v-if="clearButton"/>
+          <AutoComplete class="w-full" v-model="autocompleteValue" :suggestions="suggestions" @show="onShow"
+                        @complete="search" :option-label="getAutocompleteLabel" option-value="id"
+                        v-bind="extraBind" @item-select="itemSelect" input-class="w-full"/>
+        </InputGroup>
+      </div>
+      <RulesErrors :errors="errors"></RulesErrors>
+    </slot>
   </span>
 </template>
 

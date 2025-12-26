@@ -167,14 +167,39 @@ export default {
             }
             if (that.conf.list.actions.indexOf('action-insert') >= 0) {
                 let actionInsert = that.conf.list.actionsConfig['action-insert'] || {};
-                if (!actionInsert.execute){
+                //if (!actionInsert.execute){
                     actionInsert.execute = function () {
                         let thatAction = this;
-                        let confName = thatAction.$route.params.cConf;
-                        thatAction.manageInstance.updateHash(confName,'insert');
+                        thatAction.manageInstance.showInsert();
+                        // let confName = thatAction.$route.params.cConf;
+                        // thatAction.manageInstance.updateHash(confName,'insert');
                     }
-                }
+                //}
                 that.conf.list.actionsConfig['action-insert'] = actionInsert;
+            }
+            if (that.conf.list.actions.indexOf('action-back') >= 0) {
+                let actionBack = that.conf.list.actionsConfig['action-back'] || {};
+                //if (!actionInsert.execute){
+                    actionBack.execute = function () {
+                        let thatAction = this;
+                        thatAction.manageInstance.showList();
+                        // let confName = thatAction.$route.params.cConf;
+                        // thatAction.manageInstance.updateHash(confName,'insert');
+                    }
+                //}
+                that.conf.list.actionsConfig['action-back'] = actionBack;
+            }
+            if (that.conf.list.actions.indexOf('action-save-back') >= 0) {
+                let actionSaveBack = that.conf.list.actionsConfig['action-save-back'] || {};
+                //if (!actionInsert.execute){
+                    actionSaveBack.execute = function () {
+                        let thatAction = this;
+                        thatAction.manageInstance.showList();
+                        // let confName = thatAction.$route.params.cConf;
+                        // thatAction.manageInstance.updateHash(confName,'insert');
+                    }
+                //}
+                that.conf.list.actionsConfig['action-save-back'] = actionSaveBack;
             }
         },
         /**
@@ -211,24 +236,30 @@ export default {
         },
         showList() {
             let that = this;
-            that.mode = 'list';
+            
             if (that.autoUpdateHash) {
                 //window.history.back();
                 this.$router.back();
             } else {
-                setTimeout(function () {
-                    console.debug('showList',that.listParams)
-                    if (that.listParams) {
-                        if (that.getViewSearch()) {
-                            //console.debug('searchParams showList',that.listParams)
-                            that.getViewSearch().setSearchParamsValue(that.listParams);
+                if (that.listParams) {
+                    if (that.list) {
+                        that.list.addDefaultParams = function() {
+                            let tL = this;
+                            if (tL) {
+                                tL.setParams(that.listParams);
+                            }
                         }
-                        that.getViewList().setParams(that.listParams);
                     }
-                    that.getViewSearch().reload();
-                    that.getViewList().reload();
-                },1000)
-
+                    if (that.search) {
+                        that.search.addDefaultParams = function() {
+                            let tL = this;
+                            if (tL) {
+                                tL.setSearchParamsValue(that.listParams);
+                            }
+                        }
+                    }
+                }
+                that.mode = 'list';
             }
         },
         showEdit() {
@@ -246,7 +277,7 @@ export default {
                 that.updateHash('insert','insert',[]);
             } else {
                 that.mode = 'insert';
-                that.insert.pk = that.insert.pk;
+                //that.insert.pk = that.insert.pk;
             }
         },
         showView() {
