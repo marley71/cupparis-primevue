@@ -117,7 +117,7 @@ export default {
                 // Crea una copia dell'oggetto action invece di modificarlo direttamente
                 // per evitare loop infiniti di reattività
                 let text = actions[name].text?that.translate(actions[name].text):that.translate('actions.'+name);
-                console.log('menubarlabel',name,text);
+                //console.log('menubarlabel',name,text);
                 let actionCopy = Object.assign({}, actions[name]);
                 actionCopy.text = text;
                 actionCopy.action = name;
