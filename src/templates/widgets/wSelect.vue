@@ -4,7 +4,7 @@
     <Select class="w-full" :name="name" v-model="value" :options="options"
               option-label="label" option-value="id"
               :placeholder="placeholder || translate('app.seleziona')"
-              v-bind="extraBind" @change="change" :disabled="disabled()">
+              v-bind="extraBind" @change="change" :disabled="disabled()" @show="onShow">
       <template #value="slotProps">
         <div v-if="slotProps.value"
              :class="'select-button-option select-button-option-'+name+ ' select-button-option-'+name+'-'+slotProps.value"
@@ -35,7 +35,15 @@ import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wSelect",
   extends: _wSelect,
-  components : {RulesErrors}
+  components : {RulesErrors},
+  methods: {
+    onShow() {
+      // in popup  devo aumentare lo z-index altrimenti capita di sotto
+      if (this.inPopup) {
+        document.querySelector('.p-select-overlay').style['z-index'] = 10000;
+      }
+    }
+  }
 }
 
 </script>

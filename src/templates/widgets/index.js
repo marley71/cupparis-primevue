@@ -35,7 +35,7 @@ import wUploadAjax from './wUploadAjax.vue';
 import wSwap from "./wSwap.vue";
 import wSwapSelect from './wSwapSelect.vue';
 import CrudCore  from "@cupparis-lib/lib/CrudCore";
-
+import RulesErrors from "./RulesErrors.vue";
 
 
 
@@ -113,5 +113,7 @@ export default {
         CrudCore.componentItems['w-swap'] = wSwap;
         app.component('w-swap-select', wSwapSelect);
         CrudCore.componentItems['w-swap-select'] = wSwapSelect;
+        app.component('rules-errors', RulesErrors);
+        CrudCore.componentItems['rules-errors'] = RulesErrors;
     }
 }

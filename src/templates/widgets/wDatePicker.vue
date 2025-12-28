@@ -2,13 +2,14 @@
   <span>
    <div class="crud-datepicker">
     <input type="hidden" :name="name" v-model="value">
-    <div class="flex ">
-      <Button icon="fa fa-times" @click="clear" v-if="clearButton"/>
+    <InputGroup>
+      <Button icon="fa fa-times" @click="clear" v-if="clearButton" class="p-button-sm" />
       <DatePicker class="w-full cupparis-datapicker" :showButtonBar="true" v-model="dateValue" @date-select="change"
+                @update:modelValue="change"
                 :inputDateFormat="dateFormat" :date-format="displayFormat" inputClass="w-full"
                 v-bind="extraBind" @show="onShow" :invalid="(errors &&errors.length > 0)"
                 @clear-click="clear"/>
-    </div>
+    </InputGroup>
   </div>
     <RulesErrors :errors="errors"></RulesErrors>
   </span>

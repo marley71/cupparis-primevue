@@ -7,6 +7,14 @@ import moment from 'moment'
 export default {
     name: '_wDatePicker',
     extends : _wBase,
+    watch: {
+        dateValue: {
+            handler(newVal) {
+                console.debug('dateValue',newVal);
+            },
+            deep: true
+        }
+    },
     methods: {
         clear(event) {
             console.debug('clear',event)
@@ -38,8 +46,16 @@ export default {
             if (this.conf.change) {
                 return this.conf.change.apply(this,[event])
             }
-
-        }
+        },
+        setValue(value) {
+            let inputDateFormat = this.dateFormat || 'YYYY-MM-DD';
+            let date = (moment(value).isValid()) ? moment(value) : null;
+            if (date) {
+                console.debug('setValue',value,inputDateFormat,date);
+                this.value = date.format(inputDateFormat);
+                this.dateValue = date.toDate();
+            }
+        },
     }
 }
 </script>

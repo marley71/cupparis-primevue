@@ -44,7 +44,7 @@ import ActionsPage from "./help/ActionsPage.vue";
 import DialogsPage from "./help/DialogsPage.vue";
 import EsperimentiPage from "./help/EsperimentiPage.vue";
 import JsToCode from "./help/JsToCode";
-
+import RulesErrors from "./templates/widgets/RulesErrors.vue";
 import "./assets/cupparis.css"
 
 
@@ -79,6 +79,6 @@ export default {
     CrudHelpers,
     // --- help pages
     WidgetsPage,ViewsPage,ManagePage,ImportPage,ActionsPage,DialogsPage,EsperimentiPage,
-    JsToCode
+    JsToCode,RulesErrors
 
 }
