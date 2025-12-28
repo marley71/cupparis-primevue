@@ -17,6 +17,7 @@ import vSearch from '@templates/views/vSearch.vue'
 import vList from '@templates/views/vList.vue'
 import vListEdit from '@templates/views/vListEdit.vue'
 import vListHasmany from '@templates/views/vListHasmany.vue'
+import vDatafileList from '@templates/views/vDatafileList.vue'
 import cImport from '@templates/app/cImport.vue'
 
 import dialogs from '@templates/dialogs'
@@ -71,7 +72,7 @@ export default {
     CrudComponent,cAction,CrudCore,CrudVars,wBase,
     //cView,
     routerConf,routeConfs,actionConfs,viewConfs,
-    vRecord,vSearch,cManage,vList,vListEdit,cImport,vListHasmany,
+    vRecord,vSearch,cManage,vList,vListEdit,cImport,vListHasmany,vDatafileList,
     vEdit,vInsert,vView,
     aBase,
     Server,Wait,Route,

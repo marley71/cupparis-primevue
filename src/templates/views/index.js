@@ -2,6 +2,7 @@
 import vBase from "./vBase.vue";
 import vList from "./vList.vue";
 import vListEdit from './vListEdit.vue'
+import vDatafileList from './vDatafileList.vue'
 import vRecord from './vRecord.vue';
 import vRecordDivider from './vRecordDivider.vue';
 import vRecordWidget from './vRecordWidget.vue';
@@ -34,6 +35,8 @@ export default {
         CrudCore.componentItems['v-view'] = vView;
         app.component('v-search', vSearch);
         CrudCore.componentItems['v-search'] = vSearch;
+        app.component('v-datafile-list',vDatafileList);
+        CrudCore.componentItems['v-datafile-list'] = vDatafileList;
         app.component('v-list-edit',vListEdit);
         CrudCore.componentItems['v-list-edit'] = vListEdit;
         app.component('v-list-hasmany',vListHasmany);
@@ -43,5 +46,5 @@ export default {
 
     },
     //cView,
-    vBase,vList,vListEdit,vRecord,vSearch,vListHasmany,vInsert,vEdit,vView
+    vBase,vList,vListEdit,vRecord,vSearch,vListHasmany,vDatafileList,vInsert,vEdit,vView
 }

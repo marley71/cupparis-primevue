@@ -141,7 +141,8 @@ export default {
                 return ;
             }
             let value = JSON.parse(w.getValue());
-            let r = this.createRoute('load_datafile');
+            let loadDatafileRouteName = that.loadDatafileRouteName || 'load_datafile';
+            let r = this.createRoute(loadDatafileRouteName);
             r.setParams(viewParams);
             r.setParam('fileName',value.id);
             r.setParam('datafileProviderName',that.providerName);
@@ -272,16 +273,18 @@ export default {
             var that = this;
             var userConf = that.viewList || {}; //that.clone({},that.viewList);
             if (!userConf.type) {
-                userConf.type = 'v-list';
+                userConf.type = 'v-datafile-list';
             }
+            console.log("USERCONF::::",userConf);
+
             userConf.updateHash = false;
             userConf.routeName = userConf.routeName || 'datafile_data';
             userConf = CrudCore.createConfView(userConf);
             userConf.jobId = that.jobId;
             userConf.modelName = that.providerName;
             userConf.actions = [];
-            userConf.constraintKey = 'datafile_id';
-            userConf.constraintValue = that.jobId;
+            // userConf.constraintKey = 'datafile_id';
+            // userConf.constraintValue = that.jobId;
             console.debug('import list conf',userConf);
             return userConf;
         },
@@ -299,7 +302,8 @@ export default {
             aS.csvDashboard = that;
             aS.execute = function () {
                 var thatAction = this;
-                var r = thatAction.createRoute('save_datafile');
+                let saveDatafileRouteName = that.saveDatafileRouteName || 'save_datafile';
+                var r = thatAction.createRoute(saveDatafileRouteName);
                 var viewParams = thatAction.viewInstance.getViewData();
                 r.setParams(viewParams);
                 r.setParam('datafile_load_id',thatAction.csvDashboard.jobId);

@@ -4,6 +4,7 @@ export default function ProtocolList () {
     this.value = [];
     this.metadata = {};
     this.pagination = {}
+    this.errors = {}
 
     this.getData = function () {
         var prop = Object.getOwnPropertyNames(this);
@@ -26,6 +27,9 @@ export default function ProtocolList () {
             to : json.result.to,
             total : json.result.total,
 
+        }
+        if (json.result.errors) {
+            this.errors = json.result.errors;
         }
         var fieldsMetadata = json.metadata?(json.metadata.fields || {}):{};
         for (var field in fieldsMetadata) {

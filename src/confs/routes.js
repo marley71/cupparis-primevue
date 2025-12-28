@@ -134,6 +134,13 @@ const routeConfs = {
         protocol: 'record',
         extra_params: {}
     },
+    load_datafile_json: {
+        method: 'post',
+        url:'/queue/add/datafile-json/load',
+        resultType: 'record',
+        protocol: 'record',
+        extra_params: {}
+    },
     status_queue: {
         method: 'get',
         url:'/queue/status/{id}',
@@ -161,9 +168,21 @@ const routeConfs = {
         resultType: 'record',
         protocol: 'record'
     },
+    save_datafile_json: {
+        method: 'post',
+        url:'/queue/add/datafile-json/save',
+        resultType: 'record',
+        protocol: 'record'
+    },
     datafile_data: {
         method: 'get',
         url:'/foormc/{modelName}/datafile_id/{jobId}',
+        resultType: 'list',
+        protocol: 'list'
+    },
+    datafile_json_data: {
+        method: 'get',
+        url:'/foorm/{modelName}/{jobId}/datafile-list',
         resultType: 'list',
         protocol: 'list'
     },

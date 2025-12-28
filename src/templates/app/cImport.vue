@@ -36,8 +36,8 @@
                 <div>{{ conf.importLoadingSuccess?translate(conf.importLoadingSuccess):translate('app.import-loading-success') }}</div>
                 <hr/>
                 <v-record :conf="_saveConf()"></v-record>
-                <v-list :conf="_listConf()">
-                </v-list>
+                <v-datafile-list :conf="_listConf()">
+                </v-datafile-list>
             </div>
         </template>
     </Card>
