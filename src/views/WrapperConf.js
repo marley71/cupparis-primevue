@@ -23,6 +23,7 @@ export default class WrapperConf {
             case 'v-list':
             case 'v-list-edit':
             case 'v-list-hasmany':
+            case 'v-datafile-list':
                 defConf = CrudCore.clone(viewConfs.listView()); //CrudCore.clone(viewConfs.listView);
                 break;
             default:
@@ -72,6 +73,37 @@ export default class WrapperConf {
 
         return conf;
     }
+
+    vDatafileList(conf) {
+        //console.log('vList conf',conf.routeName);
+        conf.selected = null;
+        if (!conf.type) {
+            conf.type = 'v-datafile-list'
+        }
+        if (! ('routeName' in conf) ){
+            conf.routeName = 'list';
+        }
+        if (!conf.fields && conf.value) {
+            //console.log('keys',Object.keys(conf.value[0]))
+            conf.fields = Object.keys(conf.value[0]);
+        }
+        if (! ('actions' in conf) ){
+            conf.actions = [
+                //'action-view','action-edit','action-delete','action-delete-selected','action-insert'
+            ];
+        }
+        if (! ('primaryKey' in conf) ){
+            conf.primaryKey = 'id';
+        }
+        conf.recordActionsConf = [];
+        conf.collectionActions = {};
+        conf.widgetsConfig = [];
+        conf.selectedRow = null;
+        conf.menuModel = [];
+
+        return conf;
+    }
+
 
     vListEdit(conf) {
         if (!conf.type) {
