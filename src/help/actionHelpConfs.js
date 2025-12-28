@@ -122,13 +122,13 @@ export default {
                 },
                 'action-en-dis' : {
                     execute() {
-                        this._disabled = true;
+                        this.disabled = true;
                     },
                     text : 'azione che si disabilita',
                 },
                 'action-en-vis' : {
                     execute() {
-                        this._visible = false;
+                        this.visible = false;
                     },
                     text : 'azione che si nasconde',
                 },

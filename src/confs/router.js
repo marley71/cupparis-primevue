@@ -6,29 +6,59 @@ import cImport from "@templates/app/cImport.vue";
 import CrudVars from "../lib/CrudVars";
 import CrudCore from "../lib/CrudCore";
 
-function _getModelConf(obj,key) {
-    let conf = obj();
+
+function _getManageConfInstance(obj,key) {
     let keys = key.split('.');
-    for(let i in keys) {
-        conf = conf[keys[i]];
-    }
+    let conf = keys[0];
     console.log('router. _getModelConf conf',conf,obj,keys.length)
+    if (obj[conf]instanceof Function) {
+        conf = obj[conf]();
+    } else {
+        conf = obj[conf];
+    }
     return conf;
 }
 
-function _getModelConfInsert(obj,key) {
-    let conf = obj();
+
+function _getModelConf(obj,key) {
     let keys = key.split('.');
-    for(let i in keys) {
-        conf = conf[keys[i]];
+    let conf = _getManageConfInstance(obj,key);
+    if (keys.length > 1) {
+        for(let i=1;i<keys.length;i++) {
+            conf = conf[keys[i]];
+        }
     }
-    console.log('Insert conf',conf,obj,keys.length)
-    if (!conf) {
-        conf = obj()[keys[keys.length-2]];
-        conf = conf.edit;
-        conf.type = 'v-insert';
-        delete conf.pk;
+    return conf;
+}
+
+/**
+ * qui e' un po' diverso perche' la key insert potrebbe non essere definita nel conf
+ * @param {} obj 
+ * @param {*} key 
+ * @returns 
+ */
+function _getModelConfInsert(obj,key) {
+    let keys = key.split('.');
+    let conf = _getManageConfInstance(obj,key);
+
+    // questo e' il caso standard per l'inserimento di un nuovo record quando la key e' insert
+    if (keys.length === 2 && keys[1] === 'insert') {
+        if (!conf['insert']) {
+            conf = conf.edit;
+            if (!conf) {
+                throw new Error('Insert o Edit conf not found');
+            }
+            conf.type = 'v-insert';
+            delete conf.pk;
+            return conf;
+        }
         return conf;
+    }
+    // altrimenti e' un caso di variabile custom e non faccio nessuna assunzione
+    if (keys.length > 1) {
+        for(let i=1;i<keys.length;i++) {
+            conf = conf[keys[i]];
+        }
     }
     return conf;
 }

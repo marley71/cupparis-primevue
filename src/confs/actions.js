@@ -183,8 +183,13 @@ const actionConfs = {
             text : '',
             icon : 'fa fa-edit',
             execute () {
-                let url = '/edit/' + CrudCore.pascalCase('model_'+this.viewInstance.modelName) + '.edit/' + this.modelData[this.viewInstance.primaryKey];
-                this.viewInstance.$router.push(url);
+                if (this.manageInstance) {
+                    let pk = this.modelData[this.viewInstance.primaryKey];
+                    this.manageInstance.showEdit(pk);
+                } else {    
+                    let url = '/edit/' + CrudCore.pascalCase('model_'+this.viewInstance.modelName) + '.edit/' + this.modelData[this.viewInstance.primaryKey];
+                    this.viewInstance.$router.push(url);
+                }
             }
         }
     },
@@ -200,15 +205,21 @@ const actionConfs = {
             dialogConf : null,
             execute () {
                 let ta = this;
-                let defaultConf = ta.getDefaultViewConf(ta.viewInstance.modelName,ta.viewType);
-                defaultConf.pk = ta.modelData.id;
-                return new Promise((resolve) => {
-                    CrudCore.componentDialog('v-view',defaultConf,this.dialogTitle,{
-                        hide() {
-                            resolve();
-                        }
-                    });
-                })
+                if (ta.manageInstance) {
+                    let pk = ta.modelData[ta.viewInstance.primaryKey];
+                    ta.manageInstance.showView(pk);
+                } else {
+                    let defaultConf = ta.getDefaultViewConf(ta.viewInstance.modelName,ta.viewType);
+                    defaultConf.pk = ta.modelData.id;
+                    return new Promise((resolve) => {
+                        CrudCore.componentDialog('v-view',defaultConf,this.dialogTitle,{
+                            hide() {
+                                resolve();
+                            }
+                        });
+                    })
+                }
+                
             }
         }
     },
@@ -342,8 +353,12 @@ const actionConfs = {
             icon : 'fa fa-plus',
             text : 'app.nuovo',
             execute() {
-                let url = '/insert/' + CrudCore.pascalCase('model_'+this.viewInstance.modelName) + ".insert"
-                this.viewInstance.$router.push(url);
+                if (this.manageInstance) {
+                    this.manageInstance.showInsert();
+                } else {
+                    let url = '/insert/' + CrudCore.pascalCase('model_'+this.viewInstance.modelName) + ".insert"
+                    this.viewInstance.$router.push(url);
+                }
             }
         }
     },

@@ -54,6 +54,7 @@
                          :sortOrder="getSortOrder()"
                          :loading="!loaded"
                          scrollable
+                         :key="tableKey"
                          :rowClass="rowClass"
               >
                 <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>

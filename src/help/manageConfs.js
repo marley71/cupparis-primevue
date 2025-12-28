@@ -32,7 +32,7 @@ export default {
     m3() {
         let m = JSON.parse(JSON.stringify(ModelUser));
         m.listComponentName = 'list-user';
-        m.list.actions.push('action-select');
+        //m.list.actions.push('action-select');
         m.autoUpdateHash = false;
         return m;
     },

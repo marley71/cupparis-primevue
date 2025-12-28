@@ -127,7 +127,7 @@ export default {
         return {
             modelName : 'user',
             type : 'v-list',
-            actions:['action-view'],
+            actions:['action-view','action-delete','action-insert','action-edit','action-delete-selected'],
             actionsRecordLayout : 'menubar',
             actionsRecordLayoutTitle : 'do',
             hiddenColumns : ['mainrole'],

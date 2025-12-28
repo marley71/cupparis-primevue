@@ -95,6 +95,7 @@ const viewConfs = {
             blocked : false,
             modelName : null,
             hiddenColumns : [],
+            tableKey : Date.now(),  // serve per dare una key al datatable per forzare l'aggiornamento dei valori da parte di vue
             updateHash : true,  // se true aggiorna la hash invece di fare il reload della view.
             //autoSearch : true, // se e' true la view cerca dentro l'hash se ci sono parametri di ricerca (s_{fieldName}) e li applica alla chiamata
             filterFields : {}, // se sono presenti dei fields nel formato s_{fieldName} li applica alla chiamata ajax

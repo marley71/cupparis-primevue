@@ -116,8 +116,13 @@ export default {
           this.reload();
         }
       } else {
-          let key = event.sortField;
-          this.value.sort((a, b) => {
+        const key = event.sortField;
+        if (!Array.isArray(this.value) || !key) {
+          console.warn('onSort: missing data or sortField', event);
+          return;
+        }
+
+        const sorted = [...this.value].sort((a, b) => {
               // Convertiamo entrambi in numeri
               const numA = parseFloat(a[key]);
               const numB = parseFloat(b[key]);
@@ -149,9 +154,16 @@ export default {
               }
 
 
-          });
-          console.debug('value',this.value);
-          this.tableKey = Date.now();
+        });
+        this.value = sorted;
+        this.metadata = this.metadata || {};
+        this.metadata.order = {
+          field: key,
+          direction: event.sortOrder > 0 ? 'asc' : 'desc',
+        };
+        this.setWidgetsConfig();
+        this.setActions();
+        this.tableKey = Date.now();
       }
 
     },

@@ -141,64 +141,55 @@ export default {
                 if (!actionView.execute){
                     actionView.execute = function () {
                         let thatAction = this;
-                        thatAction.manageInstance.view.pk = thatAction.modelData[thatAction.manageInstance.primaryKey];
-                        thatAction.manageInstance.viewDisplay = true;
-                        thatAction.manageInstance.viewTitle = thatAction.manageInstance.viewTitle==null?thatAction.manageInstance.translate('app.dettagli',0,null,[thatAction.manageInstance.view.pk]):thatAction.manageInstance.viewTitle;
+                        let pk = thatAction.modelData[thatAction.manageInstance.getViewList().primaryKey];
+                        thatAction.manageInstance.showView(pk);
+                        //thatAction.manageInstance.view.pk = thatAction.modelData[thatAction.manageInstance.primaryKey];
+                        //thatAction.manageInstance.viewDisplay = true;
+                        //thatAction.manageInstance.viewTitle = thatAction.manageInstance.viewTitle==null?thatAction.manageInstance.translate('app.dettagli',0,null,[thatAction.manageInstance.view.pk]):thatAction.manageInstance.viewTitle;
                     }
                 }
                 that.conf.list.actionsConfig['action-view'] = actionView;
             }
             if (that.conf.list.actions.indexOf('action-edit') >= 0) {
                 let actionEdit = that.conf.list.actionsConfig['action-edit'] || {};
-                //if (!actionEdit.execute){
+                if (!actionEdit.execute){
                     actionEdit.execute = function () {
                         let thatAction = this;
-                        thatAction.manageInstance.edit.pk = thatAction.modelData[thatAction.manageInstance.getViewList().primaryKey];
-                        thatAction.manageInstance.showEdit();
-                        
-
-                        
-                        // let confName = this.$route.params.cConf;
-                        
-                        // thatAction.manageInstance.updateHash(confName,'edit',[pk]);
+                        //thatAction.manageInstance.edit.pk = thatAction.modelData[thatAction.manageInstance.getViewList().primaryKey];
+                        let pk = thatAction.modelData[thatAction.manageInstance.getViewList().primaryKey];
+                        thatAction.manageInstance.showEdit(pk);
                     }
-                //}
+                }
                 that.conf.list.actionsConfig['action-edit'] = actionEdit;
             }
             if (that.conf.list.actions.indexOf('action-insert') >= 0) {
                 let actionInsert = that.conf.list.actionsConfig['action-insert'] || {};
-                //if (!actionInsert.execute){
+                if (!actionInsert.execute){
                     actionInsert.execute = function () {
                         let thatAction = this;
                         thatAction.manageInstance.showInsert();
-                        // let confName = thatAction.$route.params.cConf;
-                        // thatAction.manageInstance.updateHash(confName,'insert');
                     }
-                //}
+                }
                 that.conf.list.actionsConfig['action-insert'] = actionInsert;
             }
             if (that.conf.list.actions.indexOf('action-back') >= 0) {
                 let actionBack = that.conf.list.actionsConfig['action-back'] || {};
-                //if (!actionInsert.execute){
+                if (!actionInsert.execute){
                     actionBack.execute = function () {
                         let thatAction = this;
                         thatAction.manageInstance.showList();
-                        // let confName = thatAction.$route.params.cConf;
-                        // thatAction.manageInstance.updateHash(confName,'insert');
                     }
-                //}
+                }
                 that.conf.list.actionsConfig['action-back'] = actionBack;
             }
             if (that.conf.list.actions.indexOf('action-save-back') >= 0) {
                 let actionSaveBack = that.conf.list.actionsConfig['action-save-back'] || {};
-                //if (!actionInsert.execute){
+                if (!actionInsert.execute){
                     actionSaveBack.execute = function () {
                         let thatAction = this;
                         thatAction.manageInstance.showList();
-                        // let confName = thatAction.$route.params.cConf;
-                        // thatAction.manageInstance.updateHash(confName,'insert');
                     }
-                //}
+                }
                 that.conf.list.actionsConfig['action-save-back'] = actionSaveBack;
             }
         },
@@ -262,13 +253,14 @@ export default {
                 that.mode = 'list';
             }
         },
-        showEdit() {
+        showEdit(pk) {
             let that = this;
             if (that.autoUpdateHash) {
-                that.updateHash('edit','edit',[that.edit.pk]);
+                that.edit.pk = pk;
+                that.updateHash('edit','edit',[pk]);
             } else {
                 that.mode = 'edit';
-                that.edit.pk = that.edit.pk;
+                that.edit.pk = pk;
             }
         },
         showInsert() {
@@ -280,10 +272,13 @@ export default {
                 //that.insert.pk = that.insert.pk;
             }
         },
-        showView() {
+        showView(pk) {
             let that = this;
             that.mode = 'view';
-            that.view.pk = that.view.pk;
+            that.view.pk = pk;
+            that.viewDisplay = true;
+            that.viewTitle = that.viewTitle==null?that.translate('app.dettagli',0,null,[pk]):that.viewTitle;
+
         },
         /**
          * context e' un parametro che viene usato quando siamo in modalita' updateHash in questo caso infatti se abbiamo
