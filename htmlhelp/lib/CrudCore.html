@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrudCore - Cupparis PrimeVue</title>
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f5f7fa; }
+        .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 40px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .navbar a { color: white; text-decoration: none; margin-right: 20px; font-weight: 500; }
+        .navbar a:hover { text-decoration: underline; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .header { background: white; border-radius: 15px; padding: 40px; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header h1 { color: #667eea; font-size: 2.5em; margin-bottom: 10px; }
+        .section { background: white; border-radius: 15px; padding: 30px; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .section h2 { color: #667eea; font-size: 1.8em; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #667eea; }
+        .section h3 { color: #764ba2; font-size: 1.4em; margin: 25px 0 15px 0; }
+        .code-block { background: #2d2d2d; color: #f8f8f2; padding: 20px; border-radius: 8px; overflow-x: auto; margin: 20px 0; font-family: 'Courier New', monospace; font-size: 0.9em; white-space: pre-wrap; word-wrap: break-word; }
+        .code-block code { white-space: pre-wrap; word-wrap: break-word; }
+        .code-inline { background: #f4f4f4; padding: 2px 6px; border-radius: 4px; font-family: 'Courier New', monospace; color: #e83e8c; }
+        .method-list { list-style: none; margin: 15px 0; }
+        .method-list li { padding: 10px; margin: 5px 0; background: #f8f9fa; border-left: 3px solid #667eea; }
+        @media (max-width: 768px) { .container { padding: 20px 10px; } .header, .section { padding: 20px; } .header h1 { font-size: 2em; } }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="../index.html">🏠 Home</a>
+        <a href="../lib.html">📚 Librerie</a>
+        <a href="CrudCore.html">CrudCore</a>
+    </div>
+    <div class="container">
+        <div class="header">
+            <h1>🔧 CrudCore</h1>
+            <p>Libreria principale con funzioni di utilità e helper</p>
+        </div>
+        <div class="section">
+            <h2>📖 Descrizione</h2>
+            <p>CrudCore è la libreria principale che fornisce funzioni statiche di utilità utilizzate da tutti i componenti della libreria.</p>
+        </div>
+        <div class="section">
+            <h2>🔧 Metodi Principali</h2>
+            <ul class="method-list">
+                <li><strong>clone(obj)</strong>: Clona un oggetto in modo profondo, preservando funzioni e oggetti Vue</li>
+                <li><strong>translate(key, plural, params)</strong>: Traduce una chiave di testo con supporto per plurali e parametri</li>
+                <li><strong>alertSuccess(msg, time)</strong>: Mostra messaggio di successo</li>
+                <li><strong>alertError(msg, time)</strong>: Mostra messaggio di errore</li>
+                <li><strong>alertWarning(msg, time)</strong>: Mostra messaggio di warning</li>
+                <li><strong>alertInfo(msg, time)</strong>: Mostra messaggio informativo</li>
+                <li><strong>waitStart(msg)</strong>: Mostra indicatore di attesa</li>
+                <li><strong>waitEnd()</strong>: Nasconde indicatore di attesa</li>
+                <li><strong>fetchHtml(file, callback, data)</strong>: Carica file HTML con sostituzione variabili</li>
+                <li><strong>createProtocol(type)</strong>: Crea un protocollo (list o record)</li>
+                <li><strong>setupApp(app)</strong>: Configura l'app Vue con componenti, direttive e plugin</li>
+            </ul>
+        </div>
+        <div class="section">
+            <h2>📝 Funzioni di Trasformazione Stringhe</h2>
+            <ul class="method-list">
+                <li><strong>sentenceCase(str)</strong>: Converte in sentence case</li>
+                <li><strong>camelCase(str)</strong>: Converte in camelCase</li>
+                <li><strong>snakeCase(str)</strong>: Converte in snake_case</li>
+                <li><strong>pascalCase(str)</strong>: Converte in PascalCase</li>
+                <li><strong>kebabCase(str)</strong>: Converte in kebab-case</li>
+                <li><strong>titleCase(str)</strong>: Converte in Title Case</li>
+                <li><strong>upperCase(str)</strong>: Converte in UPPERCASE</li>
+                <li><strong>lowerCase(str)</strong>: Converte in lowercase</li>
+                <li><strong>upperCaseFirst(str)</strong>: Prima lettera maiuscola</li>
+            </ul>
+        </div>
+        <div class="section">
+            <h2>💡 Esempi di Utilizzo</h2>
+            <h3>Clonazione Oggetti</h3>
+            <div class="code-block">
+<code>import CrudCore from '@cupparis-lib/lib/CrudCore';
+
+// Clonare oggetto
+var original = { name: 'Mario', age: 30 };
+var cloned = CrudCore.clone(original);
+cloned.name = 'Luigi'; // original.name rimane 'Mario'</code>
+            </div>
+            <h3>Traduzione</h3>
+            <div class="code-block">
+<code>// Traduzione semplice
+var text = CrudCore.translate('app.save');
+
+// Traduzione con parametri
+var text = CrudCore.translate('app.welcome', 0, ['Mario']);
+
+// Traduzione plurale
+var text = CrudCore.translate('app.items', 1); // plurale</code>
+            </div>
+            <h3>Alert e Wait</h3>
+            <div class="code-block">
+<code>// Alert
+CrudCore.alertSuccess('Operazione completata', 3000);
+CrudCore.alertError('Errore!', 3000);
+CrudCore.alertWarning('Attenzione!', 3000);
+CrudCore.alertInfo('Informazione', 3000);
+
+// Wait
+CrudCore.waitStart('Caricamento...');
+// ... operazioni ...
+CrudCore.waitEnd();</code>
+            </div>
+            <h3>Fetch HTML</h3>
+            <div class="code-block">
+<code>CrudCore.fetchHtml('template.html', function(html) {
+    console.log(html);
+}, { name: 'Mario', age: 30 });</code>
+            </div>
+            <h3>Trasformazione Stringhe</h3>
+            <div class="code-block">
+<code>CrudCore.camelCase('hello world'); // 'helloWorld'
+CrudCore.snakeCase('Hello World'); // 'hello_world'
+CrudCore.pascalCase('hello world'); // 'HelloWorld'
+CrudCore.kebabCase('Hello World'); // 'hello-world'</code>
+            </div>
+        </div>
+        <div class="section">
+            <h2>📝 Proprietà Globali</h2>
+            <ul>
+                <li><span class="code-inline">componentItems</span>: Registro componenti Vue</li>
+                <li><span class="code-inline">useItems</span>: Registro plugin Vue</li>
+                <li><span class="code-inline">directiveItems</span>: Registro direttive Vue</li>
+                <li><span class="code-inline">globalProperties</span>: Proprietà globali Vue</li>
+                <li><span class="code-inline">defaultAlertTime</span>: Tempo default per alert (3000ms)</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -129,7 +129,7 @@ export default {
             type : 'v-list',
             actions:['action-view','action-delete','action-insert','action-edit','action-delete-selected'],
             actionsRecordLayout : 'menubar',
-            actionsRecordLayoutTitle : 'do',
+            //actionsRecordLayoutTitle : 'do',
             hiddenColumns : ['mainrole'],
             // actionsConfig:{
             //     "action-view": {
@@ -320,9 +320,9 @@ export default {
                     text: 'enabled/disabled',
                     execute() {
                         let tA = this;
-                        let dis = tA.vviewInstanceiew.getAction('action-save').disabled();
+                        let dis = tA.viewInstance.getAction('action-save')._disabled();
                         console.log('custom action',tA.viewInstance.getAction('action-save'));
-                        tA.viewInstance.getAction('action-save')._disabled = !dis;
+                        tA.viewInstance.getAction('action-save').disabled = !dis;
                         tA.messageDialog('azione custom, ora la save è ' + (dis?'ABILITATA':'DISABILITATA'));
                         return true;
                     }
@@ -634,6 +634,7 @@ export default {
         return {
             modelName : 'user',
             type : 'v-list',
+            updateHash : false,
             actions:['action-hide-column','action-show-column'],
             actionsConfig:{
                 "action-hide-column": {
@@ -674,11 +675,12 @@ export default {
         return {
             modelName : 'user',
             type : 'v-list',
+            updateHash : false,
             actions:['action-select'],
             actionsConfig : {
                 'action-select' : {
                     text : 'mod inst',
-                    type : 'w-select',
+                    //type : 'w-select',
                     domainValues : {
                         2 : 'Tutti',
                         1 : 'Bannati',

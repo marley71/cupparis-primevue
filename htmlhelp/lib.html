@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Librerie Core - Cupparis PrimeVue</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f7fa;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+            font-weight: 500;
+        }
+        
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .section h3 {
+            color: #764ba2;
+            font-size: 1.4em;
+            margin: 25px 0 15px 0;
+        }
+        
+        .section h4 {
+            color: #555;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+        
+        .section p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        .section ul, .section ol {
+            margin: 15px 0 15px 30px;
+            color: #555;
+        }
+        
+        .section li {
+            margin: 8px 0;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .code-block code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .code-inline {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e83e8c;
+            font-size: 0.9em;
+        }
+        
+        .lib-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .lib-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .lib-card:hover {
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .lib-card h4 {
+            color: #667eea;
+            margin-top: 0;
+            font-size: 1.3em;
+        }
+        
+        .lib-card p {
+            color: #666;
+            margin: 10px 0 0 0;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 10px;
+            }
+            
+            .header, .section {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .code-block {
+                font-size: 0.8em;
+                padding: 15px;
+            }
+            
+            .lib-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="index.html">🏠 Home</a>
+        <a href="cManage.html">cManage</a>
+        <a href="cImport.html">cImport</a>
+        <a href="widgets.html">Widgets</a>
+        <a href="views.html">Views</a>
+        <a href="lib.html">Librerie</a>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>📚 Librerie Core (lib)</h1>
+            <p>Funzionalità base utilizzate da tutti i componenti</p>
+        </div>
+        
+        <div class="section">
+            <h2>📖 Descrizione</h2>
+            <p>
+                La cartella <strong>lib</strong> contiene le librerie core della cupparis-primevue.
+                Queste librerie forniscono le funzionalità base utilizzate da tutti i componenti.
+            </p>
+            <p>
+                Le librerie sono progettate per essere modulari e riutilizzabili, fornendo un'API consistente
+                per operazioni comuni come chiamate HTTP, gestione route, validazione e utilità generali.
+            </p>
+        </div>
+        
+        <div class="section">
+            <h2>📦 Librerie Disponibili</h2>
+            <div class="lib-grid">
+                <a href="lib/CrudCore.html" class="lib-card">
+                    <h4>🔧 CrudCore</h4>
+                    <p>Libreria principale con funzioni di utilità e helper. Fornisce metodi per clonazione, traduzione, alert, wait e molto altro.</p>
+                </a>
+                
+                <a href="lib/CrudVars.html" class="lib-card">
+                    <h4>🌐 CrudVars</h4>
+                    <p>Variabili globali e configurazioni condivise. Contiene modelConfs, lang, icons, actionConfs e altre configurazioni globali.</p>
+                </a>
+                
+                <a href="lib/Server.html" class="lib-card">
+                    <h4>🌐 Server</h4>
+                    <p>Gestione chiamate HTTP al server. Fornisce metodi per GET, POST e gestione degli header di autenticazione.</p>
+                </a>
+                
+                <a href="lib/Route.html" class="lib-card">
+                    <h4>🛣️ Route</h4>
+                    <p>Classe per la gestione delle route verso il server. Permette di costruire chiamate API in modo flessibile con parametri e valori dinamici.</p>
+                </a>
+                
+                <a href="lib/ProtocolList.html" class="lib-card">
+                    <h4>📋 ProtocolList</h4>
+                    <p>Protocollo per gestione liste di record. Gestisce paginazione, ordinamento, filtri e formattazione risposta per liste.</p>
+                </a>
+                
+                <a href="lib/ProtocolRecord.html" class="lib-card">
+                    <h4>📄 ProtocolRecord</h4>
+                    <p>Protocollo per gestione singolo record. Gestisce chiave primaria, formattazione risposta e relazioni per record singoli.</p>
+                </a>
+                
+                <a href="lib/CrudHelpers.html" class="lib-card">
+                    <h4>🛠️ CrudHelpers</h4>
+                    <p>Funzioni helper aggiuntive. Fornisce utilità per formattazione, validazione e manipolazione dati.</p>
+                </a>
+                
+                <a href="lib/AllRules.html" class="lib-card">
+                    <h4>✅ AllRules</h4>
+                    <p>Regole di validazione disponibili. Contiene tutte le regole standard e personalizzate per la validazione dei campi.</p>
+                </a>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>💡 Utilizzo Generale</h2>
+            <p>
+                Le librerie sono importabili da <span class="code-inline">@cupparis-lib/lib/</span> o direttamente da
+                <span class="code-inline">cupparis-primevue</span>:
+            </p>
+            <div class="code-block">
+<code>// Importazione diretta
+import CrudCore from '@cupparis-lib/lib/CrudCore';
+import Server from '@cupparis-lib/lib/Server';
+import Route from '@cupparis-lib/lib/Route';
+
+// Oppure da cupparis-primevue
+import cupparisPrimevue from 'cupparis-primevue';
+const CrudCore = cupparisPrimevue.CrudCore;
+const Server = cupparisPrimevue.Server;</code>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📝 Note</h2>
+            <ul>
+                <li>Le librerie sono progettate per essere indipendenti e riutilizzabili</li>
+                <li>CrudCore fornisce funzioni statiche di utilità</li>
+                <li>Server gestisce tutte le chiamate HTTP</li>
+                <li>Route permette di costruire chiamate API in modo flessibile</li>
+                <li>CrudVars mantiene lo stato globale dell'applicazione</li>
+                <li>I protocolli definiscono il formato delle risposte API</li>
+                <li>Tutte le librerie sono documentate in dettaglio nelle rispettive pagine</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

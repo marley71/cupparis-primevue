@@ -111,7 +111,7 @@ export default {
             var that = this;
             var a = that.getRecordAction(index, name);
             if (a) {
-                a._visible = false;
+                a.visible = false;
             }
 
         },
@@ -119,7 +119,7 @@ export default {
             var that = this;
             var a = that.getRecordAction(index, name);
             if (a) {
-                a._visible = true;
+                a.visible = true;
             }
 
         },
@@ -192,6 +192,7 @@ export default {
             var r = that.createRoute('update');
             r.setValues({
                 modelName: that.modelName,
+                foormName : (that.foormName || 'edit'),
                 pk : that.value[index][that.primaryKey]
             });
 

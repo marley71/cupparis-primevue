@@ -495,10 +495,10 @@ CrudCore.waitEnd = () => {
 CrudCore.getActionConf = (name,options) => {
     let aConf = Object.assign({}, actions['default']());
     let opt = options || {};
-    //console.debug('CrudCore.getActionConf',name,options);
+    //console.debug('CrudCore.getActionConf',actions);
     let defaultActionConf = actions[name]?actions[name]():null;
     if (!defaultActionConf) {
-        console.debug('actions caso parent ',opt.actionParent ,actions[opt.actionParent])
+        //console.debug('actions caso parent ',opt.actionParent ,actions[opt.actionParent])
         if (opt.actionParent && actions[opt.actionParent]) {
             defaultActionConf = actions[opt.actionParent]();
         } else {

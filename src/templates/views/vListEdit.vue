@@ -69,7 +69,7 @@
                 </Column> -->
                 <Column :exportable="false" :header="translate('app.actions')">
                     <template #body="slotProps">
-                        <c-action :ref="'r'+slotProps.index % getPerPage()" :conf="recordActionsConf[slotProps.index % getPerPage()]" :layout="actionRecordLayout"></c-action>
+                        <c-action :ref="'r'+slotProps.index % getPerPage()" :conf="recordActionsConf[slotProps.index % getPerPage()]" :layout="actionsRecordLayout"></c-action>
                     </template>
                 </Column>
                 <Column v-for="(col) in getVisibleFields()" :field="col" :header="columnLabel(col)" :key="col" :sortable="isSortable(col)" :dir="sortDirection(col)">

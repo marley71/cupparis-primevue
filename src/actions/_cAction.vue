@@ -116,8 +116,10 @@ export default {
             for (let name in actions) {
                 // Crea una copia dell'oggetto action invece di modificarlo direttamente
                 // per evitare loop infiniti di reattività
+                let text = actions[name].text?that.translate(actions[name].text):that.translate('actions.'+name);
+                console.log('menubarlabel',name,text);
                 let actionCopy = Object.assign({}, actions[name]);
-                actionCopy.label = that.translate(actions[name].text);
+                actionCopy.text = text;
                 actionCopy.action = name;
                 actionCopy.actionClass = (actions[name].actionClass?actions[name].actionClass:'');
                 actionCopy.actionClass += ' w-full';

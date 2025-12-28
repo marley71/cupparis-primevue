@@ -23,7 +23,7 @@
                         </div>
                     </div>
                     <div class="">
-                        <h6>Configurazione di default {{ viewType }}</h6>
+                        <h6>Configurazione di default <span class="font-bold">{{ importSelected }}</span></h6>
                         <div id="defaultCode" class="h-40 w-full">
 
                         </div>
@@ -111,8 +111,8 @@ export default {
                 this.editor.setValue('var conf = ' + this.dynamicCode);
             }
 
-            // this.viewType = that.viewsConf[that.vSelected].type;
-            // let defaultConf = jsc.getViewDefaultConf(this.viewType);
+            // this.importSelected = that.viewsConf[that.vSelected].type;
+            // let defaultConf = jsc.getViewDefaultConf(this.importSelected);
             // that.defaultCode = jsc.getSourceCode(defaultConf);
             // if (this.editorDefault) {
             //     that.editorDefault.setValue('var conf = ' + that.defaultCode)

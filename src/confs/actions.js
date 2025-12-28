@@ -290,7 +290,7 @@ const actionConfs = {
             css: '',
             text: '',
             icon: 'fa fa-save',
-            _visible: false,
+            visible: false,
             execute (event) {
                 let tA = this;
                 return new Promise(function (resolve,reject) {
@@ -336,7 +336,7 @@ const actionConfs = {
             css: '',
             //text : 'back',
             icon : 'fa fa-arrow-left',
-            _visible : false,
+            visible : false,
             execute : function () {
                 var that = this;
                 that.viewInstance.setViewMode(that.index);

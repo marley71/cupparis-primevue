@@ -19,16 +19,18 @@ import CrudVars from '../../lib/CrudVars';
 //import {Select}  from "primevue/select";
 // import cupparisPrimevue from "cupparis-primevue"
 // const aBase = cupparisPrimevue.aBase;
-CrudVars.actionConfs['action-select'] = {
-    type : 'global',
-    //controlType : 'select',
-    text : 'prova',
-    domainValues : {},
-    domainValuesOrder : null,
-    value : null,
-    placeholder : '',
-    execute() {
-        this.alertInfo('valore selezionatoeeee ' + this.value,3000)
+CrudVars.actionConfs['action-select'] = () => {
+    return {
+        actionType : 'collection',
+        //controlType : 'select',
+        text : 'prova',
+        domainValues : {},
+        domainValuesOrder : null,
+        value : null,
+        placeholder : '',
+        execute() {
+            this.alertInfo('valore selezionatoeeee ' + this.value,3000)
+        }
     }
 }
 

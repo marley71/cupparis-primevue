@@ -71,7 +71,7 @@ export default {
         },
         searchList(event) {
             console.log('searchList',event,this.$refs);
-            this.$refs.muList.instance().setParams(event);
+            this.$refs.muList.setParams(event,true);
         },
     }
 }
