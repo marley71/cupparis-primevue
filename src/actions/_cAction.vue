@@ -9,7 +9,6 @@ export default {
     props: {
         'whitelist': Array,
         'blacklist': Array,
-        //'menubarTitle': String,
     },
     data() {
         let that = this;
@@ -127,7 +126,9 @@ export default {
                 actionCopy.text = text;
                 actionCopy.action = name;
                 actionCopy.actionClass = (actions[name].actionClass?actions[name].actionClass:'');
-                actionCopy.actionClass += ' w-full';
+                actionCopy.actionClass += ' w-full text-left';
+                
+                actionCopy.index = actions[name].index;
                 items.push(actionCopy);
             }
             //console.log('menubar', items, that.conf);

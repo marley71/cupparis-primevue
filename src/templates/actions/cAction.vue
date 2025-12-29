@@ -12,17 +12,14 @@
         </ButtonGroup>
     </template>
     <template v-else-if="layout==='menubar'">
-        <Menubar :model="menubarActions" class="w-full text-left">
-            <!-- <template v-if="menubarTitle" #start>
-                <span>{{ menubarTitle }}</span>
-            </template> -->
-            <template #item="{ item, root }">
-                <a-base v-if="!root" :ref="item.action" :conf="getConf(item,item.action)"></a-base>
-                <div v-else class="cursor-pointer p-1">
-                    {{ item.label }}&nbsp;<i class="fa fa-angle-down"></i>
-                </div>
-            </template>
-        </Menubar>
+        <div class="card flex justify-center">
+            <Button class="p-button-sm" type="button" icon="fa fa-list" @click="$refs['menuRef' + index].toggle($event)" aria-haspopup="true" aria-controls="overlay_menu" :label="menubarTitle"/>
+            <Menu :ref="'menuRef' + index" :model="menubarActions" class="text-left" :popup="true">
+                <template #item="{ item }">
+                    <a-base :ref="item.action" :conf="getConf(item,item.action)"></a-base>
+                </template>
+            </Menu>
+        </div>
     </template>
     <template v-else>
         <div>
@@ -42,6 +39,27 @@ export default {
     components: {ABase},
     extends: _cAction,
 }
+
+/*
+<Menubar v-if="false" :model="menubarActions" class="w-full text-left">
+            <!-- <template v-if="menubarTitle" #start>
+                <span>{{ menubarTitle }}</span>
+            </template> -->
+            <template #item="{ item, root }">
+                <!-- <a-base v-if="!root" :ref="item.action" :conf="getConf(item,item.action)"></a-base> -->
+                 <div>aaa</div>
+                <!-- <div v-if="!root">{{ item.label }}</div>
+                <div v-else class="cursor-pointer p-1">
+                    <i class="fa fa-list"></i>&nbsp;
+                    {{ item.label }}&nbsp;<i class="fa fa-angle-down"></i>
+                </div> -->
+            </template>
+        </Menubar>
+
+
+*/
+
+
 </script>
 
 <style scoped>

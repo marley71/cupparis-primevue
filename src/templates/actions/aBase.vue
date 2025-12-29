@@ -10,11 +10,9 @@
             />
         </template>
         <template v-else-if="type =='link' && _visible()">
-            <Button :title="translate(title)" :label="_text()"
+            <Button :title="translate(title)"
                     :class=getActionClass()
-                    :icon="_icon()"
                     :disabled="_disabled()"
-                    @click="execute($event)"
             >
             <a v-if="externalLink" :href="_href()" :target="target" :title="translate(title)" :disabled="_disabled()">
                 <i v-if="_icon()" :class="_icon()"></i>

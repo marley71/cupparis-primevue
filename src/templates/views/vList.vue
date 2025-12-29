@@ -61,8 +61,7 @@
                 <Column v-if="getRecordActionsPosition() == 'start' && hasRecordActions()" :exportable="false"
                         :header="translate('app.actions')">
                   <template #body="slotProps">
-                    <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
-                              :layout="actionsRecordLayout" :menubar-title="actionsRecordLayoutTitle"></c-action>
+                    <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"></c-action>
                   </template>
                 </Column>
                 <Column v-for="(col) in getVisibleFields()" :field="col" :header="columnLabel(col)" :key="col"
@@ -75,8 +74,7 @@
                 <Column v-if="getRecordActionsPosition() == 'end' && hasRecordActions()" :exportable="false"
                         :header="translate('app.actions')">
                   <template #body="slotProps">
-                    <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"
-                              :layout="actionsRecordLayout" :menubar-title="actionsRecordLayoutTitle"></c-action>
+                    <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"></c-action>
                   </template>
                 </Column>
 
