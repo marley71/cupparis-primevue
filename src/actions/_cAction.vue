@@ -22,16 +22,20 @@ export default {
         //console.log("ALYOUT:::",cf);
         cf.layout = cf.layout?cf.layout:'buttons';
         // menubarActions verrà calcolato come computed property per evitare problemi di reattività
+        cf.menubarActions = {};
+        if (cf.layout === 'menubar') {
+            cf.menubarActions = that.getMenubarActions();
+        }
         return cf;
     },
-    computed: {
-        menubarActions() {
-            if (this.layout === 'menubar') {
-                return this.getMenubarActions();
-            }
-            return null;
-        }
-    },
+    // computed: {
+    //     menubarActions() {
+    //         if (this.layout === 'menubar') {
+    //             return this.getMenubarActions();
+    //         }
+    //         return null;
+    //     }
+    // },
     methods: {
 
         getConf(actionConf, actionKey) {
@@ -119,6 +123,7 @@ export default {
                 let text = actions[name].text?that.translate(actions[name].text):that.translate('actions.'+name);
                 //console.log('menubarlabel',name,text);
                 let actionCopy = Object.assign({}, actions[name]);
+                //var actionCopy = CrudCore.clone(actions[name]);
                 actionCopy.text = text;
                 actionCopy.action = name;
                 actionCopy.actionClass = (actions[name].actionClass?actions[name].actionClass:'');

@@ -6,6 +6,8 @@ import CrudCore from "../lib/CrudCore";
 export default {
     name: "_cImport",
     extends : CrudComponent,
+    emits: ['upload-ready','file-upload-selected','data-loaded','data-saved'],
+
     mounted() {
         let that = this;
         setTimeout(function () {
@@ -87,14 +89,24 @@ export default {
                 }
             }
 
-
+            // aggangio il widget upload-ajax al view upload
             userConf.modelName = that.providerName;
             let confUpload = that._defaultUploadConf();
             let rsName = confUpload.name;
             if (userConf.fields.indexOf(rsName) < 0)
                 userConf.fields.push(rsName);
             userConf.fieldsConfig[rsName] = confUpload;
-            console.log('UPLOAD VIEW',userConf)
+            console.log('UPLOAD VIEW',userConf);
+            // emetto l'evento upload-ready al view upload
+            let _fafterDraw = userConf.afterDraw || function () {};
+            userConf.afterDraw = function () {
+                let thatView = this;
+                _fafterDraw.apply(thatView);
+                that.$emit('upload-ready',thatView);
+                if (that.conf.uploadReady && typeof that.conf.uploadReady==='function') {
+                    that.conf.uploadReady.apply(that,[thatView]);
+                }
+            }
             return  userConf;
         },
         _defaultUploadConf() {
@@ -124,6 +136,10 @@ export default {
                     var viewUpload = thatImport.$refs.viewUpload;
                     console.log('viewUpload action-save aaaa', viewUpload.getAction('action-save'))
                     viewUpload.getAction('action-save').disabled = false;
+                    thatImport.$emit('file-upload-selected',viewUpload);
+                    if (thatImport.conf.uploadSelected && typeof thatImport.conf.uploadSelected==='function') {
+                        thatImport.conf.uploadSelected.apply(thatImport,[viewUpload]);
+                    }
                 },
             }
             confUpload = Object.assign(confUpload,(conf.confUpload || {}));
@@ -210,13 +226,18 @@ export default {
             let checkError = that.checkJobError(json);
             if (checkError.error ) {
                 that.progressEnabled = false;
-                that.errorDialog(checkError.msg);
+                that.errorDialog(checkError.msg,{},{
+                    ok() {
+                        this.hide();
+                        that.reset();
+                    }
+                });
                 that.setStatus(true);
                 if (that.timerStatus) {
                     clearInterval(that.timerStatus);
                     that.timerStatus = null;
                 }
-                that.reset();
+                
                 return ;
             }
             if (json.job.end) {
@@ -232,6 +253,10 @@ export default {
                     //that.modelName = that.csvProviderName;
                 }
                 if (that.step == 'saving') {
+                    that.$emit('data-saved',that.getSaveView());
+                    if (that.conf.dataSaved && typeof that.conf.dataSaved==='function') {
+                        that.conf.dataSaved.apply(that,[that.getSaveView()]);
+                    }
                     that.reset();
                     that.alertSuccess('Dati salvati',3000);
                 }
@@ -286,6 +311,17 @@ export default {
             // userConf.constraintKey = 'datafile_id';
             // userConf.constraintValue = that.jobId;
             console.debug('import list conf',userConf);
+
+// emetto l'evento upload-ready al view upload
+            let _fafterDraw = userConf.afterDraw || function () {};
+            userConf.afterDraw = function () {
+                let thatView = this;
+                _fafterDraw.apply(thatView);
+                that.$emit('data-loaded',that.getListView());
+                if (that.conf.dataLoaded && typeof that.conf.dataLoaded==='function') {
+                    that.conf.dataLoaded.apply(that,[that.getListView()]);
+                }
+            }
             return userConf;
         },
         _saveConf() {
@@ -336,6 +372,15 @@ export default {
             this.importStatus = 'upload';
             this.uploadEnabled = true;
             this.saveEnabled = false;
+        },
+        getUploadView() {
+            return this.$refs.viewUpload;
+        },
+        getListView() {
+            return this.$refs.viewList;
+        },
+        getSaveView() {
+            return this.$refs.viewSave;
         },
       /**
        * questa funzione normalizza la configurazione che mi arriva e restituisco solo i dati che devono essere realmente reactive

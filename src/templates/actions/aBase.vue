@@ -10,14 +10,22 @@
             />
         </template>
         <template v-else-if="type =='link' && _visible()">
-            <a v-if="externalLink" :class="getActionClass()" :href="_href()" :target="target" :title="translate(title)" :disabled="_disabled()">
+            <Button :title="translate(title)" :label="_text()"
+                    :class=getActionClass()
+                    :icon="_icon()"
+                    :disabled="_disabled()"
+                    @click="execute($event)"
+            >
+            <a v-if="externalLink" :href="_href()" :target="target" :title="translate(title)" :disabled="_disabled()">
                 <i v-if="_icon()" :class="_icon()"></i>
                 {{_text()}}
             </a>
+            
             <router-link v-else :class="getActionClass()" :to="_href()" :conf="conf" :target="target" :title="translate(title)" :disabled="_disabled()" >
                 <i v-if="_icon()" :class="_icon()"></i>
                 {{_text()}}
             </router-link>
+        </Button>
         </template>
         <template v-else-if="type  && _visible()">
             <component :is="type" :conf="conf" :disabled="_disabled()"></component>

@@ -32,12 +32,12 @@
                     </div>
                 </ProgressBar>
             </div>
-            <div v-if="step=='tosave'">
+            <div v-if="['tosave','load'].indexOf(step) >= 0" >
                 <div>{{ conf.importLoadingSuccess?translate(conf.importLoadingSuccess):translate('app.import-loading-success') }}</div>
                 <hr/>
-                <v-record :conf="_saveConf()"></v-record>
-                <v-datafile-list :conf="_listConf()">
-                </v-datafile-list>
+                <v-record v-if="step=='tosave'" :conf="_saveConf()" ref="viewSave"></v-record>
+                <!-- <v-datafile-list :conf="_listConf()"></v-datafile-list> -->
+                <v-list :conf="_listConf()" ref="viewList"></v-list>
             </div>
         </template>
     </Card>
