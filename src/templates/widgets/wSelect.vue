@@ -40,7 +40,7 @@ export default {
     onShow() {
       // in popup  devo aumentare lo z-index altrimenti capita di sotto
       if (this.inPopup) {
-        document.querySelector('.p-select-overlay').style['z-index'] = 10000;
+        document.querySelector('.p-select-overlay').style['z-index'] = this.zIndexPopup;
       }
     }
   }

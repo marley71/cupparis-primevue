@@ -18,6 +18,7 @@ const defaultConf = () => {
         inPopup : false, // per alcuni controlli permette di eseguire css se visualizzati in popup
         bind : null,
         bind_all_data : false,
+        zIndexPopup : 10000, // per alcuni controlli permette di eseguire css se visualizzati in popup
     }
 }
 
