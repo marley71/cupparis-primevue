@@ -151,26 +151,9 @@ CrudCore.createProtocol = function (type) {
     }
 }
 CrudCore.setupApp = function (app) {
-    // Keep any PrimeVue configuration already registered on the host app (theme, ripple, etc.)
-    //const existingPrimeVueConfig = CrudCore.globalProperties && CrudCore.globalProperties.$primevue ? CrudCore.globalProperties.$primevue.config : null;
 
     for (let k in CrudCore.useItems) {
         let item = CrudCore.useItems[k];
-
-        // if (k === 'PrimeVue') {
-        //     // Avoid reinstalling PrimeVue on the main app and reuse its config for auxiliary apps (dialogs, etc.)
-        //     if (app.config.globalProperties.$primevue) {
-        //         continue;
-        //     }
-        //     const primeVueOptions = existingPrimeVueConfig || item.param;
-        //     if (primeVueOptions) {
-        //         app.use(item.obj, primeVueOptions);
-        //     } else {
-        //         app.use(item.obj);
-        //     }
-        //     continue;
-        // }
-
         if (item.param) {
             app.use(item.obj,item.param)
         } else {
@@ -186,8 +169,8 @@ CrudCore.setupApp = function (app) {
         app.component(k,CrudCore.componentItems[k])
     }
     CrudCore.globalProperties = app.config.globalProperties;
-    console.debug('globalProperties',CrudCore.globalProperties)
-    console.debug('componentItems',CrudCore.componentItems);
+    //console.debug('globalProperties',CrudCore.globalProperties)
+    //console.debug('componentItems',CrudCore.componentItems);
 }
 
 var _cloneObj = function (item) {

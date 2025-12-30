@@ -19,7 +19,7 @@
                 {{_text()}}
             </a>
             
-            <router-link v-else :class="getActionClass()" :to="_href()" :conf="conf" :target="target" :title="translate(title)" :disabled="_disabled()" >
+            <router-link v-else :to="_href()" :conf="conf" :target="target" :title="translate(title)" :disabled="_disabled()" >
                 <i v-if="_icon()" :class="_icon()"></i>
                 {{_text()}}
             </router-link>
