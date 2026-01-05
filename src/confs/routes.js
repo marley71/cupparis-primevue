@@ -33,7 +33,7 @@ const routeConfs = {
     },
     insert: {
         method: "get",
-        url:'/foorm/{modelName}/new',
+        url:'/foorm/{modelName}/new/{foormName?}',
         resultType: 'record',
         protocol: 'record',
         type: 'create',
