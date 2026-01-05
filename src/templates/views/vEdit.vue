@@ -160,6 +160,7 @@
 
         </form>
         <div class="w-full mt-4">
+          <Divider></Divider>
           <c-action ref="actions" :conf="recordActionsConf" :whitelist="getActionsWhitelist()" layout="buttons"></c-action>
         </div>
       </slot>
