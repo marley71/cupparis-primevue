@@ -80,7 +80,7 @@ Server.post = function (url, params, callback) {
         contentType = false;
         processData = false;
     }
-    console.log('serverPost', (params instanceof FormData), contentType, processData);
+    //console.log('serverPost', (params instanceof FormData), contentType, processData);
     axios.post(realUrl, params, {
         headers: Server.getHearders()
     }).then((response) => {
@@ -121,7 +121,7 @@ Server.get = function (url, params, callback) {
     } else {
         _data = params;
     }
-    console.log('Server.get _data', _data, contentType, processData, realUrl, Server.getHearders());
+    //console.log('Server.get _data', _data, contentType, processData, realUrl, Server.getHearders());
 
     axios.get(realUrl, {
         headers: Server.getHearders(),
@@ -135,7 +135,7 @@ Server.get = function (url, params, callback) {
     }).catch((error) => {
         callback({error: 1, msg: error});
     })
-    console.log('serverGet', (params instanceof FormData), contentType, processData, params, realUrl);
+    //console.log('serverGet', (params instanceof FormData), contentType, processData, params, realUrl);
 };
 
 Server.route = function (route, callback) {
@@ -144,7 +144,7 @@ Server.route = function (route, callback) {
     };
     var realUrl = route.getUrl();
     var params = route.getParams();
-    console.debug('route params', params);
+    //console.debug('route params', params);
     Server[route.getMethod()](realUrl, params, function (json) {
         __cb(json);
     })

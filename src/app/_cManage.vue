@@ -90,7 +90,7 @@ export default {
             that.conf.baseRouteName = 'manage';
         }
         that.conf.custom = that.conf.custom || {};
-        that.conf.custom.autoload = false;
+        //that.conf.custom.autoload = false;
         
         that.conf.editComponentName = that.conf.editComponentName || 'v-edit';
         that.conf.listComponentName = that.conf.listComponentName || 'v-list';
@@ -289,12 +289,12 @@ export default {
         showCustom(context) {
             let that = this;
             console.debug('showCustom',that.autoUpdateHash)
-            that.mode = 'custom';
             if (that.autoUpdateHash) {
                 that.updateHash('custom','custom',(context || []));
             } else {
                 that.custom.manageInstance = this;
                 that.custom.context = context;
+                that.mode = 'custom';
             }
         },
 

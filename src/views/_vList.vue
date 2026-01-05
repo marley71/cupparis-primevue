@@ -611,7 +611,14 @@ export default {
       } else {
         console.warn('widget', field, 'is not hidden column');
       }
-    }
+    },
+    getWidget (row, key) {
+        let realKey = 'w'+(parseInt(row) % this.getPerPage()) +'_'+key
+        console.debug('vList.getWidget',row,realKey,this.$refs[realKey],Array.isArray(this.$refs[realKey]))
+        return Array.isArray(this.$refs[realKey])?this.$refs[realKey][0]:this.$refs[realKey];
+        // var wConf = this.widgetsEditConfig[row][key];
+        // return this.store.cRefs[wConf.cRef];
+    },
   }
 }
 </script>

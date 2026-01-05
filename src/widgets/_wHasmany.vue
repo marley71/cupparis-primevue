@@ -265,9 +265,10 @@ export default {
                 'action-delete': Object.assign({
                     actionType : 'record',
                     execute() {
+                        let thatA = this;
                         CrudCore.confirmDialog('app.conferma-cancellazione',{},{
                             ok() {
-                                that.removeItem(this.index);
+                                that.removeItem(thatA.index);
                             }
                         })
                         
