@@ -1,5 +1,5 @@
 <template>
-  <Galleria v-if="Array.isArray(value)" :value="value" :numVisible="5" containerStyle="min-width:150px;max-width: 200px"
+  <Galleria v-if="Array.isArray(value)" :value="value" :numVisible="5" :containerStyle="containerStyle()"
             :showThumbnails="false" :showIndicators="showIndicators()" :changeItemOnIndicatorHover="true">
     <template #item="slotProps">
       <img :src="srcUrl(slotProps.item.resource.url)" :alt="slotProps.item.nome" class="w-full block" />
@@ -25,6 +25,12 @@ export default {
   methods: {
     showIndicators() {
       return this.value.length > 1;
+    },
+    containerStyle() {
+      if (this.containerStyleClass) {
+        return this.containerStyleClass;
+      }
+      return 'min-width:150px;max-width: 200px';
     }
   }
 }
