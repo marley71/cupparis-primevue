@@ -1,92 +1,72 @@
-
 <script>
 import Server from "../lib/Server";
 import _wBase from './_wBase.vue';
 
 export default {
-    name: "_wSwap",
-    extends: _wBase,
-    props: {
-        //modelValue: String,
-        conf : Object,
+  name: "_wSwap",
+  extends: _wBase,
+  props: {
+    //modelValue: String,
+    conf: Object,
+  },
+  data() {
+    let rData = this._loadReactiveData(this.conf);
+    let bValue = Boolean(rData.value);
+    let inverse = this.isInverse();
+    rData.toggleValue = inverse ? !bValue : bValue;
+    return rData;
+  },
+  methods: {
+    setRouteValues: function (route) {
+      var that = this;
+      route.setValues({
+        modelName: that.modelName,
+      });
+      route.setParams({
+        id: that.modelData.id,
+        field: that.name,
+        value: that.valueToPass(),
+      });
+      return route;
     },
-    data () {
-      let rData = this._loadReactiveData(this.conf);
-      rData.toggleValue = rData.value?true:false;
-      return rData;
+    _swap: function () {
+      var that = this;
+      if (that.isAjax) {
+        var r = that.createRoute(that.routeName);
+        that.setRouteValues(r);
+        that.waitStart()
+        Server.route(r, function (json) {
+          that.waitEnd();
+          that.json = json;
+          if (json.error) {
+            that.errorDialog(json.msg);
+            return;
+          }
+          that.value = that.valueToPass();
+          that.change();
+        })
+      } else {
+        that.value = that.valueToPass();
+        that.change();
+      }
+
     },
-    methods: {
-        _ready() {
-            var that = this;
-            var keys = Object.keys(that.domainValues);
-            that.currentIndex = keys.indexOf(''+that.value);
-            that.toggleActive = that.currentIndex?true:false;
-            if (this.ready) {
-                this.ready.apply(this);
-            }
-            //console.log('index e toggle ',that.currentIndex,that.toggleActive,keys,that.value,that.domainValues);
-        },
-        setRouteValues: function (route) {
-            var that = this;
-            route.setValues({
-                modelName: that.modelName,
-            });
-            route.setParams({
-                id: that.modelData.id,
-                field: that.name,
-                value: that.toggleValue?1:0,
-            });
-            return route;
-        },
-        _swap: function () {
-            var that = this;
-            if (that.isAjax) {
-                var r = that.createRoute(that.routeName);
-                that.setRouteValues(r);
-                that.waitStart()
-                Server.route(r, function (json) {
-                    that.waitEnd();
-                    that.json = json;
-                    if (json.error) {
-                        that.errorDialog(json.msg);
-                        return;
-                    }
-                    that.value = that.toggleValue?1:0;
-                    that.change();
-                })
-            } else {
-                that.value = that.toggleValue?1:0;
-                that.change();
-            }
-
-        },
-        swap(event) {
-            var that = this;
-            console.log('event',event)
-            // event.preventDefault();
-            that._swap();
-        },
-        /**
-         * sposta l'indice di uno e restituisce il valore successivo
-         * @private
-         */
-        _getNext() {
-            var that = this;
-            window.SW = this;
-            var keys = Object.keys(that.domainValues);
-            var newIndex = (that.currentIndex + 1) % keys.length;
-            //console.log('_getNext','value',keys[newIndex], 'index', newIndex);
-            that.currentIndex = newIndex;
-            return keys[newIndex];
-        },
-
-        getFieldName() {
-            return this.name;
-        },
-        getValue() {
-            return this.value;
-        },
+    swap(event) {
+      var that = this;
+      console.log('event', event)
+      // event.preventDefault();
+      that._swap();
+    },
+    isInverse() {
+      return Boolean(this.conf.dataSwitched);
+    },
+    valueToPass() {
+      var that = this;
+      let value = Boolean(that.toggleValue);
+      return that.isInverse() ? !value : value;
     }
+
+  }
 }
 </script>
 
