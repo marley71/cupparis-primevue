@@ -68,6 +68,7 @@ export default {
         load() {
             //console.debug('AAA _vBase.load',this.type);
             let that = this;
+            that._ready();
             that._beforeSetRouteValues();
             that.setRouteValues();
             that._afterSetRouteValues();
@@ -85,6 +86,12 @@ export default {
                 that.draw();
                 that._afterDraw();
             });
+        },
+
+        _ready() {
+            if (this.ready) {
+                this.ready.apply(this);
+            }
         },
 
         _beforeDraw() {
@@ -319,9 +326,9 @@ export default {
         let that = this;
         let params = {};
         let context = that.$route.params.context;
-        let listParams = (context && context.filter(a => a.indexOf('s_') == 0)) || [];
-        let pageParam = context && context.filter( a => a.indexOf('page') == 0);
-        let orderParam = context && context.filter( a => a.indexOf('order_') == 0);
+        let listParams = (context && Array.isArray(context) && context.filter(a => a.indexOf('s_') == 0)) || [];
+        let pageParam = context && Array.isArray(context) && context.filter( a => a.indexOf('page') == 0);
+        let orderParam = context && Array.isArray(context) && context.filter( a => a.indexOf('order_') == 0);
 
         listParams = pageParam?listParams.concat( pageParam) : listParams;
         listParams = orderParam?listParams.concat( orderParam) : listParams;

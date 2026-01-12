@@ -152,20 +152,20 @@
         </template>
     </template>
     <template v-else-if="hasmanyType==='panel'">
-        <Button class="p-button-outlined p-1" type="button" icon="fa-solid fa-circle-chevron-down" :label="label"
+        <Button class="p-button-outlined p-1 p-button-sm" type="button" icon="fa-solid fa-circle-chevron-down" :label="label"
                 @click="toggle"/>
         <Popover ref="op">
             <table class="w-full table p-1">
                 <thead>
                     <tr>
-                        <td v-for="field in _getPanelFields()" :key="field">
+                        <td class="px-1" v-for="field in _getPanelFields()" :key="field">
                             <b>{{ _getFieldLabel(field) }}</b>
                         </td>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(data,index) in value" :key="index">
-                        <td v-for="field in _getPanelFields()" :key="field" v-html="_getColumnValue(index,field)">
+                        <td class="px-1" v-for="field in _getPanelFields()" :key="field" v-html="_getColumnValue(index,field)">
                         </td>
                     </tr>
                 </tbody>

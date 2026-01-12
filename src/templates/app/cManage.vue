@@ -32,8 +32,8 @@
                 </span>
         </h5>
       </template>
-      <div v-if="sectionTitle" class="p-card-subtitle">
-        {{ sectionTitle }}
+      <div v-if="sectionTitle" class="p-card-subtitle" v-html="sectionTitle">
+        
       </div>
       <div>
         <div v-if="mode==='list'">

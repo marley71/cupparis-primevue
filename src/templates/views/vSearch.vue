@@ -66,7 +66,7 @@
 
                 <div class="grid grid-cols-12">
                   <template v-for="field in getAdvancedFields()" :key="field">
-                    <div class="py-3" :class="getWidgetLayout(field,'colClass')">
+                    <div class="py-3 px-1" :class="getWidgetLayout(field,'colClass')">
                       <v-record-widget :field="field" :ref="'fields-'+field" :labelInfo="getLabelInfo(field)"
                                        :widgetConfig="widgetsConfig[field]">
                       </v-record-widget>
