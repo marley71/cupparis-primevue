@@ -14,7 +14,7 @@
     <template v-else-if="layout==='menubar'">
         <div class="card flex justify-center">
             <Button class="p-button-sm" type="button" icon="fa fa-list" @click="$refs['menuRef' + index].toggle($event)" aria-haspopup="true" aria-controls="overlay_menu" :label="menubarTitle"/>
-            <Menu :ref="'menuRef' + index" :model="menubarActions" class="text-left" :popup="true">
+            <Menu :ref="'menuRef' + index" :model="menubarActions" :popup="true">
                 <template #item="{ item }">
                     <a-base :ref="item.action" :conf="getConf(item,item.action)"></a-base>
                 </template>

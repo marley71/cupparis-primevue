@@ -267,6 +267,7 @@ export default class WrapperConf {
         return conf;
     }
     wDateText(conf) {
+        conf.locale = conf.locale || null;
         conf.prefix = conf.prefix || null;
         conf.iconPrefix = conf.iconPrefix || null;
         conf.suffix = conf.suffix || null;

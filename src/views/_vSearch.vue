@@ -44,16 +44,16 @@ export default {
           let config = that.fieldsConfig[fieldName] || {};
           config.value = searchParams[key];
           that.fieldsConfig[fieldName] = config;
-          console.debug('has fieldName', fieldName, config)
+          //console.debug('has fieldName', fieldName, config)
         }
         that.route.setParam(key, searchParams[key]);
 
       }
-      console.debug(that.fields, 'search manageHashParams', JSON.parse(JSON.stringify(that.fieldsConfig)));
+      //console.debug(that.fields, 'search manageHashParams', JSON.parse(JSON.stringify(that.fieldsConfig)));
     },
 
     search(type, event) {
-      console.debug('type', type, event);
+      //console.debug('type', type, event);
       // gestione evento change e submit della form
       if (event) {
         event.preventDefault();
@@ -76,7 +76,7 @@ export default {
     },
     setHash(formData) {
       let that = this;
-      console.debug('setHash', that.$route, formData);
+      //console.debug('setHash', that.$route, formData);
       let currentParams = {...this.$route.params};
       let routeName = this.$route.name;
       //
@@ -217,16 +217,16 @@ export default {
       } else {
         searchParams = that.getSearchParams();
       }
-      console.debug('searchParams', searchParams);
+      //console.debug('searchParams', searchParams);
       for (let key in searchParams) {
         if (that.isSpecialField(key)) {
           that.setSpecialField(key, searchParams[key]);
         } else {
           let fieldName = key.substring(2); // tolgo il prefisso s_{fieldName}
-          console.debug('searchParams', that.fields, fieldName);
+          //console.debug('searchParams', that.fields, fieldName);
           if (that.fields.indexOf(fieldName) >= 0) {
             let w = this.getWidget(fieldName);
-            console.debug('searchParams', w, fieldName);
+            //console.debug('searchParams', w, fieldName);
             if (w) {
               w.setValue(searchParams[key]);
             }

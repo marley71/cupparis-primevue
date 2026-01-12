@@ -55,6 +55,7 @@
                          :key="tableKey"
                          :rowClass="rowClass"
                          :class="datatableClass"
+                         :stripedRows="true"
               >
                 <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>
                 <Column v-if="getRecordActionsPosition() == 'start' && hasRecordActions()" :exportable="false"
@@ -113,7 +114,7 @@
                          :loading="!loaded"
                          :key="tableKey"
                          :rowClass="rowClass"
-
+                          :stripedRows="true"
 
               >
                 <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>

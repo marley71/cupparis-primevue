@@ -7,13 +7,13 @@ export default {
     name: '_wAutocomplete',
     extends : _wBase,
     mounted() {
-      console.log('mounted _wAutocomplete',this.conf);
+      //console.log('mounted _wAutocomplete',this.conf);
       if (this.conf.referredData) {
           // let label = 'label'
           // conf.autocompleteValue  = conf.referredData[label]; //conf.referredData;
           this.autocompleteValue = this.__initialValue();
           this.suggestions = [this.conf.referredData];
-          console.log('autocompleteValue',this.conf.referredData);
+          //console.log('autocompleteValue',this.conf.referredData);
       }
     },  
   methods: {
@@ -69,7 +69,7 @@ export default {
       if (that.conf.reset) {
         return that.conf.reset.apply(this,[event]);
       }
-      console.debug('reset w-autocomplete',that.value,that.autocompleteValue,that);
+      //console.debug('reset w-autocomplete',that.value,that.autocompleteValue,that);
       that.value = null;
       that.autocompleteValue = null;
     },

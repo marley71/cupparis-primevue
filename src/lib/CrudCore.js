@@ -397,11 +397,12 @@ CrudCore.confirmDialog = function(msg,props,callbacks) {
     });
 }
 
-CrudCore.inputDialog = function (msg,defaultValue,widgetConf) {
+CrudCore.inputDialog = function (msg,defaultValue,widgetConf,title) {
     return new Promise((resolve) => {
         __dialog('input',msg,{
             value : defaultValue,
             widgetConf : widgetConf,
+            title : title?title:null,
         },{
             ok() {
                 let that = this;
@@ -661,7 +662,7 @@ CrudCore.fetchHtml = function (htmlFile,callback,data) {
                 throw new Error('Network response was not ok');
             }
             response.text().then(htmlText => {
-                console.debug('data',data);
+                console.debug('fetchHtml data',data);
                 const regex = /{{\s*([^{}\s]+(\.[^{}\s]+)?)\s*}}/g;
                 let tmp = htmlText.replace(regex, (match, key) => {
                     // Suddividi la chiave per punti
