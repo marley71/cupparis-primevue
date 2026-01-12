@@ -166,14 +166,14 @@ export default {
        */
       bgUrl(url) {
           let realUrl = url;
-          if (import.meta.env.VITE_APP_TARGET) {
+        if (import.meta.env.VITE_MODE === 'local' && import.meta.env.VITE_APP_TARGET) {
             realUrl = import.meta.env.VITE_APP_TARGET + realUrl;
           }
         return 'background-image: url("' + realUrl + '") !important;"';
       },
       srcUrl(url) {
         let realUrl = url;
-        if (import.meta.env.VITE_APP_TARGET) {
+        if (import.meta.env.VITE_MODE === 'local' && import.meta.env.VITE_APP_TARGET) {
           realUrl = import.meta.env.VITE_APP_TARGET + realUrl;
         }
         return realUrl;

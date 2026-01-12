@@ -87,6 +87,50 @@
                       </div>
                     </Fieldset>
                   </template>
+                  <template v-else-if="getGroupWrapper(group)==='accordion'">
+                    <Accordion :ref="'accordion-'+getGroupName(group)" class="accordionRecordGroup" value="0">
+                      <AccordionPanel class="accordionPanelRecordGroup" value="0">
+
+                        <AccordionHeader class="accordionPanelHeaderRecordGroup">
+                          {{ getGroupTitle(group) }}
+                        </AccordionHeader>
+                        <AccordionContent class="accordionPanelContentRecordGroup">
+
+                          <div v-if="getGroupHeader(group)" v-html="getGroupHeader(group)">
+                          </div>
+                          <div class="grid grid-cols-12 gap-2">
+                            <template v-for="field in getGroupVisibleFields(group.fields)" :key="field">
+                              <template v-if="hasDividerBefore(field)">
+                                <v-record-divider v-show="!isHiddenWidget(field)"
+                                                  :dividerInfo="getDividerInfo(field)"></v-record-divider>
+                              </template>
+                              <template v-if="!isRemovedWidget(field)">
+                                <div class="py-3" :class="getWidgetLayout(field,'colClass')"
+                                     v-show="!isHiddenWidget(field)">
+                                  <v-record-widget :field="field" :ref="'fields-'+field"
+                                                   :labelInfo="getLabelInfo(field)"
+                                                   :widgetConfig="widgetsConfig[field]">
+                                  </v-record-widget>
+                                </div>
+                              </template>
+                              <template v-if="hasDividerAfter(field)">
+                                <v-record-divider v-show="!isHiddenWidget(field)"
+                                                  :dividerInfo="getDividerInfo(field)"></v-record-divider>
+                              </template>
+                              <template v-else-if="getWidgetLayout(field,'lastInRow')">
+                                <div class="col-12 max-h-0 p-0">&nbsp;</div>
+                              </template>
+                            </template>
+                          </div>
+                          <div class="w-full" v-if="getGroupActions(group)">
+                            <c-action :conf="recordActionsConf" :whitelist="getGroupActions(group)"
+                                      layout="buttons"></c-action>
+                          </div>
+                        </AccordionContent>
+                      </AccordionPanel>
+
+                    </Accordion>
+                  </template>
                   <template v-else-if="getGroupWrapper(group)==='card'">
                     <Card :ref="'card-'+getGroupName(group)" class="mb-3 border border-surface-300">
                       <template #header v-if="getGroupHeader(group)">
