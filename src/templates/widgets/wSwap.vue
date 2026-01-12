@@ -1,7 +1,7 @@
 <template>
     <span>
         <input :name="getFieldName()" type="hidden" :value="toggleValue?1:0">
-        <InputSwitch v-model="toggleValue" @change="swap()" :disabled="extraBind.disabled?true:false"/>
+        <ToggleSwitch v-model="toggleValue" @change="swap()" :disabled="extraBind.disabled?true:false"/>
         <RulesErrors :errors="errors"></RulesErrors>
     </span>
 </template>

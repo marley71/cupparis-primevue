@@ -41,8 +41,6 @@
         <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig">
           <div class="p-6  flex-1 overflow-auto">
 
-            <div class="card">
-
               <DataTable :value="value" v-model:selection="selected"
                          :rows="getPerPage()"
                          :paginator="paginator" :paginatorPosition="paginatorPosition"
@@ -56,6 +54,7 @@
                          scrollable
                          :key="tableKey"
                          :rowClass="rowClass"
+                         :class="datatableClass"
               >
                 <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>
                 <Column v-if="getRecordActionsPosition() == 'start' && hasRecordActions()" :exportable="false"
@@ -84,7 +83,6 @@
               </DataTable>
             </div>
 
-          </div>
         </slot>
         <slot name="footer">
 
