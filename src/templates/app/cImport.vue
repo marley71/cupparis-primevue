@@ -37,7 +37,7 @@
                 <hr/>
                 <v-record v-if="step=='tosave'" :conf="_saveConf()" ref="viewSave"></v-record>
                 <!-- <v-datafile-list :conf="_listConf()"></v-datafile-list> -->
-                <v-list :conf="_listConf()" ref="viewList"></v-list>
+                <v-datafile-list :conf="_listConf()" ref="viewList"></v-datafile-list>
             </div>
         </template>
     </Card>
