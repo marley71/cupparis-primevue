@@ -3,6 +3,57 @@ import CrudCore from "../lib/CrudCore";
 import CrudVars from "../lib/CrudVars";
 import CrudHelpers from "../lib/CrudHelpers";
 
+function _executePdf(callback) {
+    let tA = this;
+    return new Promise(function (resolve,reject) {
+        tA._exportPdf(function (esito) {
+            console.log('save back Event',event,esito);
+            if (esito) {
+                resolve();
+            } else {
+                reject();
+            }
+
+        })
+    })
+}
+
+function _exportPdf(callback) {
+    var that = this
+    console.log('export pdf', that.routeName,that.modelData)
+    var r = that.viewInstance.createRoute(that.routeName)
+    let foormPk = that.modelData[that.viewInstance.primaryKey];
+    let routeValues = {
+        'foorm': that.viewInstance.modelName,
+        'foormtype': that.pdfType,
+    }
+    
+    if (foormPk) {
+        routeValues['foormpk'] = foormPk
+    }
+    r.setValues(routeValues)
+    r.setParams(that.viewInstance.getParams());
+    r.setParam('pdfType', that.pdfType)
+    that.viewInstance.waitStart(that.startMessage)
+    Server.route(r, function (json) {
+        that.viewInstance.waitEnd()
+        if (json.error) {
+            that.viewInstance.errorDialog(json.msg)
+            callback(false);
+            return
+        }
+        if (that.blob) {
+            let filename = json.result[that.nameField]?json.result[that.nameField]:'file.pdf';
+            CrudHelpers.createRuntimeDownload(json.result[that.contentField],json.result[that.mimeField],filename);
+        } else {
+            let prefix = CrudVars.useApi?'/api':'';
+            document.location.href = prefix + json.result.link
+        }
+        callback(true);
+        //console.log(json)
+    })
+}
+
 const actionConfs = {
     'default': () => {
         return {
@@ -540,58 +591,8 @@ const actionConfs = {
     },
     'action-export-pdf'  : () => {
         return  {
-            execute (event) {
-                let tA = this;
-                return new Promise(function (resolve,reject) {
-                    tA._exportPdf(function (esito) {
-                        console.log('save back Event',event,esito);
-                        if (esito) {
-                            resolve();
-                        } else {
-                            reject();
-                        }
-
-                    })
-                })
-                //this._save(callback)
-            },
-            _exportPdf (callback) {
-                var that = this
-                console.log('export pdf', that.routeName,that.modelData)
-                var r = that.viewInstance.createRoute(that.routeName)
-                let foormPk = that.modelData[that.viewInstance.primaryKey];
-                let routeValues = {
-                    'foorm': that.viewInstance.modelName,
-                    'foormtype': that.pdfType,
-                }
-                
-                if (foormPk) {
-                    routeValues['foormpk'] = foormPk
-                }
-                r.setValues(routeValues)
-                r.setParams(that.viewInstance.getParams());
-                r.setParam('pdfType', that.pdfType)
-                that.viewInstance.waitStart(that.startMessage)
-                Server.route(r, function (json) {
-                    that.viewInstance.waitEnd()
-                    if (json.error) {
-                        that.viewInstance.errorDialog(json.msg)
-                        callback(false);
-                        return
-                    }
-                    if (that.blob) {
-                        let filename = json.result[that.nameField]?json.result[that.nameField]:'file.pdf';
-                        CrudHelpers.createRuntimeDownload(json.result[that.contentField],json.result[that.mimeField],filename);
-                    } else {
-                        let prefix = CrudVars.useApi?'/api':'';
-                        document.location.href = prefix + json.result.link
-                    }
-                    callback(true);
-                    //console.log(json)
-                })
-
-                //console.log('r', r)
-            },
+            execute : _executePdf(event),
+            _exportPdf : _exportPdf(callback),
             actionType: 'record',
             icon: 'fa fa-file-pdf',
             text: 'Pdf',
@@ -604,8 +605,24 @@ const actionConfs = {
             mimeField: 'mime',
             nameField: 'name',
         }
+    },
+    'action-export-pdf-list'  : () => {
+        return  {
+            execute : _executePdf(event),
+            _exportPdf : _exportPdf(callback),
+            actionType: 'global',
+            icon: 'fa fa-file-pdf',
+            text: 'Pdf',
+            css: 'p-button-sm p-button-text p-button-secondary',
+            pdfType: 'list',
+            routeName: 'pdf-exporta',
+            startMessage: 'Generazione pdf in corso...',
+            blob: true,
+            contentField: 'content',
+            mimeField: 'mime',
+            nameField: 'name',
+        }
     }
 }
-actionConfs['action-export-pdf-list'] = CrudCore.clone(actionConfs['action-export-pdf']);
-actionConfs['action-export-pdf-list'].actionType = 'collection';
+
 export default actionConfs
