@@ -344,7 +344,9 @@ export default {
                 r.setParams(viewParams);
                 r.setParam('datafile_load_id',thatAction.csvDashboard.jobId);
                 r.setParam('datafileProviderName',thatAction.csvDashboard.providerName);
+                CrudCore.waitStart('Salvataggio dati....')
                 Server.route(r,function (json) {
+                CrudCore.waitEnd();
                     if (json.error) {
                         thatAction.errorDialog(json.msg);
                         return ;
