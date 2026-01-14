@@ -10,19 +10,10 @@ export default {
     extends : CrudComponent,
     mounted() {
         let that = this;
-        console.debug('AAA mounted',that.$route.params);
+        that._ready();
         this.setManageReference();
-        // inizializza il key per evitare doppie esecuzioni sullo stesso contesto
-        //that._lastContextKey = null;
-        // forzo la prima applicazione del contesto
         that.showContext(true);
-        // setTimeout(function () {
-            
-        //     that.loadContext();
-            
-        //     that._setCss();
-        // },100)
-
+        
     },
     data() {
         let that = this;
@@ -115,6 +106,11 @@ export default {
         }
     },
     methods : {
+        _ready() {
+            if (this.conf.ready) {
+                this.conf.ready.apply();
+            }
+        },
         searchList(event) {
             console.debug('searchList',this.autoUpdateHash,event,this.getViewList());
             if (this.getViewList()) {
@@ -232,6 +228,8 @@ export default {
                 //window.history.back();
                 this.$router.back();
             } else {
+                that.list.manageInstance = that;
+                that.search.manageInstance = that;
                 if (that.listParams) {
                     if (that.list) {
                         that.list.addDefaultParams = function() {
@@ -259,6 +257,7 @@ export default {
                 that.edit.pk = pk;
                 that.updateHash('edit','edit',[pk]);
             } else {
+                that.edit.manageInstance = that;
                 that.mode = 'edit';
                 that.edit.pk = pk;
             }
@@ -269,12 +268,14 @@ export default {
                 that.updateHash('insert','insert',[]);
             } else {
                 that.mode = 'insert';
+                that.insert.manageInstance = that;
                 //that.insert.pk = that.insert.pk;
             }
         },
         showView(pk) {
             let that = this;
             that.mode = 'view';
+            that.view.manageInstance = that;
             that.view.pk = pk;
             that.viewDisplay = true;
             that.viewTitle = that.viewTitle==null?that.translate('app.dettagli',0,null,[pk]):that.viewTitle;
@@ -333,11 +334,14 @@ export default {
                     case 'edit':
                         that.edit.type = 'v-edit';
                         that.edit.pk = context[0];
+                        that.edit.manageInstance = that;
                         break;
                     case 'insert':
                         that.insert.type = 'v-insert';
+                        that.insert.manageInstance = that;
                         break;
                     case 'list':
+                        that.list.manageInstance = that;
                         // setTimeout(function () {
                         //     console.debug('showList',that.listParams)
                         //     if (that.listParams) {
@@ -351,6 +355,7 @@ export default {
                         // },100)
                         break;
                     case 'custom':
+                        that.custom.manageInstance = that;
                         that.custom.context = context;
                 }
             } else {

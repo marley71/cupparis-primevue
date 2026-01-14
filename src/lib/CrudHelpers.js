@@ -217,4 +217,8 @@ CrudHelpers.mapOptions = (domainValues,domainValuesOrder) => {
     }
     return options;
 }
+
+CrudHelpers.formatDate = (value,format) => {
+    return moment(value).format(format);
+}
 export default CrudHelpers;

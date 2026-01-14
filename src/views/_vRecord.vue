@@ -502,7 +502,19 @@ export default {
         return this.title;
       }
       return null;
-    }
+    },
+    waitWidget(field,callback) {
+      let that = this;
+      let widget = that.getWidget(field);
+      if (widget) {
+        callback(widget);
+      } else {
+        setTimeout(() => {
+          that.waitWidget(field,callback);
+        },100);
+      }
+      
+    },
   }
 }
 </script>

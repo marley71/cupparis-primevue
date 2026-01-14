@@ -619,6 +619,18 @@ export default {
         // var wConf = this.widgetsEditConfig[row][key];
         // return this.store.cRefs[wConf.cRef];
     },
+    waitWidget(row,field,callback) {
+      let that = this;
+      let widget = that.getWidget(row,field);
+      if (widget) {
+        callback(widget);
+      } else {
+        setTimeout(() => {
+          that.waitWidget(row,field,callback);
+        },100);
+      }
+      
+    },
   }
 }
 </script>
