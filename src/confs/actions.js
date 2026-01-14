@@ -591,8 +591,12 @@ const actionConfs = {
     },
     'action-export-pdf'  : () => {
         return  {
-            execute : _executePdf(event),
-            _exportPdf : _exportPdf(callback),
+            execute (event) {
+                return _executePdf(event);
+            },
+            _exportPdf(callback) {
+                return _exportPdf(callback);
+            },
             actionType: 'record',
             icon: 'fa fa-file-pdf',
             text: 'Pdf',
@@ -608,8 +612,12 @@ const actionConfs = {
     },
     'action-export-pdf-list'  : () => {
         return  {
-            execute : _executePdf(event),
-            _exportPdf : _exportPdf(callback),
+            execute (event) {
+                return _executePdf(event);
+            },
+            _exportPdf(callback) {
+                return _exportPdf(callback);
+            },
             actionType: 'global',
             icon: 'fa fa-file-pdf',
             text: 'Pdf',
