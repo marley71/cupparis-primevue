@@ -578,7 +578,7 @@ const actionConfs = {
             },
             actionType: 'collection',
             icon: 'fa fa-file-csv',
-            text: 'Esporta',
+            text: 'Csv',
             css: 'p-button-sm p-button-text p-button-secondary',
             csvType: 'default',
             routeName: 'csv-exporta',
@@ -597,7 +597,7 @@ const actionConfs = {
             _exportPdf(callback) {
                 return _exportPdf.apply(this, [callback]);
             },
-            foormType: 'edit',
+            foormType: 'view',
             actionType: 'record',
             icon: 'fa fa-file-pdf',
             text: 'Pdf',
