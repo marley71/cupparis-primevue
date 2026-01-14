@@ -25,7 +25,7 @@ function _exportPdf(callback) {
     let foormPk = that.modelData[that.viewInstance.primaryKey];
     let routeValues = {
         'foorm': that.viewInstance.modelName,
-        'foormtype': that.pdfType,
+        'foormtype': that.foormType,
     }
     
     if (foormPk) {
@@ -597,6 +597,7 @@ const actionConfs = {
             _exportPdf(callback) {
                 return _exportPdf.apply(this, [callback]);
             },
+            foormType: 'edit',
             actionType: 'record',
             icon: 'fa fa-file-pdf',
             text: 'Pdf',
@@ -629,6 +630,7 @@ const actionConfs = {
             contentField: 'content',
             mimeField: 'mime',
             nameField: 'name',
+            foormType: 'list',
         }
     }
 }
