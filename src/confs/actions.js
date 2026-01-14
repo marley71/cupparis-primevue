@@ -606,4 +606,6 @@ const actionConfs = {
         }
     }
 }
+actionConfs['action-export-pdf-list'] = CrudCore.clone(actionConfs['action-export-pdf']);
+actionConfs['action-export-pdf-list'].actionType = 'collection';
 export default actionConfs

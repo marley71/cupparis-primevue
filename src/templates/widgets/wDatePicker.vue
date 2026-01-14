@@ -5,9 +5,11 @@
     <InputGroup>
       <Button icon="fa fa-times" @click="clear" v-if="clearButton" class="p-button-sm" />
       <DatePicker class="w-full cupparis-datapicker" :showButtonBar="true" v-model="dateValue" @date-select="change"
-                @update:modelValue="change"
+               
+                @update:modelValue="change" 
                 :inputDateFormat="dateFormat" :date-format="displayFormat" inputClass="w-full"
                 v-bind="extraBind" @show="onShow" :invalid="(errors &&errors.length > 0)"
+                
                 @clear-click="clear"/>
     </InputGroup>
   </div>
@@ -30,8 +32,7 @@ export default {
       // in popup  devo aumentare lo z-index altrimenti capita di sotto
       if (this.inPopup) {
         document.querySelector('.p-datepicker-panel').style['z-index'] = this.zIndexPopup;
-      }
-      
+      }      
     }
   }
 }
