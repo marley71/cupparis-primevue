@@ -74,7 +74,7 @@
                 <Column v-if="getRecordActionsPosition() == 'end' && hasRecordActions()" :exportable="false"
                         :header="translate('app.actions')">
                   <template #body="slotProps">
-                    <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]"></c-action>
+                    <c-action :ref="'r'+slotProps.index" :conf="recordActionsConf[slotProps.index % getPerPage()]" :rowIndex="slotProps.index"></c-action>
                   </template>
                 </Column>
 

@@ -254,6 +254,49 @@ export default {
         </div>
         
         <div class="section">
+            <h2>🧪 Esempi Realistici (da <span class="code-inline">src/help/manageConfs.js</span>)</h2>
+            
+            <h3>Gestione base senza hash</h3>
+            <p>Un esempio minimal già pronto per essere passato a <span class="code-inline">c-manage</span>.</p>
+            <div class="code-block">
+<code>import manageConfs from '@help/manageConfs'
+
+export default {
+  data() {
+    return {
+      manageConf: manageConfs.semplice() // copia di ModelUser con autoUpdateHash disabilitato
+    }
+  }
+}</code>
+            </div>
+            
+            <h3>Lista filtrata con constraint runtime</h3>
+            <p>Chiede all'utente un valore e imposta constraint e route dedicata prima di iniziare.</p>
+            <div class="code-block">
+<code>manageConfs.constraint().then(conf => {
+  // conf.list.constraintKey = 'created_by'
+  // conf.list.constraintValue = valore inserito da inputDialog
+  // conf.list.routeName = 'list-constraint'
+  this.manageConf = conf
+})</code>
+            </div>
+            
+            <h3>Componenti personalizzati per edit/insert/list</h3>
+            <p>Mostra come sostituire i componenti di default con varianti custom.</p>
+            <div class="code-block">
+<code>const conf = manageConfs.m4();
+// aggiunge azioni custom alla lista:
+//  - action-custom1 apre una v-edit custom e poi torna alla lista
+//  - action-custom2 apre un componente custom con pulsante "back"
+conf.listComponentName = 'list-user';
+conf.editComponentName = 'insert-edit-user';
+conf.insertComponentName = 'insert-edit-user';</code>
+            </div>
+            
+            <p style="margin-top:10px;">Trovi altre varianti (<span class="code-inline">m2</span>, <span class="code-inline">m3</span>) nello stesso file per collegare componenti custom o disabilitare l'aggiornamento hash.</p>
+        </div>
+        
+        <div class="section">
             <h2>⚙️ Configurazione</h2>
             
             <h3>Proprietà Obbligatorie</h3>

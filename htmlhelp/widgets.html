@@ -496,6 +496,40 @@ export default {
     </div>
 
         <div class="section">
+            <h2>🧪 Esempi Realistici (da <span class="code-inline">src/help/widgetHelpConfs.js</span>)</h2>
+            
+            <h3>Input con callback di cambio</h3>
+            <div class="code-block">
+<code>import widgetConfs from '@help/widgetHelpConfs'
+
+const conf = widgetConfs.wInputConf();
+// type: 'w-input', inputType: 'text', change() logga il valore aggiornato
+</code>
+            </div>
+            
+            <h3>Select con dominio e listener</h3>
+            <div class="code-block">
+<code>const selectConf = widgetConfs.wSelectConf();
+// domainValues già popolati, change() mostra il valore scelto
+</code>
+            </div>
+            
+            <h3>HasMany con azioni di lista</h3>
+            <div class="code-block">
+<code>const hasmanyList = widgetConfs.wHasmany('list');
+// type: 'w-hasmany' con defaultWidgetType, fieldsConfig e actions insert/delete
+</code>
+            </div>
+            
+            <h3>Upload AJAX completo di ajaxFields</h3>
+            <div class="code-block">
+<code>const uploadConf = widgetConfs.wUploadAjaxConf();
+// extensions e maxFileSize preconfigurati, ajaxFields include resource_type e field
+</code>
+            </div>
+        </div>
+
+        <div class="section">
             <h2>🔧 Widget Base (wBase)</h2>
         <p>
                 Tutti i widget estendono <span class="code-inline">wBase</span> che fornisce funzionalità comuni:

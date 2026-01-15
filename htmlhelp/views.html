@@ -381,6 +381,43 @@ export default {
     </div>
 
         <div class="section">
+            <h2>🧪 Esempi Realistici (da <span class="code-inline">src/help/viewHelpConfs.js</span>)</h2>
+            
+            <h3>Lista statica con dati mock</h3>
+            <p>Perfetta per documentare o fare demo senza backend.</p>
+            <div class="code-block">
+<code>import viewConfs from '@help/viewHelpConfs'
+
+const listConf = viewConfs.staticList();
+// type: 'v-list', pagination per_page: 2, orderFields e campi mock già valorizzati
+</code>
+            </div>
+            
+            <h3>Record statico con widget di esempio</h3>
+            <div class="code-block">
+<code>const recordConf = viewConfs.staticRecord();
+// type: 'v-record', value precaricato e campo checkbox configurato
+</code>
+            </div>
+            
+            <h3>Lista utenti con pannello laterale</h3>
+            <p>Mostra come aprire un pannello laterale editabile direttamente dalla lista.</p>
+            <div class="code-block">
+<code>const conf = viewConfs.userListPanel();
+// actions: ['action-view','action-delete','action-insert','action-edit','action-delete-selected','show-panel']
+// actionsConfig['show-panel'] usa viewInstance.showPanel() con componente v-edit e chiusura custom
+</code>
+            </div>
+            
+            <h3>Ricerca avanzata con campi multipli</h3>
+            <div class="code-block">
+<code>const searchConf = viewConfs.userSearch();
+// type: 'v-search', advancedSearchOpen: true, campi base + advancedFields,
+// include esempi con w-multi-select e w-checkbox</code>
+            </div>
+        </div>
+
+        <div class="section">
             <h2>🔧 View Base (vBase)</h2>
         <p>
                 Tutte le views estendono <span class="code-inline">vBase</span> che fornisce funzionalità comuni:

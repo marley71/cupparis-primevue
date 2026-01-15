@@ -9,6 +9,10 @@ export default {
     props: {
         'whitelist': Array,
         'blacklist': Array,
+        'rowIndex': {
+            type: Number,
+            default: 100000,  // default per le actions collection non averemo mai tabelle con 100000 righe
+        },
     },
     data() {
         let that = this;

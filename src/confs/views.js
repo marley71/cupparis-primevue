@@ -100,6 +100,8 @@ const viewConfs = {
             //autoSearch : true, // se e' true la view cerca dentro l'hash se ci sono parametri di ricerca (s_{fieldName}) e li applica alla chiamata
             filterFields : {}, // se sono presenti dei fields nel formato s_{fieldName} li applica alla chiamata ajax
             //numeroRecordsLabel : null, // label del numero dei records
+            datatableClass : '',
+            stripedRows : true,
         };
         return Object.assign(bv,lv);
     },
