@@ -88,7 +88,7 @@
                     </Fieldset>
                   </template>
                   <template v-else-if="getGroupWrapper(group)==='accordion'">
-                    <Accordion :ref="'accordion-'+getGroupName(group)" class="accordionRecordGroup" value="0">
+                    <Accordion :ref="'accordion-'+getGroupName(group)" class="accordionRecordGroup" :value="getGroupIsClosed(group)">
                       <AccordionPanel class="accordionPanelRecordGroup" value="0">
 
                         <AccordionHeader class="accordionPanelHeaderRecordGroup">

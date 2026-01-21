@@ -131,7 +131,8 @@ const viewConfs = {
                 6: 'col-span-12 lg:col-span-2',
                 12: 'col-span-12 lg:col-span-1',
                 0: 'col-span-12'
-            }
+            },
+            groupClass: 'col col-span-12 my-4',
 
         }
         return Object.assign(bv, rv);

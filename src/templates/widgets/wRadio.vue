@@ -2,7 +2,7 @@
   <span>
     <div class="w-full flex flex-wrap border rounded-md surface-border p-2"
          :class="direction==='row'?'flex-row':'flex-col'">
-      <div class="field-radiobutton mb-1"
+      <div class="field-radiobutton flex items-center mb-1"
            :class="rowType==='grid'?'w-12 md:w-6 xl:w-3':'mr-2 '"
            v-for="(label,key) in domainValues" :key="key">
           <RadioButton
@@ -12,7 +12,7 @@
             v-bind="extraBind"
             @change="change"
           />
-        <label :for="key" v-html="label" :class="isSelected(key)?'font-bold':''"></label>
+        <label :for="key" v-html="label" class="ml-1" :class="isSelected(key)?'font-bold':''"></label>
       </div>
     </div>
     <RulesErrors :errors="errors"></RulesErrors>

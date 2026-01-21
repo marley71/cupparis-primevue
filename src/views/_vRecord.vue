@@ -98,9 +98,12 @@ export default {
     },
     getGroupClass(group) {
       let classes = '';
-      classes += group.cssClass || 'col col-span-12 my-4';
+      classes += group.cssClass || this.groupClass;
       classes += ' group-'+this.getGroupName(group);
       return classes;
+    },
+    getGroupIsClosed(group) {
+      return group.closed ? "1" : "0";
     },
     hideGroup(group) {
       if (this.hiddenGroups.indexOf(group) < 0) {
@@ -117,7 +120,9 @@ export default {
       }
     },
     getColClass(col) {
-      console.log("COLCLASSSS",this.conf.colsClasses);
+      if (!this.conf.colsClasses) {
+        return 'col-span-12';
+      }
       return this.conf.colsClasses[col] || this.conf.colsClasses[0];
     },
     setActions() {
