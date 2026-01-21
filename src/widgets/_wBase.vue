@@ -131,7 +131,7 @@ export default {
 
         },
         setValue(value) {
-          console.debug('_wBase.setValue',value);
+          //console.debug('_wBase.setValue',value);
           this.value = value;
         },
       setErrors(errors) {

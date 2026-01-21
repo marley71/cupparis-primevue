@@ -18,14 +18,7 @@ export default {
   },
   data() {
     //console.log('vRecord', this.conf);
-    let ly = this.conf.layout || {};
-    if (ly instanceof String) {
-      ly = viewConfs.recordLayouts()[ly] || viewConfs.recordLayouts().default;
-    } else {
-      let tmp = Object.assign({}, viewConfs.recordLayouts().default);
-      ly = Object.assign(tmp, ly);
-    }
-    ly.colClass = this.getColClass(ly.cols);
+    let ly = this.layout || {};
     //console.log('layout',ly);
     // const { handleSubmit, resetForm } = useForm();
     // const { value, errorMessage } = useField('value', this.validateField);
@@ -43,6 +36,8 @@ export default {
   methods: {
     draw() {
       let that = this;
+      
+      that.setLayout();
       //console.debug('record widgetsConfig',this.widgetsConfig);
       for (let k in this.widgetsConfig) {
         if (this.widgetsConfig[k].removeWidget) {
@@ -56,6 +51,19 @@ export default {
       this.loaded = true;
     },
    
+    setLayout() {
+      let that = this;
+      let ly = that.layout || {};
+      if (ly instanceof String) {
+        ly = viewConfs.recordLayouts()[ly] || viewConfs.recordLayouts().default;
+      } else {
+        let tmp = Object.assign({}, viewConfs.recordLayouts().default);
+        ly = Object.assign(tmp, ly);
+      }
+      ly.colClass = this.getColClass(ly.cols);
+      that.layout = ly;
+    },
+
     removeFromList() {
       this.isInlist = false;
     },
@@ -117,8 +125,8 @@ export default {
       }
     },
     getColClass(col) {
-      console.log("COLCLASSSS",this.conf.colsClasses);
-      return this.conf.colsClasses[col] || this.conf.colsClasses[0];
+      console.log("COLCLASSSS",this.colsClasses);
+      return this.colsClasses[col] || this.colsClasses[0];
     },
     setActions() {
       let that = this;

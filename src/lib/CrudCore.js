@@ -299,6 +299,7 @@ function _sanitizeMessage(str) {
             ss = ss.replace('\u00e8','è');
             return ss;
         } else if (str instanceof Object) {
+            let ss = str.toString();
             ss = ss.replace('&egrave;','è');
             ss = ss.replace('\u00e8','è');
             console.debug('str',str);
