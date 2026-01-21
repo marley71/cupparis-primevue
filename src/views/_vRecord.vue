@@ -117,22 +117,8 @@ export default {
       }
     },
     getColClass(col) {
-      switch (col) {
-        case 1:
-          return 'col-span-12'
-        case 2:
-          return 'col-span-12 lg:col-span-6'
-        case 3:
-          return 'col-span-12 lg:col-span-4'
-        case 4:
-          return 'col-span-12 lg:col-span-3'
-        case 6:
-          return 'col-span-12 lg:col-span-2'
-        case 12:
-          return 'col-span-12 lg:col-span-1'
-        default:
-          return 'col-span-12'
-      }
+      console.log("COLCLASSSS",this.conf.colsClasses);
+      return this.conf.colsClasses[col] || this.conf.colsClasses[0];
     },
     setActions() {
       let that = this;
