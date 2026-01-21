@@ -16,6 +16,7 @@ export default class WrapperConf {
             case 'v-insert':
             case 'v-record':
                 defConf = CrudCore.clone(viewConfs.recordView()); //CrudCore.clone(viewConfs.recordView);
+                //console.log('vRecordConf',defConf);
                 break;
             case 'v-search':
                 defConf = CrudCore.clone(viewConfs.searchView()); //CrudCore.clone(viewConfs.searchView);
@@ -38,6 +39,7 @@ export default class WrapperConf {
         }
         //console.log('vList conf return ',conf.type+'',conf.modelName+'',conf.routeName+'');
         conf = Object.assign(defConf,conf);
+        //console.debug('conf prima di return',conf);
         //console.log('vList  dopo l\'assign ',conf.type+'',conf.modelName+'',conf.routeName+'');
         if (!conf.langContext && conf.langContext !== null) {
             conf.langContext = conf.modelName ? conf.modelName : ''

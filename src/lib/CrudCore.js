@@ -296,14 +296,19 @@ function _sanitizeMessage(str) {
             let ss = str.toString();
             ss = ss.replace(/<br\s*\/?>/gi, '\n');
             ss = ss.replace('&egrave;','è');
+            ss = ss.replace('\u00e8','è');
             return ss;
         } else if (str instanceof Object) {
+            let ss = str.toString();
+            ss = ss.replace('&egrave;','è');
+            ss = ss.replace('\u00e8','è');
             console.debug('str',str);
             return str.toString();
         } else {
             let ss = (str || "") + "";
             ss = ss.replace(/<br\s*\/?>/gi, '\n');
             ss = ss.replace('&egrave;','è');
+            ss = ss.replace('\u00e8','è');
             return ss;
         }
     } catch (e) {

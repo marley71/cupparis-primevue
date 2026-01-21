@@ -11,9 +11,7 @@ export default {
       s_basic_query: '',
     }
   },
-  mounted() {
 
-  },
   methods: {
 
     _afterDraw() {

@@ -18,14 +18,7 @@ export default {
   },
   data() {
     //console.log('vRecord', this.conf);
-    let ly = this.conf.layout || {};
-    if (ly instanceof String) {
-      ly = viewConfs.recordLayouts()[ly] || viewConfs.recordLayouts().default;
-    } else {
-      let tmp = Object.assign({}, viewConfs.recordLayouts().default);
-      ly = Object.assign(tmp, ly);
-    }
-    ly.colClass = this.getColClass(ly.cols);
+    let ly = this.layout || {};
     //console.log('layout',ly);
     // const { handleSubmit, resetForm } = useForm();
     // const { value, errorMessage } = useField('value', this.validateField);
@@ -43,6 +36,8 @@ export default {
   methods: {
     draw() {
       let that = this;
+
+      that.setLayout();
       //console.debug('record widgetsConfig',this.widgetsConfig);
       for (let k in this.widgetsConfig) {
         if (this.widgetsConfig[k].removeWidget) {
@@ -56,6 +51,19 @@ export default {
       this.loaded = true;
     },
    
+    setLayout() {
+      let that = this;
+      let ly = that.layout || {};
+      if (ly instanceof String) {
+        ly = viewConfs.recordLayouts()[ly] || viewConfs.recordLayouts().default;
+      } else {
+        let tmp = Object.assign({}, viewConfs.recordLayouts().default);
+        ly = Object.assign(tmp, ly);
+      }
+      ly.colClass = this.getColClass(ly.cols);
+      that.layout = ly;
+    },
+
     removeFromList() {
       this.isInlist = false;
     },
@@ -120,10 +128,10 @@ export default {
       }
     },
     getColClass(col) {
-      if (!this.conf.colsClasses) {
+      if (!this.colsClasses) {
         return 'col-span-12';
       }
-      return this.conf.colsClasses[col] || this.conf.colsClasses[0];
+      return this.colsClasses[col] || this.colsClasses[0];
     },
     setActions() {
       let that = this;
@@ -394,16 +402,17 @@ export default {
       //window.VT = this;
       for (let i in that.fields) {
         let name = that.fields[i];
-        console.log("RESET WIDGETS ERRORS",name);
         // TODO pezza  per gli hasmany.. capire come arrivare ai campi per la validazione.
         //let tt = (that.widgetsConfig[name] && that.widgetsConfig[name].type)?that.widgetsConfig[name].type:that.defaultWidgetType;
         let widget = this.getWidget(name);
         if (widget) {
-          if (widget.setErrors) {
-            widget.setErrors([]);
-          } else {
-            console.warn('setErrors non trovata per il widget ' + name);
-          }
+          //console.debug('setErrors',name,widget);
+          widget.setErrors([]);
+          // if (widget.setErrors) {
+          //   widget.setErrors([]);
+          // } else {
+          //   console.warn('setErrors non trovata per il widget ' + name);
+          // }
           if (that.widgetsConfig[name].type == 'w-hasmany') {
             widget.resetWidgetsErrors();
           }

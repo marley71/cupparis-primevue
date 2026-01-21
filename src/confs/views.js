@@ -143,6 +143,15 @@ const viewConfs = {
             updateHash: true,  // se true i parametri di ricerca li mette nell'url
             advancedFields: null,
             advancedSearchOpen: null,
+            colsClasses: {
+                1: 'col-span-12',
+                2: 'col-span-12 lg:col-span-6',
+                3: 'col-span-12 lg:col-span-4',
+                4: 'col-span-12 lg:col-span-3',
+                6: 'col-span-12 lg:col-span-2',
+                12: 'col-span-12 lg:col-span-1',
+                0: 'col-span-12'
+            }
         }
         return Object.assign(bv, sv);
     }

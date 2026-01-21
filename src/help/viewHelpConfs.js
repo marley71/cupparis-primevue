@@ -559,7 +559,7 @@ export default {
             layout: {
                 cols : 4
             },
-            advancedSearchOpen : true,
+            advancedSearchOpen : 1,
             actions:['action-search'],
             actionsConfig: {
                 'action-search': {
@@ -574,7 +574,7 @@ export default {
                     }
                 }
             },
-            fields: ['user_id', 'email', 'stato', 'stato_check'],
+            fields: ['cognome', 'nome'], //'user_id', 'email', 'stato', 'stato_check'],
             advancedFields: ['cognome', 'nome'],
             fieldsConfig: {
                 stato: {
