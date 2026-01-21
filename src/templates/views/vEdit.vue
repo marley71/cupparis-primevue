@@ -17,7 +17,8 @@
         <form ref="form" enctype="multipart/form-data" @submit="handleSubmit" class="p-fluid">
           <template v-for="field in getHiddenFields()">
             <template v-if="!isRemovedWidget(field)">
-              <component :is="widgetsConfig[field].type" :ref="'fields-'+field" :conf="widgetsConfig[field]"></component>
+              <component :is="widgetsConfig[field].type" :ref="'fields-'+field"
+                         :conf="widgetsConfig[field]"></component>
             </template>
           </template>
           <!--                  SENZA GRUPPI-->
@@ -81,12 +82,13 @@
                         </template>
                       </div>
                       <div class="w-full" v-if="getGroupActions(group)">
-                        <c-action :conf="recordActionsConf" :whitelist="getGroupActions(group)" layout="buttons"></c-action>
+                        <c-action :conf="recordActionsConf" :whitelist="getGroupActions(group)"
+                                  layout="buttons"></c-action>
                       </div>
                     </Fieldset>
                   </template>
                   <template v-else-if="getGroupWrapper(group)==='accordion'">
-                    <Accordion :ref="'accordion-'+getGroupName(group)" class="accordionRecordGroup" value="0">
+                    <Accordion :ref="'accordion-'+getGroupName(group)" class="accordionRecordGroup" :value="getGroupIsClosed(group)">
                       <AccordionPanel class="accordionPanelRecordGroup" value="0">
 
                         <AccordionHeader class="accordionPanelHeaderRecordGroup">
@@ -130,12 +132,16 @@
                     </Accordion>
                   </template>
                   <template v-else-if="getGroupWrapper(group)==='card'">
-                    <Card :ref="'card-'+getGroupName(group)" class="mb-3 border border-surface-300">
+                    <Card :ref="'card-'+getGroupName(group)" class="cardRecordGroup">
                       <template #header v-if="getGroupHeader(group)">
+                        <div class="cardRecordGroupHeader">
                         {{ getGroupHeader(group) }}
+                        </div>
                       </template>
                       <template #title v-if="getGroupTitle(group)">
+                        <div class="cardRecordGroupTitle" :class="'cardRecordGroupTitle-'+group">
                         {{ getGroupTitle(group) }}
+                        </div>
                       </template>
                       <template #content>
 
@@ -205,7 +211,8 @@
         </form>
         <div class="w-full mt-4">
           <Divider></Divider>
-          <c-action ref="actions" :conf="recordActionsConf" :whitelist="getActionsWhitelist()" layout="buttons"></c-action>
+          <c-action ref="actions" :conf="recordActionsConf" :whitelist="getActionsWhitelist()"
+                    layout="buttons"></c-action>
         </div>
       </slot>
     </template>

@@ -88,7 +88,7 @@
                     </Fieldset>
                   </template>
                   <template v-else-if="getGroupWrapper(group)==='accordion'">
-                    <Accordion :ref="'accordion-'+getGroupName(group)" class="accordionRecordGroup" value="0">
+                    <Accordion :ref="'accordion-'+getGroupName(group)" class="accordionRecordGroup" :value="getGroupIsClosed(group)">
                       <AccordionPanel class="accordionPanelRecordGroup" value="0">
 
                         <AccordionHeader class="accordionPanelHeaderRecordGroup">
@@ -132,12 +132,16 @@
                     </Accordion>
                   </template>
                   <template v-else-if="getGroupWrapper(group)==='card'">
-                    <Card :ref="'card-'+getGroupName(group)" class="mb-3 border border-surface-300">
+                    <Card :ref="'card-'+getGroupName(group)" class="cardRecordGroup">
                       <template #header v-if="getGroupHeader(group)">
+                        <div class="cardRecordGroupHeader">
                         {{ getGroupHeader(group) }}
+                        </div>
                       </template>
                       <template #title v-if="getGroupTitle(group)">
+                        <div class="cardRecordGroupTitle" :class="'cardRecordGroupTitle-'+group">
                         {{ getGroupTitle(group) }}
+                        </div>
                       </template>
                       <template #content>
 
