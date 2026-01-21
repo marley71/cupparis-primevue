@@ -172,6 +172,8 @@ export default class WrapperConf {
         if (!conf.getColumnValue) {
             conf.getColumnValue = null;
         }
+        conf.wrapper = conf.wrapper || '';
+        
         conf.hasmanyConf.defaultWidgetType = 'w-input';
         return conf;
     }

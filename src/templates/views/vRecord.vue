@@ -9,9 +9,9 @@
             :recordActionsConf="recordActionsConf">
         <div v-if="getTitleMsg()">
           <Divider align="center" class="actionsDivider">
-                        <span class="p-tag text-white">
-                            {{ getTitleMsg() }}
-                        </span>
+            <span class="p-tag text-white">
+                {{ getTitleMsg() }}
+            </span>
           </Divider>
         </div>
         <form ref="form" enctype="multipart/form-data" @submit="handleSubmit" class="p-fluid">

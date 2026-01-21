@@ -403,16 +403,17 @@ export default {
       //window.VT = this;
       for (let i in that.fields) {
         let name = that.fields[i];
-        console.log("RESET WIDGETS ERRORS",name);
         // TODO pezza  per gli hasmany.. capire come arrivare ai campi per la validazione.
         //let tt = (that.widgetsConfig[name] && that.widgetsConfig[name].type)?that.widgetsConfig[name].type:that.defaultWidgetType;
         let widget = this.getWidget(name);
         if (widget) {
-          if (widget.setErrors) {
-            widget.setErrors([]);
-          } else {
-            console.warn('setErrors non trovata per il widget ' + name);
-          }
+          //console.debug('setErrors',name,widget);
+          widget.setErrors([]);
+          // if (widget.setErrors) {
+          //   widget.setErrors([]);
+          // } else {
+          //   console.warn('setErrors non trovata per il widget ' + name);
+          // }
           if (that.widgetsConfig[name].type == 'w-hasmany') {
             widget.resetWidgetsErrors();
           }
