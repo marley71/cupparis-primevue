@@ -110,7 +110,7 @@ const routeConfs = {
     foormaction_record: {
         method: "post",
         //url:'/api/json/set/{modelName}/{field}/{value}',
-        url : "/foormaction/{actionName}/{modelName}/list",
+        url : "/foormaction/{actionName}/{modelName}/{foormType}",
         resultType: 'record',
         protocol: 'record'
     },

@@ -1,9 +1,9 @@
 <template>
   <span>
-    <div class="w-full flex flex-wrap border rounded-md surface-border p-2"
+    <div class="w-full flex flex-wrap border rounded-md surface-border p-2 [&>div:last-child]:mr-0"
          :class="direction==='row'?'flex-row':'flex-col'">
       <div class="field-radiobutton flex items-center mb-1"
-           :class="rowType==='grid'?'w-12 md:w-6 xl:w-3':'mr-2 '"
+           :class="rowType==='grid'?'w-12 md:w-6 xl:w-3':'mr-1 xl:mr-3'"
            v-for="(label,key) in domainValues" :key="key">
           <RadioButton
             :name="name"
@@ -46,7 +46,7 @@ export default {
     },
     isSelected(rawKey) {
       return this.normalizeKey(rawKey) === this.value;
-    }
+    },
   }
 }
 

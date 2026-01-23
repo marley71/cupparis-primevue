@@ -1,3 +1,4 @@
+import wActions from './wActions.vue';
 import wAutocomplete from './wAutocomplete.vue';
 import wButton from './wButton.vue';
 import wBelongsto from './wBelongsto.vue';
@@ -41,6 +42,8 @@ import RulesErrors from "./RulesErrors.vue";
 
 export default {
     install (app) {
+        app.component('w-actions',wActions);
+        CrudCore.componentItems['w-actions'] = wActions;   // permette la visibilita' anche per le dialog
         app.component('w-autocomplete',wAutocomplete);
         CrudCore.componentItems['w-autocomplete'] = wAutocomplete;   // permette la visibilita' anche per le dialog
         app.component('w-button',wButton);

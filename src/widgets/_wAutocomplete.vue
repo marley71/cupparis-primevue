@@ -57,7 +57,7 @@ export default {
         for (let i in that.labelFields) {
           label += (event[that.labelFields[i]] || '') + ' ';
         }
-        return label;
+        return label.trim();
       }
       if (event.label)
         return event.label;
