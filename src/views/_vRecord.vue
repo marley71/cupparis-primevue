@@ -18,8 +18,8 @@ export default {
   },
   data() {
     //console.log('vRecord', this.conf);
-    let ly = this.layout || {};
-    //console.log('layout',ly);
+    let ly = this.conf.layout || {};
+    //console.log('layouttttttt',ly);
     // const { handleSubmit, resetForm } = useForm();
     // const { value, errorMessage } = useField('value', this.validateField);
     return {

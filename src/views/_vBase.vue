@@ -282,6 +282,7 @@ export default {
             if (!prop) {
                 return layout;
             }
+            //console.log('getWidgetLayout',field,prop,layout);
             return layout[prop];
         },
         isHiddenField: function (key) {
