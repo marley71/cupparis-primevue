@@ -39,7 +39,9 @@
 
         </slot>
         <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig">
-          <div class="p-6  flex-1 overflow-auto">
+          <div class="w-full flex justify-center @container">
+
+          <div class="py-6 px-4 flex-1 overflow-auto">
 
               <DataTable :value="value" v-model:selection="selected"
                          :rows="getPerPage()"
@@ -83,6 +85,7 @@
                 </template>
               </DataTable>
             </div>
+          </div>
 
         </slot>
         <slot name="footer">

@@ -8,7 +8,7 @@
           <Button size="small" icon="fa fa-times" @click="clear" v-if="clearButton"/>
           <AutoComplete class="w-full" v-model="autocompleteValue" :suggestions="suggestions" @show="onShow"
                         @complete="search" :option-label="getAutocompleteLabel" option-value="id"
-                        v-bind="extraBind" @item-select="itemSelect" input-class="w-full"/>
+                        v-bind="extraBind" @item-select="itemSelect" :placeholder="placeholder" input-class="w-full"/>
         </InputGroup>
       </div>
       <RulesErrors :errors="errors"></RulesErrors>

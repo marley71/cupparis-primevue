@@ -114,8 +114,8 @@
                                      class="flex items-center overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
     <!--                              <div class="sm:block hidden w-2.5 min-h-20" :class="'bg-green-500'">&nbsp;</div>-->
                                     <div
-                                        class="flex items-center justify-start p-2 gap-4 hasmany-border rounded-xl w-full">
-                                        <Button class="mx-3 p-button-outlined p-button-danger" icon="fa fa-times"
+                                        class="flex items-center justify-start p-2 gap-1 lg:gap-4 hasmany-border rounded-xl w-full">
+                                        <Button class="mx-1 lg:mx-3 p-button-outlined p-button-danger min-w-[24px]" icon="fa fa-times"
                                                 @click="removeItem(dataKey)"></Button>
                                         <div class="grow px-2">
                                           <component is="v-view" ref="recordView" :conf="getHasmanyConf(index)"

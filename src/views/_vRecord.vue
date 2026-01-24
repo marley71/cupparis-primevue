@@ -36,7 +36,7 @@ export default {
   methods: {
     draw() {
       let that = this;
-      
+
       that.setLayout();
       //console.debug('record widgetsConfig',this.widgetsConfig);
       for (let k in this.widgetsConfig) {
@@ -106,9 +106,12 @@ export default {
     },
     getGroupClass(group) {
       let classes = '';
-      classes += group.cssClass || 'col col-span-12 my-4';
+      classes += group.cssClass || this.groupClass;
       classes += ' group-'+this.getGroupName(group);
       return classes;
+    },
+    getGroupIsClosed(group) {
+      return group.closed ? "1" : "0";
     },
     hideGroup(group) {
       if (this.hiddenGroups.indexOf(group) < 0) {
@@ -125,7 +128,9 @@ export default {
       }
     },
     getColClass(col) {
-      console.log("COLCLASSSS",this.colsClasses);
+      if (!this.colsClasses) {
+        return 'col-span-12';
+      }
       return this.colsClasses[col] || this.colsClasses[0];
     },
     setActions() {
