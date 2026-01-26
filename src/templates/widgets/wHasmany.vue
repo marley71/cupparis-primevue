@@ -54,10 +54,14 @@
                             {{ outOfLimitMessage() }}
                         </span>
                     </template>
-                    <Button v-else class="p-button p-button-sm p-component p-button-outlined justify-content-center"
-                            icon="fa fa-add"
-                            type="button" :label="translate('app.aggiungi')"
-                            @click="addItem(dataKey)">
+                    <Button v-else class="p-component justify-content-center"
+                            :icon="addButtonIcon || 'fas fa-plus'"
+                            type="button" :label="addButtonMsg()"
+                            @click="addItem()"
+                            :class="addButtonClass" :severity="addButtonSeverity" :iconPos="addButtonIconPos || 'left'"
+                            :title="addButtonMsg()"  :variant="addButtonVariant || 'outlined'"
+                            :size="addButtonSize || 'small'"
+                    >
                     </Button>
                 </template>
             </Card>
@@ -95,10 +99,14 @@
                             {{ outOfLimitMessage() }}
                         </span>
                     </template>
-                    <Button v-else class="p-button p-button-sm p-component p-button-outlined justify-content-center"
-                            icon="fa fa-add"
-                            type="button" :label="translate('app.aggiungi')"
-                            @click="addItem(dataKey)">
+                    <Button v-else class="p-component justify-content-center"
+                            :icon="addButtonIcon || 'fas fa-plus'"
+                            type="button" :label="addButtonMsg()"
+                            @click="addItem()"
+                            :class="addButtonClass" :severity="addButtonSeverity" :iconPos="addButtonIconPos || 'left'"
+                            :title="addButtonMsg()"  :variant="addButtonVariant || 'outlined'"
+                            :size="addButtonSize || 'small'"
+                    >
                     </Button>
               </div>
 
@@ -112,9 +120,9 @@
                             <div class="flex flex-col gap-4 mb-4 gap-y-6">
                                 <div v-for="(dataKey, index) in vForKeys" :key="dataKey"
                                      class="flex items-center overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
-    <!--                              <div class="sm:block hidden w-2.5 min-h-20" :class="'bg-green-500'">&nbsp;</div>-->
                                     <div
-                                        class="flex items-center justify-start p-2 gap-1 lg:gap-4 hasmany-border rounded-xl w-full">
+                                        class="flex items-center justify-start p-2 gap-1 lg:gap-4 hasmany-border rounded-xl w-full"
+                                        :class="severity ? ' hasmany-border-'+severity : ''">
                                         <Button class="mx-1 lg:mx-3 p-button-outlined p-button-danger min-w-[24px]" icon="fa fa-times"
                                                 @click="removeItem(dataKey)"></Button>
                                         <div class="grow px-2">
@@ -128,15 +136,21 @@
 
                     <template v-if="outOfLimit()">
 
-                      <span class="d-block text-primary text-truncate font-weight-medium" v-if="outOfLimitMessage()">
+                      <span class="d-block text-primary text-truncate font-weight-medium"
+                            :class="severity ? ' text-'+severity : ''"
+                            v-if="outOfLimitMessage()">
                             <!-- Limite massimo raggiunto -->
                             {{ outOfLimitMessage() }}
                         </span>
                     </template>
-                    <Button v-else class="p-button p-button-sm p-component p-button-outlined justify-content-center"
-                            icon="fa fa-add"
+                    <Button v-else class="p-component justify-content-center"
+                            :icon="addButtonIcon || 'fas fa-plus'"
                             type="button" :label="addButtonMsg()"
-                            @click="addItem()">
+                            @click="addItem()"
+                            :class="addButtonClass" :severity="addButtonSeverity" :iconPos="addButtonIconPos || 'left'"
+                            :title="addButtonMsg()"  :variant="addButtonVariant || 'outlined'"
+                            :size="addButtonSize || 'small'"
+                    >
                     </Button>
                     <Divider align="center" v-if="hasFinalDivider()">
                       </Divider>

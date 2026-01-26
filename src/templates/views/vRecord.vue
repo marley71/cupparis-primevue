@@ -9,7 +9,7 @@
             :recordActionsConf="recordActionsConf">
         <div v-if="getTitleMsg()">
           <Divider align="center" class="actionsDivider">
-            <span class="p-tag text-white">
+            <span class="p-tag text-white px-5">
                 {{ getTitleMsg() }}
             </span>
           </Divider>
