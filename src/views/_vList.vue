@@ -1,5 +1,3 @@
-
-
 <script>
 import _vBase from './_vBase.vue';
 import CrudCore from "../lib/CrudCore";
@@ -72,7 +70,7 @@ export default {
       let that = this;
       let searchParams = that.getSearchParams();
 
-      console.debug('searchParams', searchParams,'route params',that.route.getParams())
+      console.debug('searchParams', searchParams, 'route params', that.route.getParams())
       for (let field in searchParams) {
         that.route.setParam(field, searchParams[field]);
       }
@@ -88,7 +86,7 @@ export default {
         //let page = Math.floor(event.first / event.rows) +1;
         let page = event.page + 1;
         this.route.setParam('page', page);
-        console.debug('onPAge updateHash',this)
+        console.debug('onPAge updateHash', this)
         this.$emit('route-change');
         if (this.updateHash) {
           this.setHash(this.route.getParams());
@@ -123,35 +121,35 @@ export default {
         }
 
         const sorted = [...this.value].sort((a, b) => {
-              // Convertiamo entrambi in numeri
-              const numA = parseFloat(a[key]);
-              const numB = parseFloat(b[key]);
-              console.debug('confronto A,B',numA,numB)
-              // Verifica se sono numeri, usa confronto numerico.
-              if (!isNaN(numA) && !isNaN(numB)) {
-                  if (event.sortOrder > 0) {
-                      return numA - numB;
-                  }
-                  return numB - numA
-              }
+          // Convertiamo entrambi in numeri
+          const numA = parseFloat(a[key]);
+          const numB = parseFloat(b[key]);
+          console.debug('confronto A,B', numA, numB)
+          // Verifica se sono numeri, usa confronto numerico.
+          if (!isNaN(numA) && !isNaN(numB)) {
+            if (event.sortOrder > 0) {
+              return numA - numB;
+            }
+            return numB - numA
+          }
 
-              // Se uno solo è un numero, lo considera minore
-              if (!isNaN(numA) && isNaN(numB)) {
-                  return -1;
-              }
+          // Se uno solo è un numero, lo considera minore
+          if (!isNaN(numA) && isNaN(numB)) {
+            return -1;
+          }
 
-              if (isNaN(numA) && !isNaN(numB)) {
-                  return 1;
-              }
+          if (isNaN(numA) && !isNaN(numB)) {
+            return 1;
+          }
 
-              // Se entrambi sono NaN, usa confronto alfanumerico
-              if (event.sortOrder > 0) {
-                  console.debug('confronto alfanumerico A,B',a[key],b[key])
-                  return a[key].localeCompare(b[key]);
-              } else {
-                  console.debug('confronto alfanumerico B,A',b[key],a[key])
-                  return b[key].localeCompare(a[key]);
-              }
+          // Se entrambi sono NaN, usa confronto alfanumerico
+          if (event.sortOrder > 0) {
+            console.debug('confronto alfanumerico A,B', a[key], b[key])
+            return a[key].localeCompare(b[key]);
+          } else {
+            console.debug('confronto alfanumerico B,A', b[key], a[key])
+            return b[key].localeCompare(a[key]);
+          }
 
 
         });
@@ -262,12 +260,12 @@ export default {
       this._setMenuCollection();
     },
 
-      _needSelection(actionConf) {
-          if (typeof actionConf.needSelection === 'function') {
-              return actionConf.needSelection.apply(this);
-          }
-          return actionConf.needSelection
-      },
+    _needSelection(actionConf) {
+      if (typeof actionConf.needSelection === 'function') {
+        return actionConf.needSelection.apply(this);
+      }
+      return actionConf.needSelection
+    },
     getWidgetConf(index, field, data) {
       let that = this;
       index = index % that.getPerPage();
@@ -292,13 +290,13 @@ export default {
       }
       return that.widgetsConfig[index][field];
     },
-    getWidgetType(index,field) {
-        let that = this;
-        let fieldsConfig = that.fieldsConfig || {};
-        if (fieldsConfig[field] && fieldsConfig[field].type) {
-            return fieldsConfig[field].type;
-        }
-        return that.defaultWidgetType;
+    getWidgetType(index, field) {
+      let that = this;
+      let fieldsConfig = that.fieldsConfig || {};
+      if (fieldsConfig[field] && fieldsConfig[field].type) {
+        return fieldsConfig[field].type;
+      }
+      return that.defaultWidgetType;
     },
     setWidgetsConfig() {
       this._setWidgetsConfig();
@@ -306,7 +304,7 @@ export default {
     _setWidgetsConfig() {
       let that = this;
       // configurazioni widgets se non ci sono fields configurati prendo le keys dei valori
-      console.debug('vlist value',that.value);
+      console.debug('vlist value', that.value);
       if (!that.fields && that.value.length) {
         that.fields = Object.keys(that.value[0]);
       }
@@ -352,7 +350,7 @@ export default {
         val = modelData[key];
       }
       wc.value = val;
-          //let val = that.value[i][key];
+      //let val = that.value[i][key];
 
       wc.name = that.getFieldName(key);
       wc.modelData = modelData;
@@ -426,31 +424,31 @@ export default {
       return null;
     },
 
-      callRecordAction(index,name) {
-        let action = this.getRecordAction(index,name);
-        if (!action) {
-            this.alertError('Azione sul record non trovata ' + index + ' name ' + name);
-            return ;
-        }
-        action.execute();
-      },
-      getCollectionAction(name) {
-          console.debug('getCollection action ', this.$refs);
-          // let key = name;
-          // console.log('getRecordAction', index, name, key, this.$refs);
-          // if (this.$refs[key]) {
-          //     return this.$refs[key].instance(name);
-          // }
-          return null;
-      },
-      callCollectionAction(name) {
-          let action = this.getCollectionAction(name);
-          if (!action) {
-              this.alertError('Azione globale non trovata ' + name );
-              return ;
-          }
-          action.execute();
-      },
+    callRecordAction(index, name) {
+      let action = this.getRecordAction(index, name);
+      if (!action) {
+        this.alertError('Azione sul record non trovata ' + index + ' name ' + name);
+        return;
+      }
+      action.execute();
+    },
+    getCollectionAction(name) {
+      console.debug('getCollection action ', this.$refs);
+      // let key = name;
+      // console.log('getRecordAction', index, name, key, this.$refs);
+      // if (this.$refs[key]) {
+      //     return this.$refs[key].instance(name);
+      // }
+      return null;
+    },
+    callCollectionAction(name) {
+      let action = this.getCollectionAction(name);
+      if (!action) {
+        this.alertError('Azione globale non trovata ' + name);
+        return;
+      }
+      action.execute();
+    },
     /**
      * ritorna un vettore di primaryKey
      * @returns {*[]}
@@ -612,25 +610,33 @@ export default {
         console.warn('widget', field, 'is not hidden column');
       }
     },
-    getWidget (row, key) {
-        let realKey = 'w'+(parseInt(row) % this.getPerPage()) +'_'+key
-        console.debug('vList.getWidget',row,realKey,this.$refs[realKey],Array.isArray(this.$refs[realKey]))
-        return Array.isArray(this.$refs[realKey])?this.$refs[realKey][0]:this.$refs[realKey];
-        // var wConf = this.widgetsEditConfig[row][key];
-        // return this.store.cRefs[wConf.cRef];
+    getWidget(row, key) {
+      let realKey = 'w' + (parseInt(row) % this.getPerPage()) + '_' + key
+      console.debug('vList.getWidget', row, realKey, this.$refs[realKey], Array.isArray(this.$refs[realKey]))
+      return Array.isArray(this.$refs[realKey]) ? this.$refs[realKey][0] : this.$refs[realKey];
+      // var wConf = this.widgetsEditConfig[row][key];
+      // return this.store.cRefs[wConf.cRef];
     },
-    waitWidget(row,field,callback) {
+    waitWidget(row, field, callback) {
       let that = this;
-      let widget = that.getWidget(row,field);
+      let widget = that.getWidget(row, field);
       if (widget) {
         callback(widget);
       } else {
         setTimeout(() => {
-          that.waitWidget(row,field,callback);
-        },100);
+          that.waitWidget(row, field, callback);
+        }, 100);
       }
-      
+
     },
+
+    getTitleMsg() {
+      if (this.conf.titleMsg) {
+        return this.conf.titleMsg.apply(this, [this.value]);
+      }
+      return this.title ? this.translateUc(title) : this.translateUc(this.modelName + '.label', null, 1);
+
+    }
   }
 }
 </script>

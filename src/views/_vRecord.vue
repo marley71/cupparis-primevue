@@ -106,8 +106,12 @@ export default {
     },
     getGroupClass(group) {
       let classes = '';
-      classes += group.cssClass || this.groupClass;
+      classes += this.groupClass;
       classes += ' group-'+this.getGroupName(group);
+      if (group.severity) {
+        classes += ' group-' + group.severity;
+      }
+      classes += ' ' + group.cssClass;
       return classes;
     },
     getGroupIsClosed(group) {

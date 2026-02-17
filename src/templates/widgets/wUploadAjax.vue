@@ -18,7 +18,7 @@
           </template>
         </div>
       </div>
-      <FileUpload mode="basic" class="p-button-sm p-button-outlined" chooseIcon="fa fa-upload" chooseLabel="Scegli File" :auto="true" :customUpload="true" @uploader="uploadFile"
+      <FileUpload mode="basic" :chooseButtonProps="{'variant':(variant || 'outlined'),'size':'small','severity':severity}" chooseIcon="fa fa-upload" chooseLabel="Scegli File" :auto="true" :customUpload="true" @uploader="uploadFile"
                   :multiple="false" v-bind="extraBind"/>
     </div>
     <RulesErrors :errors="errors"></RulesErrors>

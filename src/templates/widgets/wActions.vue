@@ -1,7 +1,7 @@
 <template>
   <div>
     <c-action ref="button-actions" :conf="recordActionConf()" :whitelist="getActionsWhitelist()"
-              layout="buttons"></c-action>
+              :layout="layout || 'buttons'"></c-action>
     <RulesErrors :errors="errors"></RulesErrors>
   </div>
 </template>
