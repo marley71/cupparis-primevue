@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Widgets - Cupparis PrimeVue</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f7fa;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+            font-weight: 500;
+        }
+        
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .section h3 {
+            color: #764ba2;
+            font-size: 1.4em;
+            margin: 25px 0 15px 0;
+        }
+        
+        .section h4 {
+            color: #555;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+        
+        .section p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        .section ul, .section ol {
+            margin: 15px 0 15px 30px;
+            color: #555;
+        }
+        
+        .section li {
+            margin: 8px 0;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .code-block code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .code-inline {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e83e8c;
+            font-size: 0.9em;
+        }
+        
+        .widget-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .widget-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+        
+        .widget-card:hover {
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .widget-card h4 {
+            color: #667eea;
+            margin-top: 0;
+            font-size: 1.1em;
+        }
+        
+        .widget-card p {
+            color: #666;
+            font-size: 0.9em;
+            margin: 10px 0 0 0;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 10px;
+            }
+            
+            .header, .section {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .code-block {
+                font-size: 0.8em;
+                padding: 15px;
+            }
+            
+            .widget-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="index.html">🏠 Home</a>
+        <a href="cManage.html">cManage</a>
+        <a href="cImport.html">cImport</a>
+        <a href="widgets.html">Widgets</a>
+        <a href="views.html">Views</a>
+        <a href="lib.html">Librerie</a>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🧩 Widgets</h1>
+            <p>Componenti riutilizzabili per la creazione di form e input</p>
+    </div>
+        
+        <div class="section">
+            <h2>📖 Descrizione</h2>
+            <p>
+                I <strong>Widgets</strong> sono componenti riutilizzabili per la creazione di form e input.
+                Ogni widget rappresenta un tipo di campo di input con le sue specifiche caratteristiche.
+            </p>
+            <p>
+                Tutti i widget estendono <span class="code-inline">wBase</span> che fornisce funzionalità comuni come
+                gestione del valore, validazione, gestione errori e callbacks.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>🚀 Utilizzo Base</h2>
+            <div class="code-block">
+<code>&lt;template&gt;
+  &lt;c-widget :conf="widgetConf"&gt;&lt;/c-widget&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  data() {
+    return {
+      widgetConf: {
+        name: 'email',
+        type: 'w-input',
+        label: 'Email',
+        required: true,
+        rules: ['required', 'email']
+      }
+    }
+  }
+}
+&lt;/script&gt;</code>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📝 Widget Disponibili</h2>
+            
+            <h3>Input Base</h3>
+            <div class="widget-grid">
+                <div class="widget-card">
+                    <h4>w-input</h4>
+                    <p>Campo di input testuale standard</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-text</h4>
+                    <p>Campo di testo (sola lettura)</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-textarea</h4>
+                    <p>Area di testo multilinea</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-texthtml</h4>
+                    <p>Testo HTML formattato</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-hidden</h4>
+                    <p>Campo nascosto</p>
+                </div>
+            </div>
+            
+            <h3>Input Numerici e Date</h3>
+            <div class="widget-grid">
+                <div class="widget-card">
+                    <h4>w-input-set</h4>
+                    <p>Set di input multipli</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-date-picker</h4>
+                    <p>Selettore data</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-date-range-picker</h4>
+                    <p>Selettore intervallo date</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-date-text</h4>
+                    <p>Data in formato testo</p>
+                </div>
+            </div>
+            
+            <h3>Selezione</h3>
+            <div class="widget-grid">
+                <div class="widget-card">
+                    <h4>w-select</h4>
+                    <p>Menu a tendina</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-multi-select</h4>
+                    <p>Selezione multipla</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-autocomplete</h4>
+                    <p>Autocompletamento</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-select-button</h4>
+                    <p>Pulsanti di selezione</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-radio</h4>
+                    <p>Pulsanti radio</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-checkbox</h4>
+                    <p>Checkbox</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-swap</h4>
+                    <p>Scambio valori</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-swap-select</h4>
+                    <p>Scambio con selezione</p>
+                </div>
+            </div>
+            
+            <h3>Relazioni</h3>
+            <div class="widget-grid">
+                <div class="widget-card">
+                    <h4>w-belongsto</h4>
+                    <p>Relazione belongsTo (appartiene a)</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-belongsto-many</h4>
+                    <p>Relazione belongsToMany (molti a molti)</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-hasmany</h4>
+                    <p>Relazione hasMany (ha molti)</p>
+                </div>
+        </div>
+
+            <h3>File e Media</h3>
+            <div class="widget-grid">
+                <div class="widget-card">
+                    <h4>w-upload</h4>
+                    <p>Upload file</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-upload-ajax</h4>
+                    <p>Upload file via AJAX</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-image</h4>
+                    <p>Immagine singola</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-images</h4>
+                    <p>Galleria immagini</p>
+                </div>
+        </div>
+
+            <h3>Componenti Avanzati</h3>
+            <div class="widget-grid">
+                <div class="widget-card">
+                    <h4>w-editor</h4>
+                    <p>Editor WYSIWYG</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-color-picker</h4>
+                    <p>Selettore colore</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-knob</h4>
+                    <p>Controllo rotativo</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-chip</h4>
+                    <p>Tag/Chip</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-status</h4>
+                    <p>Indicatore di stato</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-icons</h4>
+                    <p>Selettore icone</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-leaflet</h4>
+                    <p>Mappa interattiva</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-table</h4>
+                    <p>Tabella dati</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-object</h4>
+                    <p>Oggetto complesso</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-json</h4>
+                    <p>Editor JSON</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-preview</h4>
+                    <p>Anteprima contenuto</p>
+                </div>
+                <div class="widget-card">
+                    <h4>w-custom</h4>
+                    <p>Widget personalizzato</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>⚙️ Proprietà Comuni a Tutti i Widget</h2>
+            <ul>
+                <li><span class="code-inline">name</span>: Nome del campo (obbligatorio)</li>
+                <li><span class="code-inline">type</span>: Tipo di widget (es. 'w-input', 'w-select')</li>
+                <li><span class="code-inline">label</span>: Etichetta del campo</li>
+                <li><span class="code-inline">value</span>: Valore iniziale</li>
+                <li><span class="code-inline">required</span>: Campo obbligatorio (true/false)</li>
+                <li><span class="code-inline">disabled</span>: Campo disabilitato (true/false o funzione)</li>
+                <li><span class="code-inline">readonly</span>: Campo in sola lettura</li>
+                <li><span class="code-inline">rules</span>: Regole di validazione</li>
+                <li><span class="code-inline">layout</span>: Configurazione layout (labelPosition, width, etc.)</li>
+                <li><span class="code-inline">change</span>: Callback chiamata al cambio valore</li>
+                <li><span class="code-inline">ready</span>: Callback chiamata quando il widget è pronto</li>
+                <li><span class="code-inline">clear</span>: Callback chiamata al reset</li>
+            </ul>
+    </div>
+
+        <div class="section">
+            <h2>💡 Esempi di Configurazione</h2>
+            
+            <h3>Input Semplice</h3>
+            <div class="code-block">
+<code>var widgetConf = {
+    name: 'email',
+    type: 'w-input',
+    label: 'Email',
+    required: true,
+    rules: ['required', 'email'],
+    layout: {
+        labelPosition: 'top',
+        width: '100%'
+    },
+    change: function(value) {
+        console.log('Email changed:', value);
+    }
+}</code>
+            </div>
+            
+            <h3>Select con Opzioni</h3>
+            <div class="code-block">
+<code>var widgetConf = {
+  name: 'role',
+  type: 'w-select',
+  label: 'Ruolo',
+  required: true,
+  options: [
+    { value: 'admin', label: 'Amministratore' },
+    { value: 'user', label: 'Utente' },
+    { value: 'guest', label: 'Ospite' }
+  ],
+  value: 'user'
+}</code>
+            </div>
+            
+            <h3>Date Picker</h3>
+            <div class="code-block">
+<code>var widgetConf = {
+  name: 'birthdate',
+  type: 'w-date-picker',
+  label: 'Data di Nascita',
+  required: true,
+  dateFormat: 'dd/mm/yy',
+  showIcon: true
+}</code>
+            </div>
+            
+            <h3>Upload File</h3>
+            <div class="code-block">
+<code>var widgetConf = {
+  name: 'document',
+  type: 'w-upload-ajax',
+  label: 'Documento',
+  extensions: ['pdf', 'doc', 'docx'],
+  maxFileSize: '5M',
+  routeName: 'uploadfile',
+  onSuccess(file) {
+    console.log('File caricato:', file);
+  }
+}</code>
+            </div>
+    </div>
+
+        <div class="section">
+            <h2>🔧 Widget Base (wBase)</h2>
+        <p>
+                Tutti i widget estendono <span class="code-inline">wBase</span> che fornisce funzionalità comuni:
+        </p>
+            <ul>
+            <li>Gestione del valore (getValue, setValue)</li>
+            <li>Validazione</li>
+            <li>Gestione errori</li>
+            <li>Callbacks (ready, change, clear)</li>
+            <li>Metodi sovrascrivibili</li>
+        </ul>
+    </div>
+
+        <div class="section">
+            <h2>🔧 Metodi Principali dei Widget</h2>
+            <ul>
+                <li><span class="code-inline">getValue()</span>: Ottiene il valore corrente</li>
+                <li><span class="code-inline">setValue(value)</span>: Imposta il valore</li>
+                <li><span class="code-inline">reset()</span>: Ripristina il valore iniziale</li>
+                <li><span class="code-inline">clear()</span>: Pulisce il campo</li>
+                <li><span class="code-inline">validate()</span>: Valida il campo</li>
+                <li><span class="code-inline">getFieldName()</span>: Ottiene il nome del campo per il form</li>
+                <li><span class="code-inline">disabled(event)</span>: Verifica se il campo è disabilitato</li>
+        </ul>
+    </div>
+
+        <div class="section">
+            <h2>✅ Validazione</h2>
+            <p>
+                I widget supportano regole di validazione tramite la proprietà <span class="code-inline">rules</span>:
+            </p>
+            <ul>
+                <li><span class="code-inline">required</span>: Campo obbligatorio</li>
+                <li><span class="code-inline">email</span>: Formato email valido</li>
+                <li><span class="code-inline">min</span>: Valore minimo</li>
+                <li><span class="code-inline">max</span>: Valore massimo</li>
+                <li><span class="code-inline">minLength</span>: Lunghezza minima</li>
+                <li><span class="code-inline">maxLength</span>: Lunghezza massima</li>
+            <li>Regole personalizzate tramite funzioni</li>
+        </ul>
+            
+            <h3>Esempio Validazione</h3>
+            <div class="code-block">
+<code>var widgetConf = {
+  name: 'password',
+  type: 'w-input',
+  label: 'Password',
+  inputType: 'password',
+  required: true,
+  rules: [
+    'required',
+    { minLength: 8, message: 'La password deve essere di almeno 8 caratteri' },
+    { pattern: /[A-Z]/, message: 'La password deve contenere almeno una maiuscola' }
+  ]
+}</code>
+            </div>
+    </div>
+
+        <div class="section">
+            <h2>🎨 Layout</h2>
+            <p>
+                La proprietà <span class="code-inline">layout</span> permette di personalizzare l'aspetto:
+            </p>
+            <ul>
+                <li><span class="code-inline">labelPosition</span>: Posizione etichetta ('top', 'left', 'none')</li>
+                <li><span class="code-inline">width</span>: Larghezza del campo</li>
+                <li><span class="code-inline">class</span>: Classi CSS personalizzate</li>
+                <li><span class="code-inline">style</span>: Stili inline</li>
+        </ul>
+    </div>
+
+        <div class="section">
+            <h2>🎨 Widget Personalizzati</h2>
+        <p>
+                È possibile creare widget personalizzati utilizzando <span class="code-inline">w-custom</span>:
+        </p>
+            <div class="code-block">
+<code>var customWidget = {
+    name: 'myField',
+    type: 'w-custom',
+    component: 'MyCustomComponent',
+    props: {
+        // props da passare al componente
+    customProp: 'value'
+    }
+}</code>
+            </div>
+    </div>
+
+        <div class="section">
+            <h2>📝 Note</h2>
+            <ul>
+            <li>Tutti i widget estendono CrudComponent</li>
+            <li>I metodi possono essere sovrascritti tramite configurazione</li>
+            <li>Supportano binding bidirezionale con v-model</li>
+            <li>Integrazione completa con il sistema di validazione</li>
+            <li>Supportano template dinamici e rendering condizionale</li>
+                <li>Gestione automatica degli errori e messaggi di validazione</li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

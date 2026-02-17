@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrudVars - Cupparis PrimeVue</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f5f7fa; }
+        .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 40px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .navbar a { color: white; text-decoration: none; margin-right: 20px; font-weight: 500; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .header { background: white; border-radius: 15px; padding: 40px; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header h1 { color: #667eea; font-size: 2.5em; margin-bottom: 10px; }
+        .section { background: white; border-radius: 15px; padding: 30px; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .section h2 { color: #667eea; font-size: 1.8em; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #667eea; }
+        .code-block { background: #2d2d2d; color: #f8f8f2; padding: 20px; border-radius: 8px; overflow-x: auto; margin: 20px 0; font-family: 'Courier New', monospace; font-size: 0.9em; white-space: pre-wrap; word-wrap: break-word; }
+        .code-block code { white-space: pre-wrap; word-wrap: break-word; }
+        .code-inline { background: #f4f4f4; padding: 2px 6px; border-radius: 4px; font-family: 'Courier New', monospace; color: #e83e8c; }
+        @media (max-width: 768px) { .container { padding: 20px 10px; } .header, .section { padding: 20px; } }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="../index.html">🏠 Home</a>
+        <a href="../lib.html">📚 Librerie</a>
+        <a href="CrudVars.html">CrudVars</a>
+    </div>
+    <div class="container">
+        <div class="header">
+            <h1>🌐 CrudVars</h1>
+            <p>Variabili globali e configurazioni condivise</p>
+        </div>
+        <div class="section">
+            <h2>📖 Descrizione</h2>
+            <p>CrudVars contiene configurazioni globali accessibili da tutti i componenti dell'applicazione.</p>
+        </div>
+        <div class="section">
+            <h2>⚙️ Proprietà</h2>
+            <ul>
+                <li><span class="code-inline">modelConfs</span>: Configurazioni dei modelli</li>
+                <li><span class="code-inline">lang</span>: Traduzioni e testi</li>
+                <li><span class="code-inline">icons</span>: Configurazione icone</li>
+                <li><span class="code-inline">actionConfs</span>: Configurazioni azioni</li>
+                <li><span class="code-inline">viewConfs</span>: Configurazioni views</li>
+                <li><span class="code-inline">env</span>: Variabili d'ambiente</li>
+                <li><span class="code-inline">useApi</span>: Flag per uso API</li>
+                <li><span class="code-inline">validationMessages</span>: Messaggi di validazione</li>
+            </ul>
+        </div>
+        <div class="section">
+            <h2>💡 Esempi di Utilizzo</h2>
+            <div class="code-block">
+<code>import CrudVars from '@cupparis-lib/lib/CrudVars';
+
+// Accedere a configurazioni
+var modelConf = CrudVars.modelConfs['ModelUser'];
+var lang = CrudVars.lang;
+var icons = CrudVars.icons;
+
+// Modificare configurazioni
+CrudVars.modelConfs['MyModel'] = myModelConf;
+CrudVars.lang['app.custom'] = 'Testo personalizzato';</code>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

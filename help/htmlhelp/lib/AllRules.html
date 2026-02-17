@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AllRules - Cupparis PrimeVue</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f5f7fa; }
+        .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 40px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .navbar a { color: white; text-decoration: none; margin-right: 20px; font-weight: 500; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .header { background: white; border-radius: 15px; padding: 40px; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header h1 { color: #667eea; font-size: 2.5em; margin-bottom: 10px; }
+        .section { background: white; border-radius: 15px; padding: 30px; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .section h2 { color: #667eea; font-size: 1.8em; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #667eea; }
+        .code-block { background: #2d2d2d; color: #f8f8f2; padding: 20px; border-radius: 8px; overflow-x: auto; margin: 20px 0; font-family: 'Courier New', monospace; font-size: 0.9em; white-space: pre-wrap; word-wrap: break-word; }
+        .code-block code { white-space: pre-wrap; word-wrap: break-word; }
+        .rule-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .rule-item { background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 3px solid #667eea; }
+        @media (max-width: 768px) { .container { padding: 20px 10px; } .header, .section { padding: 20px; } }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="../index.html">🏠 Home</a>
+        <a href="../lib.html">📚 Librerie</a>
+        <a href="AllRules.html">AllRules</a>
+    </div>
+    <div class="container">
+        <div class="header">
+            <h1>✅ AllRules</h1>
+            <p>Regole di validazione disponibili</p>
+        </div>
+        <div class="section">
+            <h2>📖 Descrizione</h2>
+            <p>AllRules contiene tutte le regole di validazione disponibili per i widget, basate su VeeValidate.</p>
+        </div>
+        <div class="section">
+            <h2>📋 Regole Disponibili</h2>
+            <div class="rule-grid">
+                <div class="rule-item"><strong>required</strong>: Campo obbligatorio</div>
+                <div class="rule-item"><strong>email</strong>: Formato email valido</div>
+                <div class="rule-item"><strong>alpha</strong>: Solo lettere</div>
+                <div class="rule-item"><strong>alpha_dash</strong>: Lettere, numeri, trattini</div>
+                <div class="rule-item"><strong>alpha_num</strong>: Lettere e numeri</div>
+                <div class="rule-item"><strong>alpha_spaces</strong>: Lettere e spazi</div>
+                <div class="rule-item"><strong>between</strong>: Valore tra min e max</div>
+                <div class="rule-item"><strong>confirmed</strong>: Conferma campo</div>
+                <div class="rule-item"><strong>digits</strong>: Solo cifre</div>
+                <div class="rule-item"><strong>dimensions</strong>: Dimensioni immagine</div>
+                <div class="rule-item"><strong>ext</strong>: Estensione file</div>
+                <div class="rule-item"><strong>image</strong>: File immagine</div>
+                <div class="rule-item"><strong>integer</strong>: Numero intero</div>
+                <div class="rule-item"><strong>is</strong>: Valore uguale a</div>
+                <div class="rule-item"><strong>is_not</strong>: Valore diverso da</div>
+                <div class="rule-item"><strong>length</strong>: Lunghezza esatta</div>
+                <div class="rule-item"><strong>max</strong>: Lunghezza massima</div>
+                <div class="rule-item"><strong>max_value</strong>: Valore massimo</div>
+                <div class="rule-item"><strong>mimes</strong>: Tipo MIME file</div>
+                <div class="rule-item"><strong>min</strong>: Lunghezza minima</div>
+                <div class="rule-item"><strong>min_value</strong>: Valore minimo</div>
+                <div class="rule-item"><strong>not_one_of</strong>: Non in lista</div>
+                <div class="rule-item"><strong>numeric</strong>: Numero</div>
+                <div class="rule-item"><strong>one_of</strong>: In lista</div>
+                <div class="rule-item"><strong>regex</strong>: Espressione regolare</div>
+                <div class="rule-item"><strong>size</strong>: Dimensione file</div>
+                <div class="rule-item"><strong>url</strong>: URL valido</div>
+            </div>
+        </div>
+        <div class="section">
+            <h2>💡 Esempi di Utilizzo</h2>
+            <div class="code-block">
+<code>import AllRules from '@cupparis-lib/lib/AllRules';
+
+// Utilizzo nelle regole di validazione
+var widgetConf = {
+  name: 'email',
+  type: 'w-input',
+  rules: [
+    AllRules.required,
+    AllRules.email
+  ]
+};
+
+// Con parametri
+var widgetConf = {
+  name: 'age',
+  type: 'w-input',
+  rules: [
+    AllRules.required,
+    AllRules.min_value(18),
+    AllRules.max_value(100)
+  ]
+};</code>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

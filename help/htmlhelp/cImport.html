@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cImport - Cupparis PrimeVue</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f7fa;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin-right: 20px;
+            font-weight: 500;
+        }
+        
+        .navbar a:hover {
+            text-decoration: underline;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .section h2 {
+            color: #667eea;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .section h3 {
+            color: #764ba2;
+            font-size: 1.4em;
+            margin: 25px 0 15px 0;
+        }
+        
+        .section h4 {
+            color: #555;
+            font-size: 1.2em;
+            margin: 20px 0 10px 0;
+        }
+        
+        .section p {
+            margin-bottom: 15px;
+            color: #555;
+        }
+        
+        .section ul, .section ol {
+            margin: 15px 0 15px 30px;
+            color: #555;
+        }
+        
+        .section li {
+            margin: 8px 0;
+        }
+        
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .code-block code {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .code-inline {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e83e8c;
+            font-size: 0.9em;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-left: 8px;
+        }
+        
+        .badge-required {
+            background: #dc3545;
+        }
+        
+        .process-step {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        .process-step h4 {
+            color: #667eea;
+            margin-top: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 10px;
+            }
+            
+            .header, .section {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .code-block {
+                font-size: 0.8em;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="index.html">🏠 Home</a>
+        <a href="cManage.html">cManage</a>
+        <a href="cImport.html">cImport</a>
+        <a href="widgets.html">Widgets</a>
+        <a href="views.html">Views</a>
+        <a href="lib.html">Librerie</a>
+    </div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>📥 cImport</h1>
+            <p>Componente per l'importazione di dati da file CSV o Excel</p>
+        </div>
+        
+        <div class="section">
+            <h2>📖 Descrizione</h2>
+            <p>
+                <strong>cImport</strong> è il componente per l'importazione di dati da file CSV o Excel.
+                Gestisce l'intero processo di importazione: caricamento file, validazione, anteprima e salvataggio.
+            </p>
+            <p>
+                Il componente supporta elaborazioni asincrone tramite job queue, progress tracking e gestione completa degli errori,
+                rendendo l'importazione di grandi quantità di dati semplice e affidabile.
+            </p>
+        </div>
+        
+        <div class="section">
+            <h2>🚀 Utilizzo Base</h2>
+            <div class="code-block">
+<code>&lt;template&gt;
+  &lt;c-import :conf="importConf"&gt;&lt;/c-import&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+import cupparisPrimevue from 'cupparis-primevue';
+const cImport = cupparisPrimevue.cImport;
+
+export default {
+  components: { cImport },
+  data() {
+    return {
+      importConf: {
+        providerName: 'AnagraficaXls',
+        title: 'Importazione Aziende',
+        importDesc: 'Caricare un file Excel con le colonne: Ragione Sociale, CodFiscale, PIva'
+      }
+    }
+  }
+}
+&lt;/script&gt;</code>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>⚙️ Configurazione</h2>
+            
+            <h3>Proprietà Obbligatorie</h3>
+            <ul>
+                <li><span class="code-inline">providerName</span> <span class="badge badge-required">Obbligatorio</span>: Nome del provider di importazione (es. 'AnagraficaXls')</li>
+            </ul>
+            
+            <h3>Proprietà Opzionali</h3>
+            <ul>
+                <li><span class="code-inline">title</span>: Titolo da mostrare</li>
+                <li><span class="code-inline">sectionTitle</span>: Titolo della sezione</li>
+                <li><span class="code-inline">importDesc</span>: Descrizione testuale dell'importazione</li>
+                <li><span class="code-inline">importDescHtml</span>: Nome file HTML per descrizione complessa</li>
+                <li><span class="code-inline">importFile</span>: Nome modello da importare (default: nome modello)</li>
+                <li><span class="code-inline">viewUpload</span>: Configurazione personalizzata per il form di upload</li>
+                <li><span class="code-inline">viewList</span>: Configurazione personalizzata per l'anteprima dati</li>
+                <li><span class="code-inline">viewSave</span>: Configurazione personalizzata per il salvataggio</li>
+                <li><span class="code-inline">confUpload</span>: Configurazione personalizzata per il widget upload</li>
+                <li><span class="code-inline">ready</span>: Funzione callback chiamata quando il componente è pronto</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>💡 Esempi di Configurazione</h2>
+            
+            <h3>Configurazione Semplice</h3>
+            <div class="code-block">
+<code>var conf = {
+  providerName: 'AnagraficaXls',
+  title: 'Importazione Aziende',
+  importDesc: 'Caricare un file Excel con le colonne: Ragione Sociale, CodFiscale, PIva',
+  viewUpload: {
+    fields: ['resource'],
+    fieldsConfig: {
+      resource: {
+        type: 'w-upload-ajax',
+        extensions: ['xls', 'xlsx'],
+        maxFileSize: '5M'
+      }
+    }
+  }
+}</code>
+            </div>
+            
+            <h3>Configurazione Avanzata</h3>
+            <div class="code-block">
+<code>var conf = {
+  providerName: 'AnagraficaXls',
+  title: 'Importazione Aziende',
+  importDescHtml: 'headerImportAziende.html',
+  importFile: 'ModelAzienda',
+  
+  viewUpload: {
+    fields: ['resource', 'options'],
+    fieldsConfig: {
+      resource: {
+        type: 'w-upload-ajax',
+        extensions: ['xls', 'xlsx', 'csv'],
+        maxFileSize: '10M',
+        routeName: 'uploadfile'
+      },
+      options: {
+        type: 'w-checkbox',
+        label: 'Sovrascrivi record esistenti',
+        value: false
+      }
+    },
+    actions: ['action-save']
+  },
+  
+  ready() {
+    console.log('Componente import pronto');
+  }
+}</code>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>🔄 Processo di Importazione</h2>
+            <p>Il componente gestisce 4 fasi principali:</p>
+            
+            <div class="process-step">
+                <h4>1. Upload</h4>
+                <p>Caricamento del file da importare. L'utente seleziona e carica il file CSV o Excel.</p>
+            </div>
+            
+            <div class="process-step">
+                <h4>2. Loading</h4>
+                <p>Elaborazione e validazione del file. Il componente mostra una progress bar durante l'elaborazione asincrona.</p>
+            </div>
+            
+            <div class="process-step">
+                <h4>3. Tosave</h4>
+                <p>Anteprima dei dati pronti per il salvataggio. L'utente può verificare i dati prima del salvataggio definitivo.</p>
+            </div>
+            
+            <div class="process-step">
+                <h4>4. Saving</h4>
+                <p>Salvataggio effettivo dei dati nel database. Il componente gestisce il processo di inserimento/aggiornamento.</p>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📊 Stati del Componente</h2>
+            <ul>
+                <li><span class="code-inline">step</span>: Fase corrente ('upload', 'loading', 'tosave', 'saving')</li>
+                <li><span class="code-inline">importStatus</span>: Stato dell'importazione ('upload', 'load')</li>
+                <li><span class="code-inline">jobId</span>: ID del job di elaborazione</li>
+                <li><span class="code-inline">progressEnabled</span>: Mostra la barra di progresso</li>
+                <li><span class="code-inline">uploadEnabled</span>: Abilita il caricamento file</li>
+                <li><span class="code-inline">saveEnabled</span>: Abilita il salvataggio</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>📤 Configurazione Upload</h2>
+            <p>La configurazione di default per l'upload supporta:</p>
+            <ul>
+                <li><span class="code-inline">extensions</span>: Estensioni file consentite (default: <span class="code-inline">['csv']</span>)</li>
+                <li><span class="code-inline">maxFileSize</span>: Dimensione massima file (default: <span class="code-inline">'2M'</span>)</li>
+                <li><span class="code-inline">routeName</span>: Nome route per l'upload (default: <span class="code-inline">'uploadfile'</span>)</li>
+                <li><span class="code-inline">onSuccess</span>: Callback chiamata al successo dell'upload</li>
+                <li><span class="code-inline">onError</span>: Callback chiamata in caso di errore</li>
+            </ul>
+            
+            <h3>Esempio Configurazione Upload Personalizzata</h3>
+            <div class="code-block">
+<code>viewUpload: {
+  fields: ['resource'],
+  fieldsConfig: {
+    resource: {
+      type: 'w-upload-ajax',
+      extensions: ['xls', 'xlsx', 'csv'],
+      maxFileSize: '10M',
+      routeName: 'uploadfile',
+      onSuccess(file) {
+        console.log('File caricato:', file);
+        this.importForm();
+      },
+      onError(error) {
+        console.error('Errore upload:', error);
+      }
+    }
+  }
+}</code>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>📄 Descrizione HTML Dinamica</h2>
+            <p>
+                È possibile utilizzare un file HTML per la descrizione dell'importazione.
+                Il file deve essere posizionato nella cartella definita da <span class="code-inline">VITE_PUBLISH_DIR</span>.
+            </p>
+            <div class="code-block">
+<code>var conf = {
+  providerName: 'AnagraficaXls',
+  importDescHtml: 'headerImportAziende.html'
+}</code>
+            </div>
+            <p class="mt-2">
+                Il file HTML può contenere variabili template che vengono sostituite con i dati del componente.
+                Ad esempio, <span class="code-inline">{{title}}</span> verrà sostituito con il valore di <span class="code-inline">conf.title</span>.
+            </p>
+        </div>
+        
+        <div class="section">
+            <h2>🔧 Metodi Principali</h2>
+            <ul>
+                <li><span class="code-inline">importForm()</span>: Avvia il processo di importazione</li>
+                <li><span class="code-inline">checkStatus()</span>: Controlla lo stato del job di elaborazione</li>
+                <li><span class="code-inline">reset()</span>: Ripristina il componente allo stato iniziale</li>
+                <li><span class="code-inline">getImportDescHtml()</span>: Carica la descrizione HTML</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>🌐 Routes Utilizzate</h2>
+            <ul>
+                <li><span class="code-inline">uploadfile</span>: Upload del file</li>
+                <li><span class="code-inline">load_datafile</span>: Caricamento e validazione dati</li>
+                <li><span class="code-inline">status_queue</span>: Controllo stato job</li>
+                <li><span class="code-inline">save_datafile</span>: Salvataggio dati nel database</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>⚠️ Gestione Errori</h2>
+            <p>
+                Il componente gestisce automaticamente gli errori durante le varie fasi:
+            </p>
+            <ul>
+                <li><strong>Errori di upload</strong>: Mostrati immediatamente all'utente</li>
+                <li><strong>Errori di validazione</strong>: Mostrati dopo il caricamento con dettagli specifici</li>
+                <li><strong>Errori di salvataggio</strong>: Mostrati durante il salvataggio con possibilità di retry</li>
+            </ul>
+        </div>
+        
+        <div class="section">
+            <h2>📝 Note</h2>
+            <ul>
+                <li>Il componente utilizza un sistema di job queue per elaborazioni asincrone</li>
+                <li>Supporta progress bar per operazioni lunghe</li>
+                <li>Le configurazioni delle viste vengono create automaticamente se non specificate</li>
+                <li>Estende CrudComponent e fornisce tutte le funzionalità base</li>
+                <li>Supporta file CSV e Excel (xls, xlsx)</li>
+                <li>Gestione automatica della validazione dei dati</li>
+                <li>Possibilità di anteprima prima del salvataggio definitivo</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

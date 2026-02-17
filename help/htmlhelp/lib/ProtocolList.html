@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProtocolList - Cupparis PrimeVue</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #333; background: #f5f7fa; }
+        .navbar { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px 40px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .navbar a { color: white; text-decoration: none; margin-right: 20px; font-weight: 500; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .header { background: white; border-radius: 15px; padding: 40px; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header h1 { color: #667eea; font-size: 2.5em; margin-bottom: 10px; }
+        .section { background: white; border-radius: 15px; padding: 30px; margin-bottom: 30px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .section h2 { color: #667eea; font-size: 1.8em; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid #667eea; }
+        .code-block { background: #2d2d2d; color: #f8f8f2; padding: 20px; border-radius: 8px; overflow-x: auto; margin: 20px 0; font-family: 'Courier New', monospace; font-size: 0.9em; white-space: pre-wrap; word-wrap: break-word; }
+        .code-block code { white-space: pre-wrap; word-wrap: break-word; }
+        @media (max-width: 768px) { .container { padding: 20px 10px; } .header, .section { padding: 20px; } }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="../index.html">🏠 Home</a>
+        <a href="../lib.html">📚 Librerie</a>
+        <a href="ProtocolList.html">ProtocolList</a>
+    </div>
+    <div class="container">
+        <div class="header">
+            <h1>📋 ProtocolList</h1>
+            <p>Protocollo per gestione liste di record</p>
+        </div>
+        <div class="section">
+            <h2>📖 Descrizione</h2>
+            <p>ProtocolList gestisce la formattazione e struttura delle risposte per liste di record, inclusa paginazione, ordinamento e filtri.</p>
+        </div>
+        <div class="section">
+            <h2>🔧 Proprietà</h2>
+            <ul>
+                <li><span class="code-inline">value</span>: Array di record</li>
+                <li><span class="code-inline">metadata</span>: Metadati dei campi e relazioni</li>
+                <li><span class="code-inline">pagination</span>: Informazioni di paginazione (current_page, per_page, total, etc.)</li>
+            </ul>
+        </div>
+        <div class="section">
+            <h2>🔧 Metodi</h2>
+            <ul>
+                <li><span class="code-inline">getData()</span>: Ottiene tutti i dati del protocollo</li>
+                <li><span class="code-inline">jsonToData(json)</span>: Converte risposta JSON in dati del protocollo</li>
+            </ul>
+        </div>
+        <div class="section">
+            <h2>💡 Esempio di Utilizzo</h2>
+            <div class="code-block">
+<code>import ProtocolList from '@cupparis-lib/lib/ProtocolList';
+
+var protocol = new ProtocolList();
+protocol.jsonToData({
+    result: {
+        data: [{ id: 1, name: 'Mario' }, { id: 2, name: 'Luigi' }],
+        current_page: 1,
+        per_page: 20,
+        total: 2
+    },
+    metadata: {
+        fields: { name: { options: [] } }
+    }
+});
+
+console.log(protocol.value); // Array di record
+console.log(protocol.pagination); // Info paginazione</code>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
