@@ -113,22 +113,26 @@ import _vSearch from '@cupparis-lib/views/_vSearch.vue'
 import cAction from "../actions/cAction.vue";
 import {libStatus} from '@cupparis-lib/store/libStatus';
 
+
 export default {
   name: "v-search",
   extends: _vSearch,
   components: {cAction},
   mounted() {
-    if (libStatus().advancedSearchActive[this.modelName]) {
+    const pinia = this.$pinia;
+    const libStatusStore = pinia ? libStatus(pinia) : libStatus();
+    if (libStatusStore.advancedSearchActive[this.modelName]) {
       this.advancedSearchOpen = '0';
     }
   },
   watch: {
     advancedSearchOpen(value) {
-      console.debug('advancedSearchOpen',value);
+      const pinia = this.$pinia;
+      const store = pinia ? libStatus(pinia) : libStatus();
       if (value == null) {
-        libStatus().advancedSearchActive[this.modelName] = false;
+        store.advancedSearchActive[this.modelName] = false;
       } else {
-        libStatus().advancedSearchActive[this.modelName] = true;
+        store.advancedSearchActive[this.modelName] = true;
       }
     }
   }

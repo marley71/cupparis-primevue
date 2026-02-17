@@ -2,6 +2,7 @@
   <span>
     <MultiSelect class="w-full" v-model="value" :options="options" optionLabel="name" optionValue="code"
                  :placeholder="placeholder" :filter="filter" display="chip" @change="change()"
+                 :emptyMessage="translate('app.multiselect-empty')"
                  :pt="{
                       label: 'flex-wrap',
                   }"

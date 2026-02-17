@@ -31,14 +31,6 @@ export default {
         }
         return cf;
     },
-    // computed: {
-    //     menubarActions() {
-    //         if (this.layout === 'menubar') {
-    //             return this.getMenubarActions();
-    //         }
-    //         return null;
-    //     }
-    // },
     methods: {
 
         getConf(actionConf, actionKey) {

@@ -2,13 +2,13 @@
 import widgets from '@templates/widgets'
 import views from '@templates/views'
 import apps from '@templates/app'
+import actions from "@templates/actions";    
 import lib from './lib';
 import help from "./help";
 
 
 import CrudComponent from "./CrudComponent.vue"
-import cAction from '@templates/actions/cAction.vue'
-//import cView from '@templates/views/cView.vue'
+//import cAction from '@templates/actions/cAction.vue'
 import vRecord from '@templates/views/vRecord.vue'
 import vView from '@templates/views/vView.vue'
 import vEdit from '@templates/views/vEdit.vue'
@@ -26,7 +26,7 @@ import routerConf from "./confs/router";
 import CrudVars from "./lib/CrudVars";
 import routeConfs from "./confs/routes";
 import cManage from '@templates/app/cManage.vue';
-import aBase from '@templates/actions/aBase.vue';
+//import aBase from '@templates/actions/aBase.vue';
 import Server from './lib/Server.js';
 import Route from './lib/Route.js';
 import Wait from "./Wait.vue";
@@ -57,6 +57,7 @@ export default {
         apps.install(app);
         dialogs.install(app);
         help.install(app);
+        actions.install(app);
 
         let prefix = CrudVars.useApi?'/api':'';
         for (let k in routeConfs) {
@@ -69,12 +70,12 @@ export default {
     },
     // Funzione per aggiornare i messaggi di validazione dopo il caricamento delle traduzioni
     //updateValidationMessages: configureValidationMessages,
-    CrudComponent,cAction,CrudCore,CrudVars,wBase,
-    //cView,
+    CrudComponent,CrudCore,CrudVars,wBase,
+    //cView,cAction, aBase,
     routerConf,routeConfs,actionConfs,viewConfs,
     vRecord,vSearch,cManage,vList,vListEdit,cImport,vListHasmany,vDatafileList,
     vEdit,vInsert,vView,
-    aBase,
+   
     Server,Wait,Route,
     CrudHelpers,
     // --- help pages

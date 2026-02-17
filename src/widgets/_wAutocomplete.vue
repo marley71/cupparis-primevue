@@ -2,6 +2,7 @@
 <script>
 
 import _wBase from "./_wBase.vue"
+import CrudHelpers from "../lib/CrudHelpers"
 
 export default {
     name: '_wAutocomplete',
@@ -55,12 +56,14 @@ export default {
       if (that.labelFields && that.labelFields.length > 0) {
         let label = '';
         for (let i in that.labelFields) {
-          label += (event[that.labelFields[i]] || '') + ' ';
+          if (event && Object.keys(event).length > 0) {
+            //console.debug('event',event,that.labelFields[i]);
+            label += CrudHelpers.getByDot(event,that.labelFields[i]) + ' '; // (event[that.labelFields[i]] || '') + ' ';
+          }
         }
+        //console.debug('label',label);
         return label.trim();
       }
-      if (event.label)
-        return event.label;
       return '';
     },
 

@@ -1,6 +1,6 @@
 <template>
-  <div v-if="Array.isArray(value)">
-    <div v-for="(attachment) in value" class="flex gap-2">
+  <div v-if="Array.isArray(value)" class="flex gap-2 flex-wrap">
+    <div v-for="(attachment) in value" >
         <div @click="download(attachment)" class="cursor-pointer text-center">
           <i class="fa fa-file fa-xl"></i>
           <div class="text-xs mt-1">{{attachment.nome}}</div>

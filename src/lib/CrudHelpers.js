@@ -221,4 +221,25 @@ CrudHelpers.mapOptions = (domainValues,domainValuesOrder) => {
 CrudHelpers.formatDate = (value,format) => {
     return moment(value).format(format);
 }
+/**
+ * ritorna il valore di un oggetto in base al path in formato dot notation
+ * @param obj 
+ * @param path 
+ * @param defaultValue 
+ * @returns 
+ */
+CrudHelpers.getByDot = (obj, path, defaultValue) => {
+    if (!path) return obj;
+    const parts = path.split('.');
+
+    let current = obj;
+    for (const key of parts) {
+        if (current == null || !(key in current)) {
+            return((defaultValue && defaultValue !== null && defaultValue !== undefined)?defaultValue:'');
+        }
+        current = current[key];
+    }
+    return current;
+}
+
 export default CrudHelpers;

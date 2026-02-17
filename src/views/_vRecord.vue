@@ -211,6 +211,7 @@ export default {
       that.resetWidgetsErrors();
       that.validate().then((res) => {
         if (!res) {
+          that.alertError('Controllare i dati, ci sono degli errori di validazione');
           return;
         }
       
@@ -248,21 +249,27 @@ export default {
       return formData;
     },
     getWidget(field) {
-      var fieldRefName = 'fields-'+field;
-      //console.log("searchParams REFSSSS",field,this.$refs,this.$refs[fieldRefName])
-      var fieldRef = this.$refs[fieldRefName];
-      if (Array.isArray(fieldRef)) {
-        if (fieldRef.length > 0) {
-          return this.$refs[fieldRefName][0].$refs[field]
-            ? this.$refs[fieldRefName][0].$refs[field]
-              : this.$refs[fieldRefName][0];
+      try {
+        var fieldRefName = 'fields-'+field;
+        //console.log("searchParams REFSSSS",field,this.$refs,this.$refs[fieldRefName])
+        var fieldRef = this.$refs[fieldRefName];
+        if (Array.isArray(fieldRef)) {
+          if (fieldRef.length > 0) {
+            return this.$refs[fieldRefName][0].$refs[field]
+              ? this.$refs[fieldRefName][0].$refs[field]
+                : this.$refs[fieldRefName][0];
+          }
+          //return fieldRef;
         }
-        //return fieldRef;
+        if (this.$refs[fieldRefName]) {
+          return this.$refs[fieldRefName].$refs[field];
+        }
+        return null;
+      } catch (error) {
+        console.error('error getWidget',field,error);
+        return null;
       }
-      if (this.$refs[fieldRefName]) {
-        return this.$refs[fieldRefName].$refs[field];
-      }
-      return null;
+      
     },
     getAction(name) {
       //console.log('getAction',name,this.recordActionsConf);

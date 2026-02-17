@@ -251,6 +251,7 @@ export default {
             hs.value = that.value[i];
             hs.type = 'v-view';
             //console.log('HS', hs);
+            hs.viewInstance = that.viewInstance;
             return hs;
         },
         getHasmanyList() {
@@ -303,6 +304,7 @@ export default {
             }
 
             hs.value = that.value;
+            hs.viewInstance = that.viewInstance;
             console.debug('HS', hs);
             return hs;
         },

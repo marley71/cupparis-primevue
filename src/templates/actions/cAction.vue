@@ -39,27 +39,6 @@ export default {
     components: {ABase},
     extends: _cAction,
 }
-
-/*
-<Menubar v-if="false" :model="menubarActions" class="w-full text-left">
-            <!-- <template v-if="menubarTitle" #start>
-                <span>{{ menubarTitle }}</span>
-            </template> -->
-            <template #item="{ item, root }">
-                <!-- <a-base v-if="!root" :ref="item.action" :conf="getConf(item,item.action)"></a-base> -->
-                 <div>aaa</div>
-                <!-- <div v-if="!root">{{ item.label }}</div>
-                <div v-else class="cursor-pointer p-1">
-                    <i class="fa fa-list"></i>&nbsp;
-                    {{ item.label }}&nbsp;<i class="fa fa-angle-down"></i>
-                </div> -->
-            </template>
-        </Menubar>
-
-
-*/
-
-
 </script>
 
 <style scoped>

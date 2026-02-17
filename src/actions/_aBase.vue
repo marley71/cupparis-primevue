@@ -39,9 +39,25 @@ export default {
         let that = this;
         //console.debug('actions ', that.conf.actionType);
         let conf = that._loadReactiveData(that.conf);
+        if (conf.domainValues) {
+            conf.options = Object.keys(conf.domainValues).map(key => ({
+                value: key,
+                label: conf.domainValues[key]
+            }));
+        }
         return conf;
     },
+    mounted() {
+        setTimeout(this.ready, 10);
+    },
+
+
     methods: {
+        ready() {
+            if (this.conf.ready) {
+                this.conf.ready.apply(this);
+            }
+        },
         getButtonSize() {
             var that = this;
             var buttonSize = that.conf.buttonSize ? that.conf.buttonSize : 'small';
@@ -124,7 +140,9 @@ export default {
         },
         execute(event) {
             let that = this;
-            event.preventDefault();
+            if (event.preventDefault) {
+                event.preventDefault();
+            }
             if (that.type === 'link' || that.type === 'link-download') {
                 //that.execute = function () {
                     CrudHelpers.createRuntimeLink(that.href(), that.target)

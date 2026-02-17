@@ -25,8 +25,13 @@
                 </router-link>
             </Button>
         </template>
+        <template v-else-if="type === 'select' && _visible()">
+            <Select v-model="value" :options="options" :disabled="_disabled()" optionLabel="label" optionValue="value" 
+            @change="execute($event)" @show="onShow"></Select>
+            
+        </template>
         <template v-else-if="type  && _visible()">
-            <component :is="type" :conf="conf" :disabled="_disabled()"></component>
+            <component :is="type" :conf="conf"></component>
         </template>
         <template v-else-if="_visible()">
             <b>controlType ({{ type }}) non riconosciuto</b>
@@ -40,6 +45,14 @@ import _aBase from "@cupparis-lib/actions/_aBase.vue";
 export default {
     name: "aBase",
     extends: _aBase,
+    methods: {
+        onShow() {
+            console.log('aBaseonShow', this.inPopup);
+            if (this.inPopup) {
+                document.querySelector('.p-select-overlay').style['z-index'] = this.zIndexPopup;
+            }
+        }
+    }
 }
 </script>
 

@@ -24,6 +24,7 @@ const lang = {
     'app.import-titolo' : 'Importazione Dati',
     'app.limite-raggiunto' : 'Numero massimo raggiunto',
     'app.mostra-ricerca-avanzata' : 'Ricerca avanzata',
+    'app.multiselect-empty' : 'Nessun elemento presente',
     'app.nascondi-ricerca-avanzata' : 'Nascondi ricerca avanzata',
     'app.numero-records-lista' : 'Ci sono (0) record, da (1) a (2) su (3)',
     'app.nuovo' : 'Nuovo',
@@ -34,5 +35,6 @@ const lang = {
     'app.salva-torna-indietro' : 'Salva e torna alla lista',
     'app.seleziona' : 'Seleziona',
     'app.trova-indirizzo' : 'Trova indirizzo',
+    
 }
 export default lang

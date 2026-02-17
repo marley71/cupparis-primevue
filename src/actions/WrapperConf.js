@@ -16,6 +16,9 @@ export default class WrapperConf {
             disabled : false,
             visible : true,
             externalLink : false,
+            options : [],
+            inPopup : false,
+            zIndexPopup : 10000, // in popup l'azione select viene assegnato come z-index
         }
     }
 
