@@ -17,6 +17,7 @@ export default {
     _afterDraw() {
       let that = this;
       setTimeout(() => {
+       
         that.setSearchParamsValue();
         if (that.conf.afterDraw) {
           that.conf.afterDraw.apply(that);
@@ -111,7 +112,7 @@ export default {
       var realBasicFields = fields.filter(function (n) {
         return advancedFields.indexOf(n) === -1;
       });
-      console.log('basicFields', fields, advancedFields, realBasicFields);
+      //console.log('basicFields', fields, advancedFields, realBasicFields);
       return realBasicFields;
     },
     getAdvancedFields() {
