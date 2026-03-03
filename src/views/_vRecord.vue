@@ -39,6 +39,7 @@ export default {
 
       that.setLayout();
       //console.debug('record widgetsConfig',this.widgetsConfig);
+      //console.debug('draw',that.hiddenWidgets);
       for (let k in this.widgetsConfig) {
         if (this.widgetsConfig[k].removeWidget) {
           this.removedWidgets.push(k);
@@ -50,7 +51,7 @@ export default {
       this.setActions();
       this.loaded = true;
     },
-   
+
     setLayout() {
       let that = this;
       let ly = that.layout || {};
@@ -218,7 +219,7 @@ export default {
           that.alertError('Controllare i dati, ci sono degli errori di validazione');
           return;
         }
-      
+
         if (that.type == 'v-edit') {
           route = that.createRoute('update');
           var pk = that.cPk || that.pk || 0;
@@ -273,7 +274,7 @@ export default {
         console.error('error getWidget',field,error);
         return null;
       }
-      
+
     },
     getAction(name) {
       //console.log('getAction',name,this.recordActionsConf);
@@ -524,7 +525,7 @@ export default {
           that.waitWidget(field,callback);
         },100);
       }
-      
+
     },
   }
 }

@@ -34,6 +34,9 @@ export default {
       showComponent(compName,conf) {
           this.cConf = conf;
           this.componentName = compName;
+      },
+      getComponent() {
+        return this.$refs.compRef;
       }
     }
 }

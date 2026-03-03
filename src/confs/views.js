@@ -102,6 +102,7 @@ const viewConfs = {
             //numeroRecordsLabel : null, // label del numero dei records
             datatableClass: '',
             stripedRows: true,
+            headerClass: '',
         };
         return Object.assign(bv, lv);
     },

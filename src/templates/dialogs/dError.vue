@@ -1,7 +1,7 @@
 <template>
     <Dialog class="p-dialog bg-blue-500" v-model:visible="display" :modal="true" :style="{width: width}" @hide="hide">
         <template #header>
-            <h3>{{ translate(title) }}</h3>
+            <h3 class="text-xl">{{ translate(title) }}</h3>
         </template>
 
         <div class="flex text-red-500 gap-5" ref="el">

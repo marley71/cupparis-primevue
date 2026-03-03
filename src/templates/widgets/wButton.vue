@@ -8,7 +8,7 @@
       />
     </div>
     <div v-else>
-      <Button :class="cssClass" :severity="severity" @click="_click" :icon="icon" :iconPos="iconPos || 'right'"
+      <Button :class="cssClass" :severity="severity" @click="click" :icon="icon" :iconPos="iconPos || 'right'"
               :disabled="isDisabled()" :title="title || buttonLabel" :label="buttonLabel" :variant="variant"
               :size="size"
 

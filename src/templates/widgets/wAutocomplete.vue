@@ -8,6 +8,7 @@
           <Button size="small" icon="fa fa-times" @click="clear" v-if="clearButton"/>
           <AutoComplete class="w-full" v-model="autocompleteValue" :suggestions="suggestions" @show="onShow"
                         @complete="search" :option-label="getAutocompleteLabel" option-value="id"
+                        :emptySearchMessage="translate('app.autocomplete-empty')"
                         v-bind="extraBind" @item-select="itemSelect" :placeholder="placeholder" input-class="w-full"/>
         </InputGroup>
       </div>
