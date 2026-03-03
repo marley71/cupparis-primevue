@@ -56,6 +56,7 @@ export default class WrapperConf {
         conf.extraBind = conf.extraBind || {};
         conf.autocompleteParams = conf.autocompleteParams || null;
         conf.clearButton = conf.clearButton || false;
+        conf.separator = conf.separator || ' ';
         //console.log('referredData',conf.referredData);
         // let __initialValue = function () {
         //     let that = this;
@@ -78,6 +79,11 @@ export default class WrapperConf {
         //     conf.autocompleteValue = that.__initialValue();
         //     conf.suggestions = [conf.referredData];
         // }
+        return conf;
+    }
+
+    wAttachments(conf) {
+        conf.downloadType == conf.downloadType || 'download';
         return conf;
     }
 
@@ -173,7 +179,14 @@ export default class WrapperConf {
             conf.getColumnValue = null;
         }
         conf.wrapper = conf.wrapper || '';
-        
+        conf.addButtonSeverity = conf.addButtonSeverity || '';
+        conf.initialDivider = conf.initialDivider || false;
+        conf.addButtonClass = conf.addButtonClass || '';
+        conf.finalDivider = conf.finalDivider || false;
+        conf.addButtonSize = conf.addButtonSize || 'small';
+        conf.addButtonIcon = conf.addButtonIcon || 'pi pi-plus';
+        conf.addButtonIconPos = conf.addButtonIconPos || 'left';
+        conf.addButtonVariant = conf.addButtonVariant || '';
         conf.hasmanyConf.defaultWidgetType = 'w-input';
         return conf;
     }

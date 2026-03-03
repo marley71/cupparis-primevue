@@ -19,15 +19,15 @@ export default {
                 return that.overwriteMethods[localk].apply(that, arguments);
             }
         }
-        console.debug('_vBase.beforeCreate',that.conf.type+'');
-        
+        //console.debug('_vBase.beforeCreate',that.conf.type+'',that.conf);
+
         for (let k in that.conf) {
             //console.log('k',k,ext[k]);
             // se la funzione non e' tra i metodi sovrascribili allora la istanzio come una nuova funzione dell'oggetto
             // altrimenti ci pensano i singoli metodi sovrascribili a fare la chiamata
-            if (global.overloadMethodsCheck) {  
+            if (global.overloadMethodsCheck) {
                 if ( (global.viewOverloadMethods.indexOf(k) < 0) && that.conf[k] instanceof Function) {
-                    console.debug('_vBase.created ',k,'metodo non fa parte dei sovrascribili')
+                    //console.debug('_vBase.created ',k,'metodo non fa parte dei sovrascribili')
                     that.overwriteMethods[k] = that.conf[k];
                     __call(k);
                 }
@@ -37,8 +37,8 @@ export default {
                     __call(k);
                 }
             }
-        }  
-        
+        }
+
         this.Server = Server;
     },
     mounted() {
@@ -351,7 +351,7 @@ export default {
             if (that.conf.getheaderHelpFileData) {
                 return that.conf.getheaderHelpFileData.apply(this);
             }
-            
+
             let data = {
                 value : that.value,
                 metadata : that.metadata,
@@ -367,7 +367,7 @@ export default {
         },
         /**
          * importa un file esterno html da mettere nell'headerHelp, al posto di una descrizione semplice
-         * 
+         *
          */
         getheaderHelpFile() {
             let that = this;
@@ -385,7 +385,7 @@ export default {
          * questa funzione normalizza la configurazione che mi arriva e restituisco solo i dati che devono essere realmente reactive
          */
         _loadReactiveData(conf) {
-            console.debug('_loadReactiveData',conf);
+            //console.debug('_loadReactiveData',conf);
             let wc = new WrapperConf()
             if (!conf.type) {
                 conf.type = this.$options.name;
@@ -399,7 +399,7 @@ export default {
                 }
             }
             //dt.errors = [];
-            //console.debug('_vBase.data ', dt)
+            console.debug('_vBase.data ', dt)
             return dt;
         }
     },

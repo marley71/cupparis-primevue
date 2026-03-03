@@ -2,6 +2,7 @@
 const lang = {
     'app.action-delete-selected' : 'Cancella Selezionati',
     'app.annulla' : 'Annulla',
+    'app.autocomplete-empty' : 'Nessun elemento trovato',
     'app.cerca' : 'Cerca',
     'app.conferma-cancellazione' : 'Sei sicuro di voler cancellare l\'elemento?',
     'app.dettagli' : 'Dettagli id (0)',

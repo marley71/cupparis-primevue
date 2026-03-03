@@ -66,19 +66,23 @@
 
                 <div class="grid grid-cols-12">
                   <template v-for="field in getAdvancedFields()" :key="field">
-                    <div class="py-3 px-1" :class="getWidgetLayout(field,'colClass')">
-                      <v-record-widget :field="field" :ref="'fields-'+field" :labelInfo="getLabelInfo(field)"
-                                       :widgetConfig="widgetsConfig[field]">
-                      </v-record-widget>
-                    </div>
+                    
+                    <template v-if="!isHiddenField(field) && !isHiddenWidget(field)">
+                      <div class="py-3 px-1" :class="getWidgetLayout(field,'colClass')">
+                        <v-record-widget  :field="field" :ref="'fields-'+field" :labelInfo="getLabelInfo(field)"
+                                        :widgetConfig="widgetsConfig[field]">
+                        </v-record-widget>
+                      </div>
 
-                    <template v-if="hasDividerAfter(field)">
-                      <v-record-divider v-show="!isHiddenWidget(field)"
-                                        :dividerInfo="getDividerInfo(field)"></v-record-divider>
+                      <template v-if="hasDividerAfter(field)">
+                        <v-record-divider 
+                                          :dividerInfo="getDividerInfo(field)"></v-record-divider>
+                      </template>
+                      <template v-else-if="getWidgetLayout(field,'lastInRow')">
+                        <div class="col-12 max-h-0 p-0">&nbsp;</div>
+                      </template>
                     </template>
-                    <template v-else-if="getWidgetLayout(field,'lastInRow')">
-                      <div class="col-12 max-h-0 p-0">&nbsp;</div>
-                    </template>
+                    
                   </template>
                 </div>
               </AccordionContent>

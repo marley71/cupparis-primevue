@@ -58,7 +58,7 @@ export default {
         for (let i in that.labelFields) {
           if (event && Object.keys(event).length > 0) {
             //console.debug('event',event,that.labelFields[i]);
-            label += CrudHelpers.getByDot(event,that.labelFields[i]) + ' '; // (event[that.labelFields[i]] || '') + ' ';
+            label += CrudHelpers.getByDot(event,that.labelFields[i]) + (i < that.labelFields.length - 1 ? that.separator : ''); // (event[that.labelFields[i]] || '') + ' ';
           }
         }
         //console.debug('label',label);
@@ -123,6 +123,14 @@ export default {
       let that = this;
       this.setValue(this.autocompleteValue.id);
       that.change(event);
+    },
+
+    setAutocompleteValue(autocompleteValue) {
+      let that = this;
+      that.autocompleteValue = autocompleteValue;
+      this.itemSelect({
+        value : autocompleteValue
+      })
     },
   }
 }
