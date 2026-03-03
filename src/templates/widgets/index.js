@@ -16,6 +16,7 @@ import wHidden from './wHidden.vue'
 import wImage from './wImage.vue';
 import wKnob from './wKnob.vue';
 import wAttachments from './wAttachments.vue';
+import wDownload from './wDownload.vue';
 import wImages from './wImages.vue';
 import wInput from './wInput.vue';
 import wInputMask from './wInputMask.vue';
@@ -78,6 +79,8 @@ export default {
         CrudCore.componentItems['w-knob'] = wKnob;
         app.component('w-attachments',wAttachments);
         CrudCore.componentItems['w-attachments'] = wAttachments;
+        app.component('w-download',wDownload);
+        CrudCore.componentItems['w-download'] = wDownload;
         app.component('w-images',wImages);
         CrudCore.componentItems['w-images'] = wImages;
         app.component('w-input',wInput);
