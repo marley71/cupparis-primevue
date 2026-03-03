@@ -179,6 +179,7 @@ export default {
         return realUrl;
       },
       setDomainValues(domainValues,domainValuesOrder) {
+        console.debug('domainValues2',domainValues)
           this.domainValues = domainValues;
           this.domainValuesOrder = domainValuesOrder || Object.keys(domainValues);
           this.options = CrudHelpers.mapOptions(domainValues,domainValuesOrder);

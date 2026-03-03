@@ -172,6 +172,15 @@ CrudCore.setupApp = function (app) {
     //console.debug('globalProperties',CrudCore.globalProperties)
     //console.debug('componentItems',CrudCore.componentItems);
 }
+/**
+ * Aggiunge un componente alla lista dei componenti disponibili all'applicazione
+ * @param {string} name 
+ * @param {*} component 
+ */
+CrudCore.addComponent = function (app,name,component) {
+    app.component(name,component);
+    CrudCore.componentItems[name] = component;
+}
 
 var _cloneObj = function (item) {
 

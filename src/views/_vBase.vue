@@ -19,7 +19,7 @@ export default {
                 return that.overwriteMethods[localk].apply(that, arguments);
             }
         }
-        console.debug('_vBase.beforeCreate',that.conf.type+'');
+        //console.debug('_vBase.beforeCreate',that.conf.type+'');
         
         for (let k in that.conf) {
             //console.log('k',k,ext[k]);
@@ -27,7 +27,7 @@ export default {
             // altrimenti ci pensano i singoli metodi sovrascribili a fare la chiamata
             if (global.overloadMethodsCheck) {  
                 if ( (global.viewOverloadMethods.indexOf(k) < 0) && that.conf[k] instanceof Function) {
-                    console.debug('_vBase.created ',k,'metodo non fa parte dei sovrascribili')
+                    //console.debug('_vBase.created ',k,'metodo non fa parte dei sovrascribili')
                     that.overwriteMethods[k] = that.conf[k];
                     __call(k);
                 }
@@ -385,7 +385,7 @@ export default {
          * questa funzione normalizza la configurazione che mi arriva e restituisco solo i dati che devono essere realmente reactive
          */
         _loadReactiveData(conf) {
-            console.debug('_loadReactiveData',conf);
+            //console.debug('_loadReactiveData',conf);
             let wc = new WrapperConf()
             if (!conf.type) {
                 conf.type = this.$options.name;
