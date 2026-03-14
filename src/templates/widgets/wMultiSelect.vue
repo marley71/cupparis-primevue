@@ -1,7 +1,7 @@
 <template>
   <span>
     <MultiSelect class="w-full" v-model="value" :options="options" optionLabel="name" optionValue="code"
-                 :placeholder="placeholder" :filter="filter" display="chip" @change="change()"
+                 :placeholder="placeholder" :filter="hasFilter()" display="chip" @change="change()"
                  :emptyMessage="translate('app.multiselect-empty')"
                  :pt="{
                       label: 'flex-wrap',
@@ -49,7 +49,7 @@ import RulesErrors from "./RulesErrors.vue";
 export default {
   name: "wMultiselect",
   extends: _wMultiselect,
-  components : {RulesErrors}
+  components : {RulesErrors},
 }
 
 </script>

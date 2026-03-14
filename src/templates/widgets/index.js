@@ -1,6 +1,7 @@
 import wActions from './wActions.vue';
 import wAutocomplete from './wAutocomplete.vue';
 import wButton from './wButton.vue';
+import wButtons from './wButtons.vue';
 import wBelongsto from './wBelongsto.vue';
 import wBelongstoMany from './wBelongstoMany.vue';
 import wCheckbox from './wCheckbox.vue';
@@ -49,6 +50,8 @@ export default {
         CrudCore.componentItems['w-autocomplete'] = wAutocomplete;   // permette la visibilita' anche per le dialog
         app.component('w-button',wButton);
         CrudCore.componentItems['w-button'] = wButton;
+        app.component('w-buttons',wButtons);
+        CrudCore.componentItems['w-buttons'] = wButtons;
         app.component('w-belongsto',wBelongsto);
         CrudCore.componentItems['w-belongsto'] = wBelongsto;
         app.component('w-belongsto-many',wBelongstoMany);
