@@ -81,6 +81,7 @@ Server.post = function (url, params, callback) {
         processData = false;
     }
     //console.log('serverPost', (params instanceof FormData), contentType, processData);
+    //console.log('serverPost', realUrl, params, Server.getHearders());
     axios.post(realUrl, params, {
         headers: Server.getHearders()
     }).then((response) => {

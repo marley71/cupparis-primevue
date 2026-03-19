@@ -750,6 +750,61 @@ CrudCore.jsonToFormData = function (obj, form = new FormData(), prefix = '') {
     return form;
 }
 
+/**
+ * Converte FormData (o oggetto flat) con chiavi in formato "nome-field1[]", "nome-field2"
+ * in vettori associativi: { nome: [{ field1: val1, field2: val2 }, ...] }.
+ * - La parte prima del primo "-" è il nome del gruppo (es. "nome").
+ * - La parte dopo è il nome del campo; "[]" indica che il campo è in un array.
+ * - Stessa chiave ripetuta (es. in FormData) produce più elementi nell'array.
+ * @param {FormData|Object} data - FormData o oggetto con chiavi flat
+ * @returns {Object}
+ */
+CrudCore.formDataToJson = function (data) {
+    const entries = data instanceof FormData ? [...data.entries()] : Object.entries(data);
+    const byPrefix = {};
+
+    for (const [key, value] of entries) {
+        const dashIndex = key.indexOf('-');
+        let prefix, fieldPart;
+        if (dashIndex === -1) {
+            prefix = '';
+            fieldPart = key;
+        } else {
+            prefix = key.substring(0, dashIndex);
+            fieldPart = key.substring(dashIndex + 1);
+        }
+        const isArray = fieldPart.endsWith('[]');
+        const fieldName = isArray ? fieldPart.slice(0, -2) : fieldPart;
+
+        if (!byPrefix[prefix]) byPrefix[prefix] = {};
+        if (!byPrefix[prefix][fieldName]) byPrefix[prefix][fieldName] = [];
+        byPrefix[prefix][fieldName].push(value);
+    }
+
+    const result = {};
+    for (const prefix of Object.keys(byPrefix)) {
+        const fields = byPrefix[prefix];
+        if (prefix === '') {
+            for (const [fieldName, values] of Object.entries(fields)) {
+                result[fieldName] = values.length === 1 ? values[0] : values;
+            }
+            continue;
+        }
+        let maxLen = 1;
+        for (const values of Object.values(fields)) {
+            maxLen = Math.max(maxLen, values.length);
+        }
+        result[prefix] = [];
+        for (let i = 0; i < maxLen; i++) {
+            const obj = {};
+            for (const [fieldName, values] of Object.entries(fields)) {
+                obj[fieldName] = values[i] !== undefined ? values[i] : values[0];
+            }
+            result[prefix].push(obj);
+        }
+    }
+    return result;
+};
 
 
 /**
