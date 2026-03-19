@@ -31,6 +31,7 @@ export default {
       myShow: false,
       removedGroups: [], // rimuove il widget usando v-if
       hiddenGroups: [],   // nasconde il widget usando v-show
+
     }
   },
   methods: {
@@ -85,7 +86,7 @@ export default {
         if (!this.isHiddenField(f))
           groupVisibleFields.push(f);
       }
-      console.log("GVF:::: ",groupVisibleFields)
+      console.log("GVF:::: ", groupVisibleFields)
       return groupVisibleFields;
     },
     getGroupWrapper(group) {
@@ -108,7 +109,7 @@ export default {
     getGroupClass(group) {
       let classes = '';
       classes += this.groupClass;
-      classes += ' group-'+this.getGroupName(group);
+      classes += ' group-' + this.getGroupName(group);
       if (group.severity) {
         classes += ' group-' + group.severity;
       }
@@ -225,14 +226,14 @@ export default {
           var pk = that.cPk || that.pk || 0;
           route.setValues({
             modelName: that.modelName,
-              foormName : (that.foormName || 'edit'),
+            foormName: (that.foormName || 'edit'),
             pk: pk
           });
         } else {
           route = that.createRoute('create');
           route.setValues({
             modelName: that.modelName,
-            foormName : (that.foormName || 'insert'),
+            foormName: (that.foormName || 'insert'),
           });
         }
         route.setParams(that.getViewData());
@@ -250,18 +251,23 @@ export default {
       let that = this;
       let form = ref || 'form';
       const formData = new FormData(that.$refs[form]);
-      console.log('formData', formData);
-      return formData;
+      // console.log('formData', formData);
+      if (!that.formToJson) {
+        return formData;
+      }
+      const formDataJson = new CrudCore.formDataToJson(formData);
+      // console.log('formDataJson', formDataJson);
+      return formDataJson
     },
     getWidget(field) {
       try {
-        var fieldRefName = 'fields-'+field;
+        var fieldRefName = 'fields-' + field;
         //console.log("searchParams REFSSSS",field,this.$refs,this.$refs[fieldRefName])
         var fieldRef = this.$refs[fieldRefName];
         if (Array.isArray(fieldRef)) {
           if (fieldRef.length > 0) {
             return this.$refs[fieldRefName][0].$refs[field]
-              ? this.$refs[fieldRefName][0].$refs[field]
+                ? this.$refs[fieldRefName][0].$refs[field]
                 : this.$refs[fieldRefName][0];
           }
           //return fieldRef;
@@ -271,7 +277,7 @@ export default {
         }
         return null;
       } catch (error) {
-        console.error('error getWidget',field,error);
+        console.error('error getWidget', field, error);
         return null;
       }
 
@@ -280,14 +286,14 @@ export default {
       //console.log('getAction',name,this.recordActionsConf);
       return this.$refs.actions.instance(name);
     },
-      callAction(name) {
-          let action = this.getAction(name);
-          if (!action) {
-              this.alertError('Azionenon trovata '  + name);
-              return ;
-          }
-          action.execute();
-      },
+    callAction(name) {
+      let action = this.getAction(name);
+      if (!action) {
+        this.alertError('Azionenon trovata ' + name);
+        return;
+      }
+      action.execute();
+    },
     getValue() {
       var that = this;
       var values = {};
@@ -354,7 +360,7 @@ export default {
 
         }
       }
-      console.log('isValid',isValid)
+      console.log('isValid', isValid)
       return isValid;
     },
     /**
@@ -372,17 +378,17 @@ export default {
           rulesArray = rulesArray.concat(widget.rules ? widget.rules.split('|') : []);
           // controllo che non ci siano rules custom e se i sono devono essere definite in customRules del widget
           for (let i in rulesArray) {
-              let rName = rulesArray[i].split(':')[0];
-              //console.debug('rName',rName,AllRules[rName]);
-              if (!AllRules[rName]) {
-                  if (!widget.customRules[rName]) {
-                      throw "Regola " + rName + ' non è stata definita';
-                  } else {
-                      AllRules[rName] = function() {
-                          return widget.customRules[rName].apply(widget,[]);
-                      }
-                  }
+            let rName = rulesArray[i].split(':')[0];
+            //console.debug('rName',rName,AllRules[rName]);
+            if (!AllRules[rName]) {
+              if (!widget.customRules[rName]) {
+                throw "Regola " + rName + ' non è stata definita';
+              } else {
+                AllRules[rName] = function () {
+                  return widget.customRules[rName].apply(widget, []);
+                }
               }
+            }
           }
           if (that.widgetsConfig[name].type == 'w-hasmany') {
             rulesArray = rulesArray.concat(widget.getRules());
@@ -481,19 +487,19 @@ export default {
     getDividerInfo(field) {
       let conf = this.widgetsConfig[field];
       return {
-        'class' : conf.dividerClass || '',
-        'content' : conf.dividerContent || false,
-        'contentClass' : conf.dividerContentClass || 'font-bold',
-        'description' : conf.dividerDescription || false
+        'class': conf.dividerClass || '',
+        'content': conf.dividerContent || false,
+        'contentClass': conf.dividerContentClass || 'font-bold',
+        'description': conf.dividerDescription || false
       }
     },
     getLabelInfo(field) {
       let conf = this.widgetsConfig[field];
       let layout = this.getWidgetLayout(field);
       return {
-        'label' : this.translateUc(conf.label),
-        'position' : layout.labelPosition,
-        'required' : this.isRequired(field),
+        'label': this.translateUc(conf.label),
+        'position': layout.labelPosition,
+        'required': this.isRequired(field),
       }
     },
     reset() {
@@ -506,24 +512,24 @@ export default {
       }
     },
     getTitleMsg() {
-      console.log("TITLE MSG::: ",this,this.value)
+      console.log("TITLE MSG::: ", this, this.value)
       if (this.conf.titleMsg) {
-        return this.conf.titleMsg.apply(this,[this.value]);
+        return this.conf.titleMsg.apply(this, [this.value]);
       }
       if (this.title) {
         return this.title;
       }
       return null;
     },
-    waitWidget(field,callback) {
+    waitWidget(field, callback) {
       let that = this;
       let widget = that.getWidget(field);
       if (widget) {
         callback(widget);
       } else {
         setTimeout(() => {
-          that.waitWidget(field,callback);
-        },100);
+          that.waitWidget(field, callback);
+        }, 100);
       }
 
     },

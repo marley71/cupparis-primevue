@@ -762,6 +762,7 @@ CrudCore.jsonToFormData = function (obj, form = new FormData(), prefix = '') {
 CrudCore.formDataToJson = function (data) {
     const entries = data instanceof FormData ? [...data.entries()] : Object.entries(data);
     const byPrefix = {};
+    const byPrefixIsArray = {};
 
     for (const [key, value] of entries) {
         const dashIndex = key.indexOf('-');
@@ -776,17 +777,26 @@ CrudCore.formDataToJson = function (data) {
         const isArray = fieldPart.endsWith('[]');
         const fieldName = isArray ? fieldPart.slice(0, -2) : fieldPart;
 
-        if (!byPrefix[prefix]) byPrefix[prefix] = {};
-        if (!byPrefix[prefix][fieldName]) byPrefix[prefix][fieldName] = [];
+        if (!byPrefix[prefix])  {
+            byPrefix[prefix] = {};
+            byPrefixIsArray[prefix] = {};
+        }
+        if (!byPrefix[prefix][fieldName]) {
+            byPrefix[prefix][fieldName] = [];
+            byPrefixIsArray[prefix][fieldName] = {};
+            byPrefixIsArray[prefix][fieldName] = isArray;
+        }
         byPrefix[prefix][fieldName].push(value);
     }
 
     const result = {};
     for (const prefix of Object.keys(byPrefix)) {
         const fields = byPrefix[prefix];
+        const fieldsIsArray = byPrefixIsArray[prefix];
         if (prefix === '') {
             for (const [fieldName, values] of Object.entries(fields)) {
-                result[fieldName] = values.length === 1 ? values[0] : values;
+                result[fieldName] = (values.length === 1 && !fieldsIsArray[fieldName])
+                    ? values[0] : values;
             }
             continue;
         }

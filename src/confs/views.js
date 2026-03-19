@@ -20,6 +20,7 @@ const baseView = () => {
         autoload: true,
         blocked: false,
         modelName: null,
+        formToJson: false,
     }
 }
 
