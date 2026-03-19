@@ -1,6 +1,7 @@
 import wActions from './wActions.vue';
 import wAutocomplete from './wAutocomplete.vue';
 import wButton from './wButton.vue';
+import wButtons from './wButtons.vue';
 import wBelongsto from './wBelongsto.vue';
 import wBelongstoMany from './wBelongstoMany.vue';
 import wCheckbox from './wCheckbox.vue';
@@ -16,6 +17,7 @@ import wHidden from './wHidden.vue'
 import wImage from './wImage.vue';
 import wKnob from './wKnob.vue';
 import wAttachments from './wAttachments.vue';
+import wDownload from './wDownload.vue';
 import wImages from './wImages.vue';
 import wInput from './wInput.vue';
 import wInputMask from './wInputMask.vue';
@@ -48,6 +50,8 @@ export default {
         CrudCore.componentItems['w-autocomplete'] = wAutocomplete;   // permette la visibilita' anche per le dialog
         app.component('w-button',wButton);
         CrudCore.componentItems['w-button'] = wButton;
+        app.component('w-buttons',wButtons);
+        CrudCore.componentItems['w-buttons'] = wButtons;
         app.component('w-belongsto',wBelongsto);
         CrudCore.componentItems['w-belongsto'] = wBelongsto;
         app.component('w-belongsto-many',wBelongstoMany);
@@ -78,6 +82,8 @@ export default {
         CrudCore.componentItems['w-knob'] = wKnob;
         app.component('w-attachments',wAttachments);
         CrudCore.componentItems['w-attachments'] = wAttachments;
+        app.component('w-download',wDownload);
+        CrudCore.componentItems['w-download'] = wDownload;
         app.component('w-images',wImages);
         CrudCore.componentItems['w-images'] = wImages;
         app.component('w-input',wInput);

@@ -1,7 +1,8 @@
 <template>
   <span>
     <Password v-if="inputType == 'password'" :inputProps="{'name':name}" :name="name" v-model="value" toggleMask
-              v-bind="extraBind"
+              v-bind="extraBind" fluid
+              class="w-full"
               @change="change" :class="errors.length?'p-invalid':''"
               :promptLabel="translate('app.scegli-password')" :weakLabel="translate('app.password-semplice')"
               :mediumLabel="translate('app.password-media')"

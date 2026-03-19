@@ -57,9 +57,9 @@
         </div>
 
 
-        <div class="w-full mt-3" v-show="hasAdvancedSearch()">
+        <div class="w-full mt-3 " v-show="hasAdvancedSearch()">
 
-          <Accordion :value="advancedSearchOpen" v-model:value="advancedSearchOpen" class="border border-primary-200" >
+          <Accordion :value="advancedSearchOpen" v-model:value="advancedSearchOpen" class="border border-primary-600 rounded-lg bg-transparent" >
             <AccordionPanel value="0"  style="box-shadow:none" >
               <AccordionHeader class="text-primary-800!">{{ advancedSearchHeader() }}</AccordionHeader>
               <AccordionContent>

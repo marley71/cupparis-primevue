@@ -9,6 +9,9 @@ export default {
     extends : _wBase,
   methods: {
     getFormattedValue() {
+      if (!this.value) {
+        return this.getEmptyLabel();
+      }
       let that = this;
       //return that.translate(that.invalidDateString)
       moment.locale('it');
@@ -24,6 +27,10 @@ export default {
         return that.translate(that.invalidDateString); // + '*' ;
       }
     },
+
+    getEmptyLabel() {
+      return this.emptyLabel || '';
+    }
   }
 }
 </script>
