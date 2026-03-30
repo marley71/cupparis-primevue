@@ -43,6 +43,7 @@
           <div class="py-6 px-4 flex-1 overflow-auto">
 
               <DataTable :value="value" v-model:selection="selected"
+                         ref="dataTable"
                          :rows="getPerPage()"
                          :paginator="paginator" :paginatorPosition="paginatorPosition"
                          :lazy="routeName==null?false:true"
@@ -105,6 +106,7 @@
           <Card>
             <template #content>
               <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected"
+                         ref="dataTable"
                          :rows="getPerPage()"
                          :paginator="paginator" :paginatorPosition="paginatorPosition"
                          :lazy="routeName===null?false:true"
@@ -172,11 +174,25 @@ import _vList from '@cupparis-lib/views/_vList.vue'
 import cAction from "../actions/cAction.vue";
 import DataTable from "primevue/datatable";
 import Card from 'primevue/card';
+import { nextTick } from 'vue';
 
 export default {
   name: "v-list",
   extends: _vList,
   components: {cAction},
+  async mounted() {
+
+    await nextTick()
+
+  // elemento radice del DataTable
+  console.log('datatable', this.$refs)
+    if (this.$refs.dataTable) {
+      const el = this.$refs.dataTable.value.$el
+      const height = el.offsetHeight
+
+      console.log('Altezza DataTable:', height)
+    }
+  },
   methods: {
     rowClass(rowData, rowIndex) {
       return rowIndex % 2 === 0 ? 'p-highlight' : ''; // Aggiunge la classe p-highlight a righe alternate

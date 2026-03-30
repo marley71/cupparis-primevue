@@ -76,6 +76,18 @@ export default {
       that.value = null;
       that.autocompleteValue = null;
     },
+    /**
+     * metodo eseguito prima della ricerca
+     * @param event evento di ricerca
+     * @returns event evento di ricerca
+     */
+    beforeSearch(event) {
+      let that = this;
+      if (that.conf.beforeSearch) {
+        return that.conf.beforeSearch.apply(this,[event]);
+      }
+      return event;
+    },
 
     search (event) {
       let that = this;
@@ -94,13 +106,26 @@ export default {
         params : that.autocompleteParams,
 
       });
-
+      event = that.beforeSearch(event);
       //console.log('route',that.route,that);
       that.Server.route(that.route,function (json) {
         console.log('json',json);
         that.suggestions = json.result;
+        event = that.afterSearch(event);
       });
       //console.log('search',that.conf,event);
+    },
+    /**
+     * metodo eseguito dopo la ricerca
+     * @param event evento di ricerca
+     * @returns event evento di ricerca
+     */
+    afterSearch(event) {
+      let that = this;
+      if (that.conf.afterSearch) {
+        return that.conf.afterSearch.apply(this,[event]);
+      }
+      return event;
     },
 
     change(event) {

@@ -239,7 +239,7 @@ CrudHelpers.getByDot = (obj, path, defaultValue) => {
         }
         current = current[key];
     }
-    return current;
+    return current?current:'';
 }
 
 export default CrudHelpers;
