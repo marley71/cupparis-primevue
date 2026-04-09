@@ -260,14 +260,15 @@ const actionConfs = {
                     let pk = ta.modelData[ta.viewInstance.primaryKey];
                     ta.manageInstance.showView(pk);
                 } else {
+                    let dialogConf = Object.assign({
+                        hide() {
+                            resolve();
+                        }
+                    },ta.dialogConf);
                     let defaultConf = ta.getDefaultViewConf(ta.viewInstance.modelName,ta.viewType);
                     defaultConf.pk = ta.modelData.id;
                     return new Promise((resolve) => {
-                        CrudCore.componentDialog('v-view',defaultConf,this.dialogTitle,{
-                            hide() {
-                                resolve();
-                            }
-                        });
+                        CrudCore.componentDialog('v-view',defaultConf,this.dialogTitle,dialogConf);
                     })
                 }
                 

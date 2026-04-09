@@ -53,16 +53,18 @@
         </template>
       </div>
     </Panel>
-    <Dialog class="p-dialog" v-model:visible="viewDisplay" :modal="true" :style="{width: '50vw'}">
+    <Dialog class="p-dialog" v-model:visible="viewDisplay" :modal="true" :style="modalViewStyle">
       <template #header>
-        <h3>{{ translate(viewTitle) }}</h3>
+        <div :class="modalViewHeaderCss" v-html="translate(viewTitle)"></div>
       </template>
 
       <template v-if="viewDisplay">
         <component :is="viewComponentName" :conf="view" ref="vView"></component>
       </template>
       <div class="modal-footer">
-        <Button :label="translate('app.ok')" icon="pi pi-check" autofocus @click="viewDisplay=false"/>
+        <div v-if="modalViewOkButton">
+          <Button :label="translate('app.ok')" icon="pi pi-check" autofocus @click="viewDisplay=false"/>
+        </div>
       </div>
     </Dialog>
   </div>

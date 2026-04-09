@@ -7,10 +7,10 @@
       </slot>
       <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig" :loaded="loaded"
             :recordActionsConf="recordActionsConf">
-                    <div v-if="hasActionsDivider()">
+        <div v-if="getTitleMsg()">
                         <Divider align="center" class="actionsDivider">
-                            <span class="p-tag text-white">
-                                {{ title }}
+                        <span class="p-tag text-white px-5">
+                            {{ getTitleMsg() }}
                             </span>
                         </Divider>
                     </div>
@@ -87,13 +87,61 @@
                       </div>
                     </Fieldset>
                   </template>
+                  <template v-else-if="getGroupWrapper(group)==='accordion'">
+                    <Accordion :ref="'accordion-'+getGroupName(group)" class="accordionRecordGroup" :value="getGroupIsClosed(group)">
+                      <AccordionPanel class="accordionPanelRecordGroup" value="0">
+
+                        <AccordionHeader class="accordionPanelHeaderRecordGroup">
+                          {{ getGroupTitle(group) }}
+                        </AccordionHeader>
+                        <AccordionContent class="accordionPanelContentRecordGroup">
+
+                          <div v-if="getGroupHeader(group)" v-html="getGroupHeader(group)">
+                          </div>
+                          <div class="grid grid-cols-12 gap-2">
+                            <template v-for="field in getGroupVisibleFields(group.fields)" :key="field">
+                              <template v-if="hasDividerBefore(field)">
+                                <v-record-divider v-show="!isHiddenWidget(field)"
+                                                  :dividerInfo="getDividerInfo(field)"></v-record-divider>
+                              </template>
+                              <template v-if="!isRemovedWidget(field)">
+                                <div class="py-3" :class="getWidgetLayout(field,'colClass')"
+                                     v-show="!isHiddenWidget(field)">
+                                  <v-record-widget :field="field" :ref="'fields-'+field"
+                                                   :labelInfo="getLabelInfo(field)"
+                                                   :widgetConfig="widgetsConfig[field]">
+                                  </v-record-widget>
+                                </div>
+                              </template>
+                              <template v-if="hasDividerAfter(field)">
+                                <v-record-divider v-show="!isHiddenWidget(field)"
+                                                  :dividerInfo="getDividerInfo(field)"></v-record-divider>
+                              </template>
+                              <template v-else-if="getWidgetLayout(field,'lastInRow')">
+                                <div class="col-12 max-h-0 p-0">&nbsp;</div>
+                              </template>
+                            </template>
+                          </div>
+                          <div class="w-full" v-if="getGroupActions(group)">
+                            <c-action :conf="recordActionsConf" :whitelist="getGroupActions(group)"
+                                      layout="buttons"></c-action>
+                          </div>
+                        </AccordionContent>
+                      </AccordionPanel>
+
+                    </Accordion>
+                  </template>
                   <template v-else-if="getGroupWrapper(group)==='card'">
-                    <Card :ref="'card-'+getGroupName(group)" class="mb-3 border border-surface-300">
+                    <Card :ref="'card-'+getGroupName(group)" class="cardRecordGroup">
                       <template #header v-if="getGroupHeader(group)">
+                        <div class="cardRecordGroupHeader">
                         {{ getGroupHeader(group) }}
+                        </div>
                       </template>
                       <template #title v-if="getGroupTitle(group)">
+                        <div class="cardRecordGroupTitle" :class="'cardRecordGroupTitle-'+group">
                         {{ getGroupTitle(group) }}
+                        </div>
                       </template>
                       <template #content>
 
@@ -160,8 +208,10 @@
 
           </div>
 
-        <div class="w-full">
-          <c-action ref="actions" :conf="recordActionsConf" :whitelist="getActionsWhitelist()" layout="buttons"></c-action>
+        <div class="w-full mt-4">
+          <Divider></Divider>
+          <c-action ref="actions" :conf="recordActionsConf" :whitelist="getActionsWhitelist()"
+                    layout="buttons"></c-action>
                     </div>
                 </slot>
             </template>

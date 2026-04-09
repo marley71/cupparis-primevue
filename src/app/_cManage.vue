@@ -116,6 +116,10 @@ export default {
     if (!('viewTitle' in that.conf)) {
       that.conf.viewTitle = null;
     }
+
+    that.conf.modalViewStyle = that.conf.modalViewStyle || {"width": "50vw", "max-height": "90vh"};
+    that.conf.modalViewOkButton = that.conf.modalViewOkButton || false;
+    that.conf.modalViewHeaderCss = that.conf.modalViewHeaderCss || 'font-bold';
     that.conf.listParams = null;  // parametri della lista nel caso di manage con autoUpdateHash a false;
     return that.conf;
   },
@@ -303,7 +307,6 @@ export default {
       that.view.pk = pk;
       that.viewDisplay = true;
       that.viewTitle = that.viewTitle == null ? that.translate('app.dettagli', 0, null, [pk]) : that.viewTitle;
-
     },
     /**
      * context e' un parametro che viene usato quando siamo in modalita' updateHash in questo caso infatti se abbiamo
