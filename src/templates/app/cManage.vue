@@ -2,7 +2,7 @@
   <div>
     <div v-if="layout==='basic'">
       <div>
-        <div v-if="mode==='list'">
+        <div v-if="mode==='list' || (mode==='view' && viewDisplay && viewInModal)">
           <template v-if="!hideSearch">
             <component :is="searchComponentName" :conf="search" ref="vSearch" @search="searchList"></component>
           </template>
@@ -15,6 +15,10 @@
         <template v-else-if="mode==='insert'">
           <div>insert</div>
           <component :is="insertComponentName" :conf="insert" ref="vRecord"></component>
+        </template>
+        <template v-else-if="mode==='view'">  
+          <div>view</div>
+          <component :is="viewComponentName" :conf="view" ref="vRecord"></component>
         </template>
         <template v-else-if="mode==='custom'">
           <component :is="customComponentName" :conf="custom" ref="vRecord"></component>
@@ -36,7 +40,7 @@
         
       </div>
       <div>
-        <div v-if="mode==='list'">
+        <div v-if="mode==='list' || (mode==='view' && viewDisplay && viewInModal)"">
           <template v-if="!hideSearch">
             <component :is="searchComponentName" :conf="search" ref="vSearch" @search="searchList"></component>
           </template>
@@ -48,12 +52,15 @@
         <template v-else-if="mode==='insert'">
           <component :is="insertComponentName" :conf="insert" ref="vRecord"></component>
         </template>
+        <template v-else-if="mode==='view'">
+          <component :is="viewComponentName" :conf="view" ref="vRecord"></component>
+        </template>
         <template v-else-if="mode==='custom'">
           <component :is="customComponentName" :conf="custom" ref="vRecord"></component>
         </template>
       </div>
     </Panel>
-    <Dialog class="p-dialog" v-model:visible="viewDisplay" :modal="true" :style="modalViewStyle">
+    <Dialog class="p-dialog" v-model:visible="viewDisplay" :modal="true" :style="modalViewStyle" @hide="viewDisplay=false;mode='list'">
       <template #header>
         <div :class="modalViewHeaderCss" v-html="translate(viewTitle)"></div>
       </template>
@@ -63,7 +70,7 @@
       </template>
       <div class="modal-footer">
         <div v-if="modalViewOkButton">
-          <Button :label="translate('app.ok')" icon="pi pi-check" autofocus @click="viewDisplay=false"/>
+          <Button :label="translate('app.ok')" icon="pi pi-check" autofocus @click="viewDisplay=false;mode='list'"/>
         </div>
       </div>
     </Dialog>
@@ -73,6 +80,7 @@
 
 <script>
 import _cManage from "@cupparis-lib/app/_cManage.vue";
+import viewConfs from "../../confs/views";
 
 export default {
   name: "c-manage",

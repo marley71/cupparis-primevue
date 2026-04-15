@@ -3,6 +3,7 @@
 import CrudComponent from "../CrudComponent.vue";
 import viewWrapperConf from '../views/WrapperConf'
 import CrudCore from "../lib/CrudCore";
+import manageConf from "../confs/manage";
 
 export default {
   name: "_cManage",
@@ -16,6 +17,75 @@ export default {
   },
   data() {
     let that = this;
+    let conf = Object.assign(CrudCore.clone(manageConf),that.conf);
+    for (let key in conf) {
+      that.conf[key] = conf[key];
+    }
+    that.conf.listParams = null;  // parametri della lista nel caso di manage con autoUpdateHash a false;
+    // usato per evitare di eseguire piu' volte showContext sullo stesso hash
+    that.conf._lastContextKey = null;
+    that.conf.mode = null;
+    that.conf.viewDisplay = false;
+
+    let wc = new viewWrapperConf();
+
+    let cl = CrudCore.clone((that.conf.list || {type: 'v-list'}));
+    cl.updateHash = that.conf.autoUpdateHash;
+
+    let ce = CrudCore.clone((that.conf.edit || {type: 'v-edit'}));
+    let ci = CrudCore.clone((that.conf.insert || that.conf.edit || {type: 'v-insert'}));
+    ci.updateHash = that.conf.autoUpdateHash;
+
+    let cv = CrudCore.clone((that.conf.view || that.conf.edit || {type: 'v-view'}));
+    cv.updateHash = that.conf.autoUpdateHash;
+
+    // se non e' presente insert, modifico il clone di insert perche' e' uguale a quello di edit
+    ci.type = ci.type || 'v-insert';
+    ci.routeName = ci.routeName || 'insert';
+    ci.foormName = ci.foormName || 'insert';
+    
+    // se non e' presente view, modifico il clone di view perche' e' uguale a quello di edit
+    cv.type = cv.type || 'v-view';
+    cv.routeName = cv.routeName || 'view';
+    cv.modelName = cv.modelName || that.conf.modelName;
+    
+    if (that.conf.constraintKey) {
+      ce.routeName = 'edit-constraint';
+      ci.routeName = 'insert-constraint';
+      cv.routeName = 'view-constraint';
+      cl.routeName = 'list-constraint';
+      ce.constraintKey = that.conf.constraintKey;
+      ce.constraintValue = that.conf.constraintValue;
+      ci.constraintKey = that.conf.constraintKey;
+      ci.constraintValue = that.conf.constraintValue;
+      cv.constraintKey = that.conf.constraintKey;
+      cv.constraintValue = that.conf.constraintValue;
+      cl.constraintKey = that.conf.constraintKey;
+      cl.constraintValue = that.conf.constraintValue;
+    }
+
+    //console.debug('_cManage conf edit',ce,'insert',ci,'view',cv);
+    that.conf.edit = wc.loadConf(ce);
+    that.conf.insert = wc.loadConf(ci);
+    that.conf.view = wc.loadConf(cv);
+    that.conf.list = wc.loadConf(cl);
+
+    //console.debug('_cManage conf edit',that.conf.edit,'insert',that.conf.insert,'view',that.conf.view);
+
+    if (that.conf.search) {
+      //that.conf.search.autoload = false;
+      that.conf.search.updateHash = that.conf.autoUpdateHash;
+      if (that.conf.constraintKey) {
+        that.conf.search.routeName = 'search-constraint';
+        that.conf.search.constraintKey = that.conf.constraintKey;
+        that.conf.search.constraintValue = that.conf.constraintValue;
+      }
+    }
+
+    that.setManageActions();
+
+    return that.conf;
+/*
     if (!('title' in that.conf)) {
       that.conf.title = null;
     }
@@ -122,6 +192,7 @@ export default {
     that.conf.modalViewHeaderCss = that.conf.modalViewHeaderCss || 'font-bold';
     that.conf.listParams = null;  // parametri della lista nel caso di manage con autoUpdateHash a false;
     return that.conf;
+    */
   },
   watch: {
     /**
@@ -302,11 +373,26 @@ export default {
     },
     showView(pk) {
       let that = this;
-      that.mode = 'view';
-      that.view.manageInstance = that;
-      that.view.pk = pk;
-      that.viewDisplay = true;
-      that.viewTitle = that.viewTitle == null ? that.translate('app.dettagli', 0, null, [pk]) : that.viewTitle;
+      if (that.autoUpdateHash) {
+        if (that.viewInModal) {
+          that.mode = 'view';
+          that.view.manageInstance = that;
+          that.view.pk = pk;
+          that.viewDisplay = true;
+          that.viewTitle = that.viewTitle == null ? that.translate('app.dettagli', 0, null, [pk]) : that.viewTitle;
+        } else {
+          that.view.pk = pk;
+          that.updateHash('view', 'view', [pk]);
+        }
+      } else {
+        that.mode = 'view';
+        that.view.manageInstance = that;
+        that.view.pk = pk;
+        if (that.viewInModal) {
+          that.viewDisplay = true;
+          that.viewTitle = that.viewTitle == null ? that.translate('app.dettagli', 0, null, [pk]) : that.viewTitle;
+        }
+      }
     },
     /**
      * context e' un parametro che viene usato quando siamo in modalita' updateHash in questo caso infatti se abbiamo
@@ -362,6 +448,11 @@ export default {
             that.edit.type = 'v-edit';
             that.edit.pk = context[0];
             that.edit.manageInstance = that;
+            break;
+          case 'view':
+            that.view.type = 'v-view';
+            that.view.pk = context[0];
+            that.view.manageInstance = that;
             break;
           case 'insert':
             that.insert.type = 'v-insert';

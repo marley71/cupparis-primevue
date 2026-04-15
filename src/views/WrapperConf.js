@@ -209,7 +209,7 @@ export default class WrapperConf {
             conf.actions = ['action-save','action-back'];
         }
         conf.foormName = conf.foormName || 'edit';
-        console.log('vEditConf',conf);
+        console.log('recordActionsConf vEditConf',conf);
         return conf;
     }
 

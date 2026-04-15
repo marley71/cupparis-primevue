@@ -287,6 +287,7 @@ export default class WrapperConf {
         conf.iconPrefix = conf.iconPrefix || null;
         conf.suffix = conf.suffix || null;
         conf.iconSuffix = conf.iconSuffix || null;
+        conf.emptyLabel = conf.emptyLabel || null;
         conf.displayFormat  = conf.displayFormat || 'DD/MM/YYYY';
         conf.dateFormat  = conf.dateFormat || 'yy-mm-dd';
         conf.formattedValue  = conf.formattedValue || null;

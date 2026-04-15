@@ -157,10 +157,11 @@ export default {
         actions: {}
       };
       let rActions = that.actions;
-      console.log('actionsConfig', that.actionsConfig)
+      //console.log('recordActionsConf actionsConfig', that.actionsConfig)
       for (let k in rActions) {
         let aName = rActions[k];
         let currenConfig = Object.assign({}, (that.actionsConfig[aName] || {}));
+        //console.log(aName,'recordActionsConf1', currenConfig,that.actionsConfig)
         currenConfig.modelData = that.value;
         currenConfig.viewInstance = that;
         let aConf = CrudCore.getActionConf(aName, currenConfig);
