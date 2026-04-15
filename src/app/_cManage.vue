@@ -40,18 +40,15 @@ export default {
     cv.updateHash = that.conf.autoUpdateHash;
 
     // se non e' presente insert, modifico il clone di insert perche' e' uguale a quello di edit
-    if (!('insert' in conf)) {
-      ci.type = 'v-insert';
-      ci.routeName = 'insert';
-      ci.foormName = 'insert';
-    }
+    ci.type = ci.type || 'v-insert';
+    ci.routeName = ci.routeName || 'insert';
+    ci.foormName = ci.foormName || 'insert';
+    
     // se non e' presente view, modifico il clone di view perche' e' uguale a quello di edit
-    if (!('view' in conf)) {
-      cv.type = 'v-view';
-      cv.routeName = 'view';
-      cv.modelName = that.conf.modelName;
-    }
-
+    cv.type = cv.type || 'v-view';
+    cv.routeName = cv.routeName || 'view';
+    cv.modelName = cv.modelName || that.conf.modelName;
+    
     if (that.conf.constraintKey) {
       ce.routeName = 'edit-constraint';
       ci.routeName = 'insert-constraint';
@@ -377,13 +374,21 @@ export default {
     showView(pk) {
       let that = this;
       if (that.autoUpdateHash) {
-        that.view.pk = pk;
-        that.updateHash('view', 'view', [pk]);
+        if (that.viewInModal) {
+          that.mode = 'view';
+          that.view.manageInstance = that;
+          that.view.pk = pk;
+          that.viewDisplay = true;
+          that.viewTitle = that.viewTitle == null ? that.translate('app.dettagli', 0, null, [pk]) : that.viewTitle;
+        } else {
+          that.view.pk = pk;
+          that.updateHash('view', 'view', [pk]);
+        }
       } else {
         that.mode = 'view';
         that.view.manageInstance = that;
         that.view.pk = pk;
-        if (that.conf.viewInModal) {
+        if (that.viewInModal) {
           that.viewDisplay = true;
           that.viewTitle = that.viewTitle == null ? that.translate('app.dettagli', 0, null, [pk]) : that.viewTitle;
         }
