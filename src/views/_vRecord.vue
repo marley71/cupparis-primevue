@@ -77,7 +77,19 @@ export default {
       return this.actionDivider;
     },
     getGroups() {
-      return Array.isArray(this.groups) ? this.groups : false;
+      return Array.isArray(this.conf.groups) ? this.conf.groups : false;
+    },
+    getGroupFromName(name) {
+      let that = this;
+      let groups = that.getGroups();
+      if (groups) {
+        for (let i in groups) {
+          if (groups[i].name === name) {
+            return groups[i];
+          }
+        }
+      }
+      return false;
     },
     getGroupVisibleFields(groupFields) {
       var groupVisibleFields = [];
