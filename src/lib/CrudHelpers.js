@@ -180,6 +180,7 @@ CrudHelpers.dateFormat = (value,displayFormat) => {
 
 CrudHelpers.formDataToAssociativeArray = (values) => {
     let params = {}
+    console.debug('formDataToAssociativeArray',values);
     if (values instanceof FormData) {
         for (var pair of values.entries()) {
             params[pair[0]] = pair[1]

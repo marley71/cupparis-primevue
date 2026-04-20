@@ -39,11 +39,15 @@ export default {
       let searchParams = that.getSearchParams();
       for (let key in searchParams) {
         let fieldName = key.substring(2); // tolgo il prefisso s_{fieldName}
+        if (fieldName.indexOf('[]') > 0) {  // se il campo è un array
+          fieldName = fieldName.replace('[]','');
+        }
+        
         if (that.fields.indexOf(fieldName) >= 0) {
           let config = that.fieldsConfig[fieldName] || {};
           config.value = searchParams[key];
           that.fieldsConfig[fieldName] = config;
-          //console.debug('has fieldName', fieldName, config)
+          
         }
         that.route.setParam(key, searchParams[key]);
 
@@ -83,15 +87,28 @@ export default {
       // let params = that.getViewList().route.getParams();
       let context = [];
       if (formData && formData instanceof FormData) {
+        let handledKeys = new Set();
         for (let key of formData.keys()) {
+          if (handledKeys.has(key)) {
+            continue;
+          }
+          handledKeys.add(key);
           let values = formData.getAll(key);
-          context.push(key + ':' + values.join('&'));
+          if (Array.isArray(values)) {
+            values.forEach((value) => {
+              context.push(key + ':' + value);
+            });
+          } else {
+            context.push(key + ':' + values);
+          }
         }
       } else if (formData && formData instanceof Object) {
         for (let key in formData) {
           let values = formData[key];
           if (Array.isArray(values)) {
-            context.push(key + ':' + values.join('&'));
+            values.forEach((value) => {
+              context.push(key + ':' + value);
+            });
           } else {
             context.push(key + ':' + values);
           }
@@ -222,6 +239,9 @@ export default {
           that.setSpecialField(key, searchParams[key]);
         } else {
           let fieldName = key.substring(2); // tolgo il prefisso s_{fieldName}
+          if (fieldName.indexOf('[]') > 0) {  // se il campo è un array
+            fieldName = fieldName.replace('[]','');
+          }
           //console.debug('searchParams', that.fields, fieldName);
           if (that.fields.indexOf(fieldName) >= 0) {
             let w = this.getWidget(fieldName);
