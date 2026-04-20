@@ -36,19 +36,21 @@
         </div>
 
         <div class="grid grid-cols-12 gap-1 gap-x-3">
+
           <template v-for="field in getBasicFields()" :key="field">
+            <template v-if="hasDividerBefore(field)">
+              <v-record-divider v-show="!isHiddenWidget(field)"
+                                :dividerInfo="getDividerInfo(field)"></v-record-divider>
+            </template>
             <div class="py-1" :class="getWidgetLayout(field,'colClass')">
               <v-record-widget :field="field" :ref="'fields-'+field" :labelInfo="getLabelInfo(field)"
                                :widgetConfig="widgetsConfig[field]">
               </v-record-widget>
             </div>
 
-            <template v-if="getWidgetLayout(field,'hasDivider')">
-              <Divider align="center" class="col-10 col-offset-1">
-                                    <span v-if="getWidgetLayout(field,'dividerLabel')"
-                                          class="p-tag">{{ getWidgetLayout(field, 'dividerLabel') }}</span>
-              </Divider>
-
+            <template v-if="hasDividerAfter(field)">
+              <v-record-divider v-show="!isHiddenWidget(field)"
+                                :dividerInfo="getDividerInfo(field)"></v-record-divider>
             </template>
             <template v-else-if="getWidgetLayout(field,'lastInRow')">
               <div class="col-12 max-h-0 p-0">&nbsp;</div>
@@ -68,6 +70,11 @@
                   <template v-for="field in getAdvancedFields()" :key="field">
                     
                     <template v-if="!isHiddenField(field) && !isHiddenWidget(field)">
+                      <template v-if="hasDividerBefore(field)">
+                        <v-record-divider v-show="!isHiddenWidget(field)"
+                                          :dividerInfo="getDividerInfo(field)"></v-record-divider>
+                      </template>
+
                       <div class="py-3 px-1" :class="getWidgetLayout(field,'colClass')">
                         <v-record-widget  :field="field" :ref="'fields-'+field" :labelInfo="getLabelInfo(field)"
                                         :widgetConfig="widgetsConfig[field]">
