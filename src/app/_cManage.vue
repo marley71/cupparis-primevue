@@ -40,12 +40,12 @@ export default {
     cv.updateHash = that.conf.autoUpdateHash;
 
     // se non e' presente insert, modifico il clone di insert perche' e' uguale a quello di edit
-    ci.type = ci.type || 'v-insert';
+    ci.type = 'v-insert';
     ci.routeName = ci.routeName || 'insert';
     ci.foormName = ci.foormName || 'insert';
     
     // se non e' presente view, modifico il clone di view perche' e' uguale a quello di edit
-    cv.type = cv.type || 'v-view';
+    cv.type = 'v-view';
     cv.routeName = cv.routeName || 'view';
     cv.modelName = cv.modelName || that.conf.modelName;
     

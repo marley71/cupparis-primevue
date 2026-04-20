@@ -102,7 +102,6 @@
         <div class="col-span-12">
           <div class="flex flex-row justify-center my-2">
 
-
             <c-action ref="actions" :conf="recordActionsConf"
                       layout="buttons"></c-action>
           </div>

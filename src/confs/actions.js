@@ -633,6 +633,41 @@ const actionConfs = {
             nameField: 'name',
             foormType: 'list',
         }
+    },
+    'action-start-stop'  : () => {
+        return  {
+            actionType : 'record',
+            title : 'app.start-stop',
+            css: '',
+            text : '',
+            icon() {
+                if (this.modelData.end) {
+                    return 'fa fa-play';
+                } else {
+                    return 'fa fa-stop';
+                }
+            },
+            execute (event) {
+                let tA = this;
+                return new Promise(function (resolve,reject) {
+                    tA._startStop(function (esito) {
+                        console.log('start stop Event',event,esito);
+                        if (esito) {
+                            resolve();
+                        } else {
+                            reject();
+                        }
+                    })
+                })
+            },
+            _startStop(callback) {
+                var that = this;
+                let url = `/api/queue/${that.modelData.end ? 'start' : 'stop'}/${that.modelData.id}`;
+                Server.post(url,function(json) {
+                    callback(json.error ? false : true);
+                });
+            },
+        }
     }
 }
 
