@@ -2,10 +2,10 @@
 
   <div v-if="loaded">
 
-    <div class="preSearch" v-if="hasSearchLabel()">
-                                <span class="p-tag">
-                                    {{ _searchLabel() }}
-                                </span>
+    <div class="preSearch" v-if="hasSearchLabel()"
+         :class="searchLabelClass || ''"
+         v-html="_searchLabel()">
+
     </div>
     <!--        <div>-->
     <!--            <Divider align="center" class="actionsDivider">-->
