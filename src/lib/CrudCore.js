@@ -979,5 +979,12 @@ CrudCore.configureValidationMessages = function() {
     setLocale('appLang');
 }
 
+CrudCore.formDataToAssociativeArray = function(formData) {
+    const associativeArray = {};
+    formData.forEach((value, key) => {
+        associativeArray[key] = value;
+    });
+    return associativeArray;
+}
 
 export default CrudCore;
