@@ -200,9 +200,12 @@ export default {
       if (name == 's_basic_query') {
         this.s_basic_query = value;
       }
+      if (name == 's_ai_query') {
+        this.s_ai_query = value;
+      }
     },
     isSpecialField(name) {
-      if (name == 's_basic_query') {
+      if (['s_basic_query', 's_ai_query'].includes(name)) {
         return true;
       }
       return false;

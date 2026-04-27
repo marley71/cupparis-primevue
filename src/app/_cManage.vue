@@ -4,6 +4,7 @@ import CrudComponent from "../CrudComponent.vue";
 import viewWrapperConf from '../views/WrapperConf'
 import CrudCore from "../lib/CrudCore";
 import manageConf from "../confs/manage";
+import {libStatus} from '../store/libStatus';
 
 export default {
   name: "_cManage",
@@ -13,7 +14,15 @@ export default {
     that._ready();
     this.setManageReference();
     that.showContext(true);
-
+    const pinia = this.$pinia;
+    const libStatusStore = pinia ? libStatus(pinia) : libStatus();
+    if (libStatusStore.aiSearchActive[this.modelName]) {
+      this.conf.search.type = 'v-search-ai';
+      this.conf.searchComponentName = 'v-search-ai';
+    } else {
+      this.conf.search.type = 'v-search';
+      this.conf.searchComponentName = 'v-search';
+    }
   },
   data() {
     let that = this;
@@ -287,13 +296,18 @@ export default {
         }
         that.conf.list.actionsConfig['action-save-back'] = actionSaveBack;
       }
+      if (that.conf.switchSearchAi) {
+        that.conf.search.actions = that.conf.search.actions || [];
+        that.conf.search.actions.push('action-switch-search-ai');
+        
+      }
     },
     /**
      * assegno a tutte le azioni il riferimento alla manage
      */
     setManageReference() {
       let manage = this;
-      let viewConfs = ['list', 'edit', 'insert', 'view', 'custom'];
+      let viewConfs = ['list', 'edit', 'insert', 'view', 'custom','search'];
       for (let i in viewConfs) {
         let v = viewConfs[i];
         //console.debug('setto view ',v,manage.conf[v])
@@ -517,6 +531,15 @@ export default {
         // }
         that.$router.push({name: 'c-manage-view', params: params})
       }
+    },
+    switchSearch() {
+      console.debug('switchSearchAi', this.search.type);
+      this.search.type = this.search.type == 'v-search' ? 'v-search-ai' : 'v-search';
+      this.searchComponentName = this.search.type == 'v-search' ? 'v-search' : 'v-search-ai';
+      const pinia = this.$pinia;
+      const libStatusStore = pinia ? libStatus(pinia) : libStatus();
+      libStatusStore.aiSearchActive[this.modelName] = this.search.type == 'v-search' ? 0 : 1;
+      this.getViewSearch()?.reload();
     },
     _setCss() {
 

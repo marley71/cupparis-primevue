@@ -92,11 +92,14 @@ export default class Route {
      * mergiando i parametri presenti in params e commonParams
      * @returns {*}
      */
-    getParams() {
+    getParams(asAssociativeArray = false) {
         // var that = this;
         if (this._isFormData()) {
             for (var k in this.routeConf.commonParams) {
                 this.routeConf.params.set(k,this.routeConf.commonParams[k]);
+            }
+            if (asAssociativeArray) {
+                return CrudCore.formDataToAssociativeArray(this.routeConf.params);
             }
             return this.routeConf.params;
         }

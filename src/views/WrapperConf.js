@@ -19,6 +19,7 @@ export default class WrapperConf {
                 //console.log('vRecordConf',defConf);
                 break;
             case 'v-search':
+            case 'v-search-ai':
                 defConf = CrudCore.clone(viewConfs.searchView()); //CrudCore.clone(viewConfs.searchView);
                 break;
             case 'v-list':
@@ -128,38 +129,6 @@ export default class WrapperConf {
         conf.collectionActions = {};
         conf = this.vList(conf);
         return conf;
-
-        /**
-         * confParent: 'v-list',
-         *             widgetsEdit: {}, // configurazioni widgets in modalità edit
-         *             editMode: [],
-         *             routeName: 'list',
-         *             primaryKey: 'id',
-         *             actionsConfig: {},
-         *             fieldsConfig: {
-         *                 id : {
-         *                     type : 'w-input',
-         *                     inputType : 'hidden'
-         *                 }
-         *             },
-         *             fieldsConfigEditMode:{
-         *                 id : {
-         *                     type : 'w-input',
-         *                     inputType : 'hidden'
-         *                 }
-         *             }, // configurazione campi in modalità edit
-         *             orderFields: {},
-         *             widgetTemplate: 'tpl-list',
-         *             actions: [
-         *                 'action-insert',
-         *                 'action-delete-selected',
-         *                 'action-view',
-         *                 'action-edit-mode',
-         *                 'action-delete',
-         *                 'action-save-row',
-         *                 'action-view-mode'
-         *             ]
-         */
     }
 
     vListHasmany(conf) {
@@ -259,6 +228,14 @@ export default class WrapperConf {
         }
 
 
+        return conf;
+    }
+
+    vSearchAi(conf) {
+        conf = this.vSearch(conf);
+        conf.type = 'v-search-ai';
+        conf.basicSearchPlaceholder = conf.basicSearchPlaceholder || 'Chiedi qualcosa alla nostra IA...';
+        console.log('vSearchAiConf',conf);
         return conf;
     }
 

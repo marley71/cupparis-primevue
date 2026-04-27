@@ -668,7 +668,27 @@ const actionConfs = {
                 });
             },
         }
-    }
+    },
+    'action-switch-search-ai' : () => {
+        return  {
+            actionType : 'record',
+            title() {
+                return this.viewInstance.type == 'v-search' ? 'app.switch-search-ai' : 'app.switch-search';
+            },
+            css: '',
+            text : '',
+            icon : "fas fa-brain",
+            execute () {
+                if (this.manageInstance) {
+                    console.debug('switchSearchAi', this.manageInstance);
+                    this.manageInstance.switchSearch();
+                } else {
+                    this.viewInstance.type = (this.viewInstance.type == 'v-search') ? 'v-search-ai' : 'v-search';
+                    this.viewInstance.reload();
+                }
+            }
+        }
+    },
 }
 
 export default actionConfs
