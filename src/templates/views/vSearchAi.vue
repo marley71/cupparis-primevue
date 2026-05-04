@@ -30,10 +30,10 @@
         <div class="col-span-12">
 
           <div class="flex flex-row justify-center my-2 gap-2">
-          <Button type="button" class="p-button-sm" @click="start" :disabled="isRecognizing || !supported" :title="supported ? 'Avvia la ricerca vocale' : 'Microfono non supportato in questo browser.'">
-            <i :class="supported ? 'fas fa-microphone' : 'fas fa-microphone-slash'"></i>
+          <Button type="button" class="p-button-sm" @click="startStop" :disabled="!supported" :title="supported ? 'Avvia la ricerca vocale' : 'Microfono non supportato in questo browser.'">
+            <i :class="supported ? ( isRecognizing? 'fas fa-stop' : 'fas fa-microphone' ) : 'fas fa-microphone-slash'"></i>
           </Button>
-          <Button type="button" class="p-button-sm" @click="stop" :disabled="!isRecognizing">Stop</Button>
+          <!-- <Button type="button" class="p-button-sm" @click="stop" :disabled="!isRecognizing">Stop</Button> -->
           <!-- <p v-if="!supported" style="color:crimson">Speech Recognition non supportata in questo browser.</p> -->
 
           <c-action ref="actions" :conf="recordActionsConf"

@@ -35,8 +35,8 @@ const lang = {
     'app.richiesta-dati' : 'Richiesta di dati',
     'app.salva-torna-indietro' : 'Salva e torna alla lista',
     'app.seleziona' : 'Seleziona',
-    'app.switch-search' : 'Cerca tradizionale',
-    'app.switch-search-ai' : 'Cerca con IA',
+    'app.switch-search' : 'Ricerca tradizionale',
+    'app.switch-search-ai' : 'Ricerca con IA',
     'app.trova-indirizzo' : 'Trova indirizzo',
     
 }

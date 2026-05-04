@@ -4,59 +4,73 @@ import _vRecord from './_vRecord.vue';
 import _vSearch from './_vSearch.vue';
 
 
-let finalText = '';
+
 
 export default {
   name: "_vSearchAi",
   extends: _vSearch,
   emits: ['search'],
   data() {
+    let that = this;
     let supported = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
     if (this.checkMicAccess().catch(err => {
       console.error('Errore di accesso al microfono:', err);
       supported = false;
     })) {
-      supported = false;
-    }
-    let recognition = null;
-    if (supported) {
-      let lang = 'it-IT';
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognition = new SpeechRecognition();
-      recognition.lang = lang;
-      recognition.interimResults = true;
-      recognition.continuous = true;
-      recognition.maxAlternatives = 1;
-      console.debug('recognition', recognition);
-      recognition.onresult = (event) => {
-        let interim = '';
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          const transcript = event.results[i][0].transcript;
-          if (event.results[i].isFinal) {
-            finalText += transcript;
-          } else {
-            interim += transcript;
-          }
-        }
-        text.value = finalText + (interim ? ' ' + interim : '');
-      };
+      supported = true;
     }
     return {
       s_ai_query: '',
       isRecognizing: false,
       supported: supported,
-      recognition: recognition,
+      recognition: null,
       text: '',
       isRecognizing: false,
       finalText: '',
     }
   },
 
+  mounted() {
+    let that = this;
+    console.debug('mounted');
+    if (that.supported) {
+      let lang = 'it-IT';
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      that.recognition = new SpeechRecognition();
+      that.recognition.lang = lang;
+      that.recognition.interimResults = true;
+      that.recognition.continuous = true;
+      that.recognition.maxAlternatives = 1;
+      console.debug('recognition', that.recognition);
+      that.recognition.onresult = (event) => {
+        let interim = '';
+        console.debug('recognition onresult event', event);
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const transcript = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            that.finalText += transcript;
+          } else {
+            interim += transcript;
+          }
+        }
+        that.text = that.finalText + (interim ? ' ' + interim : '');
+        that.s_ai_query = that.text;
+
+      };
+    }
+  },
   methods: {
     searchAi() {
       console.log('searchAi', this.s_ai_query);
     },
 
+    startStop() {
+      if (this.isRecognizing) {
+        this.stop();
+        return ;
+      } 
+      this.start();
+    },
     start() {
       console.debug('start');
       if (!this.recognition) return;
@@ -75,6 +89,10 @@ export default {
       try {
         this.recognition.stop();
         this.isRecognizing = false;
+        if (this.s_ai_query) {
+          console.debug('stop submit formSearch', this.s_ai_query);
+          this.search();
+        }
       } catch (e) {
         console.warn(e);
       }

@@ -676,8 +676,12 @@ const actionConfs = {
                 return this.viewInstance.type == 'v-search' ? 'app.switch-search-ai' : 'app.switch-search';
             },
             css: '',
-            text : '',
-            icon : "fas fa-brain",
+            text() {
+                return this.viewInstance.type == 'v-search' ? 'app.switch-search-ai' : 'app.switch-search';
+            },
+            icon() {
+                return this.viewInstance.type == 'v-search' ? "fas fa-brain" : "fas fa-search";
+            },
             execute () {
                 if (this.manageInstance) {
                     console.debug('switchSearchAi', this.manageInstance);
