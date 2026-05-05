@@ -387,6 +387,7 @@ export default {
     },
     showView(pk) {
       let that = this;
+      console.debug('showView ', pk,that.viewInModal,that.autoUpdateHash);
       if (that.autoUpdateHash) {
         if (that.viewInModal) {
           that.mode = 'view';
@@ -401,6 +402,7 @@ export default {
       } else {
         that.mode = 'view';
         that.view.manageInstance = that;
+        console.debug('showView', pk);
         that.view.pk = pk;
         if (that.viewInModal) {
           that.viewDisplay = true;
@@ -533,13 +535,21 @@ export default {
       }
     },
     switchSearch() {
-      console.debug('switchSearchAi', this.search.type);
+      console.debug('switchSearchAi', this.search.type,this.autoUpdateHash);
       this.search.type = this.search.type == 'v-search' ? 'v-search-ai' : 'v-search';
       this.searchComponentName = this.search.type == 'v-search' ? 'v-search' : 'v-search-ai';
       const pinia = this.$pinia;
       const libStatusStore = pinia ? libStatus(pinia) : libStatus();
       libStatusStore.aiSearchActive[this.modelName] = this.search.type == 'v-search' ? 0 : 1;
-      this.getViewSearch()?.reload();
+      if (this.autoUpdateHash) {
+        //this.updateHash('list', 'list', []);
+        this.$router.push({name: 'c-manage', params: {}})
+      } else {
+        this.getViewList()?.setParams([]);
+        this.getViewList()?.reload();
+        this.getViewSearch()?.setSearchParamsValue([]);
+        //this.getViewSearch()?.reload();
+      }
     },
     _setCss() {
 
