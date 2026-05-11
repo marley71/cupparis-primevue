@@ -680,7 +680,7 @@ const actionConfs = {
                 return this.viewInstance.type == 'v-search' ? 'app.switch-search-ai' : 'app.switch-search';
             },
             icon() {
-                return this.viewInstance.type == 'v-search' ? "fas fa-brain" : "fas fa-search";
+                return this.viewInstance.type == 'v-search' ? "fas fa-brain" : "fas fa-exchange-alt";
             },
             execute () {
                 if (this.manageInstance) {
