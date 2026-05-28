@@ -125,6 +125,7 @@ export default class WrapperConf {
             conf.separator = ':';
         }
         conf.showInPanel = conf.showInPanel || false;
+        conf.popoverClass = conf.popoverClass || '';
         return conf;
     }
     wKnob(conf) {
