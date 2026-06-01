@@ -32,6 +32,11 @@
 
                 </template>
               </div>
+              <template v-if="getHeaderParagraph()">
+                <div class="my-3" v-html="getHeaderParagraph()">
+
+                </div>
+              </template>
             </div>
           </div>
 

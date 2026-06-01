@@ -11,7 +11,7 @@
           <div class="v-list-header">
             <div class="surface-section px-4 py-5 md:px-6 lg:px-8">
               <div
-                  class="flex align-items-start flex-column lg:justify-content-start lg:align-items-center lg:flex-row">
+                  class="flex align-items-start flex-col gap-3  lg:justify-content-start lg:align-items-center lg:flex-row" :class="headerClass">
                 <div class="mr-5 pr-3 border-right-none lg:border-right-1">
                   <div class="font-medium text-3xl text-900" v-html="getTitleMsg()">
                   </div>
@@ -31,6 +31,11 @@
 
                 </template>
               </div>
+              <template v-if="getHeaderParagraph()">
+                <div class="my-3" v-html="getHeaderParagraph()">
+
+                </div>
+              </template>
             </div>
           </div>
 

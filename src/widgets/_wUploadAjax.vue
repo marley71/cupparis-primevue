@@ -117,7 +117,22 @@ export default {
         return 'data:'+fileInfo.mimetype+';base64,'+fileInfo.content;
       }
       return this.srcUrl(fileInfo.url);
-    }
+    },
+
+    reset() {
+      let that = this;
+
+      if (this.conf.reset) {
+        this.conf.reset.apply(this);
+        return ;
+      }
+      that.value = null;
+      that.fileInfo = null;
+      that.error = false;
+      that.complete = false;
+      that.errorMessage = null;
+      that.files = null;
+    },
   }
 }
 </script>
