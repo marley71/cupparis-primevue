@@ -457,8 +457,24 @@ CrudCore.componentDialog = function(compName,componentConf,title,dialogConf) {
     CrudCore.setupApp(d);
     d.comp = comp;
     let dialog = d.mount(div);
-    d.dialogInstance = dialog;
-    //d.dialogInstance = comp.$refs.myref;
+    // mount() restituisce il wrapper di defineAsyncComponent, non dCustom:
+    // hide/show vivono sull'istanza interna (assegnata anche in _dCustom a componentConf.dialogInstance).
+    Object.defineProperty(d, 'dialogInstance', {
+        configurable: true,
+        enumerable: true,
+        get() {
+            if (componentConf && componentConf.dialogInstance && typeof componentConf.dialogInstance.hide === 'function') {
+                return componentConf.dialogInstance;
+            }
+            const inner = dialog && dialog.$ && dialog.$.subTree && dialog.$.subTree.component
+                ? dialog.$.subTree.component.proxy
+                : null;
+            if (inner && typeof inner.hide === 'function') {
+                return inner;
+            }
+            return dialog;
+        }
+    });
     return d;
 }
 

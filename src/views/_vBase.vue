@@ -56,7 +56,6 @@ export default {
         }
     },
     methods : {
-
         draw() {
             this.setActions();
             this.loaded = true;
@@ -256,9 +255,6 @@ export default {
         getType() {
             return this.type.replace('v-','');
         },
-        instance() {
-            return this;
-        },
         getVisibleFields() {
             var that = this;
             var visible = [];
@@ -409,6 +405,7 @@ export default {
                     dt[k] = ext[k];
                 }
             }
+            dt.instance = this;
             //dt.errors = [];
             console.debug('_vBase.data ', dt)
             return dt;
