@@ -214,7 +214,7 @@ export default {
         } else {
           val = that.value[key];
         }
-        widgetsConfig[key].value = val || widgetsConfig[key].value || widgetsConfig[key].defaultValue;
+        widgetsConfig[key].value = val ?? widgetsConfig[key].value ?? widgetsConfig[key].defaultValue;
         widgetsConfig[key].name = that.getFieldName(key);
         widgetsConfig[key].modelData = that.value;
         widgetsConfig[key].viewInstance = that;
