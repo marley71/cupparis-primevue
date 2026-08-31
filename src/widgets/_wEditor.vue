@@ -64,7 +64,7 @@ export default {
                 // setAttribute('type','button');
             // console.debug('save button',saveButton);
             if (customButton) {
-                customButton.innerHTML = '<i class="fa-brands fa-html5"></i>'
+                customButton.innerHTML = '<i class="fab fa-html5"></i>'
                 customButton.addEventListener('click', () => {
                     // Inserisci qui la logica del tuo bottone
                     // console.log('Il tuo bottone personalizzato è stato cliccato!');

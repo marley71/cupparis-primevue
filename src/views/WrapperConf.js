@@ -221,7 +221,9 @@ export default class WrapperConf {
         if (! ('advancedSearchOpen' in conf) ) {
             conf.advancedSearchOpen = null;
         }
-        conf.basicSearchPlaceholder = null;
+        if (! ('basicSearchPlaceholder' in conf) ) {
+            conf.basicSearchPlaceholder = null;
+        }
 
         if (! ('advancedFields' in conf) || !Array.isArray(conf.advancedFields) ) {
             conf.advancedFields = [];
