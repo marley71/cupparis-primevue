@@ -650,6 +650,7 @@ CrudCore.viewComponentData = (vueObject) => {
  * @returns {Route} : oggetto Route
  */
 CrudCore.createRoute = (routeName) => {
+    console.debug('createRoute',routeName,routeConfs[routeName]);
     let routeConf =  JSON.parse(JSON.stringify(routeConfs[routeName]))  //Object.assign({},routeConfs[routeName]);
     console.log('routeName',routeName,routeConf);
     if (!routeConf)

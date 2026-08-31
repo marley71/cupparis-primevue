@@ -39,7 +39,13 @@ export default {
     let wc = new viewWrapperConf();
 
     let cl = CrudCore.clone((that.conf.list || {type: 'v-list'}));
+    if (that.conf.inlineEdit) {
+      that.conf.listComponentName = 'v-list-edit';
+      cl = CrudCore.clone((that.conf.listEdit || {type: 'v-list-edit'}));
+    }
     cl.updateHash = that.conf.autoUpdateHash;
+
+    
 
     let ce = CrudCore.clone((that.conf.edit || {type: 'v-edit'}));
     let ci = CrudCore.clone((that.conf.insert || that.conf.edit || {type: 'v-insert'}));
@@ -94,114 +100,7 @@ export default {
     that.setManageActions();
 
     return that.conf;
-/*
-    if (!('title' in that.conf)) {
-      that.conf.title = null;
-    }
-    if (!('layout' in that.conf)) {
-      that.conf.layout = null;
-    }
-    if (!('sectionTitle' in that.conf)) {
-      that.conf.sectionTitle = null;
-    }
-    if (!('hideSearch' in that.conf)) {
-      that.conf.hideSearch = false;
-    }
-    if (!('autoUpdateHash' in that.conf)) {
-      that.conf.autoUpdateHash = true;
-    }
-    if (!('constraintKey' in that.conf) || !('constraintValue' in that.conf)) {
-      that.conf.constraintKey = null;
-      that.conf.constraintValue = null;
-    }
-    // usato per evitare di eseguire piu' volte showContext sullo stesso hash
-    that._lastContextKey = null;
-    let wc = new viewWrapperConf();
 
-    let cl = CrudCore.clone((that.conf.list || {type: 'v-list'}));
-    let ce = CrudCore.clone((that.conf.edit || {type: 'v-edit'}));
-    let ci = CrudCore.clone((that.conf.insert || that.conf.edit || {type: 'v-insert'}));
-    let cv = CrudCore.clone((that.conf.view || that.conf.edit || {type: 'v-view'}));
-    cl.updateHash = that.conf.autoUpdateHash;
-    //cl.autoload = false;
-    ci.updateHash = that.conf.autoUpdateHash;
-
-    //cv.autoload = false;
-    cv.updateHash = that.conf.autoUpdateHash;
-
-    // se non e' presente insert, modifico il clone di insert perche' e' uguale a quello di edit
-    if (!('insert' in that.conf)) {
-      ci.type = 'v-insert';
-      ci.routeName = 'insert';
-      ci.foormName = 'insert';
-    }
-    // se non e' presente view, modifico il clone di view perche' e' uguale a quello di edit
-    if (!('view' in that.conf)) {
-      cv.type = 'v-view';
-      cv.routeName = 'view';
-      cv.modelName = that.conf.modelName;
-    }
-
-    if (that.conf.constraintKey) {
-      ce.routeName = 'edit-constraint';
-      ci.routeName = 'insert-constraint';
-      cv.routeName = 'view-constraint';
-      cl.routeName = 'list-constraint';
-      ce.constraintKey = that.conf.constraintKey;
-      ce.constraintValue = that.conf.constraintValue;
-      ci.constraintKey = that.conf.constraintKey;
-      ci.constraintValue = that.conf.constraintValue;
-      cv.constraintKey = that.conf.constraintKey;
-      cv.constraintValue = that.conf.constraintValue;
-      cl.constraintKey = that.conf.constraintKey;
-      cl.constraintValue = that.conf.constraintValue;
-    }
-
-
-    //console.debug('_cManage conf edit',ce,'insert',ci,'view',cv);
-    that.conf.edit = wc.loadConf(ce);
-    that.conf.insert = wc.loadConf(ci);
-    that.conf.view = wc.loadConf(cv);
-    that.conf.list = wc.loadConf(cl);
-
-    //console.debug('_cManage conf edit',that.conf.edit,'insert',that.conf.insert,'view',that.conf.view);
-
-    if (that.conf.search) {
-      //that.conf.search.autoload = false;
-      that.conf.search.updateHash = that.conf.autoUpdateHash;
-      if (that.conf.constraintKey) {
-        that.conf.search.routeName = 'search-constraint';
-        that.conf.search.constraintKey = that.conf.constraintKey;
-        that.conf.search.constraintValue = that.conf.constraintValue;
-      }
-    }
-
-    that.setManageActions();
-    that.conf.mode = null;
-    that.conf.viewDisplay = false;
-
-    if (!that.conf.baseRouteName) {  // indica il nome del path per la manage, di default e' manage ma in caso di oggetti estesi potrebbe essere diverso
-      that.conf.baseRouteName = 'manage';
-    }
-    that.conf.custom = that.conf.custom || {};
-    //that.conf.custom.autoload = false;
-
-    that.conf.editComponentName = that.conf.editComponentName || 'v-edit';
-    that.conf.listComponentName = that.conf.listComponentName || 'v-list';
-    that.conf.searchComponentName = that.conf.searchComponentName || 'v-search';
-    that.conf.insertComponentName = that.conf.insertComponentName || 'v-insert';
-    that.conf.viewComponentName = that.conf.viewComponentName || 'v-view';
-    that.conf.customComponentName = that.conf.customComponentName || null;
-    if (!('viewTitle' in that.conf)) {
-      that.conf.viewTitle = null;
-    }
-
-    that.conf.modalViewStyle = that.conf.modalViewStyle || {"width": "50vw", "max-height": "90vh"};
-    that.conf.modalViewOkButton = that.conf.modalViewOkButton || false;
-    that.conf.modalViewHeaderCss = that.conf.modalViewHeaderCss || 'font-bold';
-    that.conf.listParams = null;  // parametri della lista nel caso di manage con autoUpdateHash a false;
-    return that.conf;
-    */
   },
   watch: {
     /**
