@@ -507,13 +507,19 @@ export default {
       }
     },
     getLabelInfo(field) {
-      let conf = this.widgetsConfig[field];
+      try {
+        let conf = this.widgetsConfig[field];
       let layout = this.getWidgetLayout(field);
-      return {
-        'label': this.translateUc(conf.label),
-        'position': layout.labelPosition,
-        'required': this.isRequired(field),
+        return {
+          'label': this.translateUc(conf.label),
+          'position': layout.labelPosition,
+          'required': this.isRequired(field),
+        }
+      } catch (error) {
+        console.error('error getLabelInfo', field, error);
+        return null;
       }
+      
     },
     reset() {
       let fields = this.fields || [];
