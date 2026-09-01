@@ -199,6 +199,13 @@ export default {
             }
             return this.translate(this.conf.text);
         },
+
+        _title() {
+            if (this.conf.title instanceof Function) {
+                return this.translate(this.conf.title.apply(this));
+            }
+            return this.translate(this.conf.title);
+        },
         /**
          * questa funzione normalizza la configurazione che mi arriva e restituisco solo i dati che devono essere realmente reactive
          */

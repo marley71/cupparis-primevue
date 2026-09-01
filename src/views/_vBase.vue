@@ -56,7 +56,6 @@ export default {
         }
     },
     methods : {
-
         draw() {
             this.setActions();
             this.loaded = true;
@@ -247,11 +246,14 @@ export default {
             }
             return conf;
         },
+        getFieldLabel(field) {
+            if (this.fieldsConfig[field] && this.fieldsConfig[field].label) {
+                return this.fieldsConfig[field].label;
+            }
+            return field;
+        },
         getType() {
             return this.type.replace('v-','');
-        },
-        instance() {
-            return this;
         },
         getVisibleFields() {
             var that = this;
@@ -341,7 +343,12 @@ export default {
             console.warn('non riesco a definire il valore da filtrare per il parmetro', listParams[i], tmp);
             continue;
           }
-          params[tmp[0]] = tmp[1];
+          if (tmp[0].indexOf('[]') > 0) {
+            params[tmp[0]] = params[tmp[0]] || [];
+            params[tmp[0]].push(tmp[1]);
+          } else {
+            params[tmp[0]] = tmp[1];
+          }
         }
         console.debug('page params',params,context)
         return params;
@@ -398,6 +405,7 @@ export default {
                     dt[k] = ext[k];
                 }
             }
+            dt.instance = this;
             //dt.errors = [];
             console.debug('_vBase.data ', dt)
             return dt;

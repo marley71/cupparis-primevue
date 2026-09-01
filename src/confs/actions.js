@@ -633,7 +633,66 @@ const actionConfs = {
             nameField: 'name',
             foormType: 'list',
         }
-    }
+    },
+    'action-start-stop'  : () => {
+        return  {
+            actionType : 'record',
+            title : 'app.start-stop',
+            css: '',
+            text : '',
+            icon() {
+                if (this.modelData.end) {
+                    return 'fa fa-play';
+                } else {
+                    return 'fa fa-stop';
+                }
+            },
+            execute (event) {
+                let tA = this;
+                return new Promise(function (resolve,reject) {
+                    tA._startStop(function (esito) {
+                        console.log('start stop Event',event,esito);
+                        if (esito) {
+                            resolve();
+                        } else {
+                            reject();
+                        }
+                    })
+                })
+            },
+            _startStop(callback) {
+                var that = this;
+                let url = `/api/queue/${that.modelData.end ? 'start' : 'stop'}/${that.modelData.id}`;
+                Server.post(url,function(json) {
+                    callback(json.error ? false : true);
+                });
+            },
+        }
+    },
+    'action-switch-search-ai' : () => {
+        return  {
+            actionType : 'record',
+            title() {
+                return this.viewInstance.type == 'v-search' ? 'app.switch-search-ai' : 'app.switch-search';
+            },
+            css: '',
+            text() {
+                return this.viewInstance.type == 'v-search' ? 'app.switch-search-ai' : 'app.switch-search';
+            },
+            icon() {
+                return this.viewInstance.type == 'v-search' ? "fas fa-brain" : "fas fa-exchange-alt";
+            },
+            execute () {
+                if (this.manageInstance) {
+                    console.debug('switchSearchAi', this.manageInstance);
+                    this.manageInstance.switchSearch();
+                } else {
+                    this.viewInstance.type = (this.viewInstance.type == 'v-search') ? 'v-search-ai' : 'v-search';
+                    this.viewInstance.reload();
+                }
+            }
+        }
+    },
 }
 
 export default actionConfs

@@ -636,6 +636,14 @@ export default {
       }
       return this.title ? this.translateUc(title) : this.translateUc(this.modelName + '.label', null, 1);
 
+    },
+
+    getHeaderParagraph() {
+      if (this.conf.headerParagraph) {
+        return this.conf.headerParagraph.apply(this, [this.value]);
+      }
+      return false;
+
     }
   }
 }

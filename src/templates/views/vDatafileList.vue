@@ -11,10 +11,9 @@
           <div class="v-list-header">
             <div class="surface-section px-4 py-5 md:px-6 lg:px-8">
               <div
-                  class="flex align-items-start flex-column lg:justify-content-start lg:align-items-center lg:flex-row">
+                  class="flex align-items-start flex-col gap-3  lg:justify-content-start lg:align-items-center lg:flex-row" :class="headerClass">
                 <div class="mr-5 pr-3 border-right-none lg:border-right-1">
-                  <div class="font-medium text-3xl text-900">
-                    {{ title ? translateUc(title) : translateUc(modelName + '.label', null, 1) }}
+                  <div class="font-medium text-3xl text-900" v-html="getTitleMsg()">
                   </div>
                   <div class="flex align-items-center text-700 flex-wrap">
                     <div class="mr-5 flex align-items-center mt-3">
@@ -32,6 +31,11 @@
 
                 </template>
               </div>
+              <template v-if="getHeaderParagraph()">
+                <div class="my-3" v-html="getHeaderParagraph()">
+
+                </div>
+              </template>
             </div>
           </div>
 
@@ -56,7 +60,15 @@
                          stripedRows
                          :rowClass="rowClass"
               >
-                <Column v-if="selectionMode" :selection-mode="selectionMode"></Column>
+              <Column v-if="selectionMode" :selection-mode="selectionMode" headerStyle="width: 3rem">
+                <template #body="slotProps">
+                  <Checkbox v-if="!hasRowErrors(slotProps.index)"
+                  :modelValue="isRowSelected(slotProps.data)"
+                    binary
+                    @update:modelValue="(checked) => toggleRowSelection(slotProps.data, checked)"
+                  />
+                </template>
+              </Column>
                 <Column v-if="getRecordActionsPosition() == 'start' && hasRecordActions()" :exportable="false"
                         :header="translate('app.actions')">
                   <template #body="slotProps">
@@ -127,11 +139,41 @@ export default {
     },
     hasColumnErrors(index,field) {
       var errorRow = this.errors[index];
-      if (!typeof errorRow === 'object' || !Array.isArray(errorRow[field])) {
+      var errorRowField = errorRow ? errorRow[field] : null;
+      return Array.isArray(errorRowField) ? errorRowField.length > 0 : false;
+    },
+    hasRowErrors(index) {
+      var errorRow = this.errors[index];
+      if (!typeof errorRow === 'object') {
         return false;
       }
-      return errorRow[field].length > 0;
+      for (let field in errorRow) {
+        if (!Array.isArray(errorRow[field])) {
+          continue;
+        }
+        if (errorRow[field].length > 0) {
+          return true;
+        }
+      }
+      return false;
     },
+    isRowSelected(rowData) {
+      if (this.selectionMode === 'multiple') {
+        return (this.selected || []).some(r => r.id === rowData.id);
+      }
+      return this.selected?.id === rowData.id;
+    },
+    toggleRowSelection(rowData, checked) {
+    if (this.selectionMode === 'multiple') {
+      const selected = [...(this.selected || [])];
+      const idx = selected.findIndex(r => r.id === rowData.id);
+      if (checked && idx === -1) selected.push(rowData);
+      if (!checked && idx !== -1) selected.splice(idx, 1);
+      this.selected = selected;
+    } else {
+      this.selected = checked ? rowData : null;
+    }
+  },
     getColumnErrors(index,field) {
       var errorRow = this.errors[index];
       if (!typeof errorRow === 'object' || !Array.isArray(errorRow[field])) {

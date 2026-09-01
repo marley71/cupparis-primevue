@@ -6,6 +6,9 @@ export const libStatus = defineStore('libStatus', {
         return {
             advancedSearchActive : {
                 //'cup_anag_anagrafica' : false,
+            },
+            aiSearchActive : {
+                //'unico_anagrafica' : false,
             }
         }
     },

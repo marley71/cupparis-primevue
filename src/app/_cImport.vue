@@ -148,7 +148,9 @@ export default {
         },
         importForm() {
             let that = this;
-            let importView = that.$refs.viewUpload.instance();
+            console.log('importForm',that.$refs);
+
+            let importView = that.$refs.viewUpload.instance;
             let viewParams = importView.getViewData();
 
             let w = importView.getWidget('resource');

@@ -10,6 +10,7 @@ import vInsert from './vInsert.vue';
 import vEdit from './vEdit.vue';
 import vView from './vView.vue';
 import vSearch from './vSearch.vue';
+import vSearchAi from './vSearchAi.vue';
 import vListHasmany from './vListHasmany.vue';
 import CrudCore from "@cupparis-lib/lib/CrudCore";
 
@@ -35,6 +36,8 @@ export default {
         CrudCore.componentItems['v-view'] = vView;
         app.component('v-search', vSearch);
         CrudCore.componentItems['v-search'] = vSearch;
+        app.component('v-search-ai', vSearchAi);
+        CrudCore.componentItems['v-search-ai'] = vSearchAi;
         app.component('v-datafile-list',vDatafileList);
         CrudCore.componentItems['v-datafile-list'] = vDatafileList;
         app.component('v-list-edit',vListEdit);
@@ -46,5 +49,5 @@ export default {
 
     },
     //cView,
-    vBase,vList,vListEdit,vRecord,vSearch,vListHasmany,vDatafileList,vInsert,vEdit,vView
+    vBase,vList,vListEdit,vRecord,vSearch,vListHasmany,vDatafileList,vInsert,vEdit,vView,vSearchAi
 }

@@ -1,4 +1,5 @@
 export default {
+    switchSearchAi : false, // se true, la search viene mostrata come v-search-ai
     modelName : null,
     search : null,
     insert : null, // se non specificato, e' uguale a edit
