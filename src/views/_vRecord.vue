@@ -202,7 +202,12 @@ export default {
         } else {
           val = that.value[key];
         }
-        widgetsConfig[key].value = val || widgetsConfig[key].value || widgetsConfig[key].defaultValue;
+        if (val === 0) {  // caso limite per evitare che il valore zero sia considerato false
+          widgetsConfig[key].value = 0;
+        } else {
+          widgetsConfig[key].value = val || widgetsConfig[key].value || widgetsConfig[key].defaultValue;
+        }
+        
         widgetsConfig[key].name = that.getFieldName(key);
         widgetsConfig[key].modelData = that.value;
         widgetsConfig[key].viewInstance = that;
