@@ -181,6 +181,7 @@ export default class WrapperConf {
             conf.getColumnValue = null;
         }
         conf.wrapper = conf.wrapper || '';
+        conf.addButton = '';
         conf.addButtonSeverity = conf.addButtonSeverity || '';
         conf.initialDivider = conf.initialDivider || false;
         conf.addButtonClass = conf.addButtonClass || '';
@@ -190,6 +191,7 @@ export default class WrapperConf {
         conf.addButtonIconPos = conf.addButtonIconPos || 'left';
         conf.addButtonVariant = conf.addButtonVariant || '';
         conf.hasmanyConf.defaultWidgetType = 'w-input';
+        conf.severity = conf.severity || 'info';
         return conf;
     }
     wSelectButton(conf) {

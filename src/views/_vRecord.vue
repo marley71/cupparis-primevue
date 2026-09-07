@@ -537,7 +537,7 @@ export default {
       }
     },
     getTitleMsg() {
-      console.log("TITLE MSG::: ", this, this.value)
+      //onsole.log("TITLE MSG::: ", this, this.value)
       if (this.conf.titleMsg) {
         return this.conf.titleMsg.apply(this, [this.value]);
       }

@@ -73,7 +73,7 @@ export default {
             that._afterSetRouteValues();
             that._beforeLoadData();
             that.loadData(function (json) {
-                //console.debug('loadData callback',that.type)
+                //console.debug('loadData callback json',json)
                 that.json = CrudCore.clone(json);
                 //console.debug('fillData')
                 that.fillData(json);
@@ -158,7 +158,7 @@ export default {
         loadData(callback) {
             let that = this;
             if (!that.route) {
-                callback({});
+                callback((that.json?that.json:{}));
                 return;
             }
             //console.log('fetchData',route.getConf());

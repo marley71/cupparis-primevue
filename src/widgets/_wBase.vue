@@ -142,6 +142,9 @@ export default {
        */
         _loadReactiveData(conf) {
           let wc = new WrapperConf();
+          if (!conf) {
+            console.debug('wBase conf vuoto per widget ', this.$options.name);
+          }
           if (!conf.type) {
               conf.type = this.$options.name;
               console.debug('wBase con senza type name:' , this.$options.name);
@@ -155,6 +158,7 @@ export default {
             }
           }
           dt.errors = [];
+          dt.instance = this;
           //console.debug('wBase.data ', dt)
           return dt;
         },
