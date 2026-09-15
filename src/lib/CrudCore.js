@@ -395,7 +395,7 @@ CrudCore.warningDialog = function(msg,props,callbacks) {
 CrudCore.confirmDialog = function(msg,props,callbacks) {
     let that = this;
     that.globalProperties.$confirm.require({
-        message: msg,
+        message: that.translate(msg),
         icon: 'fa fa-question-circle fa-2x',
         accept: () => {
             //callback to execute when user confirms the action
