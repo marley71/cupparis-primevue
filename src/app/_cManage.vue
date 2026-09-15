@@ -332,10 +332,10 @@ export default {
       return this.$refs.vList ? this.$refs.vList : null;
     },
     getViewSearch() {
-      return this.$refs.vSearch ? this.$refs.vSearch.instance() : null;
+      return this.$refs.vSearch ? this.$refs.vSearch.instance : null;
     },
     getViewRecord() {
-      return this.$refs.vRecord ? this.$refs.vRecord.instance() : null;
+      return this.$refs.vRecord ? this.$refs.vRecord.instance : null;
     },
 
     /**

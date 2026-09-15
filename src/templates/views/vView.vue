@@ -1,12 +1,12 @@
 <template>
     <div>
             <template v-if="loaded">
-      <slot name="header" :headerHelp="headerHelp" :headerHelpFile="headerHelpFile">
+      <slot name="header" :headerHelp="headerHelp" :headerHelpFile="headerHelpFile" :instance="instance">
         <div v-if="headerHelp">{{ headerHelp }}</div>
         <div v-if="headerHelpHtml" v-html="headerHelpHtml"></div>
       </slot>
       <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig" :loaded="loaded"
-            :recordActionsConf="recordActionsConf">
+            :recordActionsConf="recordActionsConf" :instance="instance">
         <div v-if="getTitleMsg()">
                         <Divider align="center" class="actionsDivider">
                         <span class="p-tag text-white px-5">

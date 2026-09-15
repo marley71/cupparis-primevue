@@ -5,7 +5,7 @@
                 <component :is="getWidgetType(row,col)" :ref="'w'+row+'_'+col" :conf="getWidgetConf(row,col,v[col])"></component>
             </template>
         </template>
-        <slot name="header" :collectionActions="collectionActions">
+        <slot name="header" :collectionActions="collectionActions" :instance="instance">
             <div class="v-list-edit-header">
                 <div class="surface-section px-4 py-5 md:px-6 lg:px-8">
                     <div class="flex align-items-start flex-column lg:justify-content-start lg:align-items-center lg:flex-row">
@@ -33,7 +33,7 @@
 
 
         </slot>
-        <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig">
+        <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig" :instance="instance">
             <DataTable :value="value" responsiveLayout="scroll" v-model:selection="selected"
                 :rows="getPerPage()"
                 :paginator="paginator"
@@ -83,7 +83,7 @@
                 </Column>
             </DataTable>
         </slot>
-        <slot name="footer">
+        <slot name="footer" :instance="instance">
 
         </slot>
     </div>
