@@ -29,24 +29,7 @@ export default {
   extends: _wRadio,
   components : {RulesErrors},
   methods: {
-    normalizeKey(rawKey) {
-      // all domain keys arrive as strings; align to the current value type to match PrimeVue's strict check
-      if (this.value === null || this.value === undefined) {
-        return rawKey;
-      }
-      if (typeof this.value === 'number') {
-        const n = Number(rawKey);
-        return Number.isNaN(n) ? rawKey : n;
-      }
-      if (typeof this.value === 'boolean') {
-        if (rawKey === true || rawKey === 'true') return true;
-        if (rawKey === false || rawKey === 'false') return false;
-      }
-      return rawKey;
-    },
-    isSelected(rawKey) {
-      return this.normalizeKey(rawKey) === this.value;
-    },
+    
   }
 }
 

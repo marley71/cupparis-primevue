@@ -214,7 +214,13 @@ export default {
         } else {
           val = that.value[key];
         }
-        widgetsConfig[key].value = val || widgetsConfig[key].value || widgetsConfig[key].defaultValue;
+        if (val === 0) {  // caso limite per evitare che il valore zero sia considerato false
+          widgetsConfig[key].value = 0;
+        } else {
+          widgetsConfig[key].value = val || widgetsConfig[key].value || widgetsConfig[key].defaultValue;
+        }
+        
+
         widgetsConfig[key].name = that.getFieldName(key);
         widgetsConfig[key].modelData = that.value;
         widgetsConfig[key].viewInstance = that;
@@ -507,13 +513,19 @@ export default {
       }
     },
     getLabelInfo(field) {
-      let conf = this.widgetsConfig[field];
+      try {
+        let conf = this.widgetsConfig[field];
       let layout = this.getWidgetLayout(field);
-      return {
-        'label': this.translateUc(conf.label),
-        'position': layout.labelPosition,
-        'required': this.isRequired(field),
+        return {
+          'label': this.translateUc(conf.label),
+          'position': layout.labelPosition,
+          'required': this.isRequired(field),
+        }
+      } catch (error) {
+        console.error('error getLabelInfo', field, error);
+        return null;
       }
+      
     },
     reset() {
       let fields = this.fields || [];
@@ -525,7 +537,7 @@ export default {
       }
     },
     getTitleMsg() {
-      console.log("TITLE MSG::: ", this, this.value)
+      //onsole.log("TITLE MSG::: ", this, this.value)
       if (this.conf.titleMsg) {
         return this.conf.titleMsg.apply(this, [this.value]);
       }

@@ -42,7 +42,7 @@
 
 
         </slot>
-        <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig">
+        <slot name="content" :value="value" :metadata="metadata" :widgetsConfig="widgetsConfig" :instance="instance">
           <div class="w-full flex justify-center @container">
 
           <div class="py-6 px-4 flex-1 overflow-auto">
@@ -192,8 +192,8 @@ export default {
   // elemento radice del DataTable
   console.log('datatable', this.$refs)
     if (this.$refs.dataTable) {
-      const el = this.$refs.dataTable.value.$el
-      const height = el.offsetHeight
+      const el = this.$refs.dataTable.value?.$el
+      const height = el?el.offsetHeight:200;
 
       console.log('Altezza DataTable:', height)
     }

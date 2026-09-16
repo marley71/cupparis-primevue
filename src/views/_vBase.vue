@@ -56,7 +56,6 @@ export default {
         }
     },
     methods : {
-
         draw() {
             this.setActions();
             this.loaded = true;
@@ -74,7 +73,7 @@ export default {
             that._afterSetRouteValues();
             that._beforeLoadData();
             that.loadData(function (json) {
-                //console.debug('loadData callback',that.type)
+                //console.debug('loadData callback json',json)
                 that.json = CrudCore.clone(json);
                 //console.debug('fillData')
                 that.fillData(json);
@@ -159,7 +158,7 @@ export default {
         loadData(callback) {
             let that = this;
             if (!that.route) {
-                callback({});
+                callback((that.json?that.json:{}));
                 return;
             }
             //console.log('fetchData',route.getConf());
@@ -256,9 +255,6 @@ export default {
         getType() {
             return this.type.replace('v-','');
         },
-        instance() {
-            return this;
-        },
         getVisibleFields() {
             var that = this;
             var visible = [];
@@ -272,7 +268,7 @@ export default {
         getWidgetLayout(field,prop) {
             var that = this;
             //console.log('getWidgetLayout',field,prop,that.widgetsConfig[field]);
-            var layout = that.widgetsConfig[field].layout;
+            var layout = that.widgetsConfig[field]?.layout;
             //console.debug(field,prop,"PROPLAYOUT",layout,'view layout',that.layout);
             if (!layout) {
                 layout = that.layout;
@@ -409,6 +405,7 @@ export default {
                     dt[k] = ext[k];
                 }
             }
+            dt.instance = this;
             //dt.errors = [];
             console.debug('_vBase.data ', dt)
             return dt;

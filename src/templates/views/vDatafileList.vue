@@ -62,7 +62,7 @@
               >
               <Column v-if="selectionMode" :selection-mode="selectionMode" headerStyle="width: 3rem">
                 <template #body="slotProps">
-                  <Checkbox v-if="!hasRowErrors(slotProps.index)"                  
+                  <Checkbox v-if="!hasRowErrors(slotProps.index)"
                   :modelValue="isRowSelected(slotProps.data)"
                     binary
                     @update:modelValue="(checked) => toggleRowSelection(slotProps.data, checked)"
@@ -139,10 +139,8 @@ export default {
     },
     hasColumnErrors(index,field) {
       var errorRow = this.errors[index];
-      if (!typeof errorRow === 'object' || !Array.isArray(errorRow[field])) {
-        return false;
-      }
-      return errorRow[field].length > 0;
+      var errorRowField = errorRow ? errorRow[field] : null;
+      return Array.isArray(errorRowField) ? errorRowField.length > 0 : false;
     },
     hasRowErrors(index) {
       var errorRow = this.errors[index];

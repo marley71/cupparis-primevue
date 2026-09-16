@@ -203,9 +203,9 @@ const actionConfs = {
             },
             _save (callback) {
                 var that = this;
-                that.waitStart();
+                //that.waitStart();
                 that.viewInstance.save(function (json) {
-                    that.waitEnd();
+                   // that.waitEnd();
                     if (json.error) {
                         that.viewInstance.errorDialog(json.msg)
                         callback(false);

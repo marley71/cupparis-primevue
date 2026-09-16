@@ -30,7 +30,7 @@
 
           <IconField>
             <InputIcon class="fa fa-search"/>
-            <InputText name="s_basic_query" v-model="s_basic_query" class="w-full mb-2"/>
+            <InputText name="s_basic_query" v-model="s_basic_query" :placeholder="getBasicSearchPlaceholder()"  class="w-full mb-2"/>
           </IconField>
 
         </div>

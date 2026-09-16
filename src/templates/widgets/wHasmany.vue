@@ -1,23 +1,25 @@
 <template>
-    <span>
-        <template v-if="hasmanyType === 'list'">
-            <template v-if="wrapperType() === 'fieldset'">
-                <Fieldset ref="el" class="mb-3 border border-surface-300">
-                    <template #legend>
-                        {{ titleMsg() }}
-                    </template>
-                    <div class="py-2 pt-5">
-                        <component is="v-list-hasmany" ref="listViewHasmany" :conf="getHasmanyList()"></component>
-                    </div>
-                </Fieldset>
-            </template>
-            <template v-else>
-                <div>
-                    <component is="v-list-hasmany" ref="listViewHasmany" :conf="getHasmanyList()"></component>
-                </div>
-            </template>
+
+  <span>
+    <slot name="content" v-bind="slotBindings">
+        <template v-if="hasmanyType==='list'">
+                <template v-if="wrapperType() === 'fieldset'">
+                    <Fieldset ref="el" class="mb-3 border border-surface-300">
+                                    <template #legend>
+                                        {{ titleMsg() }}
+                                    </template>
+                            <div class="py-2 pt-5">
+                                <component is="v-list-hasmany" ref="listViewHasmany" :conf="getHasmanyList()"></component>
+                            </div>
+                    </Fieldset>
+                </template>
+                <template v-else>
+                            <div>
+                                <component is="v-list-hasmany" ref="listViewHasmany" :conf="getHasmanyList()"></component>
+                            </div>
+                </template>
         </template>
-        <template v-else-if="hasmanyType === 'record'">
+        <template v-else-if="hasmanyType==='record'">
             <template v-if="wrapperType() === 'card'">
 
                 <Card ref="el" class="mb-3 border border-surface-300">
@@ -29,35 +31,39 @@
                     </template>
                     <template #content>
 
-                        <div class="flex flex-col gap-4 mb-4 gap-y-6">
-                            <div v-for="(dataKey, index) in vForKeys" :key="dataKey"
-                                class="flex items-center overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
-                                <!--                              <div class="sm:block hidden w-2.5 min-h-20" :class="'bg-green-500'">&nbsp;</div>-->
-                                <div class="flex items-center justify-start p-2 gap-4 hasmany-border rounded-xl w-full">
-                                    <Button class="mx-3 p-button-outlined p-button-danger" icon="fa fa-times"
-                                        @click="removeItem(dataKey)"></Button>
-                                    <div class="grow px-2">
-                                        <component is="v-view" ref="recordView" :conf="getHasmanyConf(index)"
-                                            :class="''"></component>
+                                <div class="flex flex-col gap-4 mb-4 gap-y-6">
+                                    <div v-for="(dataKey, index) in vForKeys" :key="dataKey"
+                                        class="flex items-center overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
+        <!--                              <div class="sm:block hidden w-2.5 min-h-20" :class="'bg-green-500'">&nbsp;</div>-->
+                                        <div
+                                            class="flex items-center justify-start p-2 gap-4 hasmany-border rounded-xl w-full">
+                                            <Button class="mx-3 p-button-outlined p-button-danger" icon="fa fa-times"
+                                                    @click="removeItem(dataKey)"></Button>
+                                            <div class="grow px-2">
+                                            <component is="v-view" ref="recordView" :conf="getHasmanyConf(index)"
+                                                        :class="''"></component>
 
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
                     </template>
-                    <template #footer v-if="enableAddButton">
+                    <template #footer>
                         <template v-if="outOfLimit()">
 
-                            <span class="d-block text-primary text-truncate font-weight-medium"
-                                v-if="outOfLimitMessage()">
+                        <span class="d-block text-primary text-truncate font-weight-medium" v-if="outOfLimitMessage()">
                                 <!-- Limite massimo raggiunto -->
                                 {{ outOfLimitMessage() }}
                             </span>
                         </template>
-                        <Button v-else class="p-component justify-content-center" :icon="addButtonIcon || 'fas fa-plus'"
-                            type="button" :label="addButtonMsg()" @click="addItem()" :class="addButtonClass"
-                            :severity="addButtonSeverity" :iconPos="addButtonIconPos || 'left'" :title="addButtonMsg()"
-                            :variant="addButtonVariant || 'outlined'" :size="addButtonSize || 'small'">
+                        <Button v-else class="p-component justify-content-center"
+                                :icon="addButtonIcon || 'fas fa-plus'"
+                                type="button" :label="addButtonMsg()"
+                                @click="addItem()"
+                                :class="addButtonClass" :severity="addButtonSeverity" :iconPos="addButtonIconPos || 'left'"
+                                :title="addButtonMsg()"  :variant="addButtonVariant || 'outlined'"
+                                :size="addButtonSize || 'small'"
+                        >
                         </Button>
                     </template>
                 </Card>
@@ -69,94 +75,101 @@
                         {{ titleMsg() }}
                     </template>
 
-                    <div class="my-2 mt-5">
+                <div class="my-2 mt-5">
 
-                        <div class="flex flex-col gap-4 mb-4 gap-y-6">
-                            <div v-for="(dataKey, index) in vForKeys" :key="dataKey"
-                                class="flex items-center overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
-                                <!--                              <div class="sm:block hidden w-2.5 min-h-20" :class="'bg-green-500'">&nbsp;</div>-->
-                                <div class="flex items-center justify-start p-2 gap-4 hasmany-border rounded-xl w-full">
-                                    <Button class="mx-3 p-button-outlined p-button-danger" icon="fa fa-times"
-                                        @click="removeItem(dataKey)"></Button>
-                                    <div class="grow px-2">
-                                        <component is="v-view" ref="recordView" :conf="getHasmanyConf(index)"
-                                            :class="''"></component>
+                                <div class="flex flex-col gap-4 mb-4 gap-y-6">
+                                    <div v-for="(dataKey, index) in vForKeys" :key="dataKey"
+                                        class="flex items-center overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
+        <!--                              <div class="sm:block hidden w-2.5 min-h-20" :class="'bg-green-500'">&nbsp;</div>-->
+                                        <div
+                                            class="flex items-center justify-start p-2 gap-4 hasmany-border rounded-xl w-full">
+                                            <Button class="mx-3 p-button-outlined p-button-danger" icon="fa fa-times"
+                                                    @click="removeItem(dataKey)"></Button>
+                                            <div class="grow px-2">
+                                            <component is="v-view" ref="recordView" :conf="getHasmanyConf(index)"
+                                                        :class="''"></component>
 
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <template v-if="enableAddButton">
-                            <template v-if="outOfLimit()">
+                        <template v-if="outOfLimit()">
 
-                                <span class="d-block text-primary text-truncate font-weight-medium"
-                                    v-if="outOfLimitMessage()">
-                                    <!-- Limite massimo raggiunto -->
-                                    {{ outOfLimitMessage() }}
-                                </span>
-                            </template>
-                            <Button v-else class="p-component justify-content-center" :icon="addButtonIcon || 'fas fa-plus'"
-                                type="button" :label="addButtonMsg()" @click="addItem()" :class="addButtonClass"
-                                :severity="addButtonSeverity" :iconPos="addButtonIconPos || 'left'" :title="addButtonMsg()"
-                                :variant="addButtonVariant || 'outlined'" :size="addButtonSize || 'small'">
-                            </Button>
+                        <span class="d-block text-primary text-truncate font-weight-medium" v-if="outOfLimitMessage()">
+                                <!-- Limite massimo raggiunto -->
+                                {{ outOfLimitMessage() }}
+                            </span>
                         </template>
-                    </div>
+                        <Button v-else class="p-component justify-content-center"
+                                :icon="addButtonIcon || 'fas fa-plus'"
+                                type="button" :label="addButtonMsg()"
+                                @click="addItem()"
+                                :class="addButtonClass" :severity="addButtonSeverity" :iconPos="addButtonIconPos || 'left'"
+                                :title="addButtonMsg()"  :variant="addButtonVariant || 'outlined'"
+                                :size="addButtonSize || 'small'"
+                        >
+                        </Button>
+                </div>
 
                 </Fieldset>
             </template>
-            <template v-else>
-                <Divider align="center" v-if="hasInitialDivider()">
-                    <span v-html="titleMsg()">
-                    </span>
-                </Divider>
-                <div class="flex flex-col gap-4 mb-4 gap-y-6">
-                    <div v-for="(dataKey, index) in vForKeys" :key="dataKey"
-                        class="flex items-center overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
-                        <div class="flex items-center justify-start p-2 gap-1 lg:gap-4 hasmany-border rounded-xl w-full"
-                            :class="severity ? ' hasmany-border-' + severity : ''">
-                            <Button class="mx-1 lg:mx-3 p-button-outlined p-button-danger min-w-[24px]"
-                                icon="fa fa-times" @click="removeItem(dataKey)"></Button>
-                            <div class="grow px-2">
-                                <component is="v-view" ref="recordView" :conf="getHasmanyConf(index)" :class="''">
-                                </component>
+        <template v-else>
+                                <Divider align="center" v-if="hasInitialDivider()">
+                                        <span v-html="titleMsg()">
+                                        </span>
+                                    </Divider>
+                                <div class="flex flex-col gap-4 mb-4 gap-y-6">
+                                    <div v-for="(dataKey, index) in vForKeys" :key="dataKey"
+                                        class="flex items-center overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-700">
+                                        <div
+                                            class="flex items-center justify-start p-2 gap-1 lg:gap-4 hasmany-border rounded-xl w-full"
+                                            :class="severity ? ' hasmany-border-'+severity : ''">
+                                            <Button class="mx-1 lg:mx-3 p-button-outlined p-button-danger min-w-[24px]" icon="fa fa-times"
+                                                    @click="removeItem(dataKey)"></Button>
+                                            <div class="grow px-2">
+                                            <component is="v-view" ref="recordView" :conf="getHasmanyConf(index)"
+                                                        :class="''"></component>
 
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <template v-if="enableAddButton">
-                    <template v-if="outOfLimit()">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                        <template v-if="outOfLimit()">
 
                         <span class="d-block text-primary text-truncate font-weight-medium"
-                            :class="severity ? ' text-' + severity : ''" v-if="outOfLimitMessage()">
-                            <!-- Limite massimo raggiunto -->
-                            {{ outOfLimitMessage() }}
-                        </span>
-                    </template>
-                    <Button v-else class="p-component justify-content-center" :icon="addButton.icon" type="button"
-                        :label="addButton.label" @click="addItem()" :class="addButton.class" :severity="addButton.severity"
-                        :iconPos="addButton.iconPos" :title="addButton.title" :variant="addButton.variant"
-                        :size="addButton.size">
-                    </Button>
-                </template>
-                <Divider align="center" v-if="hasFinalDivider()">
-                </Divider>
+                                :class="severity ? ' text-'+severity : ''"
+                                v-if="outOfLimitMessage()">
+                                <!-- Limite massimo raggiunto -->
+                                {{ outOfLimitMessage() }}
+                            </span>
+                        </template>
+                        <Button v-else class="p-component justify-content-center"
+                                :icon="addButtonIcon || 'fas fa-plus'"
+                                type="button" :label="addButtonMsg()"
+                                @click="addItem()"
+                                :class="addButtonClass" :severity="addButtonSeverity" :iconPos="addButtonIconPos || 'left'"
+                                :title="addButtonMsg()"  :variant="addButtonVariant || 'outlined'"
+                                :size="addButtonSize || 'small'"
+                        >
+                        </Button>
+                        <Divider align="center" v-if="hasFinalDivider()">
+                        </Divider>
 
             </template>
 
         </template>
-        <template v-else-if="hasmanyType === 'view-only'">
-            <template v-for="(data, index) in value" :key="index">
+        <template v-else-if="hasmanyType==='view-only'">
+            <template v-for="(data,index) in value" :key="index">
                 <div v-for="field in getHasmanyConf(index).fields" :key="field">
-                    <component :is="getWidgetType(index, field)" :conf="getHasmanyWidgetConf(index, field)"></component>
+                    <component :is="getWidgetType(index,field)" :conf="getHasmanyWidgetConf(index,field)"></component>
                 </div>
             </template>
         </template>
-        <template v-else-if="hasmanyType === 'panel'">
-            <Button class="p-button-outlined p-1 p-button-sm" type="button" icon="fa-solid fa-circle-chevron-down"
-                :label="label" @click="toggle" />
+        <template v-else-if="hasmanyType==='panel'">
+            <Button class="p-button-outlined p-1 p-button-sm" type="button" icon="fa-solid fa-circle-chevron-down" :label="label"
+                    @click="toggle"/>
             <Popover ref="op">
                 <table class="w-full table p-1">
                     <thead>
@@ -167,9 +180,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(data, index) in value" :key="index">
-                            <td class="px-1" v-for="field in _getPanelFields()" :key="field"
-                                v-html="_getColumnValue(index, field)">
+                        <tr v-for="(data,index) in value" :key="index">
+                            <td class="px-1" v-for="field in _getPanelFields()" :key="field" v-html="_getColumnValue(index,field)">
                             </td>
                         </tr>
                     </tbody>
@@ -179,9 +191,9 @@
         <div v-else>
             <span>hasmanyType {{ hasmanyType }} non valido!</span>
         </div>
-        <RulesErrors :errors="errors"></RulesErrors>
-    </span>
-
+    </slot>
+    <RulesErrors :errors="errors"></RulesErrors>
+  </span>
 </template>
 
 
@@ -191,9 +203,10 @@ import RulesErrors from "./RulesErrors.vue";
 import cs from 'cupparis-primevue';
 
 export default {
-    name: "wHasmany",
-    extends: _wHasmany,
-    components: { RulesErrors },
+
+  name: "wHasmany",
+  extends: _wHasmany,
+  components: {RulesErrors},
 
     methods: {
 

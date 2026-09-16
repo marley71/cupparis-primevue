@@ -24,11 +24,12 @@ export default class Route {
     routeConf = {}
 
     constructor(conf) {
-        let c = Object.assign({},conf || {});
+        let c = Object.assign({},(conf || {}));
         this.routeConf = Object.assign({}, defaultConf());
         for (var k in c) {
             this.routeConf[k] = c[k];
         }
+        console.log('Route constructor',this.routeConf);
     }
 
     _isFormData() {

@@ -39,6 +39,12 @@ export default {
 
   methods: {
 
+  },
+  data() {
+    return {
+      variant: 'outlined',
+      severity: 'info',
+    }
   }
 }
 

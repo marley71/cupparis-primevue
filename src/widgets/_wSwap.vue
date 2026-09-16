@@ -14,6 +14,7 @@ export default {
     let bValue = Boolean(rData.value);
     let inverse = this.isInverse();
     rData.toggleValue = inverse ? !bValue : bValue;
+    //console.log('rData', rData,'inverse', inverse,'bValue', bValue);
     return rData;
   },
   methods: {

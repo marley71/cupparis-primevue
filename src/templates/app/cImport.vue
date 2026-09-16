@@ -10,6 +10,8 @@
                 <div class="mb-0" v-html="importDesc?translate(importDesc):translate('app.import-desc')"></div>
             </slot>
 
+            <hr class="my-3"/>
+
             <div v-if="step == 'upload'" class="panel panel-default">
                 <h5>{{ conf.importFile?translate(conf.importFile):translate('app.import-file') }}</h5>
                 <div class="flex gap-2" v-if="conf.importLinkExample">
