@@ -8,6 +8,11 @@ import help from "./help";
 
 
 import CrudComponent from "./CrudComponent.vue"
+import wBase from '@templates/widgets/wBase.vue';
+
+
+
+
 //import cAction from '@templates/actions/cAction.vue'
 import vRecord from '@templates/views/vRecord.vue'
 import vView from '@templates/views/vView.vue'
@@ -34,8 +39,9 @@ import Wait from "./Wait.vue";
 import viewConfs from "./confs/views.js";
 import CrudHelpers from "./lib/CrudHelpers";
 //import cWidget from "@templates/widgets/cWidget.vue";
-import wBase from '@templates/widgets/wBase.vue';
+
 import actionConfs from "./confs/actions";
+import globalConf from "./confs/global";
 
 import WidgetsPage from "./help/WidgetsPage.vue";
 import ViewsPage from "./help/ViewsPage.vue";
@@ -73,7 +79,7 @@ export default {
     //updateValidationMessages: configureValidationMessages,
     CrudComponent,CrudCore,CrudVars,wBase,
     //cView,cAction, aBase,
-    routerConf,routeConfs,actionConfs,viewConfs,
+    routerConf,routeConfs,actionConfs,viewConfs,globalConf,
     vRecord,vSearch,cManage,vList,vListEdit,cImport,vListHasmany,vDatafileList,vSearchAi,
     vEdit,vInsert,vView,
    
@@ -81,6 +87,7 @@ export default {
     CrudHelpers,
     // --- help pages
     WidgetsPage,ViewsPage,ManagePage,ImportPage,ActionsPage,DialogsPage,EsperimentiPage,
-    JsToCode,RulesErrors
-
+    JsToCode,RulesErrors,
+    // --- widgets
+    widgets : widgets.components,
 }

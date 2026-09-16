@@ -140,10 +140,10 @@ export default {
         outOfLimitMessage() {
             return this.limitMessage || this.translate('app.limite-raggiunto');
         },
-        addItem() {
+        addItem(widgetValues) {
             let that = this;
-
-            let fields = that.hasmanyConf.fields;
+            let values = widgetValues || {};
+            let fields = that._getFields(); // that.hasmanyConf.fields;
             //let fieldsConfig = CrudCore.clone(that.hasmanyConf.fieldsConfig);
             let v = {};
             let fieldsConfig = {};
@@ -152,7 +152,7 @@ export default {
                 let field = fields[f];
                 let fieldConfig = that.hasmanyConf.fieldsConfig[field];
                 let defVal = (fieldConfig && (fieldConfig.default || fieldConfig.default === 0)) ? fieldConfig.default : '';
-                v[fields[f]] = defVal;
+                v[fields[f]] = (field in values)?values[field]:defVal;
                 v.dataKey = that._getRandomKey()
                 let md = that.hasmanyConf.modelData || {};
                 if (that.hasmanyType=='list') {
@@ -450,6 +450,19 @@ export default {
             return 'not found';
 
         },
+        /**
+         * ritorna i fields del hasmany se definiti, altrimenti se esiste un array di values ritorna le keys dell'array, altrimenti ritorna un array vuoto
+         */
+        _getFields() {
+            let fields = this.hasmanyConf.fields || [];
+            if (fields.length > 0) {
+                return fields;
+            }
+            if (this.value && this.value.length > 0) {
+                return Object.keys(this.value[0]);
+            }
+            return [];
+        }
 
     }
 }
