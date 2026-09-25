@@ -1,7 +1,15 @@
 <script>
 //import CrudComponent from "../CrudComponent.vue";
+import { markRaw } from 'vue';
 import _wBase from './_wBase.vue';
 import CrudCore from "../lib/CrudCore";
+
+// Configurazioni passate ai figli. Stanno fuori dallo stato reattivo:
+// ricostruirle nel render produce un oggetto nuovo a ogni giro e il figlio,
+// riscrivendo dati condivisi, fa ripartire il render all'infinito.
+const hasmanyListConfCache = new WeakMap();
+const hasmanyRecordConfCache = new WeakMap();
+const hasmanyWidgetConfCache = new WeakMap();
 
 export default {
     name: "_wHasmany",
@@ -125,6 +133,8 @@ export default {
                     let keys = that._generateArrayKeys(val);
                     that.vForKeys = keys;
                     that.value = that.addDataKeyField(that.value);
+                    hasmanyRecordConfCache.delete(that);
+                    hasmanyWidgetConfCache.delete(that);
                     //that.hasmanyValue = that.value;
                     //that.hasmanyValue = that.trasformValue(that.value);
                 }
@@ -243,18 +253,44 @@ export default {
             }
         },
         getHasmanyConf(i) {
+            let cache = hasmanyRecordConfCache.get(this);
+            if (!cache) {
+                cache = Object.create(null);
+                hasmanyRecordConfCache.set(this, cache);
+            }
+            const keys = this.vForKeys || [];
+            const cacheKey = keys[i] != null ? keys[i] : i;
+            const row = this.value ? this.value[i] : undefined;
+            let hs = cache[cacheKey];
+            if (!hs) {
+                hs = this._createHasmanyRecordConf(i);
+                cache[cacheKey] = hs;
+            } else if (hs.value !== row) {
+                hs.value = row;
+            }
+            return hs;
+        },
+        _createHasmanyRecordConf(i) {
             let that = this;
             let hs = CrudCore.clone(that.hasmanyConf);
             hs.routeName = null;
             hs.actions = [];
-            //hs.value = that.hasmanyValue[i];
-            hs.value = that.value[i];
+            hs.value = that.value ? that.value[i] : undefined;
             hs.type = 'v-view';
-            //console.log('HS', hs);
             hs.viewInstance = that.viewInstance;
-            return hs;
+            return markRaw(hs);
         },
         getHasmanyList() {
+            let hs = hasmanyListConfCache.get(this);
+            if (!hs) {
+                hs = this._createHasmanyListConf();
+                hasmanyListConfCache.set(this, hs);
+            } else if (hs.value !== this.value) {
+                hs.value = this.value;
+            }
+            return hs;
+        },
+        _createHasmanyListConf() {
             let that = this;
             let hs = CrudCore.clone(that.hasmanyConf);
             console.debug('hasmany conf ',hs);
@@ -272,7 +308,7 @@ export default {
                                 that.removeItem(thatA.index);
                             }
                         })
-                        
+
                     }
                 },(hs.actionsConfig['action-delete'] || {})),
                 'action-delete-selected':Object.assign({
@@ -306,7 +342,7 @@ export default {
             hs.value = that.value;
             hs.viewInstance = that.viewInstance;
             console.debug('HS', hs);
-            return hs;
+            return markRaw(hs);
         },
         getHasmanyLabels() {
 
@@ -343,22 +379,32 @@ export default {
             return this.displayTitle !== false;
         },
         getHasmanyWidgetConf(index,field) {
-            let that = this;
-            let fieldsConfig = that.hasmanyConf.fieldsConfig || {};
-            let conf = fieldsConfig[field] || { type : 'w-text'};
-            conf.value = that.value[index][field]; // that.hasmanyValue[index][field];
-            if (!conf.height) {
-                conf.height = '30';
+            let cache = hasmanyWidgetConfCache.get(this);
+            if (!cache) {
+                cache = Object.create(null);
+                hasmanyWidgetConfCache.set(this, cache);
             }
-            //console.debug('getHasmanyWidgetConf',conf);
+            const cacheKey = index + '::' + field;
+            const row = this.value ? this.value[index] : undefined;
+            const nextValue = row ? row[field] : undefined;
+            let conf = cache[cacheKey];
+            if (!conf) {
+                const fieldsConfig = (this.hasmanyConf && this.hasmanyConf.fieldsConfig) || {};
+                const source = fieldsConfig[field] || { type : 'w-text'};
+                conf = markRaw(Object.assign({}, source, {
+                    value: nextValue,
+                    height: source.height || '30',
+                }));
+                cache[cacheKey] = conf;
+            } else if (conf.value !== nextValue) {
+                conf.value = nextValue;
+            }
             return conf;
         },
       getWidgetType(index,field) {
-        let that = this;
-        let fieldsConfig = that.hasmanyConf.fieldsConfig || {};
-        let conf = fieldsConfig[field] || { type : 'w-text'};
-        conf.value = that.value[index][field]; // that.hasmanyValue[index][field];
-        return conf.type;
+        const fieldsConfig = (this.hasmanyConf && this.hasmanyConf.fieldsConfig) || {};
+        const source = fieldsConfig[field] || { type : 'w-text'};
+        return source.type;
       },
         addDataKeyField(values) {
             for (let i in values) {

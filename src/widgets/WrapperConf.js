@@ -19,6 +19,7 @@ const defaultConf = () => {
         bind : null,
         bind_all_data : false,
         zIndexPopup : 10000, // per alcuni controlli permette di eseguire css se visualizzati in popup
+        viewInstance : null,
     }
 }
 
@@ -208,13 +209,14 @@ export default class WrapperConf {
         conf.addButtonSeverity = conf.addButtonSeverity || '';
 
         conf.initialDivider = conf.initialDivider || false;
-        //conf.addButtonClass = conf.addButtonClass || '';
+        conf.addButtonClass = conf.addButtonClass || '';
         conf.finalDivider = conf.finalDivider || false;
-        //conf.addButtonSize = conf.addButtonSize || 'small';
-        //conf.addButtonIcon = conf.addButtonIcon || 'pi pi-plus';
-        //conf.addButtonIconPos = conf.addButtonIconPos || 'left';
-        //conf.addButtonVariant = conf.addButtonVariant || '';
+        conf.addButtonSize = conf.addButtonSize || 'small';
+        conf.addButtonIcon = conf.addButtonIcon || 'pi pi-plus';
+        conf.addButtonIconPos = conf.addButtonIconPos || 'left';
+        conf.addButtonVariant = conf.addButtonVariant || '';
         conf.hasmanyConf.defaultWidgetType = 'w-input';
+        conf.addButtonLabel = conf.addButtonLabel || null;
         conf.severity = conf.severity || 'info';
         return conf;
     }

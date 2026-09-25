@@ -210,9 +210,9 @@ export default {
 
     methods: {
 
-        // addButtonMsg() {
-        //     return this.addButtonLabel || this.translateUc("app.add") + " " + this.translate("model." + this.name, null, 0);
-        // },
+        addButtonMsg() {
+            return this.addButtonLabel || this.translateUc("app.add") + " " + this.translate("model." + this.name, null, 0);
+        },
         // titleMsg() {
         //     return this.title || cs.CrudCore.upperCaseFirst(this.translateUc("model." + this.name, null, 0));
         // },
