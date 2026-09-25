@@ -1,4 +1,5 @@
 <template>
+
   <span>
     <slot name="content" v-bind="slotBindings">
         <template v-if="hasmanyType==='list'">
@@ -202,49 +203,49 @@ import RulesErrors from "./RulesErrors.vue";
 import cs from 'cupparis-primevue';
 
 export default {
+
   name: "wHasmany",
   extends: _wHasmany,
   components: {RulesErrors},
-  
 
-  methods: {
+    methods: {
 
-    addButtonMsg() {
-      return this.addButton || this.translateUc("app.add") + " " +  this.translate("model."+this.name,null,0);
-    },
-    titleMsg() {
-      return this.title || cs.CrudCore.upperCaseFirst(this.translateUc("model."+this.name,null,0));
-    },
+        // addButtonMsg() {
+        //     return this.addButtonLabel || this.translateUc("app.add") + " " + this.translate("model." + this.name, null, 0);
+        // },
+        // titleMsg() {
+        //     return this.title || cs.CrudCore.upperCaseFirst(this.translateUc("model." + this.name, null, 0));
+        // },
 
-    wrapperType() {
-      return this.wrapper || '';
-    },
+        wrapperType() {
+            return this.wrapper || '';
+        },
 
-    hasFinalDivider() {
-      return this.finalDivider || false;
-    },
+        hasFinalDivider() {
+            return this.finalDivider || false;
+        },
 
-    hasInitialDivider() {
-      return this.initialDivider || false;
+        hasInitialDivider() {
+            return this.initialDivider || false;
+        }
+
     }
-
-  }
 }
 
 </script>
 
 <style lang="scss" scoped>
-.p-datatable-thead > tr > th {
-  font-weight: bold;
-  text-align: center;
-  background-color: white;
-  border-top: 1px solid var(--primary-400)
+.p-datatable-thead>tr>th {
+    font-weight: bold;
+    text-align: center;
+    background-color: white;
+    border-top: 1px solid var(--primary-400)
 }
 
 .p-datatable-header {
-  border-top: 1px solid var(--primary-400);
-  text-align: center;
-  background-color: white;
+    border-top: 1px solid var(--primary-400);
+    text-align: center;
+    background-color: white;
 
 }
 </style>
