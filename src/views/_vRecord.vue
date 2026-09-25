@@ -98,7 +98,7 @@ export default {
         if (!this.isHiddenField(f))
           groupVisibleFields.push(f);
       }
-      console.log("GVF:::: ", groupVisibleFields)
+      //console.log("GVF:::: ", groupVisibleFields)
       return groupVisibleFields;
     },
     getGroupWrapper(group) {
@@ -230,17 +230,10 @@ export default {
       that.widgetsConfig = widgetsConfig;
 
     },
-    save(callback) {
-      var that = this;
+    _createRoute() {
+      let that = this;
       let route = null;
-      that.resetWidgetsErrors();
-      that.validate().then((res) => {
-        if (!res) {
-          that.alertError('Controllare i dati, ci sono degli errori di validazione');
-          return;
-        }
-
-        if (that.type == 'v-edit') {
+      if (that.type == 'v-edit') {
           route = that.createRoute('update');
           var pk = that.cPk || that.pk || 0;
           route.setValues({
@@ -255,6 +248,31 @@ export default {
             foormName: (that.foormName || 'insert'),
           });
         }
+      return route;
+    },
+    customSave(data,callback) {
+      let that = this;
+      let route = that._createRoute();
+      route.setParams(data);
+      that.block();
+
+      Server.route(route, function (json) {
+        that.unblock();
+        callback(json);
+      })
+    },
+
+    save(callback) {
+      var that = this;
+      let route = null;
+      that.resetWidgetsErrors();
+      that.validate().then((res) => {
+        if (!res) {
+          that.alertError('Controllare i dati, ci sono degli errori di validazione');
+          return;
+        }
+
+        route = that._createRoute();
         route.setParams(that.getViewData());
         that.block();
 
