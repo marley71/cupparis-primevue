@@ -73,7 +73,13 @@ export default {
         
         // Configura VeeValidate con i messaggi tradotti
         CrudCore.configureValidationMessages();
-
+        // per ottenere i parametri passati dalla pagina html attraverso i meta tags che hanno come prefisso par_
+        const metas = document.querySelectorAll('meta[name^="par_"]');
+        app.config.globalProperties.windowParams = Object.fromEntries(
+        [...metas].map((meta) => [meta.name.slice(4), meta.content])
+        );
+        console.debug('windowParams',app.config.globalProperties.windowParams)
+        CrudVars.windowParams = app.config.globalProperties.windowParams || {};
     },
     // Funzione per aggiornare i messaggi di validazione dopo il caricamento delle traduzioni
     //updateValidationMessages: configureValidationMessages,
