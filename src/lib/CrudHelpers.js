@@ -148,6 +148,12 @@ CrudHelpers.getHashParams = (key,onlyValue) => {
     return params;
 }
 
+CrudHelpers.getHashParam = (key) => {
+    let params = CrudHelpers.getHashParams();
+    return params[key];
+}
+
+
 /**
  * ritorna i paremtri della variabile di route context
  * @param key

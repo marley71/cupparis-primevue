@@ -1,6 +1,6 @@
 import CrudCore from "../lib/CrudCore";
 import CrudHelpers from "../lib/CrudHelpers";
-import WidgetConf from "../confs/widgets";
+import globalConf from "../confs/global";
 
 const defaultConf = () => {
     return {
@@ -19,6 +19,7 @@ const defaultConf = () => {
         bind : null,
         bind_all_data : false,
         zIndexPopup : 10000, // per alcuni controlli permette di eseguire css se visualizzati in popup
+        viewInstance : null,
     }
 }
 
@@ -36,6 +37,12 @@ export default class WrapperConf {
         //console.log('functionName',functionName)
         if (that[functionName]) {
              conf = that[functionName](conf);
+        }
+        if (globalConf.widgetWrapperConf[conf.type]) {
+            let functionName = CrudCore.camelCase(globalConf.widgetWrapperConf[conf.type]);
+            if (that[functionName]) {
+                conf = that[functionName](conf);
+            }
         }
             conf = Object.assign(dC,conf);
         //console.log('WIDGET',conf);
@@ -180,8 +187,27 @@ export default class WrapperConf {
         if (!conf.getColumnValue) {
             conf.getColumnValue = null;
         }
+        let addButtonConf = conf.addButton || {};
+        if ( !('enableAddButton' in conf) ) {
+            conf.enableAddButton = true;
+        }
+        conf.addButton = Object.assign({
+            label : CrudCore.translate("app.add") + " " +  CrudCore.translate("model."+conf.name,null,0),
+            title : CrudCore.translate("app.add") + " " +  CrudCore.translate("model."+conf.name,null,0),
+            variant : 'outlined',
+            severity : '',
+            class :  '',
+            size :  'small',
+            icon :  'pi pi-plus',
+            iconPos : 'left',
+        },addButtonConf);
+
+        conf.severity = conf.severity || '';
         conf.wrapper = conf.wrapper || '';
+
+        conf.addButton = '';
         conf.addButtonSeverity = conf.addButtonSeverity || '';
+
         conf.initialDivider = conf.initialDivider || false;
         conf.addButtonClass = conf.addButtonClass || '';
         conf.finalDivider = conf.finalDivider || false;
@@ -190,6 +216,8 @@ export default class WrapperConf {
         conf.addButtonIconPos = conf.addButtonIconPos || 'left';
         conf.addButtonVariant = conf.addButtonVariant || '';
         conf.hasmanyConf.defaultWidgetType = 'w-input';
+        conf.addButtonLabel = conf.addButtonLabel || null;
+        conf.severity = conf.severity || 'info';
         return conf;
     }
     wSelectButton(conf) {

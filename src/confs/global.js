@@ -21,4 +21,8 @@ export default {
         '_disabled','_visible','_text','_icon','_href','_title','_click'
     ],
     overloadMethodsCheck : false, // se true verifica se il metodo e' consentito, se false non verifica
+    // questa configurazione viene usata per dire alla libreria quale configurazione usare per i widgets creati nell'applicazione
+    widgetWrapperConf : {
+        //'my-widget' : 'w-input',   esempio per dire che il mio widget my-widget usa la configurazione w-input
+    }
 }

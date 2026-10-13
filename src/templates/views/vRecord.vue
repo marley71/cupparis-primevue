@@ -152,7 +152,7 @@
                                                 :dividerInfo="getDividerInfo(field)"></v-record-divider>
                             </template>
                             <template v-if="!isRemovedWidget(field)">
-                              <div class="py-3" :class="getWidgetLayout(field, 'colClass')"
+                              <div class="py-3" :class="getWidgetLayout(field,'colClass')"
                                    v-show="!isHiddenWidget(field)">
                                 <v-record-widget :field="field" :ref="'fields-'+field" :labelInfo="getLabelInfo(field)"
                                                  :widgetConfig="widgetsConfig[field]">
@@ -194,7 +194,7 @@
                             <v-record-divider v-show="!isHiddenWidget(field)"
                                               :dividerInfo="getDividerInfo(field)"></v-record-divider>
                           </template>
-                          <template v-else-if="getWidgetLayout(field, 'lastInRow')">
+                          <template v-else-if="getWidgetLayout(field,'lastInRow')">
                             <div class="col-12 max-h-0 p-0">&nbsp;</div>
                           </template>
                         </template>
@@ -221,12 +221,12 @@
 
 <script>
 
-import _vEdit from '@cupparis-lib/views/_vEdit.vue'
+import _vRecord from '@cupparis-lib/views/_vRecord.vue'
 import cAction from "../actions/cAction.vue";
 
 export default {
-  name: "v-edit",
-  extends: _vEdit,
+  name: "v-record",
+  extends: _vRecord,
   components: {cAction},
 }
 

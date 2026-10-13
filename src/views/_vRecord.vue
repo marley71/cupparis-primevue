@@ -98,7 +98,7 @@ export default {
         if (!this.isHiddenField(f))
           groupVisibleFields.push(f);
       }
-      console.log("GVF:::: ", groupVisibleFields)
+      //console.log("GVF:::: ", groupVisibleFields)
       return groupVisibleFields;
     },
     getGroupWrapper(group) {
@@ -214,7 +214,13 @@ export default {
         } else {
           val = that.value[key];
         }
-        widgetsConfig[key].value = val ?? widgetsConfig[key].value ?? widgetsConfig[key].defaultValue;
+        if (val === 0) {  // caso limite per evitare che il valore zero sia considerato false
+          widgetsConfig[key].value = 0;
+        } else {
+          widgetsConfig[key].value = val || widgetsConfig[key].value || widgetsConfig[key].defaultValue;
+        }
+        
+
         widgetsConfig[key].name = that.getFieldName(key);
         widgetsConfig[key].modelData = that.value;
         widgetsConfig[key].viewInstance = that;
@@ -224,17 +230,10 @@ export default {
       that.widgetsConfig = widgetsConfig;
 
     },
-    save(callback) {
-      var that = this;
+    _createRoute() {
+      let that = this;
       let route = null;
-      that.resetWidgetsErrors();
-      that.validate().then((res) => {
-        if (!res) {
-          that.alertError('Controllare i dati, ci sono degli errori di validazione');
-          return;
-        }
-
-        if (that.type == 'v-edit') {
+      if (that.type == 'v-edit') {
           route = that.createRoute('update');
           var pk = that.cPk || that.pk || 0;
           route.setValues({
@@ -249,6 +248,31 @@ export default {
             foormName: (that.foormName || 'insert'),
           });
         }
+      return route;
+    },
+    customSave(data,callback) {
+      let that = this;
+      let route = that._createRoute();
+      route.setParams(data);
+      that.block();
+
+      Server.route(route, function (json) {
+        that.unblock();
+        callback(json);
+      })
+    },
+
+    save(callback) {
+      var that = this;
+      let route = null;
+      that.resetWidgetsErrors();
+      that.validate().then((res) => {
+        if (!res) {
+          that.alertError('Controllare i dati, ci sono degli errori di validazione');
+          return;
+        }
+
+        route = that._createRoute();
         route.setParams(that.getViewData());
         that.block();
 
@@ -507,13 +531,19 @@ export default {
       }
     },
     getLabelInfo(field) {
-      let conf = this.widgetsConfig[field];
+      try {
+        let conf = this.widgetsConfig[field];
       let layout = this.getWidgetLayout(field);
-      return {
-        'label': this.translateUc(conf.label),
-        'position': layout.labelPosition,
-        'required': this.isRequired(field),
+        return {
+          'label': this.translateUc(conf.label),
+          'position': layout.labelPosition,
+          'required': this.isRequired(field),
+        }
+      } catch (error) {
+        console.error('error getLabelInfo', field, error);
+        return null;
       }
+      
     },
     reset() {
       let fields = this.fields || [];
@@ -525,7 +555,7 @@ export default {
       }
     },
     getTitleMsg() {
-      console.log("TITLE MSG::: ", this, this.value)
+      //onsole.log("TITLE MSG::: ", this, this.value)
       if (this.conf.titleMsg) {
         return this.conf.titleMsg.apply(this, [this.value]);
       }

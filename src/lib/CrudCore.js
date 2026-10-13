@@ -395,7 +395,7 @@ CrudCore.warningDialog = function(msg,props,callbacks) {
 CrudCore.confirmDialog = function(msg,props,callbacks) {
     let that = this;
     that.globalProperties.$confirm.require({
-        message: msg,
+        message: that.translate(msg),
         icon: 'fa fa-question-circle fa-2x',
         accept: () => {
             //callback to execute when user confirms the action
@@ -650,6 +650,7 @@ CrudCore.viewComponentData = (vueObject) => {
  * @returns {Route} : oggetto Route
  */
 CrudCore.createRoute = (routeName) => {
+    console.debug('createRoute',routeName,routeConfs[routeName]);
     let routeConf =  JSON.parse(JSON.stringify(routeConfs[routeName]))  //Object.assign({},routeConfs[routeName]);
     console.log('routeName',routeName,routeConf);
     if (!routeConf)
