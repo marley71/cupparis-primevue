@@ -123,7 +123,7 @@
                                     <div
                                         class="flex items-center justify-start p-2 gap-1 lg:gap-4 hasmany-border rounded-xl w-full"
                                         :class="severity ? ' hasmany-border-'+severity : ''">
-                                        <Button class="mx-1 lg:mx-3 p-button-outlined p-button-danger min-w-[24px]" icon="fa fa-times"
+                                        <Button v-if="canRemoveItems()" class="mx-1 lg:mx-3 p-button-outlined p-button-danger min-w-[24px]" icon="fa fa-times"
                                                 @click="removeItem(dataKey)"></Button>
                                         <div class="grow px-2">
                                           <component is="v-view" ref="recordView" :conf="getHasmanyConf(index)"

@@ -32,6 +32,13 @@ export default {
         if (!conf.limit) {
             conf.limit = null;
         }
+        if (conf.limitMessage === undefined) {
+          conf.limitMessage = null;
+        }
+        if (conf.removeItems === undefined) {
+          console.log("CONFFFF",conf);
+          conf.removeItems = true;
+        }
         conf.hasmanyConf.metadata = conf.relationConf || {};
         conf.vForKeys = keys;
         ///console.debug('hasmany_log',keys);
@@ -138,7 +145,8 @@ export default {
             return (this.value.length >= this.limit);
         },
         outOfLimitMessage() {
-            return this.limitMessage || this.translate('app.limite-raggiunto');
+          console.log("LIMIT MESSAGE" , this.limitMessage);
+            return this.limitMessage === null ? this.translate('app.limite-raggiunto') : this.limitMessage;
         },
         addItem() {
             let that = this;
@@ -182,6 +190,9 @@ export default {
 
 
 
+        },
+        canRemoveItems() {
+          return Boolean(this.removeItems);
         },
         removeItem(index) {
             let that = this;
