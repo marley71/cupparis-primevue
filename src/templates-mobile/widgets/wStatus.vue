@@ -1,0 +1,30 @@
+<template>
+  <span>
+    <template v-if="statusType==='icon'">
+      <i :class="currentValue"></i>
+    </template>
+    <template v-else-if="statusType==='action'">
+                    <span class="cursor-pointer" v-html="domainValuesHtml[value]" @click="executeFunc('w-status', value)" >
+
+                    </span>
+      <!--                    {{ currentValue }}-->
+    </template>
+    <template v-else>
+      <span v-html="domainValuesHtml[value]"></span>
+    </template>
+    <RulesErrors :errors="errors"></RulesErrors>
+  </span>
+</template>
+
+<script>
+
+import _wStatus from '@cupparis-lib/widgets/_wStatus.vue'
+import RulesErrors from "./RulesErrors.vue";
+export default {
+  name: "wStatus",
+  extends: _wStatus,
+  components : {RulesErrors}
+}
+
+</script>
+

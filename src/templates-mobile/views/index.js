@@ -1,0 +1,53 @@
+//import cView from "./cView.vue";
+import vBase from "./vBase.vue";
+import vList from "./vList.vue";
+import vListEdit from './vListEdit.vue'
+import vDatafileList from './vDatafileList.vue'
+import vRecord from './vRecord.vue';
+import vRecordDivider from './vRecordDivider.vue';
+import vRecordWidget from './vRecordWidget.vue';
+import vInsert from './vInsert.vue';
+import vEdit from './vEdit.vue';
+import vView from './vView.vue';
+import vSearch from './vSearch.vue';
+import vSearchAi from './vSearchAi.vue';
+import vListHasmany from './vListHasmany.vue';
+import CrudCore from "@cupparis-lib/lib/CrudCore";
+
+
+export default {
+    install (app) {
+        //app.component('c-view',cView);
+        // app.component('v-base', vBase);
+        // CrudCore.componentItems['v-base'] = vBase;
+        app.component('v-list', vList);
+        CrudCore.componentItems['v-list'] = vList;
+        app.component('v-record', vRecord);
+        CrudCore.componentItems['v-record'] = vRecord;
+        app.component('v-record-divider', vRecordDivider);
+        CrudCore.componentItems['v-record-divider'] = vRecordDivider;
+        app.component('v-record-widget', vRecordWidget);
+        CrudCore.componentItems['v-record-widget'] = vRecordWidget;
+        app.component('v-insert', vInsert);
+        CrudCore.componentItems['v-insert'] = vInsert;
+        app.component('v-edit', vEdit);
+        CrudCore.componentItems['v-edit'] = vEdit;
+        app.component('v-view', vView);
+        CrudCore.componentItems['v-view'] = vView;
+        app.component('v-search', vSearch);
+        CrudCore.componentItems['v-search'] = vSearch;
+        app.component('v-search-ai', vSearchAi);
+        CrudCore.componentItems['v-search-ai'] = vSearchAi;
+        app.component('v-datafile-list',vDatafileList);
+        CrudCore.componentItems['v-datafile-list'] = vDatafileList;
+        app.component('v-list-edit',vListEdit);
+        CrudCore.componentItems['v-list-edit'] = vListEdit;
+        app.component('v-list-hasmany',vListHasmany);
+        CrudCore.componentItems['v-list-hasmany'] = vListHasmany;
+
+
+
+    },
+    //cView,
+    vBase,vList,vListEdit,vRecord,vSearch,vListHasmany,vDatafileList,vInsert,vEdit,vView,vSearchAi
+}
