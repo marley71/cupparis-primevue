@@ -188,6 +188,10 @@ export default {
           this.domainValuesOrder = domainValuesOrder || Object.keys(domainValues);
           this.options = CrudHelpers.mapOptions(domainValues,domainValuesOrder);
           this.options_order = domainValuesOrder;
+      },
+      setExtraBind(extraBind) {
+        let eb = extraBind || {};
+        this.extraBind = Object.assign(this.extraBind,eb);
       }
     
 
