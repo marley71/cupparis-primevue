@@ -63,21 +63,28 @@ CrudHelpers.addBearerTokenToUrl = (url, btKey) => {
     return url + prefix + btKey + '=' + btValue;
 }
 
-CrudHelpers.lining = (text, maxLength, char) => {
+CrudHelpers.lining = (text, maxLength, char, maxLines) => {
     if (!text) {
         return "";
     }
     char = char || " ";
     maxLength = maxLength || 40;
 
+    maxLines = parseInt(maxLines) || 0;
     var indTokens = text.split(" ");
     var textSpaced = '';
     var currLength = 0;
+    var lines = 1;
     for (var i in indTokens) {
         var token = indTokens[i];
         textSpaced += token;
         currLength += token.length;
         if (currLength >= maxLength) {
+            if (maxLines > 0 && lines >= maxLines) {
+                textSpaced += "...";
+                break;
+            }
+            lines++;
             textSpaced += "<br/>";
             currLength = 0;
         } else {
