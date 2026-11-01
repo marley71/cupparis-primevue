@@ -320,9 +320,15 @@ export default {
                     text: 'enabled/disabled',
                     execute() {
                         let tA = this;
-                        let dis = tA.viewInstance.getAction('action-save')._disabled();
-                        console.log('custom action',tA.viewInstance.getAction('action-save'));
-                        tA.viewInstance.getAction('action-save').disabled = !dis;
+                        let action = tA.viewInstance.getAction('action-save');
+                        if (!action) {
+                            this.alertError('Action not found');
+                            return;
+                        }
+                        let dis = action.getDisabled();
+                        console.log('custom action',dis);
+                        action.setDisabled(!dis);
+                        console.log('custom action1',action.getDisabled());
                         tA.messageDialog('azione custom, ora la save è ' + (dis?'ABILITATA':'DISABILITATA'));
                         return true;
                     }
@@ -437,13 +443,20 @@ export default {
             },
             actionsConfig: {
                 'action-custom': {
-                    text: 'Custom',
+                    text: 'Disabilita/Abilita Save',
                     execute() {
                         let tA = this;
-                        let dis = tA.viewInstance.getAction('action-save').disabled();
-                        console.log('custom action',tA.viewInstance.getAction('action-save'));
-                        tA.viewInstance.getAction('action-save')._disabled = !dis
+                        let action = tA.viewInstance.getAction('action-save');
+                        if (!action) {
+                            this.alertError('Action not found');
+                            return;
+                        }
+                        let dis = action.getDisabled();
+                        console.log('custom action',dis);
+                        action.setDisabled(!dis);
+                        console.log('custom action1',action.getDisabled());
                     }
+
                 }
             }
         }
@@ -544,9 +557,15 @@ export default {
                     text: 'Custom',
                     execute() {
                         let tA = this;
-                        let dis = tA.viewInstance.getAction('action-save').disabled();
-                        console.log('custom action',tA.viewInstance.getAction('action-save'));
-                        tA.viewInstance.getAction('action-save')._disabled = !dis
+                        let action = tA.viewInstance.getAction('action-save');
+                        if (!action) {
+                            this.alertError('Action not found');
+                            return;
+                        }
+                        let dis = action.getDisabled();
+                        console.log('custom action',dis);
+                        action.setDisabled(!dis);
+                        console.log('custom action1',action.getDisabled());
                     }
                 }
             }

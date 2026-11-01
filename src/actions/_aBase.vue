@@ -50,7 +50,15 @@ export default {
     mounted() {
         setTimeout(this.ready, 10);
     },
-
+    computed: {
+        // computed, non metodo: il template deve ricalcolarlo quando disabled cambia a runtime
+        _disabled() {
+            if (this.conf.disabled instanceof Function) {
+                return this.conf.disabled.apply(this);
+            }
+            return this.disabled;
+        },
+    },
 
     methods: {
         ready() {
@@ -100,12 +108,6 @@ export default {
                 return this.conf.visible.apply(this);
             }
             return this.visible;
-        },
-        _disabled() {
-            if (this.conf.disabled instanceof Function) {
-                return this.conf.disabled.apply(this);
-            }
-            return this.disabled;
         },
 
         _beforeExecute() {
@@ -223,7 +225,13 @@ export default {
               }
           }
           return dt;
-        }
+        },
+        setDisabled(value) {
+            this.disabled = value;
+        },
+        getDisabled() {
+            return this.disabled;
+        },
 
     }
 }

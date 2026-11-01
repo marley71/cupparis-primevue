@@ -29,6 +29,7 @@ export default {
         if (cf.layout === 'menubar') {
             cf.menubarActions = that.getMenubarActions();
         }
+        cf.menubarTitle = cf.menubarTitle?cf.menubarTitle:'';
         return cf;
     },
     methods: {

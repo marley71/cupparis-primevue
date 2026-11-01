@@ -5,28 +5,28 @@
             <Button :title="_title()" :label="_text()"
                     :class=getActionClass()
                     :icon="_icon()"
-                    :disabled="_disabled()"
+                    :disabled="_disabled"
                     @click="execute($event)"
             />
         </template>
         <template v-else-if="type =='link' && _visible()">
             <Button :title="_title()"
                     :class=getActionClass()
-                    :disabled="_disabled()"
+                    :disabled="_disabled"
             >
-                <a v-if="externalLink" :href="_href()" :target="target" :title="_title()" :disabled="_disabled()">
+                <a v-if="externalLink" :href="_href()" :target="target" :title="_title()" :disabled="_disabled">
                     <i v-if="_icon()" :class="_icon()"></i>
                     {{_text()}}
                 </a>
                 
-                <router-link v-else :to="_href()" :conf="conf" :target="target" :title="_title()" :disabled="_disabled()" >
+                <router-link v-else :to="_href()" :conf="conf" :target="target" :title="_title()" :disabled="_disabled" >
                     <i v-if="_icon()" :class="_icon()"></i>
                     {{_text()}}
                 </router-link>
             </Button>
         </template>
         <template v-else-if="type === 'select' && _visible()">
-            <Select v-model="value" :options="options" :disabled="_disabled()" :title="_title()" optionLabel="label" optionValue="value" 
+            <Select v-model="value" :options="options" :disabled="_disabled" :title="_title()" optionLabel="label" optionValue="value" 
             @change="execute($event)" @show="onShow"></Select>
             
         </template>
@@ -41,7 +41,7 @@
 
 <script>
 
-import _aBase from "@cupparis-lib/actions/_aBase.vue";
+import _aBase from "../../actions/_aBase.vue";
 export default {
     name: "aBase",
     extends: _aBase,

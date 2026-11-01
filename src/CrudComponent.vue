@@ -111,28 +111,6 @@ export default {
         componentDialog(compName,componentConf,title,dialogConf) {
             return CrudCore.componentDialog(compName,componentConf,title,dialogConf);
         },
-/*
-        componentDialog(compName,componentConf,title,dialogConf) {
-            const div = document.createElement('div');
-            document.body.appendChild(div);
-            let  comp = defineAsyncComponent(() => import('@templates/dialogs/dCustom.vue'))
-            dialogConf = dialogConf || {
-                title : title,
-                display : true,
-                callbacks : {},
-            };
-            let cc = {
-                componentName : compName,
-                componentConf : componentConf,
-            };
-            let d = createApp(comp,{
-                confComponent : cc,
-                conf : dialogConf
-            });
-            CrudCore.setupApp(d);
-            d.mount(div);
-            return d;
-        }, */
     },
       // ci permette di passare tutti i dati e i metodi del componente agli slot per poterli usare nel template del componente, definire la proprietà nello slot cosi' v-bind="slotBindings"
     computed: {

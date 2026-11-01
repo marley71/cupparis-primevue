@@ -5,21 +5,21 @@
             <Button :title="_title()" :label="_text()"
                     :class=getActionClass()
                     :icon="_icon()"
-                    :disabled="_disabled()"
+                    :disabled="_disabled"
                     @click="execute($event)"
             />
         </template>
         <template v-else-if="type =='link' && _visible()">
             <Button :title="_title()"
                     :class=getActionClass()
-                    :disabled="_disabled()"
+                    :disabled="_disabled"
             >
-                <a v-if="externalLink" :href="_href()" :target="target" :title="_title()" :disabled="_disabled()">
+                <a v-if="externalLink" :href="_href()" :target="target" :title="_title()" :disabled="_disabled">
                     <i v-if="_icon()" :class="_icon()"></i>
                     {{_text()}}
                 </a>
                 
-                <router-link v-else :to="_href()" :conf="conf" :target="target" :title="_title()" :disabled="_disabled()" >
+                <router-link v-else :to="_href()" :conf="conf" :target="target" :title="_title()" :disabled="_disabled" >
                     <i v-if="_icon()" :class="_icon()"></i>
                     {{_text()}}
                 </router-link>
