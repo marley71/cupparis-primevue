@@ -169,12 +169,14 @@ export default {
       if (that.addConf) {
         if (typeof that.addConf === 'string') {
           console.debug('addConf',CrudVars.modelConfs);
-          let modelNameConf = 'Model' + that.addConf.charAt(0).toUpperCase() + that.addConf.slice(1);
+          let modelNameConf = 'Model' + CrudCore.pascalCase(that.addConf);
           conf = CrudCore.clone(CrudVars.modelConfs[modelNameConf]); // restituisce la configurazione del modello
+
           if (!conf) {
             CrudCore.alertError('Configurazione del modello (' + modelNameConf + ') non trovata');
             return;
           }
+          conf = conf().insert || conf().edit;
           conf.modelName = that.addConf;
         } else if (typeof that.addConf === 'function') {
           conf = that.addConf();
