@@ -57,6 +57,13 @@ export default class WrapperConf {
         return conf;
     }
     wAutocomplete(conf) {
+        conf.addConf = conf.addConf || null;
+        if (! ('addButton' in conf) ) {
+            conf.addButton = false;
+        }
+        if (conf.addButton && !conf.addConf) {
+            conf.addConf = conf.foormName;  // se non e' stato specificato il nome del modello per l'aggiunta, uso il nome del foormName del widget
+        }
         conf.route = null;
         conf.suggestions = [];
         conf.autocompleteValue = conf.autocompleteValue || null;
@@ -64,28 +71,10 @@ export default class WrapperConf {
         conf.autocompleteParams = conf.autocompleteParams || null;
         conf.clearButton = conf.clearButton || false;
         conf.separator = conf.separator || ' ';
-        //console.log('referredData',conf.referredData);
-        // let __initialValue = function () {
-        //     let that = this;
-        //     //console.log('extra bind ',conf.extraBind['option-label'],conf);
-        //     if (conf.extraBind['option-label']) {
-        //         if (conf.extraBind['option-label'] instanceof  Function) {
-        //             return conf.extraBind['option-label'](conf.referredData);
-        //         }
-        //         return conf.referredData[conf.extraBind['option-label']];
-        //     }
-
-        //     return that.getAutocompleteLabel(conf.referredData);
-
-
-        //     //return conf.referredData['label'];
-        // }
-        // if (conf.referredData) {
-        //     // let label = 'label'
-        //     // conf.autocompleteValue  = conf.referredData[label]; //conf.referredData;
-        //     conf.autocompleteValue = that.__initialValue();
-        //     conf.suggestions = [conf.referredData];
-        // }
+        conf.addDialogConf = {
+            width : '80vw',
+            title : CrudCore.translate('app.add-item')
+        }
         return conf;
     }
 

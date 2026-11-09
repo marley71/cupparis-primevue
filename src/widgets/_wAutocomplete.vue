@@ -3,6 +3,8 @@
 
 import _wBase from "./_wBase.vue"
 import CrudHelpers from "../lib/CrudHelpers"
+import CrudCore from "../lib/CrudCore"
+import CrudVars from "../lib/CrudVars"
 
 export default {
     name: '_wAutocomplete',
@@ -157,6 +159,58 @@ export default {
         value : autocompleteValue
       })
     },
+    /**
+     * aggiunge un elemento usando come configurazione la addConf che può essere stringa (nome modello) o una funzione che restituisce la configurazione
+     * @param item elemento da aggiungere
+     */
+    add(item) {
+      let that = this;
+      let conf = null;
+      if (that.addConf) {
+        if (typeof that.addConf === 'string') {
+          console.debug('addConf',CrudVars.modelConfs);
+          let modelNameConf = 'Model' + that.addConf.charAt(0).toUpperCase() + that.addConf.slice(1);
+          conf = CrudCore.clone(CrudVars.modelConfs[modelNameConf]); // restituisce la configurazione del modello
+          if (!conf) {
+            CrudCore.alertError('Configurazione del modello (' + modelNameConf + ') non trovata');
+            return;
+          }
+          conf.modelName = that.addConf;
+        } else if (typeof that.addConf === 'function') {
+          conf = that.addConf();
+        } else {
+          conf = CrudCore.clone(that.addConf);
+        }
+        
+      }
+      if (!conf) {
+        CrudCore.alertError('Configurazione di add elemento non valida');
+        return;
+      }
+      // impostazioni di default per la popup di inserimento per tutti i campi che hanno un specie di popup
+      for (let field in conf.fieldsConfig) {
+        if (['date','datetime','time','select','checkbox'].includes(conf.fieldsConfig[field].type)) {
+          conf.fieldsConfig[field].inPopup = true;
+        }
+      }
+      conf.type = 'v-insert';
+      conf.actions = ['action-save'];
+      conf.actionsConfig = {
+          'action-save': {
+              afterExecute() {
+                  let that = this;
+                  console.debug('afterExecute');
+                  that.viewInstance.dialogInstance.hide();
+                  if (that.json.result && that.json.result.id) {
+                    that.autoCompleteValue = that.json.result;
+                    that.referredData = that.json.result;
+                    that.value = that.json.result.id;
+                  }
+              }
+          }
+      }
+      CrudCore.componentDialog('v-insert',conf,that.addDialogConf.title,that.addDialogConf);
+    }
   }
 }
 </script>

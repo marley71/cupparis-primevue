@@ -17,6 +17,7 @@ export default {
             widgetSelected : wSel,
             widgetsConf : {
               'w-autocomplete' :              widgetHelpConfs.wAutocompleteConf(),
+              'w-autocomplete con aggiunta' : widgetHelpConfs.wAutocompleteAddConf(),
               'w-belongsto':                  widgetHelpConfs.wBelongstoConf(),
               'w-belongsto-many':             widgetHelpConfs.wBelongstoManyConf(),
               'w-checkbox' :                  widgetHelpConfs.wCheckboxConf(),

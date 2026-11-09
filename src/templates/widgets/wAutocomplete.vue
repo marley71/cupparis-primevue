@@ -10,6 +10,7 @@
                         @complete="search" :option-label="getAutocompleteLabel" option-value="id"
                         :emptySearchMessage="translate('app.autocomplete-empty')"
                         v-bind="extraBind" @item-select="itemSelect" :placeholder="placeholder" input-class="w-full"/>
+          <Button size="small" icon="fa fa-plus" @click="add" v-if="addButton"/>
         </InputGroup>
       </div>
       <RulesErrors :errors="errors"></RulesErrors>

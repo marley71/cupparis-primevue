@@ -1,6 +1,7 @@
 
 const lang = {
     'app.action-delete-selected' : 'Cancella Selezionati',
+    'app.add-item' : 'Inserisci nuovo elemento',
     'app.annulla' : 'Annulla',
     'app.autocomplete-empty' : 'Nessun elemento trovato',
     'app.cerca' : 'Cerca',

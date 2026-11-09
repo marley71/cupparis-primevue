@@ -32,6 +32,13 @@ export default {
         };
     },
 
+    wAutocompleteAddConf() {
+        let conf = this.wAutocompleteConf();
+        conf.addButton = true;
+        //onf.addConf = 'category';
+        return conf;
+    },
+
     wImage() {
         return {
             type : 'w-image',
