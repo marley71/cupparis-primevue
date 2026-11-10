@@ -3,6 +3,19 @@ import CrudCore from "../lib/CrudCore";
 import CrudVars from "../lib/CrudVars";
 import CrudHelpers from "../lib/CrudHelpers";
 
+function inferFoormType(view) {
+    if (view.type == 'v-list') {
+        return 'list';
+    }
+    if (view.type == 'v-edit') {
+        return 'edit';
+    }
+    if (view.type == 'v-search') {
+        return 'search';
+    }
+    return null;
+
+}
 function _executePdf(callback) {
     let tA = this;
     return new Promise(function (resolve,reject) {
@@ -693,6 +706,69 @@ const actionConfs = {
             }
         }
     },
+    'action-duplicate'  : () => {
+        return  {
+            actionType : 'record',
+            type : 'button',
+            title : 'app.duplicate',
+            css: 'text-primary-500',
+            buttonClass: 'p-button-outlined p-button-primary',
+            icon : 'far fa-copy',
+            text : '',
+            setRouteValues : function(route) {
+                var that = this;
+                route.setValues({
+                    actionName: 'duplicate',
+                    modelName: that.viewInstance.modelName,
+                    foormType: that.foormType || inferFoormType(that.viewInstance),
+                    foormPk: that.modelData[that.viewInstance.primaryKey],
+                });
+                route.setParams({
+                    id : that.modelData[that.viewInstance.primaryKey],
+                });
+                return route;
+            },
+            execute (event) {
+                let tA = this;
+                return new Promise(function (resolve,reject) {
+                    tA._duplicate(function (esito) {
+                        console.log('save back Event',event,esito);
+                        if (esito) {
+                            resolve();
+                        } else {
+                            reject();
+                        }
+
+                    })
+                })
+                //this._save(callback)
+            },
+            _duplicate (callback) {
+                var that = this;
+                that.viewInstance.confirmDialog(that.viewInstance.translate('app.conferma-duplicazione') ,{},{
+                    ok : function () {
+                        var r = that.viewInstance.createRoute('foormaction_record');
+                        that.setRouteValues(r);
+                        Server.route(r,function (json) {
+                            if (json.error) {
+                                that.errorDialog(json.msg);
+                                callback(false);
+                                return
+                            }
+                            var msg = json.msg?json.msg:that.viewInstance.translate('app.duplicazione-successo');
+                            that.viewInstance.alertSuccess(msg,3000);
+                            that.viewInstance.reload();
+                            callback(true);
+                        });
+                    },
+                    cancel () {
+                        callback(false);
+                    }
+                });
+            }
+        }
+    },
+
 }
 
 export default actionConfs

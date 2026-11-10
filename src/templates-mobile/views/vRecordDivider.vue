@@ -4,7 +4,7 @@
           :class="dividerInfo.contentClass">
     </span>
   </Divider>
-  <div class="col-12 dividerDescription" v-if="dividerInfo.description"
+  <div :class="dividerInfo.class + ' dividerDescription'" v-if="dividerInfo.description"
         v-html="dividerInfo.description">
 
   </div>
