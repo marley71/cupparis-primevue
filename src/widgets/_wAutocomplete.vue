@@ -165,30 +165,11 @@ export default {
      */
     add() {
       let that = this;
-      let conf = null;
-      if (that.addConf) {
-        if (typeof that.addConf === 'string') {
-          console.debug('addConf',CrudVars.modelConfs);
-          let modelNameConf = 'Model' + CrudCore.pascalCase(that.addConf);
-          conf = CrudCore.clone(CrudVars.modelConfs[modelNameConf]); // restituisce la configurazione del modello
-
-          if (!conf) {
-            CrudCore.alertError('Configurazione del modello (' + modelNameConf + ') non trovata');
-            return;
-          }
-          conf = conf().insert || conf().edit;
-          conf.modelName = that.addConf;
-        } else if (typeof that.addConf === 'function') {
-          conf = that.addConf();
-        } else {
-          conf = CrudCore.clone(that.addConf);
-        }
-        
-      }
+      let conf = that._getAddConf();
       if (!conf) {
-        CrudCore.alertError('Configurazione di add elemento non valida');
         return;
       }
+        
       // impostazioni di default per la popup di inserimento per tutti i campi che hanno un specie di popup
       for (let field in conf.fieldsConfig) {
         if (['date','datetime','time','select','checkbox'].includes(conf.fieldsConfig[field].type)) {
@@ -200,19 +181,55 @@ export default {
       conf.actionsConfig = {
           'action-save': {
               afterExecute() {
-                  let that = this;
-                  console.debug('afterExecute');
-                  that.viewInstance.dialogInstance.hide();
-                  if (that.json.result && that.json.result.id) {
-                    that.autoCompleteValue = that.json.result;
-                    that.referredData = that.json.result;
-                    that.value = that.json.result.id;
+                  let thatAction = this;
+                  console.debug('afterExecute',thatAction.json);
+                  thatAction.viewInstance.dialogInstance.hide();
+
+                  if (thatAction.json.result) {
+                    if (thatAction.json.metadata.pk) {
+                      //that.autoCompleteValue = that.json.result;
+                      that.setAutocompleteValue(thatAction.json.result);
+                      that.referredData = thatAction.json.result;
+                      that.value = thatAction.json.metadata.pk;
+                    }
+                   
                   }
               }
           }
       }
       CrudCore.componentDialog('v-insert',conf,that.addDialogConf.title,that.addDialogConf);
+    },
+    _getAddConf() {
+      let that = this;
+      if (!that.addConf) {
+        return null;
+      }
+      let conf = null;
+      if (typeof that.addConf === 'string') {
+        console.debug('addConf',CrudVars.modelConfs);
+        let modelNameConf = 'Model' + CrudCore.pascalCase(that.addConf);
+        conf = CrudCore.clone(CrudVars.modelConfs[modelNameConf]); // restituisce la configurazione del modello
+
+        if (!conf) {
+          CrudCore.alertError('Configurazione del modello (' + modelNameConf + ') non trovata');
+          return;
+        }
+        conf = conf().insert || conf().edit;
+        conf.modelName = that.addConf;
+      } else if (typeof that.addConf === 'function') {
+        conf = that.addConf();
+      } else {
+        conf = CrudCore.clone(that.addConf);
+      }
+      if (!conf) {
+        CrudCore.alertError('Configurazione di add elemento non valida');
+        return;
+      }
+      return conf;
     }
+    
+
   }
 }
+  
 </script>
