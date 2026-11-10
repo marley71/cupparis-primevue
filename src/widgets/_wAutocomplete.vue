@@ -163,13 +163,14 @@ export default {
      * aggiunge un elemento usando come configurazione la addConf che può essere stringa (nome modello) o una funzione che restituisce la configurazione
      * @param item elemento da aggiungere
      */
-    add(item) {
+    add() {
       let that = this;
       let conf = null;
       if (that.addConf) {
         if (typeof that.addConf === 'string') {
           console.debug('addConf',CrudVars.modelConfs);
-          let modelNameConf = 'Model' + that.addConf.charAt(0).toUpperCase() + that.addConf.slice(1);
+          
+          let modelNameConf = 'Model' + that.addConf.charAt(0).toUpperCase() +  CrudCore.camelCase(that.addConf).slice(1); //   that.addConf.charAt(0).toUpperCase() + that.addConf.slice(1);
           conf = CrudCore.clone(CrudVars.modelConfs[modelNameConf]); // restituisce la configurazione del modello
           if (!conf) {
             CrudCore.alertError('Configurazione del modello (' + modelNameConf + ') non trovata');
