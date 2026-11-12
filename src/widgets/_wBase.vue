@@ -125,6 +125,9 @@ export default {
             switch (that.conf.type) {
                 case 'w-hasmany':
                     return that.$refs.wRef.getValue();
+                case 'w-select':
+                case 'w-swap-select':
+                    return CrudHelpers.normalizeSelectValue(that.value);
                 default:
                     return that.value;
             }

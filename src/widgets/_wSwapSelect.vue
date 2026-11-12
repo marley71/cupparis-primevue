@@ -1,6 +1,7 @@
 
 <script>
 import Server from "../lib/Server";
+import CrudHelpers from "../lib/CrudHelpers";
 import _wBase from './_wBase.vue';
 
 export default {
@@ -75,7 +76,7 @@ export default {
         },
 
         getValue() {
-            return this.value;
+            return CrudHelpers.normalizeSelectValue(this.value);
         },
 
         setValue(val) {

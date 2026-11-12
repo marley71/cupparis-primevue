@@ -1,6 +1,9 @@
 // import ProtocolList from "./ProtocolList.js";
 import CrudCore from "./CrudCore";
+import CrudVars from "./CrudVars";
 import moment from "moment/moment";
+
+const DEFAULT_EMPTY_SELECT_VALUES = [-1, '-1'];
 
 class CrudHelpers {
 
@@ -242,6 +245,63 @@ CrudHelpers.formatDate = (value,format) => {
  * @param defaultValue 
  * @returns 
  */
+CrudHelpers._parseEmptySelectValueItem = (item) => {
+    if (item === null || item === undefined) {
+        return null;
+    }
+    const s = String(item).trim();
+    if (s === '') {
+        return null;
+    }
+    const n = Number(s);
+    if (!Number.isNaN(n) && s === String(n)) {
+        return n;
+    }
+    return s;
+}
+
+CrudHelpers._emptySelectValueMatches = (value, empty) => {
+    if (empty === value) {
+        return true;
+    }
+    if (value == null) {
+        return false;
+    }
+    return String(value) === String(empty);
+}
+
+CrudHelpers.getEmptySelectValues = () => {
+    let raw = CrudVars.env?.emptySelectValues ?? CrudVars.env?.empty_select_values;
+    if (raw == null) {
+        raw = import.meta.env.VITE_EMPTY_SELECT_VALUES;
+    }
+    if (raw == null || (typeof raw === 'string' && !raw.trim())) {
+        return DEFAULT_EMPTY_SELECT_VALUES;
+    }
+    const items = Array.isArray(raw)
+        ? raw
+        : String(raw).split(',').map((s) => s.trim()).filter((s) => s !== '');
+    if (items.length === 0) {
+        return DEFAULT_EMPTY_SELECT_VALUES;
+    }
+    return items
+        .map(CrudHelpers._parseEmptySelectValueItem)
+        .filter((v) => v !== null);
+}
+
+CrudHelpers.isEmptySelectValue = (value) => {
+    if (value === null || value === undefined || value === '') {
+        return true;
+    }
+    return CrudHelpers.getEmptySelectValues().some((empty) =>
+        CrudHelpers._emptySelectValueMatches(value, empty)
+    );
+}
+
+CrudHelpers.normalizeSelectValue = (value) => {
+    return CrudHelpers.isEmptySelectValue(value) ? null : value;
+}
+
 CrudHelpers.getByDot = (obj, path, defaultValue) => {
     if (!path) return obj;
     const parts = path.split('.');

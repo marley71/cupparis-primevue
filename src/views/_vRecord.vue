@@ -268,7 +268,7 @@ export default {
       that.resetWidgetsErrors();
       that.validate().then((res) => {
         if (!res) {
-          that.alertError('Controllare i dati, ci sono degli errori di validazione');
+          that.alertError(that.translate('app.form-validation-error'));
           return;
         }
 
