@@ -525,9 +525,9 @@ export default {
       let conf = this.widgetsConfig[field];
       return {
         'class': conf.dividerClass || '',
-        'content': conf.dividerContent || false,
+        'content': conf.dividerContent ? this.translate(conf.dividerContent) : false,
         'contentClass': conf.dividerContentClass || 'font-bold',
-        'description': conf.dividerDescription || false
+        'description': conf.dividerDescription ? this.translate(conf.dividerDescription) : false
       }
     },
     getLabelInfo(field) {
