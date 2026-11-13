@@ -1,5 +1,6 @@
 <template>
   <span>
+    <InputGroup>
     <MultiSelect class="w-full" v-model="value" :options="options" optionLabel="name" optionValue="code"
                  :placeholder="placeholder" :filter="hasFilter()" display="chip" @change="change()"
                  :emptyMessage="translate('app.multiselect-empty')"
@@ -37,6 +38,8 @@
         </template>
       </template>
     </MultiSelect>
+    <Button size="small" icon="fa fa-plus" @click="add" v-if="addButton"/>
+  </InputGroup>
     <RulesErrors :errors="errors"></RulesErrors>
   </span>
 

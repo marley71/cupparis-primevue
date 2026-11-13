@@ -157,6 +157,7 @@ export default {
         };
     },
 
+
     wCheckboxConf() {
         return {
             type : 'w-checkbox',
@@ -374,6 +375,12 @@ export default {
                 console.log('change ' , this.getValue())
             }
         };
+    },
+    wMultiSelectAddConf() {
+        let conf = this.wMultiSelectConf();
+        conf.addButton = true;
+        conf.addConf = 'user';
+        return conf;
     },
     wSwapConf() {
         return {

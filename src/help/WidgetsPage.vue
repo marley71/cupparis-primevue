@@ -40,8 +40,9 @@ export default {
               'w-input-set' :                 widgetHelpConfs.wInputSetConf(),
               'w-leaf-let' :                  widgetHelpConfs.wLeafLeft(),
               'w-leaf-let con icona' :        widgetHelpConfs.wLeafLeftIcon(),
-              'w-object' :                    widgetHelpConfs.wObject(),
               'w-multi-select':               widgetHelpConfs.wMultiSelectConf(),
+              'w-multi-select con aggiunta' : widgetHelpConfs.wMultiSelectAddConf(),
+              'w-object' :                    widgetHelpConfs.wObject(),
               'w-radio' :                     widgetHelpConfs.wRadioConf(),
               'w-select' :                    widgetHelpConfs.wSelectConf(),
               'w-select con aggiunta' :       widgetHelpConfs.wSelectAddConf(),
@@ -290,7 +291,7 @@ export default {
 
             <div >
                 <template v-if="['w-hasmany','w-hasmany-list'].indexOf(widgetSelected) >= 0">
-                    <div><Button icon="fa fa-plus" @click="addHasmany" label="setValue dall'esterno"></Button></div>
+                    <div><Button  icon="fa fa-plus" @click="addHasmany" label="setValue dall'esterno"></Button></div>
                 </template>
 
                 <Fieldset legend="Area Widget">
