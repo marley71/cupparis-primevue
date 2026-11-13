@@ -157,6 +157,20 @@ export default class WrapperConf {
         //     let that = this;
         //     that.value = null;
         // };
+        conf.addConf = conf.addConf || null;
+        if (! ('addButton' in conf) ) {
+            conf.addButton = false;
+        }
+        if (conf.addButton && !conf.addConf) {
+            conf.addConf = conf.foormName;  // se non e' stato specificato il nome del modello per l'aggiunta, uso il nome del foormName del widget
+        }
+        conf.addDialogConf = {
+            width : '80vw',
+            title : CrudCore.translate('app.add-item')
+        }
+        // campi vengono usati nel modello per quando viene inserita una nuova opzione nel select
+        conf.optionKey = conf.optionKey || 'id';
+        conf.optionLabel = conf.optionLabel || 'label';
         return conf;
     }
 

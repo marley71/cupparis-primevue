@@ -135,6 +135,12 @@ export default {
             }
         };
     },
+    wSelectAddConf() {
+        let conf = this.wSelectConf();
+        conf.addButton = true;
+        conf.addConf = 'user';
+        return conf;
+    },
     wSelectButtonConf() {
         return {
             value: 20,

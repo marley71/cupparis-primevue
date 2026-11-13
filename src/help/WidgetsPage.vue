@@ -44,6 +44,7 @@ export default {
               'w-multi-select':               widgetHelpConfs.wMultiSelectConf(),
               'w-radio' :                     widgetHelpConfs.wRadioConf(),
               'w-select' :                    widgetHelpConfs.wSelectConf(),
+              'w-select con aggiunta' :       widgetHelpConfs.wSelectAddConf(),
               'w-select-button' :             widgetHelpConfs.wSelectButtonConf(),
               'w-table' :                     widgetHelpConfs.wTable(),
               'w-text' :                      widgetHelpConfs.wTextConf(),
